@@ -2,7 +2,6 @@ package br.com.taskboard.demo.Controller;
 
 import br.com.taskboard.demo.DTO.Usuario;
 import br.com.taskboard.demo.Repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,19 +25,20 @@ public class UsuarioController {
         return usuarioRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Usuario findById(@PathVariable Long id) {
-        return usuarioRepository.findById(id);
+    @GetMapping("/{idUsuario}")
+    public Usuario findById(@PathVariable Long idUsuario) {
+        return usuarioRepository.findById(idUsuario);
     }
 
-    @GetMapping("/?update={id}")
+    @GetMapping("/?update={idUsuario}")
     @Transactional
-    public Usuario update(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public Usuario update(@PathVariable Long idUsuario, @RequestBody Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
-    @GetMapping("delete={id}")
+    @GetMapping("delete={idUsuario}")
     @Transactional
-    public void deleteById(@PathVariable Long id) {
-        usuarioRepository.delete(usuarioRepository.findById(id));
+    public void deleteById(@PathVariable Long idUsuario) {
+
+        usuarioRepository.delete(usuarioRepository.findById(idUsuario));
     }
 }

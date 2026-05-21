@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-    Usuario findById(Long id);
+    Usuario findById(Long idUsuario);
     List<Usuario> findAll();
     Usuario save(Usuario usuario);
-    void update(Long id, Usuario usuario);
-    void deleteById(Long id);
+//    void update(Long id, Usuario usuario);
+//    void deleteById(Long id);
 }
