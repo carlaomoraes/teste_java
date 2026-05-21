@@ -11,17 +11,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @PostMapping
     @Transactional
     public Usuario save(@RequestBody Usuario usuario) {
+
         return usuarioRepository.save(usuario);
     }
 
     @GetMapping("/listar")
     public List<Usuario> findAll() {
+
         return usuarioRepository.findAll();
     }
 
