@@ -20,7 +20,7 @@ public class UsuarioController {
         return usuarioRepository.save(usuario);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
@@ -40,5 +40,4 @@ public class UsuarioController {
     public void deleteById(@PathVariable Long id) {
         usuarioRepository.delete(usuarioRepository.findById(id));
     }
-
 }
