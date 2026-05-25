@@ -1,4 +1,4 @@
-package br.com.taskboard.demo.DTO;
+package br.com.taskboard.demo.Modelo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,7 +12,11 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
     private String nome;
+    private String login;
     private String email;
     private String senha;
 
+    public Usuario() {
+
+    }
 }

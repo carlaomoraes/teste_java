@@ -1,4 +1,4 @@
-package br.com.taskboard.demo.DTO;
+package br.com.taskboard.demo.Modelo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
