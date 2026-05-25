@@ -22,11 +22,15 @@ public class UsuarioService {
         return repository.findAll();
     }
 
-    public Usuario buscarPorId(Integer id) {
-        return repository.findById(id).orElse(null);
+    public Usuario atualizar(Long Id, Usuario usuario) {
+        return repository.save(usuario);
     }
 
-    public void deletar(Usuario usuario) {
-        repository.delete(usuario);
+    public void excluir(Long Id) {
+        repository.delete(repository.findById(Math.toIntExact(Id)).orElse(null));
+    }
+
+    public Usuario buscarPorId(Integer id) {
+        return repository.findById(id).orElse(null);
     }
 }
