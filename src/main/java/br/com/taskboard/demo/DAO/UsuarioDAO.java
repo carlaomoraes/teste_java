@@ -90,7 +90,6 @@ public class UsuarioDAO  {
             NumMaximo = -1;
             e.printStackTrace();
         } catch (IOException e) {
-            NumMaximo = -1;
             throw new RuntimeException(e);
         }
         return NumMaximo;
