@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class UsuarioDAO  {
 
     // CREATE
@@ -68,7 +69,7 @@ public class UsuarioDAO  {
     }
     // UPDATE
     public int atualizar(Usuario usuario) {
-        int NumMaximo = 0;
+        int NumMaximo;
 
         String sql = "UPDATE usuario SET nome=?, login = ?, senha = ?, email=? WHERE id=?";
 
