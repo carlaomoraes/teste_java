@@ -96,7 +96,7 @@ public class UsuarioDAO  {
     }
 
     // DELETE
-    public int deletar(int id) throws SQLException {
+    public int deletar(int id) {
         int NumMaximo;
 
         String sql = "DELETE FROM usuario WHERE idUsuario = ?";
