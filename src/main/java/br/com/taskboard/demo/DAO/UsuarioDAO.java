@@ -79,7 +79,7 @@ public class UsuarioDAO  {
             stmt.setString(2, usuario.getLogin());
             stmt.setString(3, usuario.getSenha());
             stmt.setString(4, usuario.getEmail());
-            stmt.setLong(5, usuario.getIdUsuario());
+            stmt.setLong(5, usuario.getIdusuario());
 
             stmt.executeUpdate();
             NumMaximo = stmt.getMaxRows();
@@ -133,7 +133,7 @@ public class UsuarioDAO  {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Usuario usuario = new Usuario();
-                usuario.setIdUsuario(rs.getLong("idUsuario"));
+                usuario.setIdusuario(rs.getLong("idusuario"));
                 usuario.setNome(rs.getString("nome"));
                 usuario.setLogin(rs.getString("login"));
                 usuario.setSenha(rs.getString("senha"));

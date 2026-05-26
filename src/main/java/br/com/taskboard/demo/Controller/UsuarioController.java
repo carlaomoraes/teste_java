@@ -15,23 +15,27 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
-    @PostMapping
+    @PutMapping("/salvar")
     public Usuario salvar(@RequestBody Usuario usuario) {
         return service.salvar(usuario);
     }
+    @GetMapping("/atualizar={idusuario}")
+        public Usuario atualizar(@RequestBody Usuario usuario) {
+            return service.atualizar(usuario);
+    }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<Usuario> listar() {
         return service.listar();
     }
 
-    @PutMapping("/{id}")
-    public Usuario atualizar(@PathVariable Long id, @RequestBody Usuario usuario ) {
-        return service.atualizar(id, usuario);
+    @PutMapping("/{idusuario}")
+    public Usuario buscarPorId(@PathVariable Integer idusuario) {
+        return service.buscarPorId(idusuario);
     }
 
-    @DeleteMapping("/{id}")
-    public void excluir(@PathVariable Long id) {
-        service.excluir(id);
+    @DeleteMapping("/excluir={idusuario}")
+    public void excluir(@PathVariable Long idusuario) {
+        service.excluir(idusuario);
     }
 }

@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Commit #2">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/estoria.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/UsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DAO/UsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DAO/UsuarioDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Usuario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/UsuarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/TaskboardContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/TaskboardContoller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,6 +84,9 @@
   &quot;keyToString&quot;: {
     &quot;Application.Conexao.executor&quot;: &quot;Run&quot;,
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;HTTP Request.All in generated-requests.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #2.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UsuarioDAOTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UsuarioDAOTest.inserir.executor&quot;: &quot;Debug&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
@@ -95,7 +106,7 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/pom.xml&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -115,6 +126,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\java\br\com\taskboard\demo" />
     </key>
@@ -131,6 +145,21 @@
       <recent name="br.com.taskboard.demo.DTO" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="configurationStatuses">
+      <map>
+        <entry key="HttpClient.HttpRequestRunConfigurationType">
+          <value>
+            <map>
+              <entry key="All in generated-requests" value="STOPPED" />
+              <entry key="generated-requests | #2" value="STOPPED" />
+              <entry key="generated-requests | #3" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="RunManager" selected="Spring Boot.DemoApplication">
     <configuration name="Conexao" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="br.com.taskboard.demo.conexao.Conexao" />
@@ -145,20 +174,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UsuarioDAOTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="demo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="br.com.taskboard.demo.DAO.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="br.com.taskboard.demo.DAO" />
-      <option name="MAIN_CLASS_NAME" value="br.com.taskboard.demo.DAO.UsuarioDAOTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="All in generated-requests" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#2" index="2" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#3" index="3" runType="Run single request">
+      <method v="2" />
     </configuration>
     <configuration name="UsuarioDAOTest.inserir" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="demo" />
@@ -194,9 +217,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="HTTP Request.generated-requests | #3" />
+        <item itemvalue="HTTP Request.All in generated-requests" />
+        <item itemvalue="HTTP Request.generated-requests | #2" />
         <item itemvalue="JUnit.UsuarioDAOTest.inserir" />
         <item itemvalue="Application.Conexao" />
-        <item itemvalue="JUnit.UsuarioDAOTest" />
       </list>
     </recent_temporary>
   </component>
@@ -241,6 +266,17 @@
       <workItem from="1779719915877" duration="514000" />
       <workItem from="1779727947821" duration="1329000" />
       <workItem from="1779729708790" duration="820000" />
+      <workItem from="1779731077827" duration="441000" />
+      <workItem from="1779733578011" duration="1108000" />
+      <workItem from="1779735837833" duration="1460000" />
+      <workItem from="1779743102043" duration="5380000" />
+      <workItem from="1779760246763" duration="2300000" />
+      <workItem from="1779763045651" duration="1476000" />
+      <workItem from="1779796646570" duration="623000" />
+      <workItem from="1779797372526" duration="364000" />
+      <workItem from="1779799498229" duration="740000" />
+      <workItem from="1779800615646" duration="939000" />
+      <workItem from="1779804420406" duration="642000" />
     </task>
     <task id="LOCAL-00001" summary="Commit #2">
       <option name="closed" value="true" />

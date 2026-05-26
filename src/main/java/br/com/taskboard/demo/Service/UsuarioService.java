@@ -15,22 +15,26 @@ public class UsuarioService {
     private UsuarioRepository repository;
 
     public Usuario salvar(Usuario usuario) {
+
         return repository.save(usuario);
     }
 
     public List<Usuario> listar() {
+
         return repository.findAll();
     }
 
-    public Usuario atualizar(Long Id, Usuario usuario) {
+    public Usuario atualizar(Usuario usuario) {
+
         return repository.save(usuario);
     }
 
-    public void excluir(Long Id) {
-        repository.delete(repository.findById(Math.toIntExact(Id)).orElse(null));
+    public void excluir(Long idusuario) {
+
+        repository.delete(repository.findById(Math.toIntExact(idusuario)).orElse(null));
     }
 
-    public Usuario buscarPorId(Integer id) {
-        return repository.findById(id).orElse(null);
+    public Usuario buscarPorId(Integer idusuario) {
+        return repository.findById(idusuario).orElse(null);
     }
 }
