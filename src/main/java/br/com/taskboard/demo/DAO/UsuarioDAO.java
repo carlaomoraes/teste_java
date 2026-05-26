@@ -33,10 +33,8 @@ public class UsuarioDAO  {
             Conexao.fecharConexao(conn);
 
         } catch (SQLException e) {
-            NumMaximo = -1;
             e.printStackTrace();
         } catch (IOException e) {
-            NumMaximo = -1;
             throw new RuntimeException(e);
         }
         return NumMaximo;
@@ -100,7 +98,7 @@ public class UsuarioDAO  {
 
     // DELETE
     public int deletar(int id) throws SQLException {
-        int NumMaximo = 0;
+        int NumMaximo;
 
         String sql = "DELETE FROM usuario WHERE idUsuario = ?";
 
