@@ -22,7 +22,7 @@ public class TaskboardContoller {
         return "index";
     }
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<Usuario> usuario(@PathVariable Integer id, Model model) {
+    public ResponseEntity<Usuario> usuario(@PathVariable Long id, Model model) {
         Usuario usuario = usuarioService.buscarPorId(id);
         return ResponseEntity.ok()
                 .header("Custom-Header", "value")

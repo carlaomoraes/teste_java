@@ -29,12 +29,17 @@ public class UsuarioService {
         return repository.save(usuario);
     }
 
+
     public void excluir(Long idusuario) {
 
-        repository.delete(repository.findById(Math.toIntExact(idusuario)).orElse(null));
+        if (!repository.existsById(idusuario)) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+
+        repository.deleteById(idusuario);
     }
 
-    public Usuario buscarPorId(Integer idusuario) {
+    public Usuario buscarPorId(Long idusuario) {
         return repository.findById(idusuario).orElse(null);
     }
 }
