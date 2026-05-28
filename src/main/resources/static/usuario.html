@@ -13,7 +13,7 @@
         }
 
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: auto;
             background: white;
             padding: 20px;
@@ -68,6 +68,28 @@
             white-space: pre-wrap;
 
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+        table tbody tr:hover {
+            background-color: #dfefff;
+        }
+
     </style>
 </head>
 <body>
@@ -78,6 +100,8 @@
     <input type="number" id="idusuario" placeholder="ID do usuário">
 
     <input type="text" id="nome" placeholder="Nome">
+
+    <input type="text" id="login" placeholder="Login">
 
     <input type="email" id="email" placeholder="Email">
 
@@ -102,12 +126,16 @@
 
         const idusuario = document.getElementById('idusuario').value;
         const nome = document.getElementById('nome').value;
+        const login = document.getElementById('login').value;
         const email = document.getElementById('email').value;
+
+
         const senha = document.getElementById('senha').value;
 
         const usuario = {
             idusuario: idusuario || null,
             nome: nome,
+            login: login,
             email: email,
             senha: senha
         };
@@ -131,6 +159,26 @@
         }
     }
 
+    async function buscarPorLinha(id) {
+
+        try {
+
+            const response = await fetch(`${API}/${id}`);
+
+            const usuario = await response.json();
+
+            document.getElementById('idusuario').value = usuario.idusuario;
+            document.getElementById('nome').value = usuario.nome;
+            document.getElementById('login').value = usuario.login;
+            document.getElementById('email').value = usuario.email;
+            document.getElementById('senha').value = usuario.senha;
+
+        } catch (error) {
+
+            alert("Erro ao buscar usuário");
+        }
+    }
+
     async function listarUsuarios() {
 
         try {
@@ -139,12 +187,42 @@
 
             const data = await response.json();
 
-            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+            let tabela = `
+            <table border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Login</th>
+                        <th>Email</th>
+                        <th>Senha</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+            data.forEach(usuario => {
+
+                tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
+                                style="cursor:pointer;">
+                                <td>${usuario.idusuario}</td>
+                                <td>${usuario.nome}</td>
+                                <td>${usuario.login}</td>
+                                <td>${usuario.email}</td>
+                                <td>${usuario.senha}</td>
+
+            </tr>`;});
+            tabela += `</tbody></table>`;
+
+            document.getElementById('resultado').innerHTML = tabela;
 
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+
+            document.getElementById('resultado').innerHTML =
+                `<p style="color:red;">Erro ao listar usuários</p>`;
         }
     }
+
 
     async function buscarUsuario() {
 

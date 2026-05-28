@@ -1,10 +1,290 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Épico</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Épicos</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .salvar {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .listar {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .buscar {
+            background-color: #ffc107;
+        }
+
+        .excluir {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            background: #eee;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+        table tbody tr:hover {
+            background-color: #dfefff;
+        }
+
+    </style>
 </head>
 <body>
-<h1 align="center">ÉPICO</h1><br>
+
+<div class="container">
+    <h1>CRUD Épico - Spring Boot</h1>
+
+    <input type="number" id="idepico" placeholder="ID do épico">
+
+    <input type="text" id="descepico" placeholder="Descrição do épico">
+
+    <input type="text" id="obsepico" placeholder="Observação">
+
+    <button class="salvar" onclick="salvarEpico()">Salvar</button>
+
+    <button class="listar" onclick="listarEpico()">Listar</button>
+
+    <button class="buscar" onclick="buscarEpico()">Buscar por ID</button>
+
+    <button class="excluir" onclick="excluirEpico()">Excluir</button>
+
+    <div id="resultado"></div>
+</div>
+
+<script>
+
+    const API = 'http://localhost:8080/epico';
+
+    async function salvarEpico() {
+
+        const idepico = document.getElementById('iduepico').value;
+        const descepico = document.getElementById('descepico').value;
+        const obsepico = document.getElementById('obsepico').value;
+        
+        const epico = {
+            idepico: idepico || null,
+            descepico: descepico,
+            obsepico: obsepico
+        };
+
+        try {
+
+            const response = await fetch(`${API}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(epico)
+            });
+
+            const data = await response.json();
+
+            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+
+        } catch (error) {
+            document.getElementById('resultado').innerText = error;
+        }
+    }
+    async function listarUsuarios() {
+
+        try {
+
+            const response = await fetch(`${API}/listar`);
+
+            const data = await response.json();
+
+            let tabela = `
+            <table border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Login</th>
+                        <th>Email</th>
+                        <th>Senha</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+            data.forEach(usuario => {
+
+                tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
+                                style="cursor:pointer;">
+                                <td>${usuario.idusuario}</td>
+                                <td>${usuario.nome}</td>
+                                <td>${usuario.login}</td>
+                                <td>${usuario.email}</td>
+                                <td>${usuario.senha}</td>
+
+            </tr>`;});
+            tabela += `</tbody></table>`;
+
+            document.getElementById('resultado').innerHTML = tabela;
+
+        } catch (error) {
+
+            document.getElementById('resultado').innerHTML =
+                `<p style="color:red;">Erro ao listar usuários</p>`;
+        }
+    }
+    async function buscarEpico() {
+
+        const idepico = document.getElementById('idepico').value;
+
+        try {
+
+            const response = await fetch(`${API}/${idepico}`);
+
+            const data = await response.json();
+
+            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+
+        } catch (error) {
+            document.getElementById('resultado').innerText = error;
+        }
+    }
+    async function listarEpico() {
+
+        try {
+
+            const response = await fetch(`${API}/listar`);
+
+            const data = await response.json();
+
+            let tabela = `
+            <table border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição do épico</th>
+                        <th>Observação do épico</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+            data.forEach(epico => {
+
+                tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
+                                style="cursor:pointer;">
+                                <td>${epico.idepico}</td>
+                                <td>${epico.descepico}</td>
+                                <td>${epico.obsepico}</td>
+
+            </tr>`;});
+            tabela += `</tbody></table>`;
+
+            document.getElementById('resultado').innerHTML = tabela;
+
+        } catch (error) {
+
+            document.getElementById('resultado').innerHTML =
+                `<p style="color:red;">Erro ao listar épicos</p>`;
+        }
+    }
+
+    async function buscarPorLinha(id) {
+
+        try {
+
+            const response = await fetch(`${API}/${id}`);
+
+            const epico = await response.json();
+
+            document.getElementById('idepico').value = epico.idepico;
+            document.getElementById('descepico').value = epico.descepico;
+            document.getElementById('obsepico').value = epico.obsepico;
+
+        } catch (error) {
+
+            alert("Erro ao buscar épico");
+        }
+    }
+    async function excluirEpico() {
+
+        const idepico = document.getElementById('idepico').value;
+
+        try {
+
+            const response = await fetch(`${API}/excluir/${idepico}`, {
+                method: 'DELETE'
+            });
+
+            const texto = await response.text();
+
+            document.getElementById('resultado').innerText = texto || 'Épico excluído com sucesso';
+
+        } catch (error) {
+            document.getElementById('resultado').innerText = error;
+        }
+    }
+
+
+</script>
+
 </body>
 </html>
