@@ -1,8 +1,10 @@
 package br.com.taskboard.demo.Controller;
 
+import br.com.taskboard.demo.Excecoes.ViolacaoChaveEstrangeiraException;
 import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +20,13 @@ public class UsuarioController {
 
     // BUSCAR POR ID
     @GetMapping("/{idusuario}")
-    public Usuario buscarPorId(@PathVariable Long idusuario) {
-        return service.buscarPorId(idusuario);
+    public ResponseEntity<?> buscarPorId(@PathVariable Long idusuario) {
+        try {
+            Usuario usuario = service.buscarPorId(idusuario);
+            return ResponseEntity.ok().body(usuario);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuário não encontrado");
+        }
     }
 
     // SALVAR
@@ -47,9 +54,11 @@ public class UsuarioController {
     // EXCLUIR
     @DeleteMapping("/excluir/{idusuario}")
     public ResponseEntity<String> excluir(@PathVariable Long idusuario) {
-
-        service.excluir(idusuario);
-
-        return ResponseEntity.ok("Usuário excluído com sucesso");
+        try {
+            service.excluir(idusuario);
+            return ResponseEntity.ok().body("Usuário excluído com sucesso!");
+        } catch (ViolacaoChaveEstrangeiraException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 }
