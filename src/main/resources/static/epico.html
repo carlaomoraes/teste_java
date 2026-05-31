@@ -148,12 +148,12 @@
             document.getElementById('resultado').innerText = error;
         }
     }
-    async function listarUsuarios() {
+    async function buscarEpico() {
+
+        const idepico = document.getElementById('idepico').value;
 
         try {
-
-            const response = await fetch(`${API}/listar`);
-
+            const response = await fetch(`${API}/${idepico}`);
             const data = await response.json();
 
             let tabela = `
@@ -161,24 +161,19 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nome</th>
-                        <th>Login</th>
-                        <th>Email</th>
-                        <th>Senha</th>
+                        <th>Descrição</th>
+                        <th>Observação</th>
                     </tr>
                 </thead>
                 <tbody>
         `;
 
-            data.forEach(usuario => {
+            data.forEach(epico => {
 
-                tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
+                tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
                                 style="cursor:pointer;">
-                                <td>${usuario.idusuario}</td>
-                                <td>${usuario.nome}</td>
-                                <td>${usuario.login}</td>
-                                <td>${usuario.email}</td>
-                                <td>${usuario.senha}</td>
+                                <td>${epico.descepico}</td>
+                                <td>${epico.obsepico}</td>
 
             </tr>`;});
             tabela += `</tbody></table>`;
@@ -188,24 +183,9 @@
         } catch (error) {
 
             document.getElementById('resultado').innerHTML =
-                `<p style="color:red;">Erro ao listar usuários</p>`;
+                `<p style="color:red;">Erro ao buscar épico</p>`;
         }
-    }
-    async function buscarEpico() {
 
-        const idepico = document.getElementById('idepico').value;
-
-        try {
-
-            const response = await fetch(`${API}/${idepico}`);
-
-            const data = await response.json();
-
-            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
-
-        } catch (error) {
-            document.getElementById('resultado').innerText = error;
-        }
     }
     async function listarEpico() {
 

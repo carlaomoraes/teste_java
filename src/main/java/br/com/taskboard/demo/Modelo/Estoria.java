@@ -10,10 +10,15 @@ import lombok.Setter;
 public class Estoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEstoria;
-    private String descEstoria;
-     private Long idEpico;
-    private Long idusuario_criador;
-    private Long idusuario_responsavel;
-
+    private Long idestoria;
+    private String descestoria;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idepico")
+    private Epico epico;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idcriador")
+    private Usuario idcriador;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idresponsavel")
+    private Usuario idresponsavel;
 }

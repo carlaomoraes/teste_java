@@ -21,12 +21,6 @@ public class TaskboardContoller {
     public String taskboard() {
         return "index";
     }
-    @GetMapping("/usuario/{id}")
-    public ResponseEntity<Usuario> usuario(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.buscarPorId(id);
-        return ResponseEntity.ok()
-                .header("Custom-Header", "value")
-                .body(usuario);
-    }
+
 }
 

@@ -33,10 +33,12 @@ public class UsuarioService {
 
 
     public void excluir(Long idusuario) {
+        Usuario usuario = buscarPorId(idusuario);
+        String Messagem = String.format("Não é possível excluir %s pois ele está vinculado %s.",usuario.getNome(),"Estória");
         try {
             repository.deleteById(idusuario);
         } catch (DataIntegrityViolationException e) {
-            throw new ViolacaoChaveEstrangeiraException("Não é possível excluir este registro pois ele está vinculado a outros dados no sistema.");
+            throw new ViolacaoChaveEstrangeiraException(Messagem);
         }
     }
 
