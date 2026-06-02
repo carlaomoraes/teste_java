@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Épicos</title>
+    <title>CRUD Estórias</title>
 
     <style>
         body {
@@ -109,15 +109,72 @@
 
     <input type="text" id="descestoria" placeholder="Descrição da estória">
 
-    <select name="comboEpico" id="idepico">
+    <select name="comboepico" id="comboepico">
         <option value="">Selecione um Épico</option>
     </select>
-    <select name="comboCriador" id="idcriador">
+    <script>
+        async function carregarEpicos() {
+            const comboEpico = document.querySelector("#comboepico")
+            try {
+                const resposta = await fetch(`${API_EPICOS}/listar`);
+                const epicos = await resposta.json();
+                epicos.forEach(epico => {
+                    const opcao = document.createElement('option');
+                    opcao.value = epico.idEpico;
+                    opcao.textContent = epico.descepico;
+                    comboEpico.appendChild(opcao);
+                });
+            } catch (error) {
+                document.getElementById('resultado').innerText = error;
+            }
+        }
+        //Executa a função quando carrega a página
+        document.addEventListener('DOMContentLoaded', carregarEpicos)
+    </script>
+    <select name="comboCriador" id="comboCriador">
         <option value="">Selecione um usuário criador</option>
     </select>
-    <select name="comboResponsavel" id="idrespnsavel">
+    <script>
+        async function carregarUsuario() {
+            const comboCriador = document.querySelector("#comboCriador");
+            try {
+                const resposta = await fetch(`${API_USUARIOS}/listar`);
+                const criador = await resposta.json();
+                criador.forEach(criador => {
+                    const opcao = document.createElement('option');
+                    opcao.value = criador.idusuario;
+                    opcao.textContent = criador.nome;
+                    comboCriador.appendChild(opcao);
+                });
+            } catch (error) {
+                document.getElementById('resultado').innerText = error;
+            }
+        }
+        //Executa a função quando carrega a página
+        document.addEventListener('DOMContentLoaded', carregarUsuario)
+    </script>
+    <select name="comboResponsavel" id="comboResponsavel">
         <option value="">Selecione um usuário responsavel</option>
     </select>
+    <script>
+        async function carregarUsuario() {
+            const comboResponsavel = document.querySelector("#comboResponsavel");
+            try {
+                const resposta = await fetch(`${API_USUARIOS}/listar`);
+                const criador = await resposta.json();
+                criador.forEach(criador => {
+                    const opcao = document.createElement('option');
+                    opcao.value = criador.idusuario;
+                    opcao.textContent = criador.nome;
+                    comboResponsavel.appendChild(opcao);
+                });
+            } catch (error) {
+                document.getElementById('resultado').innerText = error;
+            }
+        }
+        //Executa a função quando carrega a página
+        document.addEventListener('DOMContentLoaded', carregarUsuario)
+    </script>
 
     <button class="salvar" onclick="salvarEstoria()">Salvar</button>
 
@@ -134,6 +191,7 @@
 
     const API = 'http://localhost:8080/estoria';
     const API_EPICOS = 'http://localhost:8080/epico';
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
 
 
     async function salvarEstoria() {
@@ -207,20 +265,14 @@
             document.getElementById('resultado').innerHTML = tabela;
 
         } catch (error) {
-
             document.getElementById('resultado').innerHTML =
                 `<p style="color:red;">Erro ao buscar estória</p>`;
         }
-
     }
     async function listarEstoria() {
-
         try {
-
             const response = await fetch(`${API}/listar`);
-
             const data = await response.json();
-
             let tabela = `
             <table border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
@@ -234,9 +286,7 @@
                 </thead>
                 <tbody>
         `;
-
             data.forEach(Estoria => {
-
                 tabela += `<tr onclick="buscarPorLinha(${Estoria.idEstoria})"
                                 style="cursor:pointer;">
                                 <td>${Estoria.descEstoria}</td>
@@ -246,69 +296,40 @@
 
             </tr>`;});
             tabela += `</tbody></table>`;
-
             document.getElementById('resultado').innerHTML = tabela;
-
         } catch (error) {
-
             document.getElementById('resultado').innerHTML =
                 `<p style="color:red;">Erro ao buscar estória</p>`;
         }
-
     }
 
     async function buscarPorLinha(id) {
-
         try {
-
             const response = await fetch(`${API}/${id}`);
-
             const Estoria = await response.json();
-
             document.getElementById('idEstoria').value = Estoria.idEstoria;
             document.getElementById('descEstoria').value = Estoria.descEstoria;
             document.getElementById('idepico').value = Estoria.idEpico;
             document.getElementById('idcriador').value = Estoria.idCriador;
             document.getElementById('idrespnsavel').value = Estoria.idResponsavel;
-
-
         } catch (error) {
-
-            alert("Erro ao buscar estória");
+            document.getElementById('resultado').innerText = error;
         }
     }
     async function excluirEstoria() {
-
         const idEstoria = document.getElementById('idEstoria').value;
-
         try {
-
             const response = await fetch(`${API}/excluir/${idEstoria}`, {
                 method: 'DELETE'
             });
-
             const texto = await response.text();
-
             document.getElementById('resultado').innerText = texto || 'Estória excluída com sucesso';
 
         } catch (error) {
             document.getElementById('resultado').innerText = error;
         }
     }
-    // Carregar épicos
-    async function CarregarEpicos(){
-        const response = await fetch(`${API_EPICOS}/listar`);
-        const epicos = await response.json();
-        alert(epicos);
-        let comboEpico = 'select name="comboEpico" id="idepico"><option value="">Selecione um Épico</option>';
-        epicos.forEach(epico => {
-            comboEpico += '<option value="' + epico.id + '">' + epico.name + '</option>';
-            });
-        comboEpico += '</select>';
-        document.getElementById('comboEpico').innerHTML = comboEpico;
 
-            }
-    window.onload = CarregarEpicos;
 </script>
 
 </body>

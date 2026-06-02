@@ -1,11 +1,8 @@
 package br.com.taskboard.demo.Service;
 
-
-import br.com.taskboard.demo.Excecoes.ViolacaoChaveEstrangeiraException;
 import br.com.taskboard.demo.Modelo.Epico;
 import br.com.taskboard.demo.Respository.EpicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

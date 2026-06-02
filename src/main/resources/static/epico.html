@@ -109,8 +109,6 @@
 
     <button class="buscar" onclick="buscarEpico()">Buscar por ID</button>
 
-    <button class="excluir" onclick="excluirEpico()">Excluir</button>
-
     <div id="resultado"></div>
 </div>
 
@@ -119,8 +117,7 @@
     const API = 'http://localhost:8080/epico';
 
     async function salvarEpico() {
-
-        const idepico = document.getElementById('iduepico').value;
+        const idepico = document.getElementById('idepico').value;
         const descepico = document.getElementById('descepico').value;
         const obsepico = document.getElementById('obsepico').value;
         
@@ -143,6 +140,8 @@
             const data = await response.json();
 
             document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+            limpaFormulario();
+            listarUsuarios();
 
         } catch (error) {
             document.getElementById('resultado').innerText = error;
@@ -163,6 +162,7 @@
                         <th>ID</th>
                         <th>Descrição</th>
                         <th>Observação</th>
+                        <th>Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -174,27 +174,22 @@
                                 style="cursor:pointer;">
                                 <td>${epico.descepico}</td>
                                 <td>${epico.obsepico}</td>
-
+                                <td> <button class="excluir" onclick="excluirUsuario(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
 
             document.getElementById('resultado').innerHTML = tabela;
 
         } catch (error) {
-
             document.getElementById('resultado').innerHTML =
                 `<p style="color:red;">Erro ao buscar épico</p>`;
         }
 
     }
     async function listarEpico() {
-
         try {
-
             const response = await fetch(`${API}/listar`);
-
             const data = await response.json();
-
             let tabela = `
             <table border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
@@ -202,67 +197,59 @@
                         <th>ID</th>
                         <th>Descrição do épico</th>
                         <th>Observação do épico</th>
+                         <th>Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
         `;
-
             data.forEach(epico => {
-
                 tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
                                 style="cursor:pointer;">
                                 <td>${epico.idepico}</td>
                                 <td>${epico.descepico}</td>
                                 <td>${epico.obsepico}</td>
-
+                                <td> <button class="excluir" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
-
             document.getElementById('resultado').innerHTML = tabela;
-
         } catch (error) {
-
             document.getElementById('resultado').innerHTML =
                 `<p style="color:red;">Erro ao listar épicos</p>`;
         }
     }
 
     async function buscarPorLinha(id) {
-
         try {
-
             const response = await fetch(`${API}/${id}`);
-
             const epico = await response.json();
-
             document.getElementById('idepico').value = epico.idepico;
             document.getElementById('descepico').value = epico.descepico;
             document.getElementById('obsepico').value = epico.obsepico;
-
         } catch (error) {
-
-            alert("Erro ao buscar épico");
+            document.getElementById('resultado').innerText = error;
         }
     }
-    async function excluirEpico() {
-
-        const idepico = document.getElementById('idepico').value;
-
+    async function excluirEpico(idEpico) {
         try {
 
-            const response = await fetch(`${API}/excluir/${idepico}`, {
+            const response = await fetch(`${API}/excluir/${idEpico}`, {
                 method: 'DELETE'
             });
 
             const texto = await response.text();
 
             document.getElementById('resultado').innerText = texto || 'Épico excluído com sucesso';
-
+            limpaFormulario();
         } catch (error) {
             document.getElementById('resultado').innerText = error;
         }
     }
+    async function limpaFormulario() {
+        document.getElementById('idepico').value = "";
+        document.getElementById('descepico').value = "";
+        document.getElementById('obsepico').value = "";
 
+    }
 
 </script>
 

@@ -48,7 +48,6 @@ public class EpicoController {
     // LISTAR
     @GetMapping("/listar")
     public List<Epico> listar() {
-
         return service.listar();
     }
 

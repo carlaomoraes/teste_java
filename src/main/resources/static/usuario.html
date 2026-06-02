@@ -113,8 +113,6 @@
 
     <button class="buscar" onclick="buscarUsuario()">Buscar por ID</button>
 
-    <button class="excluir" onclick="excluirUsuario()">Excluir</button>
-
     <div id="resultado"></div>
 </div>
 
@@ -123,21 +121,18 @@
     const API = 'http://localhost:8080/usuarios';
 
     async function salvarUsuario() {
-
         const idusuario = document.getElementById('idusuario').value;
         const nome = document.getElementById('nome').value;
         const login = document.getElementById('login').value;
-        const email = document.getElementById('email').value;
-
-
         const senha = document.getElementById('senha').value;
+        const email = document.getElementById('email').value;
 
         const usuario = {
             idusuario: idusuario || null,
-            nome: nome,
-            login: login,
-            email: email,
-            senha: senha
+            nome: nome || null,
+            login: login || null,
+            senha: senha || null,
+            email: email || null
         };
 
         try {
@@ -153,6 +148,8 @@
             const data = await response.json();
 
             document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+            limpaFormulario();
+            listarUsuarios();
 
         } catch (error) {
             document.getElementById('resultado').innerText = error;
@@ -174,19 +171,14 @@
             document.getElementById('senha').value = usuario.senha;
 
         } catch (error) {
-
-            alert("Erro ao buscar usuário");
+            document.getElementById('resultado').innerText = error;
         }
     }
 
     async function listarUsuarios() {
-
         try {
-
             const response = await fetch(`${API}/listar`);
-
             const data = await response.json();
-
             let tabela = `
             <table border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
@@ -196,6 +188,7 @@
                         <th>Login</th>
                         <th>Email</th>
                         <th>Senha</th>
+                        <th>Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -210,6 +203,7 @@
                                 <td>${usuario.login}</td>
                                 <td>${usuario.email}</td>
                                 <td>${usuario.senha}</td>
+                                <td> <button class="excluir" onclick="excluirUsuario(${usuario.idusuario})">Excluir</button></td>
 
             </tr>`;});
             tabela += `</tbody></table>`;
@@ -241,10 +235,7 @@
         }
     }
 
-    async function excluirUsuario() {
-
-        const idusuario = document.getElementById('idusuario').value;
-
+    async function excluirUsuario(idusuario) {
         try {
 
             const response = await fetch(`${API}/excluir/${idusuario}`, {
@@ -254,10 +245,17 @@
             const texto = await response.text();
 
             document.getElementById('resultado').innerText = texto || 'Usuário excluído com sucesso';
-
-        } catch (error) {
+             } catch (error) {
             document.getElementById('resultado').innerText = error;
         }
+    }
+
+    async function limpaFormulario() {
+        document.getElementById('idusuario').value = "";
+        document.getElementById('nome').value = "";
+        document.getElementById('login').value = "";
+        document.getElementById('email').value = "";
+        document.getElementById('senha').value = "";
     }
 
 </script>

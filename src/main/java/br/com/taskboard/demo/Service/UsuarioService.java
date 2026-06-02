@@ -2,8 +2,10 @@ package br.com.taskboard.demo.Service;
 
 
 import br.com.taskboard.demo.Excecoes.ViolacaoChaveEstrangeiraException;
+import br.com.taskboard.demo.Excecoes.ViolacaoChavaPrimariaException;
 import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Respository.UsuarioRepository;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,13 @@ public class UsuarioService {
     private UsuarioRepository repository;
 
     public Usuario salvar(Usuario usuario) {
-
-        return repository.save(usuario);
+        String Messagem = String.format("ID %s deve ser único.", usuario.getIdusuario());
+        try {
+            repository.save(usuario);
+        } catch (StaleObjectStateException e) {
+            throw new ViolacaoChavaPrimariaException(Messagem);
+        }
+        return usuario;
     }
 
     public List<Usuario> listar() {
