@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Controller/Service Epico começando">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Excecoes/ViolacaoChavaPrimariaException.java" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Controller/Service Usuario\epico funcionando">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/estilos.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EpicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EpicoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EpicoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EpicoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/UsuarioService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/estoria.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/estoria.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,9 +28,9 @@
       <list>
         <option value="JUnit5 Test Class" />
         <option value="HTML File" />
-        <option value="Interface" />
         <option value="Class" />
         <option value="Exception" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -297,6 +296,10 @@
       <workItem from="1780282168088" duration="381000" />
       <workItem from="1780322303500" duration="2043000" />
       <workItem from="1780410047845" duration="17150000" />
+      <workItem from="1780443448121" duration="1185000" />
+      <workItem from="1780496918907" duration="2294000" />
+      <workItem from="1780507994408" duration="1039000" />
+      <workItem from="1780685282119" duration="2255000" />
     </task>
     <task id="LOCAL-00001" summary="Commit #2">
       <option name="closed" value="true" />
@@ -394,7 +397,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780269903092</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Controller/Service Usuario\epico funcionando">
+      <option name="closed" value="true" />
+      <created>1780443518908</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1780443518908</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,31 +449,30 @@
     <MESSAGE value="Commit #3" />
     <MESSAGE value="Controller/Service Usuario funcionando" />
     <MESSAGE value="Controller/Service Epico começando" />
-    <option name="LAST_COMMIT_MESSAGE" value="Controller/Service Epico começando" />
+    <MESSAGE value="Controller/Service Usuario\epico funcionando" />
+    <option name="LAST_COMMIT_MESSAGE" value="Controller/Service Usuario\epico funcionando" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/epico.html</url>
-          <line>139</line>
+          <line>56</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>226</line>
+          <line>141</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/estoria.html</url>
-          <line>118</line>
-          <properties lambdaOrdinal="-1" />
+          <line>24</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/epico.html</url>
-          <line>238</line>
-          <properties lambdaOrdinal="-1" />
+          <line>155</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
