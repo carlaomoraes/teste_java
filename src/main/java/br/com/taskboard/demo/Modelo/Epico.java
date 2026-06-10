@@ -16,5 +16,5 @@ public class Epico {
     private Long idepico;
     private String descepico;
     private String obsepico;
-
+    private boolean bloqueado;
 }

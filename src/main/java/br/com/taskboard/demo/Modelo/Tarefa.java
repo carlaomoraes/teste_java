@@ -15,6 +15,10 @@ public class Tarefa {
     private Long idestoria;
     private Long idusuario_criador;
     private Long idusuario_responsavel;
+    @Column(name = "horas_estimadas")
     private Long horas_estimadas;
+    @Column(name = "horas_gastas")
     private Long horas_gastas;
+    @Column(name = "bloqueada")
+    private boolean bloqueada;
 }
