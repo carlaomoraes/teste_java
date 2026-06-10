@@ -1,137 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskController 1.0</title>
-
-    <style>
-        /* ==========================================================================
-           CSS Moderno para o Menu Principal (Dashboard Style)
-           ========================================================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f4f6f9;
-            color: #1e293b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .dashboard-container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            max-width: 850px;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            font-size: 15px;
-            color: #64748b;
-            margin-bottom: 35px;
-        }
-
-        /* Grid de Cards (Substituindo a tabela antiga) */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-        }
-
-        /* Estilização dos Links em formato de Card */
-        .menu-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 25px 20px;
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #334155;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-        }
-
-        /* Efeito de passar o mouse no Card */
-        .menu-card:hover {
-            background-color: #ffffff;
-            border-color: #3b82f6; /* Borda azul */
-            color: #2563eb; /* Texto azul */
-            transform: translateY(-4px); /* Sobe de leve */
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1),
-            0 4px 6px -2px rgba(59, 130, 246, 0.05);
-        }
-
-        /* Ícones visuais em formato de Emoji */
-        .card-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-
-        /* Rodapé sutil */
-        .footer {
-            margin-top: 40px;
-            font-size: 12px;
-            color: #94a3b8;
-        }
-    </style>
+    <title>Login</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
 <div class="dashboard-container">
     <h1>TaskController 1.0</h1>
-    <p class="subtitle">Selecione o módulo que deseja gerenciar no sistema</p>
-
-    <div class="menu-grid">
-
-        <a href="usuario.html" class="menu-card">
-            <span class="card-icon">👤</span>
-            <span>Cadastro de Usuário</span>
-        </a>
-
-        <a href="epico.html" class="menu-card">
-            <span class="card-icon">👑</span>
-            <span>Cadastro de Épico</span>
-        </a>
-
-        <a href="sprint.html" class="menu-card">
-            <span class="card-icon">🏃‍♂️</span>
-            <span>Cadastro de Sprint</span>
-        </a>
-
-        <a href="estoria.html" class="menu-card">
-            <span class="card-icon">📖</span>
-            <span>Cadastro de Estória</span>
-        </a>
-
+    <div class="container">
+        <form th:action="@{/index.html}" method="post">
+            Login:<input type="text" name="login" required>
+            Senha:<input type="password" name="senha" required>
+            <br><br>
+            <button class="btn" type="submit">  Entrar </button>
+        </form>
     </div>
-
     <div class="footer">
         TaskController Sistema de Gestão Ágil &copy; 2026
     </div>
 </div>
 
+<p th:if="${erro}"
+   th:text="${erro}">
+</p>
 </body>
 </html>
