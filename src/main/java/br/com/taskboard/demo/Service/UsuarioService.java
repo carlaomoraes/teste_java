@@ -53,11 +53,5 @@ public class UsuarioService {
         return repository.findById(idusuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
-    public Usuario autenticar(String login, String senha) {
-        Usuario usuario = repository.findByLoginAndSenha(login, senha);
-        if (usuario != null) {
-            return usuario;
-        }
-        return null;
-    }
+
 }
