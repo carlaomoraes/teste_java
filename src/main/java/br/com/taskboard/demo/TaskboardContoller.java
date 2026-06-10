@@ -20,13 +20,9 @@ public class TaskboardContoller {
 
     @GetMapping("/home")
     public String home(HttpSession session) {
-
-        if(session.getAttribute(
-                "usuarioLogado") == null) {
-
+        if(session.getAttribute("usuarioLogado") == null) {
             return "redirect:/index.html";
         }
-
         return "home";
     }
 }
