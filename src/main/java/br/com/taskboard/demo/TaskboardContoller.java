@@ -27,7 +27,7 @@ public class TaskboardContoller {
             return "redirect:/index.html";
         }
 
-        return "index";
+        return "home";
     }
 }
 

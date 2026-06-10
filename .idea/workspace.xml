@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="css - arquivo sprint.html começando">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/LoginController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/home.html" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="login implementado">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/UsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/UsuarioService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/TaskboardContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/TaskboardContoller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -320,7 +315,8 @@
       <workItem from="1781015744412" duration="4086000" />
       <workItem from="1781027737642" duration="2303000" />
       <workItem from="1781031140221" duration="1650000" />
-      <workItem from="1781033704225" duration="18597000" />
+      <workItem from="1781033704225" duration="18850000" />
+      <workItem from="1781095406317" duration="332000" />
     </task>
     <task id="LOCAL-00001" summary="Commit #2">
       <option name="closed" value="true" />
@@ -450,7 +446,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781090647592</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="login implementado">
+      <option name="closed" value="true" />
+      <created>1781094796392</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1781094796392</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -497,7 +501,8 @@
     <MESSAGE value="Controller/Service Usuario\epico funcionando" />
     <MESSAGE value="css" />
     <MESSAGE value="css - arquivo sprint.html começando" />
-    <option name="LAST_COMMIT_MESSAGE" value="css - arquivo sprint.html começando" />
+    <MESSAGE value="login implementado" />
+    <option name="LAST_COMMIT_MESSAGE" value="login implementado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
