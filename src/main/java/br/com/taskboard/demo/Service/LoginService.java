@@ -16,9 +16,9 @@ public class LoginService {
 
     public Optional<Usuario> autenticar(String login, String senha) {
         Optional<Usuario> usuario = repository.findByLoginAndSenha(login, senha);
-        if (usuario.isPresent()) {
+        if (usuario.isPresent())
             return usuario;
-        }
-        return Optional.empty();
+        else
+            return Optional.empty();
     }
 }

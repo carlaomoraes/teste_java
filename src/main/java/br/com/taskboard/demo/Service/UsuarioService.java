@@ -1,6 +1,5 @@
 package br.com.taskboard.demo.Service;
 
-
 import br.com.taskboard.demo.Excecoes.ViolacaoChaveEstrangeiraException;
 import br.com.taskboard.demo.Excecoes.ViolacaoChavaPrimariaException;
 import br.com.taskboard.demo.Modelo.Usuario;
@@ -29,12 +28,10 @@ public class UsuarioService {
     }
 
     public List<Usuario> listar() {
-
         return repository.findAll();
     }
 
     public Usuario atualizar(Usuario usuario) {
-
         return repository.save(usuario);
     }
 
@@ -52,6 +49,4 @@ public class UsuarioService {
     public Usuario buscarPorId(Long idusuario) {
         return repository.findById(idusuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
-
-
 }

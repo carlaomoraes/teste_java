@@ -31,7 +31,6 @@ public class LoginController {
     public ResponseEntity<?> efetuarLogin(@RequestBody Usuario dadosLogin) {
         // Procura no banco de dados um usuário com o mesmo login E senha passados
         Optional<Usuario> usuarioOp = loginService.autenticar(dadosLogin.getLogin(), dadosLogin.getSenha());
-
         if (usuarioOp.isPresent()) {
             // Se achou, retorna o objeto do usuário com o status 200 OK
             return ResponseEntity.ok(usuarioOp.get());

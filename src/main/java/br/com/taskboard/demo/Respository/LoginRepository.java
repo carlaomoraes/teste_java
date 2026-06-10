@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface LoginRepository extends JpaRepository<Usuario, Long> {
-    // O Spring Data gera essa consulta automaticamente baseada no nome do método!
+    // O Spring Data gera essa consulta automaticamente baseada no nome do metodo!
     Optional<Usuario> findByLoginAndSenha(String login, String senha);
 }
