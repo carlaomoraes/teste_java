@@ -4,225 +4,398 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Estórias</title>
-    <link rel="stylesheet" href="estilos.css">
+
+    <style>
+        /* ==========================================================================
+           CSS Moderno Unificado
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 950px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            margin-top: 14px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #333;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 4px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        /* Grupo de Botões */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-salvar { background-color: #2563eb; color: white; }
+        .btn-salvar:hover { background-color: #1d4ed8; }
+
+        .btn-listar { background-color: #10b981; color: white; }
+        .btn-listar:hover { background-color: #059669; }
+
+        .btn-buscar { background-color: #64748b; color: white; }
+        .btn-buscar:hover { background-color: #475569; }
+
+        .btn-voltar { background-color: #e2e8f0; color: #475569; }
+        .btn-voltar:hover { background-color: #cbd5e1; }
+
+        .btn:active { transform: scale(0.98); }
+
+        /* Tabelas Modernas */
+        table.table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        table.table th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        table.table td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        table.table tbody tr:nth-child(even) { background-color: #f8fafc; }
+        table.table tbody tr:hover { background-color: #f1f5f9 !important; }
+
+        table.table .btn-excluir {
+            padding: 6px 12px;
+            font-size: 12px;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        table.table .btn-excluir:hover { background-color: #dc2626; }
+
+        #resultado { margin-top: 20px; }
+    </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>CRUD Épico - Spring Boot</h1>
+    <h1>CRUD Estória - Spring Boot</h1>
 
-    <input type="number" id="idestoria" placeholder="ID da estória">
+    <label for="idestoria">ID da Estória:</label>
+    <input type="number" id="idestoria" placeholder="Deixe vazio para gerar um novo automaticamente">
 
-    <input type="text" id="descestoria" placeholder="Descrição da estória">
+    <label for="descestoria">Descrição da Estória:</label>
+    <input type="text" id="descestoria" placeholder="Digite a descrição da estória">
 
-    <select name="comboepico" id="comboepico">
-        <option value="">Selecione um Épico</option>
+    <label for="comboepico">Épico Relacionado:</label>
+    <select id="comboepico">
+        <option value="">-- Selecione um Épico --</option>
     </select>
-    <script>
-        async function carregarEpicos() {
-            const comboEpico = document.querySelector("#comboepico")
-            try {
-                const resposta = await fetch(`${API_EPICOS}/listar`);
-                const epicos = await resposta.json();
-                epicos.forEach(epico => {
-                    const opcao = document.createElement('option');
-                    opcao.value = epico.idEpico;
-                    opcao.textContent = epico.descepico;
-                    comboEpico.appendChild(opcao);
-                });
-            } catch (error) {
-                document.getElementById('resultado').innerText = error;
-            }
-        }
-        //Executa a função quando carrega a página
-        document.addEventListener('DOMContentLoaded', carregarEpicos)
-    </script>
-    <select name="comboCriador" id="comboCriador">
-        <option value="">Selecione um usuário criador</option>
+
+    <label for="comboCriador">Usuário Criador:</label>
+    <select id="comboCriador">
+        <option value="">-- Selecione o usuário criador --</option>
     </select>
-    <script>
-        async function carregarUsuario() {
-            const comboCriador = document.querySelector("#comboCriador");
-            try {
-                const resposta = await fetch(`${API_USUARIOS}/listar`);
-                const criador = await resposta.json();
-                criador.forEach(criador => {
-                    const opcao = document.createElement('option');
-                    opcao.value = criador.idusuario;
-                    opcao.textContent = criador.nome;
-                    comboCriador.appendChild(opcao);
-                });
-            } catch (error) {
-                document.getElementById('resultado').innerText = error;
-            }
-        }
-        //Executa a função quando carrega a página
-        document.addEventListener('DOMContentLoaded', carregarUsuario)
-    </script>
-    <select name="comboResponsavel" id="comboResponsavel">
-        <option value="">Selecione um usuário responsavel</option>
+
+    <label for="comboResponsavel">Usuário Responsável:</label>
+    <select id="comboResponsavel">
+        <option value="">-- Selecione o usuário responsável --</option>
     </select>
-    <script>
-        async function carregarUsuario() {
-            const comboResponsavel = document.querySelector("#comboResponsavel");
-            try {
-                const resposta = await fetch(`${API_USUARIOS}/listar`);
-                const criador = await resposta.json();
-                criador.forEach(criador => {
-                    const opcao = document.createElement('option');
-                    opcao.value = criador.idusuario;
-                    opcao.textContent = criador.nome;
-                    comboResponsavel.appendChild(opcao);
-                });
-            } catch (error) {
-                document.getElementById('resultado').innerText = error;
-            }
-        }
-        //Executa a função quando carrega a página
-        document.addEventListener('DOMContentLoaded', carregarUsuario)
-    </script>
 
-    <button class="salvar" onclick="salvarEstoria()">Salvar</button>
-
-    <button class="listar" onclick="listarEstoria()">Listar</button>
-
-    <button class="buscar" onclick="buscarEstoria()">Buscar por ID</button>
-
-    <button class="excluir" onclick="excluirEstoria()">Excluir</button>
-
-    <button class="voltar" onclick="history.back()">Voltar</button>
+    <div class="btn-group">
+        <button type="button" class="btn btn-salvar" onclick="salvarEstoria()">Salvar</button>
+        <button type="button" class="btn btn-listar" onclick="listarEstoria()">Listar Todas</button>
+        <button type="button" class="btn btn-buscar" onclick="buscarEstoria()">Buscar por ID</button>
+        <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+    </div>
 
     <div id="resultado"></div>
 </div>
 
 <script>
-
-    const API = 'http://localhost:8080/estoria';
-    const API_EPICOS = 'http://localhost:8080/epico';
+    const API = 'http://localhost:8080/estorias';
+    const API_EPICOS = 'http://localhost:8080/epicos';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
 
+    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
+    async function carregarEpicos() {
+        const comboEpico = document.getElementById("comboepico");
+        try {
+            const resposta = await fetch(`${API_EPICOS}/listar`);
+            const epicos = await resposta.json();
+            epicos.forEach(epico => {
+                const opcao = document.createElement('option');
+                opcao.value = epico.idepico || epico.idEpico; // Suporta variações de camelCase vindas do Java
+                opcao.textContent = epico.descepico;
+                comboEpico.appendChild(opcao);
+            });
+        } catch (error) {
+            console.error("Erro ao carregar épicos:", error);
+        }
+    }
+
+    async function carregarUsuarios() {
+        const comboCriador = document.getElementById("comboCriador");
+        const comboResponsavel = document.getElementById("comboResponsavel");
+        try {
+            const resposta = await fetch(`${API_USUARIOS}/listar`);
+            const usuarios = await resposta.json();
+            usuarios.forEach(u => {
+                const idVal = u.idUsuario || u.idusuario;
+
+                // Cria opção para o combo Criador
+                const opt1 = document.createElement('option');
+                opt1.value = idVal;
+                opt1.textContent = u.nome;
+                comboCriador.appendChild(opt1);
+
+                // Cria opção para o combo Responsável
+                const opt2 = document.createElement('option');
+                opt2.value = idVal;
+                opt2.textContent = u.nome;
+                comboResponsavel.appendChild(opt2);
+            });
+        } catch (error) {
+            console.error("Erro ao carregar usuários:", error);
+        }
+    }
+
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarEpicos();
+        carregarUsuarios();
+    });
+
+
+    // --- OPERAÇÕES DO CRUD ---
+    function gerarEstruturaTabela(listaEstorias) {
+        let tabela = `
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Descrição da Estória</th>
+                    <th>Épico</th>
+                    <th>Criador</th>
+                    <th>Responsável</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+        listaEstorias.forEach(e => {
+            // Trata objetos aninhados vindos do relacionamento ManyToOne do Spring Boot
+            const nomeEpico = e.epico ? e.epico.descepico : (e.descEpico || 'Não vinculado');
+            const nomeCriador = e.criador ? e.criador.nome : (e.nomeCriador || 'Não definido');
+            const nomeResp = e.responsavel ? e.responsavel.nome : (e.nomeResponsavel || 'Não definido');
+
+            tabela += `
+                <tr onclick="buscarPorLinha(${e.idestoria})" style="cursor:pointer;">
+                    <td>${e.idestoria}</td>
+                    <td>${e.descEstoria || ''}</td>
+                    <td>${nomeEpico}</td>
+                    <td>${nomeCriador}</td>
+                    <td>${nomeResp}</td>
+                    <td>
+                        <button type="button" class="btn-excluir" onclick="event.stopPropagation(); excluirEstoria(${e.idestoria})">Excluir</button>
+                    </td>
+                </tr>`;
+        });
+
+        tabela += `</tbody></table>`;
+        return tabela;
+    }
+
     async function salvarEstoria() {
-        const idEstoria = document.getElementById('iduEstoria').value;
-        const descEstoria = document.getElementById('descEstoria').value;
-        const idEpico = document.getElementById('idepico').value;
-        const idResponsavel = document.getElementById('responsavel').value;
-        const idCriador = document.getElementById('criador').value;
+        const idestoria = document.getElementById('idestoria').value;
+        const descEstoria = document.getElementById('descestoria').value;
+        const idEpico = document.getElementById('comboepico').value;
+        const idCriador = document.getElementById('comboCriador').value;
+        const idResponsavel = document.getElementById('comboResponsavel').value;
+
+        // Formata o Objeto respeitando estruturas de Chaves Estrangeiras relacionais do Jackson Java
         const Estoria = {
-            idEstoria: idEstoria || null,
-            descEstoria: descEstoria,
-            idEpico: idEpico,
-            idResponsavel: idResponsavel,
-            idCriador: idCriador
+            idestoria: idestoria ? parseInt(idestoria) : null,
+            descEstoria: descEstoria || null,
+            // Envia como ID puro e também estruturado como Sub-Objeto para evitar quebras no Controller Java
+            idEpico: idEpico ? parseInt(idEpico) : null,
+            idCriador: idCriador ? parseInt(idCriador) : null,
+            idResponsavel: idResponsavel ? parseInt(idResponsavel) : null,
+
+            epico: idEpico ? { idepico: parseInt(idEpico), idEpico: parseInt(idEpico) } : null,
+            criador: idCriador ? { idUsuario: parseInt(idCriador), idusuario: parseInt(idCriador) } : null,
+            responsavel: idResponsavel ? { idUsuario: parseInt(idResponsavel), idusuario: parseInt(idResponsavel) } : null
         };
 
         try {
             const response = await fetch(`${API}/salvar`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(Estoria)
             });
-            const data = await response.json();
-            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+
+            if (!response.ok) throw new Error(await response.text());
+
+            document.getElementById('resultado').innerHTML = `<p style="color:green; font-weight:bold;">Estória salva com sucesso!</p>`;
+            limpaFormulario();
+            listarEstoria();
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
     }
+
     async function buscarEstoria() {
-        const idEstoria = document.getElementById('idEstoria').value;
+        const idestoria = document.getElementById('idestoria').value;
+        if (!idestoria) {
+            mostrarMensagemNaTela("Por favor, informe um ID para realizar a consulta.");
+            return;
+        }
         try {
-            const response = await fetch(`${API}/${idEstoria}`);
+            const response = await fetch(`${API}/${idestoria}`);
+            if (!response.ok) throw new Error("Estória não localizada.");
             const data = await response.json();
-            let tabela = `
-            <table border="1" width="100%" cellspacing="0" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Descrição da estoria</th>
-                        <th>Épico</th>
-                        <th>Criador</th>
-                        <th>Responsável</th>
-                        <th>Excluir</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-            data.forEach(estoria => {
-                tabela += `<tr onclick="buscarPorLinha(${estoria.idEstoria})" style="cursor:pointer;">
-                                <th>${estoria.idEstoria}</th>
-                                <td>${estoria.descEstoria}</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td> <button class="excluir" onclick="excluirEstoria(${estoria.idEstoria})">Excluir</button></td>
-            </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
+            document.getElementById('resultado').innerHTML = gerarEstruturaTabela([data]);
         } catch (error) {
-            document.getElementById('resultado').innerHTML =
-                `<p style="color:red;">Erro ao buscar estória</p>`;
+            mostrarMensagemNaTela(error.message);
         }
     }
+
     async function listarEstoria() {
         try {
             const response = await fetch(`${API}/listar`);
             const data = await response.json();
-            let tabela = `
-            <table border="1" width="100%" cellspacing="0" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Descrição da estoria</th>
-                        <th>Épico</th>
-                        <th>Criador</th>
-                        <th>Responsável</th>
-                        <th>Excluir</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-            data.forEach(estoria => {
-                tabela += `<tr onclick="buscarPorLinha(${estoria.idEstoria})" style="cursor:pointer;">
-                                <th>${estoria.idEstoria}</th>
-                                <td>${estoria.descEstoria}</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td> <button class="excluir" onclick="excluirEstoria(${estoria.idEstoria})">Excluir</button></td>
-            </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
+            document.getElementById('resultado').innerHTML = gerarEstruturaTabela(data);
         } catch (error) {
-            document.getElementById('resultado').innerHTML =
-                `<p style="color:red;">Erro ao listar estórias</p>`;
+            document.getElementById('resultado').innerHTML = `<p style="color:red;">Erro ao conectar com o servidor de estórias.</p>`;
         }
     }
+
     async function buscarPorLinha(id) {
         try {
             const response = await fetch(`${API}/${id}`);
-            const Estoria = await response.json();
-            document.getElementById('idEstoria').value = Estoria.idEstoria;
-            document.getElementById('descEstoria').value = Estoria.descEstoria;
-            document.getElementById('idepico').value = Estoria.idEpico;
-            document.getElementById('idcriador').value = Estoria.idCriador;
-            document.getElementById('idrespnsavel').value = Estoria.idResponsavel;
+            const e = await response.json();
+
+            document.getElementById('idestoria').value = e.idestoria;
+            document.getElementById('descestoria').value = e.descEstoria || "";
+
+            // Define o valor selecionado nos combos baseado nas chaves retornadas
+            document.getElementById('comboepico').value = e.epico ? (e.epico.idepico || e.epico.idEpico) : (e.idEpico || "");
+            document.getElementById('comboCriador').value = e.criador ? (e.criador.idUsuario || e.criador.idusuario) : (e.idCriador || "");
+            document.getElementById('comboResponsavel').value = e.responsavel ? (e.responsavel.idUsuario || e.responsavel.idusuario) : (e.idResponsavel || "");
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela("Erro ao recuperar os dados da linha.");
         }
     }
-    async function excluirEstoria() {
-        const idEstoria = document.getElementById('idEstoria').value;
-        try {
-            const response = await fetch(`${API}/excluir/${idEstoria}`, {
-                method: 'DELETE'
-            });
-            const texto = await response.text();
-            document.getElementById('resultado').innerText = texto || 'Estória excluída com sucesso';
 
+    async function excluirEstoria(id) {
+        if (!confirm("Tem certeza que deseja deletar permanentemente esta estória?")) return;
+        try {
+            const response = await fetch(`${API}/excluir/${id}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error(await response.text());
+
+            document.getElementById('resultado').innerHTML = `<p style="color:green;">Estória removida com sucesso.</p>`;
+            limpaFormulario();
+            listarEstoria();
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela(error.message);
         }
+    }
+
+    function limpaFormulario() {
+        document.getElementById('idestoria').value = "";
+        document.getElementById('descestoria').value = "";
+        document.getElementById('comboepico').value = "";
+        document.getElementById('comboCriador').value = "";
+        document.getElementById('comboResponsavel').value = "";
+    }
+
+    function mostrarMensagemNaTela(mensagem) {
+        document.getElementById("resultado").innerHTML = `<p style="color:red; font-weight:500;">⚠️ ${mensagem}</p>`;
     }
 </script>
 

@@ -12,29 +12,28 @@
 <div class="container">
     <h1>CRUD Usuário - Spring Boot</h1>
 
-    <input type="number" id="idusuario" placeholder="ID do usuário">
+    <input type="number" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
 
     <input type="text" id="nome" placeholder="Nome">
 
     <input type="text" id="login" placeholder="Login">
 
-    <input type="email" id="email" placeholder="Email">
+    <input type="text" id="email" placeholder="Email">
 
     <input type="password" id="senha" placeholder="Senha">
 
-    <button class="salvar" onclick="salvarUsuario()">Salvar</button>
-
-    <button class="listar" onclick="listarUsuarios()">Listar</button>
-
-    <button class="buscar" onclick="buscarUsuario()">Buscar por ID</button>
-
-    <button class="voltar" onclick="history.back()">Voltar</button>
-
+    <div class="btn-group" data-toggle="buttons-radio">
+        <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
+        <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
+        <button type="button" class="btn" onclick="buscarUsuario()">Buscar por ID</button>
+        <button type="button" class="btn" onclick="history.back()">Voltar</button>
+    </div>
     <div id="resultado"></div>
 </div>
 
 <script>
     const API = 'http://localhost:8080/usuarios';
+
     async function salvarUsuario() {
         const idusuario = document.getElementById('idusuario').value;
         const nome = document.getElementById('nome').value;
@@ -72,19 +71,14 @@
     }
 
     async function buscarPorLinha(id) {
-
         try {
-
             const response = await fetch(`${API}/${id}`);
-
             const usuario = await response.json();
-
             document.getElementById('idusuario').value = usuario.idusuario;
             document.getElementById('nome').value = usuario.nome;
             document.getElementById('login').value = usuario.login;
             document.getElementById('email').value = usuario.email;
             document.getElementById('senha').value = usuario.senha;
-
         } catch (error) {
             document.getElementById('resultado').innerText = error;
         }
@@ -95,15 +89,15 @@
             const response = await fetch(`${API}/listar`);
             const data = await response.json();
             let tabela = `
-            <table border="1" width="100%" cellspacing="0" cellpadding="10">
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Login</th>
-                        <th>Email</th>
-                        <th>Senha</th>
-                        <th>Excluir</th>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Nome</th>
+                        <th class="table-header">Login</th>
+                        <th class="table-header">Email</th>
+                        <th class="table-header">Senha</th>
+                      <th class="table-header">Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -117,8 +111,8 @@
                                 <td>${usuario.nome}</td>
                                 <td>${usuario.login}</td>
                                 <td>${usuario.email}</td>
-                                <td>${usuario.senha}</td>
-                                <td> <button class="excluir" onclick="excluirUsuario(${usuario.idusuario})">Excluir</button></td>
+                                <td>${usuario.senha ? '•'.repeat(usuario.senha.length) : ''}</td>
+                                <td> <button type="button" class="btn" onclick="excluirUsuario(${usuario.idusuario})">Excluir</button></td>
 
             </tr>`;});
             tabela += `</tbody></table>`;
@@ -126,45 +120,62 @@
             document.getElementById('resultado').innerHTML = tabela;
 
         } catch (error) {
-
             document.getElementById('resultado').innerHTML =
                 `<p style="color:red;">Erro ao listar usuários</p>`;
         }
     }
 
 
-    async function buscarUsuario() {
-
-        const idusuario = document.getElementById('idusuario').value;
-
-        try {
-
-            const response = await fetch(`${API}/${idusuario}`);
-
-            const data = await response.json();
-
-            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
-
-        } catch (error) {
-            document.getElementById('resultado').innerText = error;
-        }
-    }
-
     async function excluirUsuario(idusuario) {
         try {
-
             const response = await fetch(`${API}/excluir/${idusuario}`, {
                 method: 'DELETE'
             });
-
             const texto = await response.text();
-
-            document.getElementById('resultado').innerText = texto || 'Usuário excluído com sucesso';
+            document.getElementById('resultado').innerHTML = texto || 'Usuário excluído com sucesso';
              } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            document.getElementById('resultado').innerHTML = error;
         }
     }
 
+    async function buscarUsuario() {
+        const idUsuario = document.getElementById('idusuario').value;
+        const response = await fetch(`${API}/${idUsuario}`);
+        const data = await response.json();
+        if(!response.ok) {
+            const messageError = await response.text();
+            mostrarMensagemNaTela(messageError);
+            return;
+        }
+        else  {
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Login</th>
+                        <th>Email</th>
+                        <th>Senha</th>
+                        <th>Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+            data.forEach(usuario => {
+                tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
+                                style="cursor:pointer;">
+                                <td>${usuario.idusuario}</td>
+                                <td>${usuario.nome}</td>
+                                <td>${usuario.login}</td>
+                                <td>${usuario.email}</td>
+                                <td>${usuario.senha ? '•'.repeat(usuario.senha.length) : ''}</td>
+                                <td> <button type="button" class="btn" onclick="event.stopPropagation(); excluirUsuario(${usuario.idusuario})">Excluir</button></td>
+
+            </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado').innerHTML = tabela;
+        }
+    }
     async function limpaFormulario() {
         document.getElementById('idusuario').value = "";
         document.getElementById('nome').value = "";
@@ -172,8 +183,16 @@
         document.getElementById('email').value = "";
         document.getElementById('senha').value = "";
     }
-
+    // Função de exemplo para injetar a mensagem no HTML
+    function mostrarMensagemNaTela(mensagem) {
+        const container = document.getElementById("resultado");
+        if (container) {
+            container.textContent = mensagem;
+            container.style.color = "red"; // Deixa o texto vermelho
+        } else {
+            alert(mensagem); // Feedback visual simples caso não tenha o container
+        }
+    }
 </script>
-
 </body>
 </html>

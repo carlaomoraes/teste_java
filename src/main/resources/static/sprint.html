@@ -3,24 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Usuários</title>
-
+    <title>CRUD Sprints</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>CRUD Spriny - Spring Boot</h1>
+    <h1>CRUD Sprint - Spring Boot</h1>
 
+    <input type="number" id="idsprint" placeholder="ID da sprint (Deixe vazio para novo)">
+    <input type="text" id="descsprint" placeholder="Descrição da sprint">
 
-    <button class="voltar" onclick="history.back()">Voltar</button>
+    <label for="dtiniciosprint">Data de Início:</label>
+    <input type="date" id="dtiniciosprint">
+
+    <label for="dtfinalsprint">Data de Término:</label>
+    <input type="date" id="dtfinalsprint">
+
+    <div class="checkbox-container">
+        <div class="checkbox-group">
+            <input type="checkbox" id="visivel" name="visivel">
+            <label for="visivel">Sprint visível no quadro</label>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="ativa" name="ativa">
+            <label for="ativa">Sprint Ativa</label>
+        </div>
+    </div>
+    <br>
+
+    <div class="btn-group">
+        <button type="button" class="btn" onclick="salvarSprint()">Salvar</button>
+        <button type="button" class="btn" onclick="listarSprints()">Listar Todas</button>
+        <button type="button" class="btn" onclick="buscarSprint()">Buscar por ID</button>
+        <button type="button" class="btn" onclick="history.back()">Voltar</button>
+    </div>
 
     <div id="resultado"></div>
 </div>
 
 <script>
+    const API = 'http://localhost:8080/sprints';
 
+    async function salvarSprint() {
+        const idsprint = document.getElementById('idsprint').value;
+        const { value: descsprint } = document.getElementById('descsprint');
+        const { value: dataInicio } = document.getElementById('dtiniciosprint');
+        const { value: dataFim } = document.getElementById('dtfinalsprint');
+
+        // CAPTURANDO O CHECKBOX: Retorna true se estiver marcado, ou false se estiver desmarcado
+        const visivel = document.getElementById('visivel').checked;
+
+        const sprint = {
+            idsprint: idsprint ? parseInt(idsprint) : null,
+            descsprint: descsprint || null,
+            dataInicio: dataInicio || null,
+            dataFim: dataFim || null,
+            visivel: visivel // Envia true/false para o atributo booleano do Spring
+        };
+
+        try {
+            const response = await fetch(`${API}/salvar`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sprint)
+            });
+
+            if (!response.ok) throw new Error(await response.text());
+
+            const data = await response.json();
+            mostrarMensagemNaTela('Sprint gravada com sucesso');
+
+            limpaFormulario();
+            listarSprints();
+
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+        }
+    }
+
+    async function buscarPorLinha(id) {
+        try {
+            const response = await fetch(`${API}/${id}`);
+            if (!response.ok) throw new Error("Sprint não encontrada");
+
+            const sprint = await response.json();
+
+            document.getElementById('idsprint').value = sprint.idsprint;
+            document.getElementById('descsprint').value = sprint.descsprint;
+            document.getElementById('dtiniciosprint').value = sprint.dataInicio;
+            document.getElementById('dtfinalsprint').value = sprint.dataFim;
+
+            // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+            document.getElementById('visivel').checked = sprint.visivel || false;
+
+        } catch (error) {
+            mostrarMensagemNaTela(error.message);
+        }
+    }
+
+    async function listarSprints() {
+        try {
+            const response = await fetch(`${API}/listar`);
+            const data = await response.json();
+
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Data Início</th>
+                        <th>Data Fim</th>
+                        <th>Visivel no quadro?</th>
+                        <th>Ativa?</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            data.forEach(sprint => {
+                tabela += `
+                    <tr onclick="buscarPorLinha(${sprint.idsprint})" style="cursor:pointer;">
+                        <td>${sprint.idsprint}</td>
+                        <td>${sprint.descsprint || ''}</td>
+                        <td>${formatarDataBR(sprint.dataInicio)}</td>
+                        <td>${formatarDataBR(sprint.dataFim)}</td>
+                        <td>${sprint.visivel ? '✅ Sim' : '❌ Não'}</td>
+                        <td>${sprint.ativa ? '✅ Sim' : '❌ Não'}</td>
+                        <td>
+                            <button type="button" class="btn" onclick="event.stopPropagation(); excluirSprint(${sprint.idsprint})">Excluir</button>
+                        </td>
+                    </tr>`;
+            });
+
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado').innerHTML = tabela;
+
+        } catch (error) {
+            document.getElementById('resultado').innerHTML = `<p style="color:red;">Erro ao listar Sprints</p>`;
+        }
+    }
+
+    async function excluirSprint(idsprint) {
+        if (!confirm("Tem certeza que deseja excluir esta Sprint?")) return;
+        try {
+            const response = await fetch(`${API}/excluir/${idsprint}`, { method: 'DELETE' });
+            const texto = await response.text();
+            mostrarMensagemNaTela(texto || 'Sprint excluída com sucesso');
+            limpaFormulario();
+            listarSprints();
+        } catch (error) {
+            mostrarMensagemNaTela(error.message);
+        }
+    }
+
+    async function buscarSprint() {
+        const idsprint = document.getElementById('idsprint').value;
+        if (!idsprint) {
+            mostrarMensagemNaTela("Por favor, digite um ID para buscar.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API}/${idsprint}`);
+            if (!response.ok) throw new Error(await response.text());
+
+            const sprint = await response.json();
+
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Data Início</th>
+                        <th>Data Fim</th>
+                        <th>Visivel no quadro?</th>
+                        <th>Ativa?</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            data.forEach(sprint => {
+                tabela += `
+                    <tr onclick="buscarPorLinha(${sprint.idsprint})" style="cursor:pointer;">
+                        <td>${sprint.idsprint}</td>
+                        <td>${sprint.descsprint || ''}</td>
+                        <td>${formatarDataBR(sprint.dataInicio)}</td>
+                        <td>${formatarDataBR(sprint.dataFim)}</td>
+                        <td>${sprint.visivel ? '✅ Sim' : '❌ Não'}</td>
+                        <td>${sprint.ativa ? '✅ Sim' : '❌ Não'}</td>
+                        <td>
+                            <button type="button" class="btn" onclick="event.stopPropagation(); excluirSprint(${sprint.idsprint})">Excluir</button>
+                        </td>
+                    </tr>`;
+            });
+
+            document.getElementById('resultado').innerHTML = tabela;
+        } catch (e) {
+            mostrarMensagemNaTela("Erro na busca: " + e.message);
+        }
+    }
+
+    function limpaFormulario() {
+        document.getElementById('idsprint').value = "";
+        document.getElementById('descsprint').value = "";
+        document.getElementById('dtiniciosprint').value = "";
+        document.getElementById('dtfinalsprint').value = "";
+        document.getElementById('visivel').checked = false; // Reseta o checkbox desmarcado
+    }
+
+    function mostrarMensagemNaTela(mensagem) {
+        const container = document.getElementById("resultado");
+        if (container) {
+            container.innerHTML = `<p style="color:red;">${mensagem}</p>`;
+        } else {
+            alert(mensagem);
+        }
+    }
+    function formatarDataBR(dataString) {
+        if (!dataString) return '';
+
+        // O input do HTML retorna "AAAA-MM-DD"
+        const partes = dataString.split('-');
+        if (partes.length !== 3) return dataString;
+
+        // Remonta no formato "DD/MM/AAAA"
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
 </script>
-
 </body>
 </html>

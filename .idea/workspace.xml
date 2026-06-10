@@ -4,8 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="css">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="css - arquivo sprint.html começando">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/SprintController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Sprint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/SprintRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/SprintService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/botao-salvar.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EpicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EpicoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EstoriaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EstoriaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Estoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Estoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EpicoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EpicoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EstoriaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EstoriaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/estilos.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/estilos.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/estoria.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/estoria.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/br/com/taskboard/demo/DAO/UsuarioDAOTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,11 +40,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit5 Test Class" />
         <option value="HTML File" />
-        <option value="Class" />
         <option value="Exception" />
         <option value="Interface" />
+        <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -79,6 +99,7 @@
     &quot;HTTP Request.All in generated-requests.executor&quot;: &quot;Run&quot;,
     &quot;HTTP Request.generated-requests | #2.executor&quot;: &quot;Run&quot;,
     &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UsuarioDAOTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UsuarioDAOTest.inserir.executor&quot;: &quot;Debug&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
@@ -98,7 +119,8 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/test/java/br/com/taskboard/demo/Controller&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/templates&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -107,7 +129,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;SQL Dialects&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -119,6 +141,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\templates" />
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -128,32 +151,21 @@
       <recent name="" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="br.com.taskboard.demo.Controller" />
       <recent name="br.com.taskboard.demo.Modelo" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="br.com.taskboard.demo.Controller" />
       <recent name="br.com.taskboard.demo.DAO" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="br.com.taskboard.demo.Service" />
       <recent name="br.com.taskboard.demo.Controller" />
+      <recent name="br.com.taskboard.demo.Service" />
       <recent name="br.com.taskboard.demo.Respository" />
       <recent name="br.com.taskboard.demo.DTO" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.DemoApplication">
-    <configuration name="Conexao" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="br.com.taskboard.demo.conexao.Conexao" />
-      <module name="demo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="br.com.taskboard.demo.conexao.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="All in generated-requests" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http">
       <method v="2" />
     </configuration>
@@ -162,6 +174,22 @@
     </configuration>
     <configuration name="generated-requests | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#3" index="3" runType="Run single request">
       <method v="2" />
+    </configuration>
+    <configuration name="UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.com.taskboard.demo.Controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="br.com.taskboard.demo.Controller" />
+      <option name="MAIN_CLASS_NAME" value="br.com.taskboard.demo.Controller.UsuarioControllerTest" />
+      <option name="METHOD_NAME" value="deveRetornarSucessoAoBuscarUsuario" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="UsuarioDAOTest.inserir" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="demo" />
@@ -197,11 +225,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario" />
         <item itemvalue="HTTP Request.generated-requests | #3" />
         <item itemvalue="HTTP Request.All in generated-requests" />
         <item itemvalue="HTTP Request.generated-requests | #2" />
         <item itemvalue="JUnit.UsuarioDAOTest.inserir" />
-        <item itemvalue="Application.Conexao" />
       </list>
     </recent_temporary>
   </component>
@@ -294,7 +322,18 @@
       <workItem from="1780496918907" duration="2294000" />
       <workItem from="1780507994408" duration="1039000" />
       <workItem from="1780685282119" duration="2255000" />
-      <workItem from="1780688295445" duration="310000" />
+      <workItem from="1780688295445" duration="374000" />
+      <workItem from="1780709595105" duration="2446000" />
+      <workItem from="1780756879728" duration="21285000" />
+      <workItem from="1781005814223" duration="1388000" />
+      <workItem from="1781007572929" duration="1741000" />
+      <workItem from="1781009802498" duration="139000" />
+      <workItem from="1781010469604" duration="535000" />
+      <workItem from="1781013614219" duration="172000" />
+      <workItem from="1781015744412" duration="4086000" />
+      <workItem from="1781027737642" duration="2303000" />
+      <workItem from="1781031140221" duration="1650000" />
+      <workItem from="1781033704225" duration="14526000" />
     </task>
     <task id="LOCAL-00001" summary="Commit #2">
       <option name="closed" value="true" />
@@ -408,7 +447,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780688326741</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="css - arquivo sprint.html começando">
+      <option name="closed" value="true" />
+      <created>1780688645603</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1780688645603</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -454,30 +501,71 @@
     <MESSAGE value="Controller/Service Epico começando" />
     <MESSAGE value="Controller/Service Usuario\epico funcionando" />
     <MESSAGE value="css" />
-    <option name="LAST_COMMIT_MESSAGE" value="css" />
+    <MESSAGE value="css - arquivo sprint.html começando" />
+    <option name="LAST_COMMIT_MESSAGE" value="css - arquivo sprint.html começando" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/epico.html</url>
-          <line>56</line>
+          <line>153</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>141</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/estoria.html</url>
-          <line>24</line>
+          <line>182</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/epico.html</url>
-          <line>155</line>
+          <line>168</line>
           <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/estoria.html</url>
+          <line>349</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/estoria.html</url>
+          <line>359</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/estoria.html</url>
+          <line>296</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/epico.html</url>
+          <line>154</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
+          <line>142</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/br/com/taskboard/demo/DemoApplicationTests.java</url>
+          <line>8</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/SprintController.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EpicoService.java</url>
+          <line>17</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/SprintController.java</url>
+          <line>34</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

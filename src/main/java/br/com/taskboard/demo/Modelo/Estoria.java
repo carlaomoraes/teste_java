@@ -1,5 +1,6 @@
 package br.com.taskboard.demo.Modelo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,12 +14,13 @@ public class Estoria {
     private Long idestoria;
     private String descestoria;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idepico")
-    private Epico epico;
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idcriador")
     private Usuario idcriador;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idresponsavel")
     private Usuario idresponsavel;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idepico")
+    private Epico idepico;
+
 }

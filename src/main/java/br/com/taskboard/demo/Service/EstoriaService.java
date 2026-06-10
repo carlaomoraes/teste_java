@@ -21,8 +21,8 @@ public class EstoriaService {
 
     public Estoria salvar(Estoria estoria) {
         Epico epico = new Epico();
-        epico = epicoService.buscarPorId(estoria.getEpico().getIdepico());
-        estoria.setEpico(epico);
+        epico = epicoService.buscarPorId(estoria.getIdepico().getIdepico());
+        estoria.setIdepico(epico);
         return repository.save(estoria);
     }
 
