@@ -12,9 +12,15 @@ public class Tarefa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idtarefa;
     private String desctarefa;
-    private Long idestoria;
-    private Long idusuario_criador;
-    private Long idusuario_responsavel;
+    @ManyToOne
+    @JoinColumn(name = "idestoria")
+    private Estoria estoria;
+    @ManyToOne
+    @JoinColumn(name="idusuario_criador")
+    private Usuario criador;
+    @ManyToOne
+    @JoinColumn(name="idusuario_responsavel")
+    private Usuario responsavel;
     @Column(name = "horas_estimadas")
     private Long horas_estimadas;
     @Column(name = "horas_gastas")

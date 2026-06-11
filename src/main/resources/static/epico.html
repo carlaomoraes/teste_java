@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Épicos</title>
+    <title>Épicos - TaskController 1.0</title>
     <link rel="stylesheet" href="estilos.css">
 
 </head>
 <body>
 
 <div class="container">
-    <h1>CRUD Épico - Spring Boot</h1>
+    <h1>Cadastro de épicos</h1>
 
     <input type="number" id="idepico" placeholder="ID do épico">
 
     <input type="text" id="descepico" placeholder="Descrição do épico">
 
     <input type="text" id="obsepico" placeholder="Observação">
+
+    <label class="checkbox-group">
+        <input type="checkbox" id="bloqueado">🚫 Bloquear ?
+    </label>
 
     <div class="btn-group" data-toggle="buttons-radio">
         <button type="button" class="btn"  onclick="salvarEpico()">Salvar</button>
@@ -35,15 +39,16 @@
         const idepico = document.getElementById('idepico').value;
         const descepico = document.getElementById('descepico').value;
         const obsepico = document.getElementById('obsepico').value;
+        const bloqueado = document.getElementById('bloqueado').checked;
 
         const epico = {
             idepico: idepico || null,
-            descepico: descepico,
-            obsepico: obsepico
+            descepico: descepico || null,
+            obsepico: obsepico || null,
+            bloqueado: bloqueado
         };
 
         try {
-
             const response = await fetch(`${API}/salvar`, {
                 method: 'POST',
                 headers: {
@@ -55,8 +60,8 @@
             const data = await response.json();
 
             document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
-            limpaFormulario();
-            listarEpico();
+//            limpaFormulario();
+//            listarEpico();
 
         } catch (error) {
             document.getElementById('resultado').innerText = error;
@@ -77,6 +82,7 @@
                         <th class="table-header">ID</th>
                         <th class="table-header">Descrição</th>
                         <th class="table-header">Observação</th>
+                        <th class="table-header">Bloqueado</th>
                         <th class="table-header">Excluir</th>
                     </tr>
                 </thead>
@@ -89,6 +95,7 @@
                                 style="cursor:pointer;">
                                 <td>${epico.descepico}</td>
                                 <td>${epico.obsepico}</td>
+                                <td>${epico.bloqueado} ? '✅ Sim' : '❌ Não'}</td>
                                 <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
@@ -112,6 +119,7 @@
                         <th class="table-header">ID</th>
                         <th class="table-header">Descrição</th>
                         <th class="table-header">Observação</th>
+                        <th class="table-header">Bloqueado</th>
                         <th class="table-header">Excluir</th>
                     </tr>
                 </thead>
@@ -123,6 +131,7 @@
                                 <td>${epico.idepico}</td>
                                 <td>${epico.descepico}</td>
                                 <td>${epico.obsepico}</td>
+                                <td>${epico.bloqueado ? '✅ Sim' : '❌ Não'}</td>
                                 <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
@@ -140,6 +149,9 @@
             document.getElementById('idepico').value = epico.idepico;
             document.getElementById('descepico').value = epico.descepico;
             document.getElementById('obsepico').value = epico.obsepico;
+            // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+            document.getElementById('bloqueado').checked = epico.bloqueado || false;
+
         } catch (error) {
             document.getElementById('resultado').innerText = error;
         }
@@ -154,7 +166,7 @@
             const texto = await response.text();
 
             document.getElementById('resultado').innerText = texto || 'Épico excluído com sucesso';
-            limpaFormulario();
+          //  limpaFormulario();
         } catch (error) {
             document.getElementById('resultado').innerText = error;
         }
@@ -163,7 +175,7 @@
         document.getElementById('idepico').value = "";
         document.getElementById('descepico').value = "";
         document.getElementById('obsepico').value = "";
-
+        document.getElementById('bloqueado').value = false;
     }
 
 </script>

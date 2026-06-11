@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TaskController 1.0</title>
+    <style>
+        /* Reset básico e tipografia */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        /* ==========================================================================
+           ESTRUTURA DAS ABAS (CSS)
+           ========================================================================== */
+
+        /* Container dos botões das abas */
+        .abas-container {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo de cada botão de aba */
+        .aba-botao {
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #64748b;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent; /* Reserva o espaço para a borda ativa */
+            margin-bottom: -2px; /* Joga a borda por cima da linha do container */
+            transition: all 0.2s ease-in-out;
+        }
+
+        .aba-botao:hover {
+            color: #1e293b;
+            background-color: #f8fafc;
+        }
+
+        /* Estado da Aba Ativa (Selecionada) */
+        .aba-botao.ativa {
+            color: #2563eb; /* Azul padrão do sistema */
+            border-bottom: 2px solid #2563eb;
+        }
+
+        /* Container do conteúdo */
+        .conteudo-aba {
+            display: none; /* 🌟 ESCONDE TODAS AS ABAS POR PADRÃO */
+            padding: 10px 5px;
+            animation: surgir 0.3s ease-in-out; /* Efeito visual suave */
+        }
+
+        /* Estado do Conteúdo Ativo */
+        .conteudo-aba.ativo {
+            display: block; /* 🌟 MOSTRA APENAS A ABA ATIVA */
+        }
+
+        /* Pequena animação para o conteúdo aparecer suavemente */
+        @keyframes surgir {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           Botões (Grupo)
+           ========================================================================== */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Ajusta em telas menores */
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        /* Botão Principal (Salvar) */
+        .btn-group .btn:nth-child(1) {
+            background-color: #2563eb;
+            color: white;
+        }
+        .btn-group .btn:nth-child(1):hover { background-color: #1d4ed8; }
+
+        /* Botão Secundário (Listar) */
+        .btn-group .btn:nth-child(2) {
+            background-color: #10b981;
+            color: white;
+        }
+        .btn-group .btn:nth-child(2):hover { background-color: #059669; }
+
+        /* Botão Buscar */
+        .btn-group .btn:nth-child(3) {
+            background-color: #64748b;
+            color: white;
+        }
+        .btn-group .btn:nth-child(3):hover { background-color: #475569; }
+
+        /* Botão Voltar */
+        .btn-group .btn:nth-child(4) {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+        .btn-group .btn:nth-child(4):hover { background-color: #cbd5e1; }
+
+        .btn:active { transform: scale(0.98); }
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Gerenciador de Projetos</h1>
+
+    <div class="abas-container">
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'dados-gerais')">Dados Gerais</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">Configuração de cores</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'configuracoes')">Configurações</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'tarefas')">Tipos de tarefas</button>
+
+    </div>
+
+    <div id="dados-gerais" class="conteudo-aba ativo">
+        <h3>Visão Geral do Projeto</h3>
+        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
+            Aqui ficam os dados principais do seu projeto TaskController. Você pode inserir formulários, gráficos ou tabelas de resumo dentro desta área normalmente.
+        </p>
+    </div>
+
+    <div id="equipe" class="conteudo-aba">
+        <h3>Membros do Time</h3>
+        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
+            • João Silva (Desenvolvedor Backend)<br>
+            • Maria Souza (Desenvolvedora Frontend)<br>
+            • Carlos Lima (Product Owner)
+        </p>
+    </div>
+
+    <div id="configuracoes" class="conteudo-aba">
+        <h3>Configurações do Sistema</h3>
+        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
+            Ajuste os parâmetros de integração com a API, chaves de segurança e controle de permissões de usuários para este módulo do sistema.
+        </p>
+    </div>
+    <div class="btn-group" data-toggle="buttons-radio">
+        <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
+        <button type="button" class="btn" onclick="history.back()">Voltar</button>
+    </div>
+
+</div>
+
+<script>
+    function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
+    }
+</script>
+
+</body>
+</html>
