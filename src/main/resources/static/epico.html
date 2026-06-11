@@ -39,7 +39,7 @@
         const idepico = document.getElementById('idepico').value;
         const descepico = document.getElementById('descepico').value;
         const obsepico = document.getElementById('obsepico').value;
-        const bloqueado = document.getElementById('bloqueado').checked;
+        const bloqueado = document.getElementById('bloqueado').value;
 
         const epico = {
             idepico: idepico || null,
@@ -56,6 +56,7 @@
                 },
                 body: JSON.stringify(epico)
             });
+            console.log("Objeto que será enviado para o Java:", JSON.stringify(epico));
 
             const data = await response.json();
 

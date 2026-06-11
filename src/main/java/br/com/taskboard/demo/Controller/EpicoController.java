@@ -54,7 +54,6 @@ public class EpicoController {
     @PutMapping("/atualizar/{idepico}")
     public Epico atualizar(@PathVariable Long idepico,
                              @RequestBody Epico epico) {
-
         epico.setIdepico(idepico);
         return service.atualizar(epico);
     }
