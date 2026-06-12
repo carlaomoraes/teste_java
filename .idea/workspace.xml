@@ -334,7 +334,8 @@
       <workItem from="1781273027876" duration="957000" />
       <workItem from="1781274211202" duration="3438000" />
       <workItem from="1781284754282" duration="5595000" />
-      <workItem from="1781291271343" duration="330000" />
+      <workItem from="1781291271343" duration="379000" />
+      <workItem from="1781293312121" duration="525000" />
     </task>
     <task id="LOCAL-00001" summary="Commit #2">
       <option name="closed" value="true" />
@@ -560,7 +561,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781290345780</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Campo de senha encriptado">
+      <option name="closed" value="true" />
+      <created>1781291636284</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1781291636284</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -610,6 +619,7 @@
     <MESSAGE value="login implementado" />
     <MESSAGE value="Saida implementada" />
     <MESSAGE value="Campo de bloqueio implementado" />
+    <MESSAGE value="Campo de trocar senha" />
     <MESSAGE value="Campo de senha encriptado" />
     <option name="LAST_COMMIT_MESSAGE" value="Campo de senha encriptado" />
   </component>
@@ -648,7 +658,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>143</line>
+          <line>148</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">

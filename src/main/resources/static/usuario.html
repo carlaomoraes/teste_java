@@ -41,7 +41,12 @@
         const login = document.getElementById('login').value;
         const senha = document.getElementById('senha').value;
         const email = document.getElementById('email').value;
-        const trocar = document.getElementById("alterasenha").checked;
+        if(document.getElementById('alterarSenha').checked) {
+            alterarSenha = 0;
+        }
+        else {
+            alterarSenha = 1;
+        }
 
         const usuario = {
             idusuario: idusuario || null,
@@ -49,7 +54,7 @@
             login: login || null,
             senha: senha || null,
             email: email || null,
-            trocar: trocar || false
+            alterarSenha: alterarSenha
         };
         try {
 
