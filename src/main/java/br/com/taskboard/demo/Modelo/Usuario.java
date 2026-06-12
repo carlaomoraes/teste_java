@@ -29,6 +29,8 @@ public class Usuario {
     @JoinColumn(name = "idpapel")
     private Papel papel;
 
+    private boolean alteraSenha;
+
     // Getters e Setters
 
     public Usuario() {

@@ -21,6 +21,8 @@
 
     <input type="password" id="senha" placeholder="Senha">
 
+    <input type="checkbox" value="0" id="trocar"> <label for="trocar">Trocar senha</label>
+
     <div class="btn-group" data-toggle="buttons-radio">
         <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
         <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
@@ -39,7 +41,7 @@
         const login = document.getElementById('login').value;
         const senha = document.getElementById('senha').value;
         const email = document.getElementById('email').value;
-        const trocar = document.getElementById("alterasenha").checked ? 1 : 0;
+        const trocar = document.getElementById("alterasenha").checked;
 
         const usuario = {
             idusuario: idusuario || null,
@@ -47,6 +49,7 @@
             login: login || null,
             senha: senha || null,
             email: email || null,
+            trocar: trocar || false
         };
         try {
 

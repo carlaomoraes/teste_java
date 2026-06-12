@@ -64,13 +64,4 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
-    //ALTERA A SENHA
-    @PostMapping("/alterarsenha")
-    public Usuario atualizarSenha(@PathVariable Long idusuario,
-                             @RequestBody Usuario usuario) {
-        usuario.setIdusuario(idusuario);
-        usuario.setSenha(encoder.encode(usuario.getSenha()));
-        return service.atualizar(usuario);
-    }
-
 }
