@@ -151,7 +151,6 @@
         if(!response.ok) {
             const messageError = await response.text();
             mostrarMensagemNaTela(messageError);
-            return;
         }
         else  {
             let tabela = `
