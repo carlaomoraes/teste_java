@@ -51,21 +51,24 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dadosLogin)
             });
-
             if (response.ok) {
                 const usuarioLogado = await response.json();
+                if (usuarioLogado.alterasenha == 1) {
+                    // abre formulario de alterar senha
+                }
+                else {
 
-                msgContainer.style.color = "green";
-                msgContainer.innerText = `Sucesso! Bem-vindo, ${usuarioLogado.nome}.`;
+                    msgContainer.style.color = "green";
+                    msgContainer.innerText = `Sucesso! Bem-vindo, ${usuarioLogado.nome}.`;
 
-                // Guarda temporariamente o nome do usuário para usar no sistema se quiser
-                sessionStorage.setItem("usuarioNome", usuarioLogado.nome);
+                    // Guarda temporariamente o nome do usuário para usar no sistema se quiser
+                    sessionStorage.setItem("usuarioNome", usuarioLogado.nome);
 
-                // Redireciona para a tela do Menu Principal (index.html) após 1.5 segundos
-                setTimeout(() => {
-                    window.location.href = "home.html";
-                }, 1500);
-
+                    // Redireciona para a tela do Menu Principal (index.html) após 1.5 segundos
+                    setTimeout(() => {
+                        window.location.href = "home.html";
+                    }, 1500);
+                }
             } else {
                 const textoErro = await response.text();
                 msgContainer.style.color = "red";

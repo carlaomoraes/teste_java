@@ -299,8 +299,6 @@ select:focus {
 .btn-group .btn:nth-child(4):hover { background-color: #cbd5e1; }
 
 .btn:active { transform: scale(0.98); }
-
-
 /* ==========================================================================
    Tabela de Resultados Dinâmica
    ========================================================================== */

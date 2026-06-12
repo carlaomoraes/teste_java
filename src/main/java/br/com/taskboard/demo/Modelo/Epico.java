@@ -10,8 +10,12 @@ import lombok.Setter;
 public class Epico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idepico")
     private Long idepico;
+    @Column(name = "descepico")
     private String descepico;
+    @Column(name = "obsepico")
     private String obsepico;
-    private boolean bloqueado;
+    @Column(name = "bloqueado")
+    private int bloqueado;
 }

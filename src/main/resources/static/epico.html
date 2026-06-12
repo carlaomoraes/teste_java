@@ -19,7 +19,7 @@
     <input type="text" id="obsepico" placeholder="Observação">
 
     <label class="checkbox-group">
-        <input type="checkbox" id="bloqueado">🚫 Bloquear ?
+        <input type="checkbox" id="bloqueado" value="1">🚫 Bloquear ?
     </label>
 
     <div class="btn-group" data-toggle="buttons-radio">
@@ -32,22 +32,24 @@
 </div>
 
 <script>
-
     const API = 'http://localhost:8080/epicos';
-
     async function salvarEpico() {
         const idepico = document.getElementById('idepico').value;
         const descepico = document.getElementById('descepico').value;
         const obsepico = document.getElementById('obsepico').value;
-        const bloqueado = document.getElementById('bloqueado').value;
+        if(document.getElementById('bloqueado').checked) {
+            campoBlooqueado = 0;
+        }
+        else {
+            campoBlooqueado = 1;
+        }
 
         const epico = {
             idepico: idepico || null,
             descepico: descepico || null,
             obsepico: obsepico || null,
-            bloqueado: bloqueado
+            bloqueado: campoBlooqueado
         };
-
         try {
             const response = await fetch(`${API}/salvar`, {
                 method: 'POST',
@@ -56,16 +58,14 @@
                 },
                 body: JSON.stringify(epico)
             });
-            console.log("Objeto que será enviado para o Java:", JSON.stringify(epico));
-
             const data = await response.json();
-
-            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
-//            limpaFormulario();
-//            listarEpico();
+            mostrarMensagemNaTela(data);
+            //mostrarMensagemNaTela('Épico gravado com sucesso');
+            // limpaFormulario();
+            // listarEpico();
 
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
     }
     async function buscarEpico() {
@@ -104,8 +104,7 @@
             document.getElementById('resultado').innerHTML = tabela;
 
         } catch (error) {
-            document.getElementById('resultado').innerHTML =
-                `<p style="color:red;">Erro ao buscar épico</p>`;
+            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
 
     }
@@ -138,8 +137,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            document.getElementById('resultado').innerHTML =
-                `<p style="color:red;">Erro ao listar épicos</p>`;
+                mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
     }
 
@@ -151,7 +149,7 @@
             document.getElementById('descepico').value = epico.descepico;
             document.getElementById('obsepico').value = epico.obsepico;
             // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-            document.getElementById('bloqueado').checked = epico.bloqueado || false;
+            document.getElementById('bloqueado').checked = epico.bloqueado || 0;
 
         } catch (error) {
             document.getElementById('resultado').innerText = error;
@@ -167,9 +165,9 @@
             const texto = await response.text();
 
             document.getElementById('resultado').innerText = texto || 'Épico excluído com sucesso';
-          //  limpaFormulario();
+            limpaFormulario();
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela("Erro ao excluir: " + error.message);
         }
     }
     async function limpaFormulario() {
@@ -177,6 +175,14 @@
         document.getElementById('descepico').value = "";
         document.getElementById('obsepico').value = "";
         document.getElementById('bloqueado').value = false;
+    }
+    function mostrarMensagemNaTela(mensagem) {
+        const container = document.getElementById("resultado");
+        if (container) {
+            container.innerHTML = `<p style="color:red;">${mensagem}</p>`;
+        } else {
+            alert(mensagem);
+        }
     }
 
 </script>

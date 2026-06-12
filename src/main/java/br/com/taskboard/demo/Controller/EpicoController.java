@@ -43,6 +43,7 @@ public class EpicoController {
                 epicoExistente.setIdepico(epico.getIdepico());
                 epicoExistente.setDescepico(epico.getDescepico());
                 epicoExistente.setObsepico(epico.getObsepico());
+                epicoExistente.setBloqueado(epico.getBloqueado());
                 return service.salvar(epicoExistente);
             } else {
                 return service.salvar(epico);

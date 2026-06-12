@@ -22,7 +22,12 @@ public class Usuario {
     @Column(unique = true)
     private String email;
 
+    @Column(length = 100)
     private String senha;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idpapel")
+    private Papel papel;
 
     // Getters e Setters
 

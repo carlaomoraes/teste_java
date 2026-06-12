@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -17,6 +18,8 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService service;
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     // BUSCAR POR ID
     @GetMapping("/{idusuario}")
@@ -32,6 +35,7 @@ public class UsuarioController {
     // SALVAR
     @PostMapping("/salvar")
     public Usuario salvar(@RequestBody Usuario usuario) {
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
         return service.salvar(usuario);
     }
 
@@ -39,9 +43,8 @@ public class UsuarioController {
     @PutMapping("/atualizar/{idusuario}")
     public Usuario atualizar(@PathVariable Long idusuario,
                              @RequestBody Usuario usuario) {
-
         usuario.setIdusuario(idusuario);
-
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
         return service.atualizar(usuario);
     }
 
@@ -61,4 +64,13 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+    //ALTERA A SENHA
+    @PostMapping("/alterarsenha")
+    public Usuario atualizarSenha(@PathVariable Long idusuario,
+                             @RequestBody Usuario usuario) {
+        usuario.setIdusuario(idusuario);
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
+        return service.atualizar(usuario);
+    }
+
 }

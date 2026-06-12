@@ -39,15 +39,15 @@
         const login = document.getElementById('login').value;
         const senha = document.getElementById('senha').value;
         const email = document.getElementById('email').value;
+        const trocar = document.getElementById("alterasenha").checked ? 1 : 0;
 
         const usuario = {
             idusuario: idusuario || null,
             nome: nome || null,
             login: login || null,
             senha: senha || null,
-            email: email || null
+            email: email || null,
         };
-
         try {
 
             const response = await fetch(`${API}/salvar`, {
@@ -62,7 +62,6 @@
 
             document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
             limpaFormulario();
-            listarUsuarios();
 
         } catch (error) {
             document.getElementById('resultado').innerText = error;
@@ -95,8 +94,8 @@
                         <th class="table-header">Nome</th>
                         <th class="table-header">Login</th>
                         <th class="table-header">Email</th>
-                        <th class="table-header">Senha</th>
-                      <th class="table-header">Excluir</th>
+                        <th class="table-header" style="width: 80px">Senha</th>
+                        <th class="table-header">Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,7 +109,7 @@
                                 <td>${usuario.nome}</td>
                                 <td>${usuario.login}</td>
                                 <td>${usuario.email}</td>
-                                <td>${usuario.senha ? '•'.repeat(usuario.senha.length) : ''}</td>
+                                <td style="width: 30px">${usuario.senha ? '•'.repeat(30) : ''}</td>
                                 <td> <button type="button" class="btn" onclick="excluirUsuario(${usuario.idusuario})">Excluir</button></td>
 
             </tr>`;});
@@ -167,7 +166,7 @@
                                 <td>${usuario.nome}</td>
                                 <td>${usuario.login}</td>
                                 <td>${usuario.email}</td>
-                                <td>${usuario.senha ? '•'.repeat(usuario.senha.length) : ''}</td>
+                                <td style="width: 30px">${usuario.senha ? '•'.repeat(30) : ''}</td>
                                 <td> <button type="button" class="btn" onclick="event.stopPropagation(); excluirUsuario(${usuario.idusuario})">Excluir</button></td>
 
             </tr>`;});

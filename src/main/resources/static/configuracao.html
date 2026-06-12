@@ -143,6 +143,54 @@
         .btn-group .btn:nth-child(4):hover { background-color: #cbd5e1; }
 
         .btn:active { transform: scale(0.98); }
+        /* ==========================================================================
+           Tabela de Resultados Dinâmica
+           ========================================================================== */
+        table.table {
+            width: 100%;
+            border-collapse: collapse; /* Remove aquelas bordas duplas antigas */
+            margin-top: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden; /* Garante o arredondamento dos cantos */
+            border: 1px solid #e2e8f0;
+        }
+
+        table.table th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        table.table td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Efeito Zebrado nas linhas da tabela */
+        table.table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Efeito de Hover ao passar o mouse na linha */
+        table.table tbody tr:hover {
+            background-color: #f1f5f9 !important;
+        }
+
+        /* Botão de Excluir específico dentro da tabela */
+        table.table .btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            background-color: #ef4444;
+            color: white;
+        }
+        table.table .btn:hover { background-color: #dc2626; }
 
 
     </style>
@@ -154,25 +202,26 @@
 
     <div class="abas-container">
         <button class="aba-botao ativa" onclick="alternarAba(event, 'dados-gerais')">Dados Gerais</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">Configuração de cores</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">Apresentação da equipe</button>
         <button class="aba-botao" onclick="alternarAba(event, 'configuracoes')">Configurações</button>
         <button class="aba-botao" onclick="alternarAba(event, 'tarefas')">Tipos de tarefas</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'sistemas')">Sistemas (SCRM/KANBAM)</button>
+
 
     </div>
 
     <div id="dados-gerais" class="conteudo-aba ativo">
         <h3>Visão Geral do Projeto</h3>
         <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
-            Aqui ficam os dados principais do seu projeto TaskController. Você pode inserir formulários, gráficos ou tabelas de resumo dentro desta área normalmente.
+            Projeto elaborado para controle de estórias/tarefas
         </p>
     </div>
 
     <div id="equipe" class="conteudo-aba">
         <h3>Membros do Time</h3>
         <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
-            • João Silva (Desenvolvedor Backend)<br>
-            • Maria Souza (Desenvolvedora Frontend)<br>
-            • Carlos Lima (Product Owner)
+            • Carlos Eduardo Barboza Moraes - <a href="mailto:carlaomoraes@hotmail.com">carlaomoraes@hotmail.com</a>
+
         </p>
     </div>
 
@@ -182,8 +231,21 @@
             Ajuste os parâmetros de integração com a API, chaves de segurança e controle de permissões de usuários para este módulo do sistema.
         </p>
     </div>
+    <div id="tarefas" class="conteudo-aba">
+        <h3>Configurações do Sistema</h3>
+        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
+            Lista os tipos de tarefas.
+        </p>
+    </div>
+    <div id="sistemas" class="conteudo-aba">
+        <h3>Configurações do Sistema</h3>
+        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
+            Lista os tipos de sistemas.(SCRUM/KANBAM)
+        </p>
+    </div>
+
     <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
+        <button type="button" class="btn"  onclick="salvarConfiguracao()">Salvar</button>
         <button type="button" class="btn" onclick="history.back()">Voltar</button>
     </div>
 
@@ -209,6 +271,69 @@
         // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
     }
+    //--------------------- MANIPULAÇÃO DOS DADOS
+    //---------------------LISTAR OS TIPOS DE TAREFAS
+    const API_TIPO_TAREFAS = 'http://localhost:8080/tipo_tarefa'
+    async function carregarTiposTarefas() {
+        try {
+            const response = await fetch(`${API_TIPO_TAREFAS}/listar`);
+            const data = await response.json();
+            let tabela = `
+            <table class="table" >
+                <thead>
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(tipo_tarefa => {
+                tabela += `<tr>
+                                <td>${tipo_tarefa.idtipo_tarefa}</td>
+                                <td>${tipo_tarefa.desctipo_tarefa}</td>
+                           </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('tarefas').innerHTML = tabela;
+        } catch (error) {
+            document.getElementById('tarefas').innerHTML =
+                `<p style="color:red;">Erro ao listar tipos de tarefas</p>`;
+        }
+    }
+    const API_SISTEMAS = 'http://localhost:8080/sistemas'
+    async function carregarSistemas() {
+        try {
+            const response = await fetch(`${API_SISTEMAS}/listar`);
+            const data = await response.json();
+            let tabela = `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(sistema => {
+                tabela += `<tr>
+                                <th>${sistema.idsistema}</th>
+                                <th>${sistema.nomesistema}</th>
+                           </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('sistemas').innerHTML = tabela;
+        } catch (error) {
+            document.getElementById('sistemas').innerHTML =
+                `<p style="color:red;">Erro ao listar tipos de sistemas</p>`;
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarTiposTarefas();
+        carregarSistemas();
+    });
+
+
 </script>
 
 </body>
