@@ -64,4 +64,15 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+    @PostMapping("/trocar-senha")
+    public ResponseEntity<?> trocarSenha(@RequestBody Usuario usuario) {
+        Usuario novoUsuario = service.buscarPorId(usuario.getIdusuario());
+        if (!encoder.matches(novoUsuario.getSenha(), usuario.getSenha())) {
+            return ResponseEntity.badRequest().body("Senha atual inválida");
+        } else {
+            usuario.setSenha(encoder.encode(usuario.getSenha()));
+            service.salvar(usuario);
+            return ResponseEntity.ok().build();
+        }
+    }
 }

@@ -55,6 +55,7 @@
                 const usuarioLogado = await response.json();
                 if (usuarioLogado.alterasenha == 1) {
                     // abre formulario de alterar senha
+                    window.location.href = "trocarSenha.html";
                 }
                 else {
 

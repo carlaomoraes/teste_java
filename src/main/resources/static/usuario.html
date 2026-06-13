@@ -19,9 +19,9 @@
 
     <input type="text" id="email" placeholder="Email">
 
-    <input type="password" id="senha" placeholder="Senha">
+    <input type="password" id="senha" placeholder="Senha"><br>
 
-    <input type="checkbox" value="0" id="trocar"> <label for="trocar">Trocar senha</label>
+    <input type="checkbox" id ="alterasenha"> Trocar a senha no próximo login
 
     <div class="btn-group" data-toggle="buttons-radio">
         <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
@@ -35,18 +35,18 @@
 <script>
     const API = 'http://localhost:8080/usuarios';
 
-    async function salvarUsuario() {
+    async function salvarUsuario(event) {
+        event.preventDefault();
+
         const idusuario = document.getElementById('idusuario').value;
         const nome = document.getElementById('nome').value;
         const login = document.getElementById('login').value;
         const senha = document.getElementById('senha').value;
         const email = document.getElementById('email').value;
-        if(document.getElementById('alterarSenha').checked) {
-            alterarSenha = 0;
-        }
-        else {
-            alterarSenha = 1;
-        }
+        alert(document.getElementById('alterasenha').value);
+        if(document.getElementById('alterasenha').value === 1)
+            alterasenha = 1;
+        else alterasenha = 0;
 
         const usuario = {
             idusuario: idusuario || null,
@@ -54,10 +54,9 @@
             login: login || null,
             senha: senha || null,
             email: email || null,
-            alterarSenha: alterarSenha
+            alterasenha: alterasenha,
         };
         try {
-
             const response = await fetch(`${API}/salvar`, {
                 method: 'POST',
                 headers: {
@@ -85,6 +84,8 @@
             document.getElementById('login').value = usuario.login;
             document.getElementById('email').value = usuario.email;
             document.getElementById('senha').value = usuario.senha;
+            document.getElementById('trocarSenha').checked = usuario.alterarSenha === 0;
+
         } catch (error) {
             document.getElementById('resultado').innerText = error;
         }

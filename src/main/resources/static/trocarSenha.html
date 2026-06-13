@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskController 1.0</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<div class="container">
+    <h1>Troca senha - TaskController 1.0</h1>
+    <div class="text">
+        <label>Senha Atual</label>
+        <input type="password" id="senhaAtual" required>
+    </div>
+    <div class="text">
+        <label>Nova Senha</label>
+        <input type="password"  id="novaSenha" required>
+    </div>
+    <div class="text">
+        <label>Confirmar Nova Senha</label>
+        <input type="password" id="confirmarSenha" required>
+    </div>
+
+    <div class="btn-group" data-toggle="buttons-radio">
+        <button type="button" class="btn" onclick="trocarSenha()"> Salvar </button>
+        <button type="button" class="btn" onclick="history.back()">Cancelar </button>
+    </div>
+    <div id="resultado"></div>
+</div>
+<script>
+    const API = 'http://localhost:8080/usuarios';
+    async function trocarSenha() {
+        const senhaAtual = document.getElementById("senhaAtual").value;
+        const novaSenha =  document.getElementById("novaSenha").value;
+        const confirmarSenha = document.getElementById("confirmarSenha").value;
+        if (novaSenha !== confirmarSenha) {
+            mostrarMensagemNaTela("As senhas não conferem.");
+            return;
+        }
+        const usuario = {
+            senhaAtual,
+            novaSenha
+        };
+        const response = await fetch(`${API}/trocar-senha`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuario)
+        });
+        if (response.ok) {
+            mostrarMensagemNaTela("Senha alterada com sucesso.");
+        } else {
+            mostrarMensagemNaTela("Erro ao alterar senha.");
+        }
+    }
+    // Função de exemplo para injetar a mensagem no HTML
+    function mostrarMensagemNaTela(mensagem) {
+        const container = document.getElementById("resultado");
+        if (container) {
+            container.textContent = mensagem;
+            container.style.color = "red"; // Deixa o texto vermelho
+        } else {
+            alert(mensagem); // Feedback visual simples caso não tenha o container
+        }
+    }
+</script>
+</body>
+</html>
