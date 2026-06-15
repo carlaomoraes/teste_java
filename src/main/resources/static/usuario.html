@@ -10,18 +10,12 @@
 
 <div class="container">
     <h1>Usuário - TaskController 1.0</h1>
-
     <input type="number" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
-
-    <input type="text" id="nome" placeholder="Nome">
-
+    <input type="text" id="nome" placeholder="Nome do usuário">
     <input type="text" id="login" placeholder="Login">
-
-    <input type="text" id="email" placeholder="Email">
-
+    <input type="text" id="email" placeholder="E-mail">
     <input type="password" id="senha" placeholder="Senha"><br>
-
-    <input type="checkbox" id ="alterasenha"> Trocar a senha no próximo login
+    <input type="text" id="alterasenha" placeholder="Trocar senha(0 - não/ 1 - sim)"><br>
 
     <div class="btn-group" data-toggle="buttons-radio">
         <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
@@ -36,17 +30,12 @@
     const API = 'http://localhost:8080/usuarios';
 
     async function salvarUsuario(event) {
-        event.preventDefault();
-
         const idusuario = document.getElementById('idusuario').value;
         const nome = document.getElementById('nome').value;
         const login = document.getElementById('login').value;
         const senha = document.getElementById('senha').value;
         const email = document.getElementById('email').value;
-        alert(document.getElementById('alterasenha').value);
-        if(document.getElementById('alterasenha').value === 1)
-            alterasenha = 1;
-        else alterasenha = 0;
+        const alterasenha = document.getElementById('alterasenha').value;
 
         const usuario = {
             idusuario: idusuario || null,
@@ -64,14 +53,12 @@
                 },
                 body: JSON.stringify(usuario)
             });
-
             const data = await response.json();
-
-            document.getElementById('resultado').innerText = JSON.stringify(data, null, 2);
+            listarUsuarios();
             limpaFormulario();
 
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela(error);
         }
     }
 
@@ -84,10 +71,10 @@
             document.getElementById('login').value = usuario.login;
             document.getElementById('email').value = usuario.email;
             document.getElementById('senha').value = usuario.senha;
-            document.getElementById('trocarSenha').checked = usuario.alterarSenha === 0;
+            document.getElementById('alterasenha').value = usuario.alterasenha;
 
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela(error);
         }
     }
 
@@ -123,12 +110,9 @@
 
             </tr>`;});
             tabela += `</tbody></table>`;
-
             document.getElementById('resultado').innerHTML = tabela;
-
         } catch (error) {
-            document.getElementById('resultado').innerHTML =
-                `<p style="color:red;">Erro ao listar usuários</p>`;
+            mostrarMensagemNaTela("Erro ao listar usuários");
         }
     }
 
@@ -139,9 +123,9 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            document.getElementById('resultado').innerHTML = texto || 'Usuário excluído com sucesso';
-             } catch (error) {
-            document.getElementById('resultado').innerHTML = error;
+            mostrarMensagemNaTela(texto || 'Usuário excluído com sucesso');
+        } catch (error) {
+                mostrarMensagemNaTela(error);
         }
     }
 

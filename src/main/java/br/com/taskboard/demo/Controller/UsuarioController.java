@@ -35,7 +35,6 @@ public class UsuarioController {
     // SALVAR
     @PostMapping("/salvar")
     public Usuario salvar(@RequestBody Usuario usuario) {
-        usuario.setSenha(encoder.encode(usuario.getSenha()));
         return service.salvar(usuario);
     }
 
@@ -43,8 +42,6 @@ public class UsuarioController {
     @PutMapping("/atualizar/{idusuario}")
     public Usuario atualizar(@PathVariable Long idusuario,
                              @RequestBody Usuario usuario) {
-        usuario.setIdusuario(idusuario);
-        usuario.setSenha(encoder.encode(usuario.getSenha()));
         return service.atualizar(usuario);
     }
 
@@ -62,17 +59,6 @@ public class UsuarioController {
             return ResponseEntity.ok().body("Usuário excluído com sucesso!");
         } catch (ViolacaoChaveEstrangeiraException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-    }
-    @PostMapping("/trocar-senha")
-    public ResponseEntity<?> trocarSenha(@RequestBody Usuario usuario) {
-        Usuario novoUsuario = service.buscarPorId(usuario.getIdusuario());
-        if (!encoder.matches(novoUsuario.getSenha(), usuario.getSenha())) {
-            return ResponseEntity.badRequest().body("Senha atual inválida");
-        } else {
-            usuario.setSenha(encoder.encode(usuario.getSenha()));
-            service.salvar(usuario);
-            return ResponseEntity.ok().build();
         }
     }
 }

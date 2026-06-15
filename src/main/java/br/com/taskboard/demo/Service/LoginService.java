@@ -1,6 +1,5 @@
 package br.com.taskboard.demo.Service;
 
-
 import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Respository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class LoginService {
     public Optional<Usuario> autenticar(String login, String senha) {
         Optional<Usuario> usuario = repository.findByLogin(login);
         return usuario;
-//        if (usuario.isPresent() && encoder.matches(senha, usuario.get().getSenha())) {
+//        if (usuario.isPresent() && encoder.matches(usuario.get().getSenha(), senha)) {
 //            return usuario;
 //        }
 //        return Optional.empty();

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskController 1.0</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<div class="container">
+    <h1>Troca senha - TaskController 1.0</h1>
+    <div id="apresentacao"></div>
+    <div class="text">
+        <label>Senha Atual</label>
+        <input type="password" id="senhaAtual" required>
+    </div>
+    <div class="text">
+        <label>Nova Senha</label>
+        <input type="password"  id="novaSenha" required>
+    </div>
+    <div class="text">
+        <label>Confirmar Nova Senha</label>
+        <input type="password" id="confirmarSenha" required>
+    </div>
+
+    <div class="btn-group" data-toggle="buttons-radio">
+        <button type="button" class="btn" onclick="trocarSenha()"> Salvar </button>
+        <button type="button" class="btn" onclick="history.back()">Cancelar </button>
+    </div>
+    <div id="resultado"></div>
+</div>
+<script>
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_LOGIN = 'http://localhost:8080/login';
+    async function carregarUsuarios() {
+
+        const idUsuario = JSON.parse(sessionStorage.getItem('usuarioIdUsuario'));
+        const nomeUsuario = JSON.parse(sessionStorage.getItem('usuarioNome'));
+        const senhaUsuario = JSON.parse(sessionStorage.getItem('senhaUsuario'));
+        const loginUsuario = JSON.parse(sessionStorage.getItem('loginUsuario'));
+        alert(idUsuario);
+        const response = await fetch(`${API_USUARIOS}/${idUsuario}`);
+        const data = await response.json();
+        if(!response.ok) {
+            const messageError = await response.text();
+            mostrarMensagemNaTela(messageError);
+        }
+        else  {
+            data.forEach(usuario => {
+                let tabela = `<label>${idUsuario}</label><br>
+                          <label>${nomeUsuario}</label>`;});
+                document.getElementById('apresentacao').innerHTML = tabela;
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarUsuarios();
+    });
+
+    async function trocarSenha() {
+        const senhaUsuario = JSON.parse(sessionStorage.getItem('senhaUsuario'));
+        const novaSenha =  document.getElementById("novaSenha").value;
+        const confirmarSenha = document.getElementById("confirmarSenha").value;
+
+        if (novaSenha !== confirmarSenha) {
+            mostrarMensagemNaTela("As senhas não conferem.");
+            return;
+        }
+        if(novaSenha === senhaUsuario) {
+            mostrarMensagemNaTela("A senha atual deve ser diferente da senha anterior.");
+            return;
+        }
+
+        // Monta os dados para validação
+        const dadosLogin = {
+            login: loginVal,
+            senha: senhaVal
+        };
+        try {
+            const response = await fetch(`${API_LOGIN}/trocarsenha`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(usuario)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela(data.value);
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1500);
+        } catch (error) {
+            mostrarMensagemNaTela(error);
+        }
+    }
+    // Função de exemplo para injetar a mensagem no HTML
+    function mostrarMensagemNaTela(mensagem) {
+        const container = document.getElementById("resultado");
+        if (container) {
+            container.textContent = mensagem;
+            container.style.color = "red"; // Deixa o texto vermelho
+        } else {
+            alert(mensagem); // Feedback visual simples caso não tenha o container
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarUsuarios();
+    });
+
+</script>
+</body>
+</html>

@@ -34,17 +34,22 @@
 
         const loginVal = document.getElementById("login").value;
         const senhaVal = document.getElementById("senha").value;
+        const idusuarioVal = 0;
+        const nomeVal = "";
+
         const msgContainer = document.getElementById("mensagem");
 
         msgContainer.style.color = "#64748b";
         msgContainer.innerText = "Autenticando...";
 
         // Monta os dados para validação
+
         const dadosLogin = {
             login: loginVal,
-            senha: senhaVal
+            senha: senhaVal,
+            nome: nomeVal,
+            idusuario: idusuarioVal
         };
-
         try {
             const response = await fetch(API_AUTH, {
                 method: 'POST',
@@ -53,9 +58,13 @@
             });
             if (response.ok) {
                 const usuarioLogado = await response.json();
+                sessionStorage.setItem("usuarioNome", usuarioLogado.nome);
+                sessionStorage.setItem("usuarioIdUsuario", usuarioLogado.idUsuario);
+                sessionStorage.setItem("usuarioLogin", usuarioLogado.login);
+                sessionStorage.setItem("usuarioSenha", usuarioLogado.senha);
                 if (usuarioLogado.alterasenha == 1) {
                     // abre formulario de alterar senha
-                    window.location.href = "trocarSenha.html";
+                    window.location.href = "trocasenha.html";
                 }
                 else {
 

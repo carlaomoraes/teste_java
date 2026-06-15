@@ -59,23 +59,18 @@
                 body: JSON.stringify(epico)
             });
             const data = await response.json();
-            mostrarMensagemNaTela(data);
-            //mostrarMensagemNaTela('Épico gravado com sucesso');
-            // limpaFormulario();
-            // listarEpico();
-
+            mostrarMensagemNaTela('Épico gravado com sucesso');
+            limpaFormulario();
+            listarEpico();
         } catch (error) {
             mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
     }
     async function buscarEpico() {
-
         const idepico = document.getElementById('idepico').value;
-
         try {
             const response = await fetch(`${API}/${idepico}`);
             const data = await response.json();
-
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
@@ -89,9 +84,7 @@
                 </thead>
                 <tbody>
         `;
-
             data.forEach(epico => {
-
                 tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
                                 style="cursor:pointer;">
                                 <td>${epico.descepico}</td>
@@ -100,13 +93,10 @@
                                 <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
-
             document.getElementById('resultado').innerHTML = tabela;
-
         } catch (error) {
             mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
-
     }
     async function listarEpico() {
         try {

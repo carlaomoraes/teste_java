@@ -7,6 +7,7 @@ import br.com.taskboard.demo.Respository.UsuarioRepository;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +15,15 @@ import java.util.List;
 @Service
 public class UsuarioService {
 
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @Autowired
     private UsuarioRepository repository;
 
     public Usuario salvar(Usuario usuario) {
         String Messagem = String.format("ID %s deve ser único.", usuario.getIdusuario());
+        String senha = encoder.encode(usuario.getSenha());
+        usuario.setSenha(senha);
         try {
             repository.save(usuario);
         } catch (StaleObjectStateException e) {
@@ -32,6 +37,8 @@ public class UsuarioService {
     }
 
     public Usuario atualizar(Usuario usuario) {
+        String senha = encoder.encode(usuario.getSenha());
+        usuario.setSenha(senha);
         return repository.save(usuario);
     }
 

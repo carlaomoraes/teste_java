@@ -89,14 +89,11 @@
             console.error("Erro ao carregar usuários:", error);
         }
     }
-
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
         carregarEpicos();
         carregarUsuarios();
     });
-
-
     // --- OPERAÇÕES DO CRUD ---
     function gerarEstruturaTabela(listaEstorias) {
         let tabela = `
