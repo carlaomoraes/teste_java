@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface AusenciaProgramadaRepository extends JpaRepository<AusenciaProgramada, Integer> {
-    AusenciaProgramada findByUsuario(int idUsuario);
+    AusenciaProgramada findAusenciaProgramadasByIdusuario_Idusuario(Long idusuarioIdusuario);
 }

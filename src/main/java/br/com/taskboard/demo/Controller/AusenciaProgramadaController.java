@@ -1,6 +1,8 @@
 package br.com.taskboard.demo.Controller;
 
 import br.com.taskboard.demo.Modelo.AusenciaProgramada;
+import br.com.taskboard.demo.Respository.AusenciaProgramadaRepository;
+import br.com.taskboard.demo.Respository.EpicoRepository;
 import br.com.taskboard.demo.Service.AusenciaProgramadaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +18,9 @@ public class AusenciaProgramadaController {
 
     @Autowired
     private AusenciaProgramadaService service;
+
+    @Autowired
+    private AusenciaProgramadaRepository ausenciaProgramadaRepository;
 
     // BUSCAR POR ID
     @GetMapping("/{idAusenciaProgramada}")
@@ -36,9 +41,9 @@ public class AusenciaProgramadaController {
 
     // ATUALIZAR
     @PutMapping("/atualizar/{idAusenciaProgramada}")
-    public AusenciaProgramada atualizar(@PathVariable int idAusenciaProgramada,
+    public AusenciaProgramada atualizar(@PathVariable Long idAusenciaProgramada,
                              @RequestBody AusenciaProgramada AusenciaProgramada) {
-        AusenciaProgramada.setId_ausencia(idAusenciaProgramada);
+        AusenciaProgramada.setIdausencia(idAusenciaProgramada);
         return service.atualizar(AusenciaProgramada);
     }
 
