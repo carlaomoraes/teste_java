@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.Id;
-import java.time.LocalDate;
+
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -13,19 +14,26 @@ import java.time.LocalDate;
 public class AusenciaProgramada {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_ausencia;
-
-    private LocalDate data_inicio;
-    private LocalDate data_fim;
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_ausencia")
-    private TipoAusencia tipo_ausencia;
-
+    private Long idausencia;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idusuario")
+    private Usuario idusuario;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idtipoausencia")
+    private TipoAusencia tipoausencia;
+    @Column(name = "data_inicio") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
+    private Timestamp dataInicio;
+    @Column(name = "data_fim") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
+    private Timestamp dataFim;
+    @Column(name="observacao")
     private String observacao;
-
+    @Column(name="status")
     private String status;
+    @Column(name = "data_cadastro") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
+    private Timestamp dataCadastro;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
+
+
+
+
 }

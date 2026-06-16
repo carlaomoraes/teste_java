@@ -3,31 +3,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskController 1.0</title>
-    <link rel="stylesheet" href="estilos.css">
+    <title>Usuários - TaskController 1.0</title>
+    <style>
+        /* Reset básico e tipografia */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        /* ==========================================================================
+           ESTRUTURA DAS ABAS (CSS)
+           ========================================================================== */
+
+        /* Container dos botões das abas */
+        .abas-container {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo de cada botão de aba */
+        .aba-botao {
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #64748b;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent; /* Reserva o espaço para a borda ativa */
+            margin-bottom: -2px; /* Joga a borda por cima da linha do container */
+            transition: all 0.2s ease-in-out;
+        }
+
+        .aba-botao:hover {
+            color: #1e293b;
+            background-color: #f8fafc;
+        }
+
+        /* Estado da Aba Ativa (Selecionada) */
+        .aba-botao.ativa {
+            color: #2563eb; /* Azul padrão do sistema */
+            border-bottom: 2px solid #2563eb;
+        }
+
+        /* Container do conteúdo */
+        .conteudo-aba {
+            display: none; /* 🌟 ESCONDE TODAS AS ABAS POR PADRÃO */
+            padding: 10px 5px;
+            animation: surgir 0.3s ease-in-out; /* Efeito visual suave */
+        }
+
+        /* Estado do Conteúdo Ativo */
+        .conteudo-aba.ativo {
+            display: block; /* 🌟 MOSTRA APENAS A ABA ATIVA */
+        }
+
+        /* Pequena animação para o conteúdo aparecer suavemente */
+        @keyframes surgir {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           Botões (Grupo)
+           ========================================================================== */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Ajusta em telas menores */
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        /* Botão Principal (Salvar) */
+        .btn-group .btn:nth-child(1) {
+            background-color: #2563eb;
+            color: white;
+        }
+        .btn-group .btn:nth-child(1):hover { background-color: #1d4ed8; }
+
+        /* Botão Secundário (Listar) */
+        .btn-group .btn:nth-child(2) {
+            background-color: #10b981;
+            color: white;
+        }
+        .btn-group .btn:nth-child(2):hover { background-color: #059669; }
+
+        /* Botão Buscar */
+        .btn-group .btn:nth-child(3) {
+            background-color: #64748b;
+            color: white;
+        }
+        .btn-group .btn:nth-child(3):hover { background-color: #475569; }
+
+        /* Botão Voltar */
+        .btn-group .btn:nth-child(4) {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+        .btn-group .btn:nth-child(4):hover { background-color: #cbd5e1; }
+
+        .btn:active { transform: scale(0.98); }
+        /* ==========================================================================
+           Tabela de Resultados Dinâmica
+           ========================================================================== */
+        table.table {
+            width: 100%;
+            border-collapse: collapse; /* Remove aquelas bordas duplas antigas */
+            margin-top: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden; /* Garante o arredondamento dos cantos */
+            border: 1px solid #e2e8f0;
+        }
+
+        table.table th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        table.table td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Efeito Zebrado nas linhas da tabela */
+        table.table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Efeito de Hover ao passar o mouse na linha */
+        table.table tbody tr:hover {
+            background-color: #f1f5f9 !important;
+        }
+
+        /* Botão de Excluir específico dentro da tabela */
+        table.table .btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            background-color: #ef4444;
+            color: white;
+        }
+        table.table .btn:hover { background-color: #dc2626; }
+/*********************************/
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            margin-top: 16px;
+            text-align: left;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #333;
+            transition: all 0.2s ease-in-out;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #333;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 4px;
+        }
+
+        /* Efeito de foco azul nos inputs */
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #fff;
+            color: #333;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 12px;
+            cursor: pointer;
+            appearance: none; /* Remove a seta feia padrão do navegador */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        /* ==========================================================================
+           Checkboxes Alinhados
+           ========================================================================== */
+        .checkbox-container {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #3b82f6; /* Deixa o check azul padrão */
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           Botões (Grupo)
+           ========================================================================== */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Ajusta em telas menores */
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Usuário - TaskController 1.0</h1>
-    <input type="number" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
-    <input type="text" id="nome" placeholder="Nome do usuário">
-    <input type="text" id="login" placeholder="Login">
-    <input type="text" id="email" placeholder="E-mail">
-    <input type="password" id="senha" placeholder="Senha"><br>
-    <input type="text" id="alterasenha" placeholder="Trocar senha(0 - não/ 1 - sim)"><br>
+    <h1>Usuários - TaskController 1.0</h1>
 
-    <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
-        <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
-        <button type="button" class="btn" onclick="buscarUsuario()">Buscar por ID</button>
-        <button type="button" class="btn" onclick="history.back()">Voltar</button>
+    <div class="abas-container">
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'usuarios')">Cadastro de usuários</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Cadastro de ausências programadas</button>
     </div>
-    <div id="resultado"></div>
+
+    <div id="usuarios" class="conteudo-aba ativo">
+        <input type="number" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
+        <input type="text" id="nome" placeholder="Nome do usuário">
+        <input type="text" id="login" placeholder="Login">
+        <input type="text" id="email" placeholder="E-mail">
+        <input type="password" id="senha" placeholder="Senha"><br>
+        <label for="comboPapel">Papel:</label>
+        <select id="comboPapel">
+            <option value="">-- Selecione o papel do usuário --</option>
+        </select>
+        <input type="checkbox" id="alterasenha"><label>Altera senha no próximo login</label>
+        <input type="checkbox" id="ativo"> <label>Usuário Ativo</label>
+
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
+            <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
+            <button type="button" class="btn" onclick="buscarUsuario()">Buscar por ID</button>
+            <button type="button" class="btn" onclick="history.back()">Voltar</button>
+        </div>
+        <div id="resultado"></div>
+    </div>
+
+    <div id="ausencias" class="conteudo-aba">
+        <h3>Ausências programadas</h3>
+        <label>Data início:</label> <input type="date" id="dataInicio">
+        <label>Data Final:</label> <input type="date" id="datafinal">
+        <label for="combotipo">Tipo de ausência:</label>
+        <select id="combotipo">
+            <option value="">-- Selecione um tipo de ausência --</option>
+        </select>
+        <label>Obseração:</label> <input type="text" id="observacao">
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn"  onclick="salvarAusencias()">Salvar</button>
+            <button type="button" class="btn" onclick="cancelearAusencias()">Cancelar</button>
+        </div>
+        <div id="resultadoAusencias"></div>
+    </div>
 </div>
 
 <script>
-    const API = 'http://localhost:8080/usuarios';
+    function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
+    }
+    //--------------------- MANIPULAÇÃO DOS DADOS USUARIOS
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_AUSENCIAS = 'http://localhost:8080/ausencias';
+    const API_PAPEL = 'http://localhost:8080/papel';
 
     async function salvarUsuario(event) {
         const idusuario = document.getElementById('idusuario').value;
@@ -46,7 +399,7 @@
             alterasenha: alterasenha,
         };
         try {
-            const response = await fetch(`${API}/salvar`, {
+            const response = await fetch(`${API_USUARIOS}/salvar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -64,7 +417,7 @@
 
     async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API}/${id}`);
+            const response = await fetch(`${API_USUARIOS}/${id}`);
             const usuario = await response.json();
             document.getElementById('idusuario').value = usuario.idusuario;
             document.getElementById('nome').value = usuario.nome;
@@ -72,6 +425,7 @@
             document.getElementById('email').value = usuario.email;
             document.getElementById('senha').value = usuario.senha;
             document.getElementById('alterasenha').value = usuario.alterasenha;
+            listarAusencias();
 
         } catch (error) {
             mostrarMensagemNaTela(error);
@@ -80,7 +434,7 @@
 
     async function listarUsuarios() {
         try {
-            const response = await fetch(`${API}/listar`);
+            const response = await fetch(`${API_USUARIOS}/listar`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
@@ -119,19 +473,19 @@
 
     async function excluirUsuario(idusuario) {
         try {
-            const response = await fetch(`${API}/excluir/${idusuario}`, {
+            const response = await fetch(`${API_USUARIOS}/excluir/${idusuario}`, {
                 method: 'DELETE'
             });
             const texto = await response.text();
             mostrarMensagemNaTela(texto || 'Usuário excluído com sucesso');
         } catch (error) {
-                mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela(error);
         }
     }
 
     async function buscarUsuario() {
         const idUsuario = document.getElementById('idusuario').value;
-        const response = await fetch(`${API}/${idUsuario}`);
+        const response = await fetch(`${API_USUARIOS}/${idUsuario}`);
         const data = await response.json();
         if(!response.ok) {
             const messageError = await response.text();
@@ -182,6 +536,82 @@
         } else {
             alert(mensagem); // Feedback visual simples caso não tenha o container
         }
+    }
+    // FUNÇÕES DA ABA AUSENCIAS
+    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
+    async function carregarTipoAusencia() {
+        const combotipo = document.getElementById("combotipo");
+        try {
+            const resposta = await fetch(`${API_AUSENCIAS}/listar`);
+            const ausencias = await resposta.json();
+            ausencias.forEach(ausencia => {
+                const opcao = document.createElement('option');
+                opcao.value = ausencia.id_tipo_ausencia;
+                opcao.textContent = ausencia.desc_tipo_ausencia;
+                comboEpico.appendChild(opcao);
+            });
+        } catch (error) {
+            console.error("Erro ao carregar épicos:", error);
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarTipoAusencia();
+    });
+
+    async function listarAusencias(idAusencia) {
+        try {
+            const response = await fetch(`${API_AUSENCIAS}/${idAusencia}`);
+            const data = await response.json();
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">Data início</th>
+                        <th class="table-header">Data final</th>
+                        <th class="table-header">Tipo ausência</th>
+                        <th class="table-header">Obeservação</th>
+                        <th class="table-header">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+            data.forEach(ausencias => {
+
+                tabela += `<tr onclick="buscarPorLinha(${ausencias.idausencia})"
+                                style="cursor:pointer;">
+                                <td>${ausencias.data_inicio}</td>
+                                <td>${ausencias.data_fim}</td>
+                                <td>${ausencias.tipo_ausencia}</td>
+                                <td>${ausencias.observacao}</td>
+                                <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencia.idausencia})">Excluir</button></td>
+            </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao listar ausêsncias");
+        }
+    }
+    async function carregarPapel() {
+        const comboPapel = document.getElementById("comboPapel");
+        try {
+            const resposta = await fetch(`${API_PAPEL}/listar`);
+            const papel = await resposta.json();
+            papel.forEach(u => {
+                const idVal = u.idPapel || u.idPapel;
+                // Cria opção para o combo papel
+                const opt1 = document.createElement('option');
+                opt1.value = idVal;
+                opt1.textContent = u.descpapel;
+                comboPapel.appendChild(opt1);           });
+        } catch (error) {
+            console.error("Erro ao carregar papel do usuário:", error);
+        }
+        // Inicializa os seletores assim que o HTML carregar completamente
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarPapel();
+        });
     }
 </script>
 </body>

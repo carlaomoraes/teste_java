@@ -1,5 +1,6 @@
 package br.com.taskboard.demo.Modelo;
 
+import br.com.taskboard.demo.Enums.Prioridades;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +28,9 @@ public class Tarefa {
     private Long horas_gastas;
     @Column(name = "bloqueada")
     private boolean bloqueada;
+    private Prioridades prioridade;
+    @Column(name = "pontos")
+    private Long pontos;
+
+
 }
