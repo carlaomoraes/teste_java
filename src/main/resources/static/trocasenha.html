@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskController 1.0</title>
+    <title>TaskController 1.0 - Trocar Senha</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 <div class="container">
     <h1>Troca senha - TaskController 1.0</h1>
-    <div id="apresentacao"></div>
+
+    <div id="apresentacao" style="margin-bottom: 15px; font-weight: bold; color: #475569;"></div>
+
     <div class="text">
         <label>Senha Atual</label>
         <input type="password" id="senhaAtual" required>
@@ -23,91 +25,98 @@
         <input type="password" id="confirmarSenha" required>
     </div>
 
-    <div class="btn-group" data-toggle="buttons-radio">
+    <div class="btn-group">
         <button type="button" class="btn" onclick="trocarSenha()"> Salvar </button>
         <button type="button" class="btn" onclick="history.back()">Cancelar </button>
     </div>
-    <div id="resultado"></div>
+    <div id="resultado" style="margin-top: 15px; font-weight: 500;"></div>
 </div>
-<script>
-    const API_USUARIOS = 'http://localhost:8080/usuarios';
-    const API_LOGIN = 'http://localhost:8080/login';
-    async function carregarUsuarios() {
 
-        const idUsuario = JSON.parse(sessionStorage.getItem('usuarioIdUsuario'));
-        const nomeUsuario = JSON.parse(sessionStorage.getItem('usuarioNome'));
-        const senhaUsuario = JSON.parse(sessionStorage.getItem('senhaUsuario'));
-        const loginUsuario = JSON.parse(sessionStorage.getItem('loginUsuario'));
-        alert(idUsuario);
-        const response = await fetch(`${API_USUARIOS}/${idUsuario}`);
-        const data = await response.json();
-        if(!response.ok) {
-            const messageError = await response.text();
-            mostrarMensagemNaTela(messageError);
-        }
-        else  {
-            data.forEach(usuario => {
-                let tabela = `<label>${idUsuario}</label><br>
-                          <label>${nomeUsuario}</label>`;});
-                document.getElementById('apresentacao').innerHTML = tabela;
-        }
-    }
-    // Inicializa os seletores assim que o HTML carregar completamente
+<script>
+    const API_LOGIN = 'http://localhost:8080/login';
+
+    // 🌟 Reconstruindo o objeto lendo as chaves separadas que você gravou no login
+    const usuarioLogado = {
+        nome: sessionStorage.getItem("usuarioNome"),
+        idusuario: sessionStorage.getItem("usuarioIdUsuario") || sessionStorage.getItem("usuarioidusuario"),
+        login: sessionStorage.getItem("usuarioLogin"),
+        senha: sessionStorage.getItem("usuarioSenha")
+    };
+
+    // Exibe o nome do usuário na tela ao carregar
     document.addEventListener('DOMContentLoaded', () => {
-        carregarUsuarios();
+        const divApresentacao = document.getElementById("apresentacao");
+
+        // Verifica se a variável do nome existe e não está vazia
+        if (usuarioLogado.nome) {
+            divApresentacao.textContent = "Usuário: " + usuarioLogado.nome;
+        } else {
+            divApresentacao.textContent = "Usuário não identificado.";
+        }
     });
 
     async function trocarSenha() {
-        const senhaUsuario = JSON.parse(sessionStorage.getItem('senhaUsuario'));
-        const novaSenha =  document.getElementById("novaSenha").value;
+        const senhaAtualDigitada = document.getElementById("senhaAtual").value;
+        const novaSenha = document.getElementById("novaSenha").value;
         const confirmarSenha = document.getElementById("confirmarSenha").value;
 
-        if (novaSenha !== confirmarSenha) {
-            mostrarMensagemNaTela("As senhas não conferem.");
-            return;
-        }
-        if(novaSenha === senhaUsuario) {
-            mostrarMensagemNaTela("A senha atual deve ser diferente da senha anterior.");
-            return;
-        }
+        // 1. Validações de Campos Obrigatórios
+         if (!senhaAtualDigitada || !novaSenha || !confirmarSenha) {
+             mostrarMensagemNaTela("Por favor, preencha todos os campos.", "red");
+             return;
+         }
 
-        // Monta os dados para validação
-        const dadosLogin = {
-            login: loginVal,
-            senha: senhaVal
+        // 2. Valida se a nova senha coincide com a confirmação
+         if (novaSenha !== confirmarSenha) {
+             mostrarMensagemNaTela("A nova senha e a confirmação não conferem.", "red");
+             return;
+         }
+
+        // 3. Monta o objeto com os dados certos para enviar ao Back-end
+        const dadosTroca = {
+            idusuario: usuarioLogado.idusuario, // Identifica quem está mudando
+            login: usuarioLogado.login,
+            senhaNova: novaSenha
         };
+
         try {
             const response = await fetch(`${API_LOGIN}/trocarsenha`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(usuario)
+                body: JSON.stringify(dadosTroca) // Envia o objeto correto
             });
-            const data = await response.json();
-            mostrarMensagemNaTela(data.value);
+
+            if (!response.ok) {
+                throw new Error(await response.text());
+            }
+
+            // Atualiza a senha no armazenamento local para o usuário não ser deslogado por inconsistência
+            usuarioLogado.senha = novaSenha;
+            sessionStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+
+            mostrarMensagemNaTela("Senha alterada com sucesso! Redirecionando...", "green");
+
             setTimeout(() => {
                 window.location.href = "index.html";
             }, 1500);
+
         } catch (error) {
-            mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela("Erro ao trocar senha: " + error.message, "red");
         }
     }
-    // Função de exemplo para injetar a mensagem no HTML
-    function mostrarMensagemNaTela(mensagem) {
+
+    // Melhorei a função de mensagem para aceitar cores dinâmicas (Verde para sucesso, Vermelho para erro)
+    function mostrarMensagemNaTela(mensagem, cor) {
         const container = document.getElementById("resultado");
         if (container) {
-            container.textContent = mensagem;
-            container.style.color = "red"; // Deixa o texto vermelho
+            container.textContent = mensaje = mensagem;
+            container.style.color = cor;
         } else {
-            alert(mensagem); // Feedback visual simples caso não tenha o container
+            alert(mensagem);
         }
     }
-    // Inicializa os seletores assim que o HTML carregar completamente
-    document.addEventListener('DOMContentLoaded', () => {
-        carregarUsuarios();
-    });
-
 </script>
 </body>
 </html>

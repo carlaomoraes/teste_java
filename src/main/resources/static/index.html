@@ -64,10 +64,13 @@
                 sessionStorage.setItem("usuarioSenha", usuarioLogado.senha);
                 if (usuarioLogado.alterasenha == 1) {
                     // abre formulario de alterar senha
-                    window.location.href = "trocasenha.html";
+                    msgContainer.style.color = "#64748b";
+                    msgContainer.innerText = "Abrindo formulário para alterar a senha...";
+                    setTimeout(() => {
+                        window.location.href = "trocasenha.html";
+                    }, 1500);
                 }
                 else {
-
                     msgContainer.style.color = "green";
                     msgContainer.innerText = `Sucesso! Bem-vindo, ${usuarioLogado.nome}.`;
 

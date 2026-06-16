@@ -1,6 +1,7 @@
 package br.com.taskboard.demo.Controller;
 
 import br.com.taskboard.demo.Modelo.Usuario;
+import br.com.taskboard.demo.Respository.UsuarioRepository;
 import br.com.taskboard.demo.Service.LoginService;
 import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ public class LoginController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -53,18 +56,28 @@ public class LoginController {
         return "redirect:/index";
     }
     @PostMapping("/trocarsenha")
-    public ResponseEntity<?> trocarSenha(
-            @RequestBody Usuario usuario,
-            HttpSession session) {
-        Usuario Novousuario = usuarioService.buscarPorId(usuario.getIdusuario());
-        if (!encoder.matches(usuario.getSenha(),Novousuario.getSenha())) {
-            return ResponseEntity.badRequest().body("Senha atual inválida");
+    public ResponseEntity<?> trocarSenha(@RequestBody Usuario dadosLogin) {
+        // 1. Busca o usuário atualizado direto do banco de dados
+        Usuario usuario = usuarioRepository.findById(dadosLogin.getIdusuario())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        // 2. 🌟 O PULO DO GATO: Compara a senha digitada (limpa) com a do banco (criptografada)
+        if (!encoder.matches(dadosLogin.getSenha(), usuario.getSenha())) {
+            return ResponseEntity.badRequest().body("A senha atual digitada está incorreta.");
         }
-        session.setAttribute("usuario", Novousuario);
-        Novousuario.setNome("novousuario");
-        Novousuario.setSenha(encoder.encode(usuario.getSenha()));
-        Novousuario.setAlterasenha(1);
-        usuarioService.salvar(Novousuario);
-        return ResponseEntity.ok("Senha alterada");
+
+        // 3. Valida se a nova senha não é igual à antiga
+        if (encoder.matches(dadosLogin.getSenha(), usuario.getSenha())) {
+            return ResponseEntity.badRequest().body("A nova senha deve ser diferente da senha atual.");
+        }
+
+        // 4. Se passou nas validações, criptografa a nova senha antes de salvar
+        String novaSenhaCriptografada = encoder.encode(dadosLogin.getSenha());
+        usuario.setSenha(novaSenhaCriptografada);
+        usuario.setAlterasenha(0);
+
+        usuarioRepository.save(usuario);
+
+        return ResponseEntity.ok().body("{\"value\": \"Senha alterada com sucesso!\"}");
     }
 }
