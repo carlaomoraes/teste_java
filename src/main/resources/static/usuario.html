@@ -319,7 +319,7 @@
     </div>
 
     <div id="usuarios" class="conteudo-aba ativo">
-        <input type="number" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
+        <input type="number" name="idusuario" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
         <input type="text" id="nome" placeholder="Nome do usuário">
         <input type="text" id="login" placeholder="Login">
         <input type="text" id="email" placeholder="E-mail">
@@ -332,9 +332,9 @@
             <input type="checkbox" id="ativo" value="1"> Usuário Ativo
         </label>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
+            <button type="button" class="btn"  onclick="salvarUsuario(document.getElementById('idusuario').value)">Salvar</button>
             <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
-            <button type="button" class="btn" onclick="buscarUsuario()">Buscar por ID</button>
+            <button type="button" class="btn" onclick="buscarUsuario(document.getElementById('idusuario').value)">Buscar por ID</button>
             <button type="button" class="btn" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado"></div>
@@ -343,12 +343,15 @@
     <div id="ausencias" class="conteudo-aba">
         <h3>Ausências programadas</h3>
         <label>Data início:</label> <input type="date" id="dataInicio">
-        <label>Data Final:</label> <input type="date" id="datafinal">
+        <label>Data Final:</label> <input type="date" id="dataFinal">
         <label for="combotipo">Tipo de ausência:</label>
         <select id="combotipo">
             <option value="">-- Selecione um tipo de ausência --</option>
         </select>
         <label>Observação:</label> <input type="text" id="observacao">
+        <label class="checkbox-group">
+            <input type="checkbox" id="status" value="0">Ativa ?
+        </label>
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn"  onclick="salvarAusencias()">Salvar</button>
             <button type="button" class="btn" onclick="cancelearAusencias()">Cancelar</button>
@@ -358,6 +361,10 @@
 </div>
 
 <script>
+    //--------------------- MANIPULAÇÃO DOS DADOS USUARIOS
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_AUSENCIAS = 'http://localhost:8080/ausencias';
+    const API_PAPEL = 'http://localhost:8080/papel';
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
         const conteudos = document.querySelectorAll('.conteudo-aba');
@@ -377,13 +384,47 @@
         // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
     }
-    //--------------------- MANIPULAÇÃO DOS DADOS USUARIOS
-    const API_USUARIOS = 'http://localhost:8080/usuarios';
-    const API_AUSENCIAS = 'http://localhost:8080/ausencias';
-    const API_PAPEL = 'http://localhost:8080/papel';
-
-    async function salvarUsuario(event) {
-        const idusuario = document.getElementById('idusuario').value;
+    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
+    // FUNÇÕES DA ABA AUSENCIAS
+    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
+    async function carregarTipoAusencia() {
+        const combotipo = document.getElementById("combotipo");
+        try {
+            const resposta = await fetch(`${API_AUSENCIAS}/listar`);
+            const ausencias = await resposta.json();
+            ausencias.forEach(ausencia => {
+                const opcao = document.createElement('option');
+                opcao.value = ausencia.id_tipo_ausencia;
+                opcao.textContent = ausencia.desc_tipo_ausencia;
+                combotipo.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela(error);
+        }
+    }
+    async function carregarPapel() {
+        const comboPapel = document.getElementById("comboPapel");
+        try {
+            const resposta = await fetch(`${API_PAPEL}/listar`);
+            const papel = await resposta.json();
+            papel.forEach(u => {
+                const idVal = u.idPapel || u.idPapel;
+                // Cria opção para o combo papel
+                const opt1 = document.createElement('option');
+                opt1.value = idVal;
+                opt1.textContent = u.descpapel;
+                comboPapel.appendChild(opt1);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela(error);
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarTipoAusencia();
+        carregarPapel();
+    });
+    async function salvarUsuario(idusuario) {
         const nome = document.getElementById('nome').value;
         const login = document.getElementById('login').value;
         const senha = document.getElementById('senha').value;
@@ -412,7 +453,7 @@
             mostrarMensagemNaTela(error);
         }
     }
-    async function buscarPorLinha(id) {
+    async function buscarUsuarioPorLinha(id) {
         try {
             const response = await fetch(`${API_USUARIOS}/${id}`);
             const usuario = await response.json();
@@ -447,7 +488,7 @@
                 <tbody>
         `;
             data.forEach(usuario => {
-                tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
+                tabela += `<tr onclick="buscarUsuarioPorLinha(${usuario.idusuario})"
                                 style="cursor:pointer;">
                                 <td>${usuario.idusuario}</td>
                                 <td>${usuario.nome}</td>
@@ -475,8 +516,7 @@
         }
     }
 
-    async function buscarUsuario() {
-        const idUsuario = document.getElementById('idusuario').value;
+    async function buscarUsuario(idUsuario) {
         const response = await fetch(`${API_USUARIOS}/${idUsuario}`);
         const data = await response.json();
         if(!response.ok) {
@@ -498,7 +538,7 @@
                 </thead>
                 <tbody>`;
             data.forEach(usuario => {
-                tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
+                tabela += `<tr onclick="buscarUsuarioPorLinha(${usuario.idusuario})"
                                 style="cursor:pointer;">
                                 <td>${usuario.idusuario}</td>
                                 <td>${usuario.nome}</td>
@@ -529,31 +569,37 @@
             alert(mensagem); // Feedback visual simples caso não tenha o container
         }
     }
-    // FUNÇÕES DA ABA AUSENCIAS
-    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
-    async function carregarTipoAusencia() {
-        const combotipo = document.getElementById("combotipo");
+    async function salvarAusencias(idUsuario) {
+        const idtipoausencia = document.getElementById('combotipo').value;
+        const dataInicio = document.getElementById('dataInicio').value;
+        const dataFinal = document.getElementById('dataFinal').value;
+        const observacao = document.getElementById('observacao').value;
+        const status = document.getElementById('status').value;
+        const ausencias = {
+            idusuario: idusuario || null,
+            idtipoausencia: idtipoausencia || null,
+            dataInicio: dataInicio || null,
+            dataFinal: dataFinal || null,
+            observacao: observacao || null,
+            status: status,
+        };
         try {
-            const resposta = await fetch(`${API_AUSENCIAS}/listar`);
-            const ausencias = await resposta.json();
-            ausencias.forEach(ausencia => {
-                const opcao = document.createElement('option');
-                opcao.value = ausencia.id_tipo_ausencia;
-                opcao.textContent = ausencia.desc_tipo_ausencia;
-                combotipo.appendChild(opcao);
+            const response = await fetch(`${API_AUSENCIAS}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ausencias)
             });
+            const data = await response.json();
         } catch (error) {
-            console.error("Erro ao carregar épicos:", error);
+            mostrarMensagemNaTela(error);
         }
     }
-    // Inicializa os seletores assim que o HTML carregar completamente
-    document.addEventListener('DOMContentLoaded', () => {
-        carregarTipoAusencia();
-    });
 
-    async function listarAusencias(idAusencia) {
+    async function listarAusencias(idUsuario) {
         try {
-            const response = await fetch(`${API_AUSENCIAS}/${idAusencia}`);
+            const response = await fetch(`${API_AUSENCIAS}/${idUsuario}`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
@@ -576,32 +622,24 @@
                                 <td>${ausencias.tipo_ausencia}</td>
                                 <td>${ausencias.observacao}</td>
                                 <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencia.idausencia})">Excluir</button></td>
-            </tr>`;});
+            </tr>`;
+            });
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("Erro ao listar ausêsncias");
         }
     }
-    async function carregarPapel() {
-        const comboPapel = document.getElementById("comboPapel");
+    async function excluirAusencia(idausencia) {
         try {
-            const resposta = await fetch(`${API_PAPEL}/listar`);
-            const papel = await resposta.json();
-            papel.forEach(u => {
-                const idVal = u.idPapel || u.idPapel;
-                // Cria opção para o combo papel
-                const opt1 = document.createElement('option');
-                opt1.value = idVal;
-                opt1.textContent = u.descpapel;
-                comboPapel.appendChild(opt1);           });
+            const response = await fetch(`${API_AUSENCIAS}/excluir/${idausencia}`, {
+                method: 'DELETE'
+            });
+            const texto = await response.text();
+            mostrarMensagemNaTela(texto || 'Ausência programada excluída com sucesso');
         } catch (error) {
-            console.error("Erro ao carregar papel do usuário:", error);
+            mostrarMensagemNaTela(error);
         }
-        // Inicializa os seletores assim que o HTML carregar completamente
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarPapel();
-        });
     }
 </script>
 </body>
