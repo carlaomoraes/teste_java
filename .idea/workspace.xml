@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajuste do logo / usuarios">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ausencia programada">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaUsuarioRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/AusenciaProgramadaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/AusenciaProgramadaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/AusenciaProgramada.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/AusenciaProgramada.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/TipoAusencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/TipoAusencia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/AusenciaProgramadaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/AusenciaProgramadaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -362,7 +368,9 @@
       <workItem from="1781618010581" duration="4691000" />
       <workItem from="1781622817627" duration="297000" />
       <workItem from="1781628424726" duration="19715000" />
-      <workItem from="1781701467707" duration="3648000" />
+      <workItem from="1781701467707" duration="7590000" />
+      <workItem from="1781715479652" duration="8576000" />
+      <workItem from="1781725537231" duration="677000" />
     </task>
     <task id="LOCAL-00001" summary="Commit #2">
       <option name="closed" value="true" />
@@ -668,7 +676,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781700652130</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Ausencia programada">
+      <option name="closed" value="true" />
+      <created>1781705163426</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1781705163426</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -725,7 +741,8 @@
     <MESSAGE value="AusenciaProgramada/tipo de ausencia" />
     <MESSAGE value="AusenciaProgramada/tipo de ausencia / papel" />
     <MESSAGE value="Ajuste do logo / usuarios" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajuste do logo / usuarios" />
+    <MESSAGE value="Ausencia programada" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ausencia programada" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -779,6 +796,16 @@
           <url>file://$PROJECT_DIR$/src/main/resources/static/trocasenha.html</url>
           <line>60</line>
           <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
+          <line>604</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
+          <line>465</line>
+          <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/br/com/taskboard/demo/DemoApplicationTests.java</url>

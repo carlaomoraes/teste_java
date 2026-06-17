@@ -314,8 +314,8 @@
     <h1>Usuários - TaskController 1.0</h1>
 
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'usuarios')">Cadastro de usuários</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Cadastro de ausências programadas</button>
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'usuarios')">Usuários</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Ausências programadas</button>
     </div>
 
     <div id="usuarios" class="conteudo-aba ativo">
@@ -353,8 +353,8 @@
             <input type="checkbox" id="status" value="0">Ativa ?
         </label>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn"  onclick="salvarAusencias()">Salvar</button>
-            <button type="button" class="btn" onclick="cancelearAusencias()">Cancelar</button>
+            <button type="button" class="btn"  onclick="salvarAusencias(document.getElementById('idusuario').value);">Salvar</button>
+            <button type="button" class="btn" onclick="cancelarAusencia();">Cancelar</button>
         </div>
         <div id="resultadoAusencias"></div>
     </div>
@@ -399,7 +399,7 @@
                 combotipo.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela(error,1);
         }
     }
     async function carregarPapel() {
@@ -416,7 +416,7 @@
                 comboPapel.appendChild(opt1);
             });
         } catch (error) {
-            mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela(error,1);
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -448,9 +448,9 @@
             });
             const data = await response.json();
             listarUsuarios();
-            limpaFormulario();
+            //limpaFormulario();
         } catch (error) {
-            mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela(error,1);
         }
     }
     async function buscarUsuarioPorLinha(id) {
@@ -463,10 +463,10 @@
             document.getElementById('email').value = usuario.email;
             document.getElementById('senha').value = usuario.senha;
             document.getElementById('alterasenha').value = usuario.alterasenha;
-            listarAusencias();
+            listarAusencias(usuario.idusuario);
 
         } catch (error) {
-            mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela(error,1);
         }
     }
     async function listarUsuarios() {
@@ -501,7 +501,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar usuários");
+            mostrarMensagemNaTela("Erro ao listar usuários",1);
         }
     }
     async function excluirUsuario(idusuario) {
@@ -510,9 +510,9 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Usuário excluído com sucesso');
+            mostrarMensagemNaTela(texto || 'Usuário excluído com sucesso',1);
         } catch (error) {
-            mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela(error,1);
         }
     }
 
@@ -521,7 +521,7 @@
         const data = await response.json();
         if(!response.ok) {
             const messageError = await response.text();
-            mostrarMensagemNaTela(messageError);
+            mostrarMensagemNaTela(messageError,1);
         }
         else  {
             let tabela = `
@@ -560,8 +560,12 @@
         document.getElementById('senha').value = "";
     }
     // Função de exemplo para injetar a mensagem no HTML
-    function mostrarMensagemNaTela(mensagem) {
-        const container = document.getElementById("resultado");
+    function mostrarMensagemNaTela(mensagem, aba) {
+        if(aba == 1){
+            container = document.getElementById("resultado");
+        } else {
+            container = document.getElementById("resultadoAusencias");
+        }
         if (container) {
             container.textContent = mensagem;
             container.style.color = "red"; // Deixa o texto vermelho
@@ -576,7 +580,7 @@
         const observacao = document.getElementById('observacao').value;
         const status = document.getElementById('status').value;
         const ausencias = {
-            idusuario: idusuario || null,
+            idusuario: idUsuario || null,
             idtipoausencia: idtipoausencia || null,
             dataInicio: dataInicio || null,
             dataFinal: dataFinal || null,
@@ -593,15 +597,24 @@
             });
             const data = await response.json();
         } catch (error) {
-            mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela(error, 2);
         }
     }
 
     async function listarAusencias(idUsuario) {
-        try {
-            const response = await fetch(`${API_AUSENCIAS}/${idUsuario}`);
-            const data = await response.json();
-            let tabela = `
+        if (idUsuario != null) {
+            try {
+                const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
+                if(!response.ok) {
+                    mostrarMensagemNaTela("Erro ao listar ausências!",2);
+                    return;
+                }
+                const ausencias = await response.json();
+                if(!ausencias || !ausencias.length) {
+                    mostrarMensagemNaTela("Nenhuma ausência cadastrada!",2);
+                    return;
+                }
+                let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
@@ -614,8 +627,8 @@
                 </thead>
                 <tbody>
         `;
-            data.forEach(ausencias => {
-                tabela += `<tr onclick="buscarPorLinha(${ausencias.idausencia})"
+                data.forEach(ausencias => {
+                    tabela += `<tr onclick="buscarPorLinha(${ausencias.idausencia})"
                                 style="cursor:pointer;">
                                 <td>${ausencias.data_inicio}</td>
                                 <td>${ausencias.data_fim}</td>
@@ -623,11 +636,13 @@
                                 <td>${ausencias.observacao}</td>
                                 <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencia.idausencia})">Excluir</button></td>
             </tr>`;
-            });
-            tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
-        } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar ausêsncias");
+                });
+                tabela += `</tbody></table>`;
+                document.getElementById('resultadoAusencias').innerHTML = tabela;
+            } catch (error) {
+                 //mostrarMensagemNaTela("Erro ao listar ausências");
+                 mostrarMensagemNaTela(error.value,2);
+            }
         }
     }
     async function excluirAusencia(idausencia) {
@@ -636,10 +651,18 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Ausência programada excluída com sucesso');
+            mostrarMensagemNaTela(texto || 'Ausência programada excluída com sucesso',2);
         } catch (error) {
-            mostrarMensagemNaTela(error);
+            mostrarMensagemNaTela(error, 2);
         }
+    }
+    async function cancelarAusencia(idUsuario) {
+        listarAusencias(idUsuario);
+        document.getElementById('combotipo').value = "";
+        document.getElementById('dataInicio').value = "";
+        document.getElementById('dataFinal').value = "";
+        document.getElementById('observacao').value = "";
+        document.getElementById('status').value = "";
     }
 </script>
 </body>

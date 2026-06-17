@@ -12,5 +12,6 @@ public class TipoAusencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_tipo_ausencia;
-    private String tipo_ausencia;
+    @Column(name="desc_tipo_ausencia")
+    private String desc_tipo_ausencia;
 }

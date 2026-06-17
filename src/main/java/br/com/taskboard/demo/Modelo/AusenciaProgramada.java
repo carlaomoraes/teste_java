@@ -19,7 +19,7 @@ public class AusenciaProgramada {
     @JoinColumn(name = "idusuario")
     private Usuario idusuario;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idtipoausencia")
+    @JoinColumn(name = "id_tipo_ausencia")
     private TipoAusencia tipoausencia;
     @Column(name = "data_inicio") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
     private Timestamp dataInicio;
@@ -31,9 +31,4 @@ public class AusenciaProgramada {
     private String status;
     @Column(name = "data_cadastro") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
     private Timestamp dataCadastro;
-
-
-
-
-
 }

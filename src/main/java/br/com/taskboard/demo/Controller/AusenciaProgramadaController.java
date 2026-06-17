@@ -1,9 +1,10 @@
 package br.com.taskboard.demo.Controller;
 
 import br.com.taskboard.demo.Modelo.AusenciaProgramada;
+import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Respository.AusenciaProgramadaRepository;
-import br.com.taskboard.demo.Respository.EpicoRepository;
 import br.com.taskboard.demo.Service.AusenciaProgramadaService;
+import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -19,14 +20,12 @@ public class AusenciaProgramadaController {
     @Autowired
     private AusenciaProgramadaService service;
 
-    @Autowired
-    private AusenciaProgramadaRepository ausenciaProgramadaRepository;
-
     // BUSCAR POR ID
     @GetMapping("/{idAusenciaProgramada}")
-    public ResponseEntity<?> buscarPorId(@PathVariable int idAusenciaProgramada) {
+    public ResponseEntity<?> buscarPorId(@PathVariable Long idAusenciaProgramada) {
         try {
-            AusenciaProgramada AusenciaProgramada = service.buscarPorId(idAusenciaProgramada);
+            AusenciaProgramada AusenciaProgramada = service.buscarPorId(
+                    idAusenciaProgramada);
             return ResponseEntity.ok().body(AusenciaProgramada);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Ausência programada não encontrada");
@@ -55,7 +54,7 @@ public class AusenciaProgramadaController {
 
     // EXCLUIR
     @DeleteMapping("/excluir/{idAusenciaProgramada}")
-    public ResponseEntity<String> excluir(@PathVariable int idAusenciaProgramada) {
+    public ResponseEntity<String> excluir(@PathVariable Long idAusenciaProgramada) {
         String Messagem = String.format("Não é possível excluir esta %s pois ela está vinculado %s.",Long.toString(idAusenciaProgramada),"Sprint");
         try {
             service.excluir(idAusenciaProgramada);
@@ -63,5 +62,10 @@ public class AusenciaProgramadaController {
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.ok().body(Messagem);
         }
+    }
+    //PREENCHE A ABA AUSENCIAS PROGRAMADAS NO CADASTRO DE USUARIOS
+    @GetMapping("/usuario/{idUsuario}")
+    public List<AusenciaProgramada> buscarPorIdUsuario(@PathVariable Long idUsuario) {
+            return service.listarAuasenciaPorUsuario(idUsuario);
     }
 }
