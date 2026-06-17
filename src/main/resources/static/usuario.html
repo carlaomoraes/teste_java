@@ -324,13 +324,13 @@
         <input type="text" id="login" placeholder="Login">
         <input type="text" id="email" placeholder="E-mail">
         <input type="password" id="senha" placeholder="Senha"><br>
-        <label for="comboPapel">Papel:</label>
         <select id="comboPapel">
             <option value="">-- Selecione o papel do usuário --</option>
         </select>
-        <input type="checkbox" id="alterasenha"><label>Altera senha no próximo login</label>
-        <input type="checkbox" id="ativo"> <label>Usuário Ativo</label>
-
+        <label class="checkbox-group">
+            <input type="checkbox" id="alterasenha" value="0">Altera senha no próximo login ?
+            <input type="checkbox" id="ativo" value="1"> Usuário Ativo
+        </label>
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
             <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
@@ -348,7 +348,7 @@
         <select id="combotipo">
             <option value="">-- Selecione um tipo de ausência --</option>
         </select>
-        <label>Obseração:</label> <input type="text" id="observacao">
+        <label>Observação:</label> <input type="text" id="observacao">
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn"  onclick="salvarAusencias()">Salvar</button>
             <button type="button" class="btn" onclick="cancelearAusencias()">Cancelar</button>
@@ -389,7 +389,6 @@
         const senha = document.getElementById('senha').value;
         const email = document.getElementById('email').value;
         const alterasenha = document.getElementById('alterasenha').value;
-
         const usuario = {
             idusuario: idusuario || null,
             nome: nome || null,
@@ -409,12 +408,10 @@
             const data = await response.json();
             listarUsuarios();
             limpaFormulario();
-
         } catch (error) {
             mostrarMensagemNaTela(error);
         }
     }
-
     async function buscarPorLinha(id) {
         try {
             const response = await fetch(`${API_USUARIOS}/${id}`);
@@ -431,7 +428,6 @@
             mostrarMensagemNaTela(error);
         }
     }
-
     async function listarUsuarios() {
         try {
             const response = await fetch(`${API_USUARIOS}/listar`);
@@ -450,9 +446,7 @@
                 </thead>
                 <tbody>
         `;
-
             data.forEach(usuario => {
-
                 tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
                                 style="cursor:pointer;">
                                 <td>${usuario.idusuario}</td>
@@ -469,8 +463,6 @@
             mostrarMensagemNaTela("Erro ao listar usuários");
         }
     }
-
-
     async function excluirUsuario(idusuario) {
         try {
             const response = await fetch(`${API_USUARIOS}/excluir/${idusuario}`, {
@@ -548,7 +540,7 @@
                 const opcao = document.createElement('option');
                 opcao.value = ausencia.id_tipo_ausencia;
                 opcao.textContent = ausencia.desc_tipo_ausencia;
-                comboEpico.appendChild(opcao);
+                combotipo.appendChild(opcao);
             });
         } catch (error) {
             console.error("Erro ao carregar épicos:", error);
@@ -576,9 +568,7 @@
                 </thead>
                 <tbody>
         `;
-
             data.forEach(ausencias => {
-
                 tabela += `<tr onclick="buscarPorLinha(${ausencias.idausencia})"
                                 style="cursor:pointer;">
                                 <td>${ausencias.data_inicio}</td>

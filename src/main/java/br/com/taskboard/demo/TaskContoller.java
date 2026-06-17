@@ -6,11 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class TaskboardContoller {
+public class TaskContoller {
 
     private final UsuarioService usuarioService;
 
-    public TaskboardContoller(UsuarioService usuarioService) {
+    public TaskContoller(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
