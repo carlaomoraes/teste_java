@@ -212,9 +212,10 @@
     }
 //------------------COMBO LIDER
     async function carregarLideres() {
-
         const response = await await fetch(`${API_USUARIOS}/listar`);
         const usuarios = await response.json();
+        console.log(usuarios);
+
         usuarios.forEach(usuario => {
             const option = document.createElement("option");
             option.value = usuario.idUsuario;
@@ -222,8 +223,6 @@
             combolider.appendChild(option);
         });
     }
-
-    document.addEventListener("DOMContentLoaded", carregarLideres);
   // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
         carregarLideres();
