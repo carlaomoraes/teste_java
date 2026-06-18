@@ -12,6 +12,7 @@ public interface AusenciaProgramadaUsuarioRepository extends JpaRepository<Ausen
     @Query("""
        select a
        from AusenciaProgramada a
+       join fetch a.tipoausencia
        where a.idusuario.idusuario = :idusuario
        """)
     List<AusenciaProgramada> buscarPorUsuario(

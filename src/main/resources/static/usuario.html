@@ -365,6 +365,8 @@
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_AUSENCIAS = 'http://localhost:8080/ausencias';
     const API_PAPEL = 'http://localhost:8080/papel';
+    const API_TIPO_AUSENCIAS = 'http://localhost:8080/tipo_ausencia';
+
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
         const conteudos = document.querySelectorAll('.conteudo-aba');
@@ -390,7 +392,7 @@
     async function carregarTipoAusencia() {
         const combotipo = document.getElementById("combotipo");
         try {
-            const resposta = await fetch(`${API_AUSENCIAS}/listar`);
+            const resposta = await fetch(`${API_TIPO_AUSENCIAS}/listar`);
             const ausencias = await resposta.json();
             ausencias.forEach(ausencia => {
                 const opcao = document.createElement('option');
@@ -463,6 +465,7 @@
             document.getElementById('email').value = usuario.email;
             document.getElementById('senha').value = usuario.senha;
             document.getElementById('alterasenha').value = usuario.alterasenha;
+            sessionStorage.setItem('idusuario',usuario.idusuario);
             listarAusencias(usuario.idusuario);
 
         } catch (error) {
@@ -573,7 +576,8 @@
             alert(mensagem); // Feedback visual simples caso não tenha o container
         }
     }
-    async function salvarAusencias(idUsuario) {
+    async function salvarAusencias() {
+        const idUsuario = sessionStorage.getItem('idUsuario');
         const idtipoausencia = document.getElementById('combotipo').value;
         const dataInicio = document.getElementById('dataInicio').value;
         const dataFinal = document.getElementById('dataFinal').value;
@@ -602,19 +606,20 @@
     }
 
     async function listarAusencias(idUsuario) {
-        if (idUsuario != null) {
-            try {
-                const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
-                if(!response.ok) {
-                    mostrarMensagemNaTela("Erro ao listar ausências!",2);
-                    return;
-                }
-                const ausencias = await response.json();
-                if(!ausencias || !ausencias.length) {
-                    mostrarMensagemNaTela("Nenhuma ausência cadastrada!",2);
-                    return;
-                }
-                let tabela = `
+        const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
+        const data = await response.json();
+        alert(data);
+        container = document.getElementById("resultadoAusencias");
+        container.textContent = data;
+        if(data.length === 0){
+            mostrarMensagemNaTela("Não há ausência cadastrada",2);
+            return;
+        }
+        if(!response.ok) {
+            mostrarMensagemNaTela("Erro ao listar ausências!",2);
+            return;
+        }
+        let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
@@ -627,23 +632,19 @@
                 </thead>
                 <tbody>
         `;
-                data.forEach(ausencias => {
-                    tabela += `<tr onclick="buscarPorLinha(${ausencias.idausencia})"
+        data.forEach(ausencias => {
+            tabela += `<tr onclick="buscarPorLinha(${ausencias.idausencia})"
                                 style="cursor:pointer;">
                                 <td>${ausencias.data_inicio}</td>
                                 <td>${ausencias.data_fim}</td>
-                                <td>${ausencias.tipo_ausencia}</td>
-                                <td>${ausencias.observacao}</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
                                 <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencia.idausencia})">Excluir</button></td>
             </tr>`;
-                });
-                tabela += `</tbody></table>`;
-                document.getElementById('resultadoAusencias').innerHTML = tabela;
-            } catch (error) {
-                 //mostrarMensagemNaTela("Erro ao listar ausências");
-                 mostrarMensagemNaTela(error.value,2);
-            }
-        }
+        });
+        tabela += `</tbody></table>`;
+        document.getElementById('resultadoAusencias').innerHTML = tabela;
+
     }
     async function excluirAusencia(idausencia) {
         try {

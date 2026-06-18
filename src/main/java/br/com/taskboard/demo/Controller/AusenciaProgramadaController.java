@@ -1,8 +1,9 @@
 package br.com.taskboard.demo.Controller;
 
 import br.com.taskboard.demo.Modelo.AusenciaProgramada;
-import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Respository.AusenciaProgramadaRepository;
+import br.com.taskboard.demo.Respository.TipoAusenciaRepository;
+import br.com.taskboard.demo.Respository.UsuarioRepository;
 import br.com.taskboard.demo.Service.AusenciaProgramadaService;
 import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,13 @@ public class AusenciaProgramadaController {
 
     @Autowired
     private AusenciaProgramadaService service;
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    private TipoAusenciaRepository tipoAusenciaRepository;
+    private AusenciaProgramadaRepository ausenciaProgramadaRepository;
 
     // BUSCAR POR ID
     @GetMapping("/{idAusenciaProgramada}")
@@ -34,8 +42,10 @@ public class AusenciaProgramadaController {
 
     // SALVAR
     @PostMapping("/salvar")
-    public AusenciaProgramada salvar(@RequestBody AusenciaProgramada AusenciaProgramada) {
-        return service.salvar(AusenciaProgramada);
+    public ResponseEntity<?> salvar(@RequestBody AusenciaProgramada ausencia) {
+        ausenciaProgramadaRepository.save(ausencia);
+
+         return ResponseEntity.ok().build();
     }
 
     // ATUALIZAR
