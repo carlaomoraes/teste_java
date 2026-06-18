@@ -5,9 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Grid das Ausencias programadas">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EquipeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Equipe.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/EquipeUsuario.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EquipeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EquipeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/equipe.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/AusenciaProgramadaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/AusenciaProgramadaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaUsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/AusenciaProgramada.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/AusenciaProgramada.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Epico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Epico.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/AusenciaProgramadaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/AusenciaProgramadaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/estilos.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/estilos.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -105,7 +119,7 @@
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/test/java/br/com/taskboard/demo/Controller",
-    "last_opened_file_path": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/imagens",
+    "last_opened_file_path": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -126,9 +140,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static" />
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static\imagens" />
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\templates" />
-      <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\java\br\com\taskboard\demo" />
@@ -145,11 +159,11 @@
       <recent name="br.com.taskboard.demo.DAO" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="br.com.taskboard.demo.DTO" />
-      <recent name="br.com.taskboard.demo.Respository" />
       <recent name="br.com.taskboard.demo.Controller" />
       <recent name="br.com.taskboard.demo.Service" />
+      <recent name="br.com.taskboard.demo.Respository" />
       <recent name="br.com.taskboard.demo.Modelo" />
+      <recent name="br.com.taskboard.demo.DTO" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TaskControllerApplication">
@@ -367,7 +381,8 @@
       <workItem from="1781715479652" duration="8576000" />
       <workItem from="1781725537231" duration="3302000" />
       <workItem from="1781730473395" duration="1441000" />
-      <workItem from="1781739315005" duration="4607000" />
+      <workItem from="1781739315005" duration="4683000" />
+      <workItem from="1781789866109" duration="21089000" />
     </task>
     <task id="LOCAL-00001" summary="Commit #2">
       <option name="closed" value="true" />
@@ -689,7 +704,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781726285512</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Grid das Ausencias programadas">
+      <option name="closed" value="true" />
+      <created>1781788272606</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1781788272606</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -805,24 +828,36 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>468</line>
+          <line>465</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>609</line>
+          <line>612</line>
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>580</line>
-          <option name="timeStamp" value="48" />
+          <line>389</line>
+          <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>392</line>
+          <line>576</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="53" />
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
+          <line>681</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/resources/static/equipe.html</url>
+          <line>73</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="58" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/br/com/taskboard/demo/DemoApplicationTests.java</url>
@@ -843,6 +878,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/SprintController.java</url>
           <line>34</line>
           <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/AusenciaProgramadaController.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

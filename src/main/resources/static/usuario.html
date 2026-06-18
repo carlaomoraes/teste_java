@@ -309,15 +309,12 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <h1>Usuários - TaskController 1.0</h1>
-
     <div class="abas-container">
         <button class="aba-botao ativa" onclick="alternarAba(event, 'usuarios')">Usuários</button>
         <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Ausências programadas</button>
     </div>
-
     <div id="usuarios" class="conteudo-aba ativo">
         <input type="number" name="idusuario" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
         <input type="text" id="nome" placeholder="Nome do usuário">
@@ -343,7 +340,7 @@
     <div id="ausencias" class="conteudo-aba">
         <h3>Ausências programadas</h3>
         <label>Data início:</label> <input type="date" id="dataInicio">
-        <label>Data Final:</label> <input type="date" id="dataFinal">
+        <label>Data Final:</label> <input type="date" id="data_fim">
         <label for="combotipo">Tipo de ausência:</label>
         <select id="combotipo">
             <option value="">-- Selecione um tipo de ausência --</option>
@@ -427,32 +424,32 @@
         carregarPapel();
     });
     async function salvarUsuario(idusuario) {
-        const nome = document.getElementById('nome').value;
-        const login = document.getElementById('login').value;
-        const senha = document.getElementById('senha').value;
-        const email = document.getElementById('email').value;
-        const alterasenha = document.getElementById('alterasenha').value;
-        const usuario = {
-            idusuario: idusuario || null,
-            nome: nome || null,
-            login: login || null,
-            senha: senha || null,
-            email: email || null,
-            alterasenha: alterasenha,
-        };
-        try {
-            const response = await fetch(`${API_USUARIOS}/salvar`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(usuario)
-            });
-            const data = await response.json();
-            listarUsuarios();
-            //limpaFormulario();
-        } catch (error) {
-            mostrarMensagemNaTela(error,1);
+        if(validaEntrada(1)) {
+            const nome = document.getElementById('nome').value;
+            const login = document.getElementById('login').value;
+            const senha = document.getElementById('senha').value;
+            const email = document.getElementById('email').value;
+            const alterasenha = document.getElementById('alterasenha').value;
+            const usuario = {
+                idusuario: idusuario || null,
+                nome: nome || null,
+                login: login || null,
+                senha: senha || null,
+                email: email || null,
+                alterasenha: alterasenha,
+            };
+            try {
+                const response = await fetch(`${API_USUARIOS}/salvar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(usuario)
+                });
+                const data = await response.json();
+            } catch (error) {
+                mostrarMensagemNaTela(error,1);
+            }
         }
     }
     async function buscarUsuarioPorLinha(id) {
@@ -576,43 +573,59 @@
             alert(mensagem); // Feedback visual simples caso não tenha o container
         }
     }
-    async function salvarAusencias() {
-        const idUsuario = sessionStorage.getItem('idUsuario');
-        const idtipoausencia = document.getElementById('combotipo').value;
-        const dataInicio = document.getElementById('dataInicio').value;
-        const dataFinal = document.getElementById('dataFinal').value;
-        const observacao = document.getElementById('observacao').value;
-        const status = document.getElementById('status').value;
-        const ausencias = {
-            idusuario: idUsuario || null,
-            idtipoausencia: idtipoausencia || null,
-            dataInicio: dataInicio || null,
-            dataFinal: dataFinal || null,
-            observacao: observacao || null,
-            status: status,
-        };
-        try {
-            const response = await fetch(`${API_AUSENCIAS}/salvar`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+    async function salvarAusencias(idUsuario) {
+        if(validaEntrada(2)) {
+            const idtipoausencia = document.getElementById('combotipo').value;
+            const dataInicio = document.getElementById('dataInicio').value;
+            const data_fim = document.getElementById('data_fim').value;
+            const observacao = document.getElementById('observacao').value;
+            const status = document.getElementById('status').value;
+            const ausencias = {
+                idusuario: {
+                    idusuario: idUsuario
                 },
-                body: JSON.stringify(ausencias)
-            });
-            const data = await response.json();
-        } catch (error) {
-            mostrarMensagemNaTela(error, 2);
+                tipoausencia: {
+                    idtipoausencia: idtipoausencia
+                },
+                data_inicio: dataInicio || null,
+                data_fim: data_fim || null,
+                observacao: observacao || null,
+                status: status
+            };
+            console.log(JSON.stringify(ausencias, null, 2));
+            try {
+                const response = await fetch(`${API_AUSENCIAS}/salvar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(ausencias)
+                });
+                const data = await response.json();
+            } catch (error) {
+                mostrarMensagemNaTela(error, 2);
+            }
         }
     }
 
     async function listarAusencias(idUsuario) {
         const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
         const data = await response.json();
-        alert(data);
         container = document.getElementById("resultadoAusencias");
         container.textContent = data;
         if(data.length === 0){
-            mostrarMensagemNaTela("Não há ausência cadastrada",2);
+            let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                    <thead>
+                        <tr>
+                            <th class="table-header">Data início</th>
+                            <th class="table-header">Data final</th>
+                            <th class="table-header">Tipo ausência</th>
+                            <th class="table-header">Obeservação</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadoAusencias').innerHTML = tabela;
             return;
         }
         if(!response.ok) {
@@ -664,6 +677,42 @@
         document.getElementById('dataFinal').value = "";
         document.getElementById('observacao').value = "";
         document.getElementById('status').value = "";
+    }
+    async function validaEntrada(aba) {
+        if (aba == 1) {
+            const invalido =
+                document.getElementById('nome').value === "" ||
+                document.getElementById('login').value === "" ||
+                document.getElementById('email').value === "" ||
+                document.getElementById('senha').value === "" ||
+                document.getElementById('comboPapel').value === "";
+            if (invalido) {
+                mostrarMensagemNaTela("Todos os campos devem estar preenchidos", 1);
+                return false;
+            }
+        } else {
+            const invalido =
+                document.getElementById('combotipo').value === "" ||
+                document.getElementById('dataInicio').value === "" ||
+                document.getElementById('dataFinal').value === "" ||
+                document.getElementById('observacao').value.trim() === "" ||
+                document.getElementById('status').value === "";
+            if (invalido) {
+                mostrarMensagemNaTela("Todos os campos devem estar preenchidos", 1);
+                return false;
+            }
+
+            // validação adicional das datas
+            const dataInicio = document.getElementById('dataInicio').value;
+            const dataFinal = document.getElementById('dataFinal').value;
+
+            if (new Date(dataFinal) < new Date(dataInicio)) {
+                mostrarMensagemNaTela("Data final não pode ser menor que a data inicial", 1);
+                return false;
+            }
+        }
+
+        return true;
     }
 </script>
 </body>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskController 1.0</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Equipes - TaskController 1.0</h1>
+    <div class="abas-container">
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'dados-gerais')">Dados Gerais</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">Integrantes</button>
+    </div>
+    <div id="dados-gerais" class="conteudo-aba ativo">
+        <input type="number" name="iduequipe" id="idequipe" placeholder="ID da equipe (Deixe vazio para novo)">
+        <input type="text" id="nome" placeholder="Nome da equipe">
+        <input type="text" id="Descrição" placeholder="Descrição da equipe">
+
+        <label for="combolider">Líder</label>
+        <select id="combolider">
+            <option value="">Selecione...</option>
+        </select>
+        <label class="checkbox-group">
+            <input type="checkbox" id="ativo" value="1"> Equipe ativa
+        </label>
+
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn" onclick="salvarEquipe();">Salvar</button>
+            <button type="button" class="btn" onclick="listarEquipe();">Listar</button>
+            <button type="button" class="btn" onclick="buscarEquipe();">Buscar por ID</button>
+            <button type="button" class="btn" onclick="history.back();">Voltar</button>
+        </div>
+        <div id="resultado"></div>
+
+    </div>
+
+    <div id="equipe" class="conteudo-aba">
+        <h3>Membros do Time</h3>
+        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
+            • Carlos Eduardo Barboza Moraes - <a href="mailto:carlaomoraes@hotmail.com">carlaomoraes@hotmail.com</a>
+
+        </p>
+    </div>
+</div>
+
+<script>
+    function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
+    }
+    const API = 'http://localhost:8080/equipes';
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+
+    async function salvarEquipe() {
+        const idequipe = document.getElementById('idequipe').value;
+        const nomeequipe = document.getElementById('nomeequipe').value;
+        const descricao = document.getElementById('descricao').value;
+        if(document.getElementById('ativa').checked) {
+            ativa = 1;
+        }
+        else {
+            ativa = 0;
+        }
+
+        const Equipe = {
+            idequipe: idequipe || null,
+            nomeequipe: nomeequipe || null,
+            descricao: descricao || null,
+            ativa: ativa || null,
+        };
+        try {
+            const response = await fetch(`${API}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Equipe)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela('Equipe gravada com sucesso');
+            limpaFormulario();
+            listarEquipe();
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+        }
+    }
+    async function buscarEquipe() {
+        const idEquipe = document.getElementById('idequipe').value;
+        try {
+            const response = await fetch(`${API}/${idEquipe}`);
+            const data = await response.json();
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Nome</th>
+                        <th class="table-header">Observação</th>
+                        <th class="table-header">Ativa</th>
+                        <th class="table-header">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(Equipe => {
+                tabela += `<tr onclick="buscarPorLinha(${Equipe.idequipe})"
+                                style="cursor:pointer;">
+                                <td>${Equipe.nomeequipe}</td>
+                                <td>${Equipe.descricao}</td>
+                                <td>${Equipe.atvia} ? '✅ Sim' : '❌ Não'}</td>
+                                <td> <button type="button" class="btn" onclick="excluirEquipe(${Equipe.idEquipe})">Excluir</button></td>
+            </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao buscar: " + error.message);
+        }
+    }
+    async function listarEquipe() {
+        try {
+            const response = await fetch(`${API}/listar`);
+            const data = await response.json();
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Nome da equipe</th>
+                        <th class="table-header">Descrição</th>
+                        <th class="table-header">Ativa</th>
+                        <th class="table-header">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(Equipe => {
+                tabela += `<tr onclick="buscarPorLinha(${Equipe.idequipe})"
+                                style="cursor:pointer;">
+                                <td>${Equipe.idequipe}</td>
+                                <td>${Equipe.nomeequipe}</td>
+                                <td>${Equipe.descricao}</td>
+                                <td>${Equipe.ativa ? '✅ Sim' : '❌ Não'}</td>
+                                <td> <button type="button" class="btn" onclick="excluirEquipe(${Equipe.idEquipe})">Excluir</button></td>
+            </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado').innerHTML = tabela;
+        } catch (error) {
+                mostrarMensagemNaTela(error.message);
+        }
+    }
+
+    async function buscarPorLinha(id) {
+        try {
+            const response = await fetch(`${API}/${id}`);
+            const Equipe = await response.json();
+            document.getElementById('idEquipe').value = Equipe.idequipe;
+            document.getElementById('descEquipe').value = Equipe.nomeequipe;
+            document.getElementById('obsEquipe').value = Equipe.descricao;
+            // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+            document.getElementById('ativa').checked = Equipe.ativa || 0;
+
+        } catch (error) {
+            document.getElementById('resultado').innerText = error;
+        }
+    }
+    async function excluirEquipe(idEquipe) {
+        try {
+
+            const response = await fetch(`${API}/excluir/${idEquipe}`, {
+                method: 'DELETE'
+            });
+
+            const texto = await response.text();
+
+            document.getElementById('resultado').innerText = texto || 'Equipe excluído com sucesso';
+            limpaFormulario();
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao excluir: " + error.message);
+        }
+    }
+    async function limpaFormulario() {
+        document.getElementById('idEquipe').value = "";
+        document.getElementById('descEquipe').value = "";
+        document.getElementById('obsEquipe').value = "";
+        document.getElementById('ativa').value = false;
+    }
+    function mostrarMensagemNaTela(mensagem) {
+        const container = document.getElementById("resultado");
+        if (container) {
+            container.innerHTML = `<p style="color:red;">${mensagem}</p>`;
+        } else {
+            alert(mensagem);
+        }
+    }
+//------------------COMBO LIDER
+    async function carregarLideres() {
+
+        const response = await await fetch(`${API_USUARIOS}/listar`);
+        const usuarios = await response.json();
+        usuarios.forEach(usuario => {
+            const option = document.createElement("option");
+            option.value = usuario.idUsuario;
+            option.textContent = usuario.nome;
+            combolider.appendChild(option);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", carregarLideres);
+  // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarLideres();
+    });
+</script>
+
+</body>
+</html>

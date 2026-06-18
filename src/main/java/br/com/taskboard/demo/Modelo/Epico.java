@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Epico {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idepico")

@@ -1,17 +1,14 @@
 package br.com.taskboard.demo.Controller;
 
 import br.com.taskboard.demo.Modelo.AusenciaProgramada;
-import br.com.taskboard.demo.Respository.AusenciaProgramadaRepository;
-import br.com.taskboard.demo.Respository.TipoAusenciaRepository;
-import br.com.taskboard.demo.Respository.UsuarioRepository;
 import br.com.taskboard.demo.Service.AusenciaProgramadaService;
-import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -20,13 +17,6 @@ public class AusenciaProgramadaController {
 
     @Autowired
     private AusenciaProgramadaService service;
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    private TipoAusenciaRepository tipoAusenciaRepository;
-    private AusenciaProgramadaRepository ausenciaProgramadaRepository;
 
     // BUSCAR POR ID
     @GetMapping("/{idAusenciaProgramada}")
@@ -43,9 +33,8 @@ public class AusenciaProgramadaController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody AusenciaProgramada ausencia) {
-        ausenciaProgramadaRepository.save(ausencia);
-
-         return ResponseEntity.ok().build();
+        service.salvar(ausencia);
+        return ResponseEntity.ok().build();
     }
 
     // ATUALIZAR

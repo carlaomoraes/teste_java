@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -32,6 +34,8 @@ public class Usuario {
     @Column(name = "alterasenha")
     private int alterasenha;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<EquipeUsuario> equipes;
 
     // Getters e Setters
 

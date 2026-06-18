@@ -6,6 +6,7 @@ import lombok.Setter;
 import jakarta.persistence.Id;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -22,13 +23,17 @@ public class AusenciaProgramada {
     @JoinColumn(name = "id_tipo_ausencia")
     private TipoAusencia tipoausencia;
     @Column(name = "data_inicio") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
-    private Timestamp dataInicio;
+    private LocalDate data_inicio;
     @Column(name = "data_fim") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
-    private Timestamp dataFim;
+    private LocalDate data_fim;
     @Column(name="observacao")
     private String observacao;
     @Column(name="status")
     private String status;
     @Column(name = "data_cadastro") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
-    private Timestamp dataCadastro;
+    private LocalDate data_cadastro;
+    @PrePersist
+    public void prePersist() {
+        this.data_cadastro = LocalDate.now();
+    }
 }
