@@ -321,7 +321,7 @@
         <input type="text" id="login" placeholder="Login">
         <input type="text" id="email" placeholder="E-mail">
         <input type="password" id="senha" placeholder="Senha"><br>
-        <select id="comboPapel">
+        <select id="comboPapel" name="comboPapel">
             <option value="">-- Selecione o papel do usuário --</option>
         </select>
         <label class="checkbox-group">
@@ -339,13 +339,13 @@
 
     <div id="ausencias" class="conteudo-aba">
         <h3>Ausências programadas</h3>
-        <label>Data início:</label> <input type="date" id="dataInicio">
-        <label>Data Final:</label> <input type="date" id="data_fim">
+        <label for="datainicial">Data início:</label> <input type="date" id="datainicial" name="datainicial">
+        <label for="datafinal">Data Final:</label> <input type="date" id="datafinal" name="datafinal">
         <label for="combotipo">Tipo de ausência:</label>
         <select id="combotipo">
             <option value="">-- Selecione um tipo de ausência --</option>
         </select>
-        <label>Observação:</label> <input type="text" id="observacao">
+        <label for="observacao">Observação:</label> <input type="text" id="observacao">
         <label class="checkbox-group">
             <input type="checkbox" id="status" value="0">Ativa ?
         </label>
@@ -559,7 +559,7 @@
         document.getElementById('email').value = "";
         document.getElementById('senha').value = "";
     }
-    // Função de exemplo para injetar a mensagem no HTML
+    // Função para injetar a mensagem no HTML
     function mostrarMensagemNaTela(mensagem, aba) {
         if(aba == 1){
             container = document.getElementById("resultado");
@@ -576,8 +576,8 @@
     async function salvarAusencias(idUsuario) {
         if(validaEntrada(2)) {
             const idtipoausencia = document.getElementById('combotipo').value;
-            const dataInicio = document.getElementById('dataInicio').value;
-            const data_fim = document.getElementById('data_fim').value;
+            const datainicial = document.getElementById('datainicial').value;
+            const datafinal = document.getElementById('datafinal').value;
             const observacao = document.getElementById('observacao').value;
             const status = document.getElementById('status').value;
             const ausencias = {
@@ -587,8 +587,8 @@
                 tipoausencia: {
                     idtipoausencia: idtipoausencia
                 },
-                data_inicio: dataInicio || null,
-                data_fim: data_fim || null,
+                datainicial: datainicial || null,
+                datafinal: datafinal || null,
                 observacao: observacao || null,
                 status: status
             };
@@ -617,7 +617,7 @@
             let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                     <thead>
                         <tr>
-                            <th class="table-header">Data início</th>
+                            <th class="table-header">Data inícial</th>
                             <th class="table-header">Data final</th>
                             <th class="table-header">Tipo ausência</th>
                             <th class="table-header">Obeservação</th>
@@ -636,7 +636,7 @@
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
-                        <th class="table-header">Data início</th>
+                        <th class="table-header">Data inicial</th>
                         <th class="table-header">Data final</th>
                         <th class="table-header">Tipo ausência</th>
                         <th class="table-header">Obeservação</th>
@@ -673,10 +673,10 @@
     async function cancelarAusencia(idUsuario) {
         listarAusencias(idUsuario);
         document.getElementById('combotipo').value = "";
-        document.getElementById('dataInicio').value = "";
-        document.getElementById('dataFinal').value = "";
+        document.getElementById('datainicial').value = "";
+        document.getElementById('datafinal').value = "";
         document.getElementById('observacao').value = "";
-        document.getElementById('status').value = "";
+        document.getElementById('status').value = 0;
     }
     async function validaEntrada(aba) {
         if (aba == 1) {
@@ -693,20 +693,20 @@
         } else {
             const invalido =
                 document.getElementById('combotipo').value === "" ||
-                document.getElementById('dataInicio').value === "" ||
-                document.getElementById('dataFinal').value === "" ||
+                document.getElementById('datainicial').value === "" ||
+                document.getElementById('datafinal').value === "" ||
                 document.getElementById('observacao').value.trim() === "" ||
-                document.getElementById('status').value === "";
+                document.getElementById('status').value === 0;
             if (invalido) {
                 mostrarMensagemNaTela("Todos os campos devem estar preenchidos", 1);
                 return false;
             }
 
             // validação adicional das datas
-            const dataInicio = document.getElementById('dataInicio').value;
-            const dataFinal = document.getElementById('dataFinal').value;
+            const datainicial = document.getElementById('datainicial').value;
+            const datafinal = document.getElementById('datafinal').value;
 
-            if (new Date(dataFinal) < new Date(dataInicio)) {
+            if (new Date(datafinal) < new Date(datainicial)) {
                 mostrarMensagemNaTela("Data final não pode ser menor que a data inicial", 1);
                 return false;
             }

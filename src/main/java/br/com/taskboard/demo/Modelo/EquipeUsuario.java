@@ -19,4 +19,10 @@ public class EquipeUsuario {
     private Equipe equipe;
 
     // getters e setters
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
+    }
 }

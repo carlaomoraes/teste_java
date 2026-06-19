@@ -1,6 +1,7 @@
 package br.com.taskboard.demo.Service;
 
 import br.com.taskboard.demo.Modelo.Equipe;
+import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Respository.EquipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,5 @@ public class EquipeService {
     public Equipe buscarPorId(Long idEquipe) {
         return repository.findById(idEquipe).orElseThrow(() -> new RuntimeException("Equipe não encontrada"));
     }
+
 }

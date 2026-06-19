@@ -147,11 +147,9 @@
     }
     async function excluirEpico(idEpico) {
         try {
-
             const response = await fetch(`${API}/excluir/${idEpico}`, {
                 method: 'DELETE'
             });
-
             const texto = await response.text();
             document.getElementById('resultado').innerText = texto || 'Épico excluído com sucesso';
             limpaFormulario();

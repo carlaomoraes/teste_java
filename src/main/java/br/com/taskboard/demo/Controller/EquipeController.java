@@ -1,8 +1,12 @@
 package br.com.taskboard.demo.Controller;
 
+import br.com.taskboard.demo.DTO.EquipeUsuarioDTO;
 import br.com.taskboard.demo.Modelo.Equipe;
+import br.com.taskboard.demo.Modelo.EquipeUsuario;
 import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Respository.EquipeRepository;
+import br.com.taskboard.demo.Respository.EquipeUsuarioRepository;
+import br.com.taskboard.demo.Respository.UsuarioRepository;
 import br.com.taskboard.demo.Service.EquipeService;
 import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +22,16 @@ import java.util.List;
 public class EquipeController {
 
     @Autowired
-    private EquipeService service;
+    private EquipeRepository equipeRepository;
 
     @Autowired
-    private EquipeRepository equipeRepository;
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EquipeUsuarioRepository equipeUsuarioRepository;
+
+    @Autowired
+    private EquipeService service;
 
     // BUSCAR POR ID
     @GetMapping("/{idequipe}")
@@ -76,5 +86,51 @@ public class EquipeController {
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.ok().body(Messagem);
         }
+    }
+    @PostMapping("/{idEquipe}/adicionarmembros")
+    public ResponseEntity<?> adicionarMembro(
+            @PathVariable Long idEquipe,
+            @RequestBody EquipeUsuarioDTO dto) {
+
+        Equipe equipe = equipeRepository
+                .findById(idEquipe)
+                .orElseThrow();
+
+        Usuario usuario = usuarioRepository
+                .findById(dto.getIdUsuario())
+                .orElseThrow();
+
+        EquipeUsuario equipeUsuario =
+                new EquipeUsuario();
+
+        equipeUsuario.setEquipe(equipe);
+        equipeUsuario.setUsuario(usuario);
+
+        equipeUsuarioRepository.save(equipeUsuario);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{idEquipe}/membros")
+    public List<EquipeUsuario> listarMembros(
+            @PathVariable Long idEquipe){
+
+        return equipeUsuarioRepository.listarMembros(idEquipe);
+    }
+    @DeleteMapping("/{idEquipe}/membros/{idUsuario}")
+    public ResponseEntity<?> removerMembro(
+            @PathVariable Long idEquipe,
+            @PathVariable Long idUsuario) {
+
+        EquipeUsuario equipeUsuario =
+                equipeUsuarioRepository
+                        .findByEquipe_IdEquipeAndUsuario_IdUsuario(
+                                idEquipe,
+                                idUsuario)
+                        .orElseThrow();
+
+        equipeUsuarioRepository.delete(equipeUsuario);
+
+        return ResponseEntity.ok().build();
     }
 }

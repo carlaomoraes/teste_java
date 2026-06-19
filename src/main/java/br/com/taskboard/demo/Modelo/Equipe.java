@@ -22,4 +22,6 @@ public class Equipe {
 
     @OneToMany(mappedBy = "equipe")
     private List<EquipeUsuario> membros;
+
+    private String ativa;
 }
