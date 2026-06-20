@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustes nas classes para refletir as tabelas do BD">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de equipes-usuarios">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EquipeUsuarioDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EquipeUsuarioDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/EquipeUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/EquipeUsuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EquipeUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EquipeUsuarioRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/equipe.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -373,7 +368,8 @@
       <workItem from="1781739315005" duration="4683000" />
       <workItem from="1781789866109" duration="22350000" />
       <workItem from="1781823627528" duration="33027000" />
-      <workItem from="1781973456143" duration="2701000" />
+      <workItem from="1781973456143" duration="2818000" />
+      <workItem from="1781981304413" duration="729000" />
     </task>
     <task id="LOCAL-00001" summary="Commit #2">
       <option name="closed" value="true" />
@@ -727,7 +723,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781967278242</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Cadastro de equipes-usuarios">
+      <option name="closed" value="true" />
+      <created>1781980387554</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1781980387554</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -788,7 +792,8 @@
     <MESSAGE value="Grid das Ausencias programadas" />
     <MESSAGE value="Tela de equipes" />
     <MESSAGE value="Ajustes nas classes para refletir as tabelas do BD" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajustes nas classes para refletir as tabelas do BD" />
+    <MESSAGE value="Cadastro de equipes-usuarios" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de equipes-usuarios" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
