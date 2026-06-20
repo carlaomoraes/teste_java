@@ -1,6 +1,5 @@
 package br.com.taskboard.demo.Modelo;
 
-import br.com.taskboard.demo.Enuns.Prioridade;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +16,10 @@ public class Tarefa {
     @JoinColumn(name = "idestoria")
     private Estoria estoria;
     @ManyToOne
-    @JoinColumn(name="idusuario_criador")
+    @JoinColumn(name="criador")
     private Usuario criador;
     @ManyToOne
-    @JoinColumn(name="idusuario_responsavel")
+    @JoinColumn(name="responsavel")
     private Usuario responsavel;
     @Column(name = "horas_estimadas")
     private Long horas_estimadas;
@@ -28,9 +27,4 @@ public class Tarefa {
     private Long horas_gastas;
     @Column(name = "bloqueada")
     private boolean bloqueada;
-    private Prioridade prioridade;
-    @Column(name = "pontos")
-    private Long pontos;
-
-
 }

@@ -13,17 +13,11 @@ import java.time.LocalDate;
 public class Sprint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(
-            name = "sprint_seq",
-            sequenceName = "sprint_sequence_table",
-            allocationSize = 1
-    )
     private Long idsprint;
     private String descsprint;
     private LocalDate dtiniciosprint;
     private LocalDate dtfinalsprint;
     private boolean visivel;
     private boolean ativa;
-
-
+    private LocalDate dtterminosprint;
 }

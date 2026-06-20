@@ -22,6 +22,5 @@ public class Estoria {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idepico")
     private Epico idepico;
-    private Boolean bloqueado;
-
+    private Boolean bloqueada;
 }

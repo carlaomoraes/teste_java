@@ -6,10 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "equipe_usuario")
 public class EquipeUsuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idEquipeUsuario;
-
     @ManyToOne
     @JoinColumn(name = "idusuario")
     private Usuario usuario;

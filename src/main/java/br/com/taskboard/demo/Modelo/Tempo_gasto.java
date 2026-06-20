@@ -19,11 +19,11 @@ public class Tempo_gasto {
     @JoinColumn(name = "idusuario")
     private Usuario usuario;
 
-    @Column(name = "data_excucao") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
-    private Timestamp dataExecucao;
+    @Column(name = "data_execucao") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
+    private Timestamp data_execucao;
 
-    @Column(name = "hora_excucao")
-    private Timestamp horaExecucao;
+    @Column(name = "hora_execucao")
+    private Timestamp hora_execucaoo;
 
     private Long duracao; // Geralmente guardado em minutos ou horas inteiras
 }

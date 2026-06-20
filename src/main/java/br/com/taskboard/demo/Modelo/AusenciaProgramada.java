@@ -19,9 +19,6 @@ public class AusenciaProgramada {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idusuario")
     private Usuario idusuario;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tipo_ausencia")
-    private TipoAusencia tipoausencia;
     @Column(name = "data_inicio") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
     private LocalDate data_inicio;
     @Column(name = "data_fim") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
@@ -32,6 +29,10 @@ public class AusenciaProgramada {
     private String status;
     @Column(name = "data_cadastro") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
     private LocalDate data_cadastro;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipo_ausencia")
+    private TipoAusencia tipoausencia;
+
     @PrePersist
     public void prePersist() {
         this.data_cadastro = LocalDate.now();
