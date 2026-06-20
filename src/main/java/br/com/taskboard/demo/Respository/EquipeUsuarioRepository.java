@@ -2,10 +2,12 @@ package br.com.taskboard.demo.Respository;
 
 import br.com.taskboard.demo.Modelo.EquipeUsuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Long> {
     @Query("""
@@ -14,7 +16,15 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
        where eu.equipe.idequipe = :idequipe
        """)
     List<EquipeUsuario> listarMembros(Long idequipe);
-    Optional<EquipeUsuario> findByEquipe_IdEquipeAndUsuario_IdUsuario(
-            Long idequipe,
-            Long idusuario);
-}
+    @Modifying
+    @Transactional
+    @Query("""
+       delete
+       from EquipeUsuario eu
+       where eu.equipe.idequipe = :idEquipe
+       and eu.usuario.idusuario = :idUsuario
+       """)
+    void removerMembro(
+                    @Param("idEquipe") Long idEquipe,
+                    @Param("idUsuario") Long idUsuario);
+ }

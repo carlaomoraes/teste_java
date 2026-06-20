@@ -228,6 +228,7 @@
         </div>
     </div>
     <div id="equipe" class="conteudo-aba">
+        <div id="resultadoequipes"></div>
     </div>
 
     <div class="btn-group" data-toggle="buttons-radio">
@@ -291,7 +292,7 @@
             const data = await response.json();
             mostrarMensagemNaTela('Épico gravado com sucesso');
             limpaFormulario();
-            listarEpico();
+            listarEquipes();
         } catch (error) {
             mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
@@ -326,8 +327,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            document.getElementById('resultado').innerHTML =
-                `<p style="color:red;">Erro ao listar equipes</p>`;
+            mostrarMensagemNaTela("Erro ao listar: " + error.message);
         }
     }
     async function excluirEquipes(idequipe) {
@@ -350,7 +350,7 @@
         if(aba == 1){
             container = document.getElementById("resultado");
         } else {
-            container = document.getElementById("resultadoAusencias");
+            container = document.getElementById("resultadoequipes");
         }
         if (container) {
             container.textContent = mensagem;
@@ -368,9 +368,8 @@
             document.getElementById('descequipe').value = equipe.descricao;
             // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
             document.getElementById('ativa').checked = equipe.ativa || 0;
-
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela("Erro ao carregar: " + error.message);
         }
     }
 </script>

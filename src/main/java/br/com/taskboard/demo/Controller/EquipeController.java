@@ -8,7 +8,6 @@ import br.com.taskboard.demo.Respository.EquipeRepository;
 import br.com.taskboard.demo.Respository.EquipeUsuarioRepository;
 import br.com.taskboard.demo.Respository.UsuarioRepository;
 import br.com.taskboard.demo.Service.EquipeService;
-import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -53,7 +52,7 @@ public class EquipeController {
             Equipe equipeExistente = service.buscarPorId(equipe.getIdequipe());
             if (equipeExistente != null) {
                 equipeExistente.setIdequipe(equipe.getIdequipe());
-                equipeExistente.setDescricao(equipe.getDescricao());
+                equipeExistente.setDescequipe(equipe.getDescequipe());
                 equipeExistente.setNomeequipe(equipe.getNomeequipe());
                 return service.salvar(equipeExistente);
             } else {
@@ -97,7 +96,7 @@ public class EquipeController {
                 .orElseThrow();
 
         Usuario usuario = usuarioRepository
-                .findById(dto.getIdUsuario())
+                .findById(dto.getIdusuario())
                 .orElseThrow();
 
         EquipeUsuario equipeUsuario =
@@ -122,14 +121,9 @@ public class EquipeController {
             @PathVariable Long idEquipe,
             @PathVariable Long idUsuario) {
 
-        EquipeUsuario equipeUsuario =
-                equipeUsuarioRepository
-                        .findByEquipe_IdEquipeAndUsuario_IdUsuario(
-                                idEquipe,
-                                idUsuario)
-                        .orElseThrow();
-
-        equipeUsuarioRepository.delete(equipeUsuario);
+        equipeUsuarioRepository.removerMembro(
+                idEquipe,
+                idUsuario);
 
         return ResponseEntity.ok().build();
     }

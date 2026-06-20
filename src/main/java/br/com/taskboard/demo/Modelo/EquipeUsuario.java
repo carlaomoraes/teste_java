@@ -1,24 +1,26 @@
 package br.com.taskboard.demo.Modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
+import lombok.Getter;
+import lombok.Setter;
 @Entity
+@Getter
+@Setter
 @Table(name = "equipe_usuario")
 public class EquipeUsuario {
 
+    @jakarta.persistence.Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idequipeusuario;
+
     @ManyToOne
     @JoinColumn(name = "idusuario")
+    @JsonIgnoreProperties("membros")
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "idequipe")
+    @JsonIgnoreProperties("equipes")
     private Equipe equipe;
-
-    // getters e setters
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-    public void setEquipe(Equipe equipe) {
-        this.equipe = equipe;
-    }
 }
