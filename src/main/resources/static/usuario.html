@@ -350,8 +350,8 @@
             <input type="checkbox" id="status" value="0">Ativa ?
         </label>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn"  onclick="salvarAusencias(document.getElementById('idusuario').value);">Salvar</button>
-            <button type="button" class="btn" onclick="cancelarAusencia();">Cancelar</button>
+            <button type="button" class="btn"  onclick="salvarAusencias(sessionStorage.getItem('idusuario'));">Salvar</button>
+            <button type="button" class="btn" onclick="cancelarAusencia(sessionStorage.getItem('idusuario'));">Cancelar</button>
         </div>
         <div id="resultadoAusencias"></div>
     </div>
@@ -463,8 +463,7 @@
             document.getElementById('senha').value = usuario.senha;
             document.getElementById('alterasenha').value = usuario.alterasenha;
             sessionStorage.setItem('idusuario',usuario.idusuario);
-            listarAusencias(usuario.idusuario);
-
+            listarAusencias(sessionStorage.getItem('idusuario'));
         } catch (error) {
             mostrarMensagemNaTela(error,1);
         }
@@ -574,25 +573,26 @@
         }
     }
     async function salvarAusencias(idUsuario) {
+        const dataAtual = new Date();
+        console.log(dataAtual.toLocaleDateString('pt-BR'));
         if(validaEntrada(2)) {
-            const idtipoausencia = document.getElementById('combotipo').value;
+            const idtipoausencia = parseInt(document.getElementById("combotipo").value);
             const datainicial = document.getElementById('datainicial').value;
             const datafinal = document.getElementById('datafinal').value;
             const observacao = document.getElementById('observacao').value;
             const status = document.getElementById('status').value;
             const ausencias = {
+                data_inicio: datainicial || dataAtual.toLocaleDateString('pt-BR'),
+                data_fim: datafinal || dataAtual.toLocaleDateString('pt-BR'),
+                observacao: observacao || "N/A",
+                status: status || "",
                 idusuario: {
-                    idusuario: idUsuario
+                    idusuario: idUsuario,
                 },
                 tipoausencia: {
-                    idtipoausencia: idtipoausencia
+                    id_tipo_ausencia: idtipoausencia,
                 },
-                datainicial: datainicial || null,
-                datafinal: datafinal || null,
-                observacao: observacao || null,
-                status: status
             };
-            console.log(JSON.stringify(ausencias, null, 2));
             try {
                 const response = await fetch(`${API_AUSENCIAS}/salvar`, {
                     method: 'POST',
@@ -650,9 +650,9 @@
                                 style="cursor:pointer;">
                                 <td>${ausencias.data_inicio}</td>
                                 <td>${ausencias.data_fim}</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencia.idausencia})">Excluir</button></td>
+                                <td>${ausencias.tipoausencia.desc_tipo_ausencia}</td>
+                                <td>${ausencias.observacao}</td>
+                                <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencias.tipoausencia.id_tipo_ausencia})">Excluir</button></td>
             </tr>`;
         });
         tabela += `</tbody></table>`;

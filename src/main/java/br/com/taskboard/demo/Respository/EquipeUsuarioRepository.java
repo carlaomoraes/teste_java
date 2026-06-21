@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Long> {
     @Query("""
-       select eu
+       select distinct eu
        from EquipeUsuario eu
        where eu.equipe.idequipe = :idequipe
        """)

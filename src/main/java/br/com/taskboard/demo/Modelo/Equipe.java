@@ -19,9 +19,9 @@ public class Equipe {
     private String nomeequipe;
 
     private String descequipe;
-
-    @OneToMany(mappedBy = "equipe")
-    private List<EquipeUsuario> membros;
+//
+//    @OneToMany(mappedBy = "equipe")
+//    private List<EquipeUsuario> membros;
 
     private String ativa;
 }

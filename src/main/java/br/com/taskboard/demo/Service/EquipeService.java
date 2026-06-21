@@ -15,7 +15,8 @@ public class EquipeService {
     private EquipeRepository repository;
 
     public Equipe salvar(Equipe Equipe) {
-         return repository.save(Equipe);
+
+        return repository.save(Equipe);
     }
 
     public List<Equipe> listar() {

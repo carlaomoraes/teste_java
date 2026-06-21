@@ -33,6 +33,9 @@ public class AusenciaProgramadaController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody AusenciaProgramada ausencia) {
+        if(ausencia.getData_inicio().isAfter(ausencia.getData_fim())) {
+            return ResponseEntity.badRequest().body("Data final deve ser maior que a data inicial.");
+        }
         service.salvar(ausencia);
         return ResponseEntity.ok().build();
     }

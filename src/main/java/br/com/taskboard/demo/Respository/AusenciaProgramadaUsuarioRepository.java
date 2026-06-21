@@ -17,6 +17,4 @@ public interface AusenciaProgramadaUsuarioRepository extends JpaRepository<Ausen
        """)
     List<AusenciaProgramada> buscarPorUsuario(
             @Param("idusuario") Long idusuario);
-
-
     }
