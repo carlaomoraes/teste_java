@@ -593,6 +593,7 @@
                     id_tipo_ausencia: idtipoausencia,
                 },
             };
+            mostrarMensagemNaTela(ausencias, 2);
             try {
                 const response = await fetch(`${API_AUSENCIAS}/salvar`, {
                     method: 'POST',
@@ -601,6 +602,7 @@
                     },
                     body: JSON.stringify(ausencias)
                 });
+
                 const data = await response.json();
             } catch (error) {
                 mostrarMensagemNaTela(error, 2);
@@ -666,6 +668,7 @@
             });
             const texto = await response.text();
             mostrarMensagemNaTela(texto || 'Ausência programada excluída com sucesso',2);
+            listarAusencias(sessionStorage.getItem('idusuario'));
         } catch (error) {
             mostrarMensagemNaTela(error, 2);
         }
