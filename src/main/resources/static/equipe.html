@@ -228,18 +228,106 @@
         </div>
     </div>
     <div id="equipe" class="conteudo-aba">
-        <div id="resultadoequipes"></div>
-    </div>
+        <div class="membros-container">
 
+            <div class="membros-coluna">
+                <h3>Usuários disponíveis</h3>
+                <select id="usuariosDisponiveis" size="12" multiple>
+                </select>
+            </div>
+
+            <div class="membros-acoes">
+                <button type="button" class="btn" onclick="adicionarMembro()">➜</button>
+                <button type="button" class="btn" onclick="removerMembro()">⬅</button>
+            </div>
+
+            <div class="membros-coluna">
+                <h3>Membros da equipe</h3>
+                <select id="usuariosEquipe" size="12" multiple>  </select>
+            </div>
+        </div>
+    </div>
     <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn"  onclick="SalvarEquipes()">Salvar</button>
-        <button type="button" class="btn" onclick="ListarEquipes()">Listar</button>
+        <button type="button" class="btn"  onclick="salvarEquipes()">Salvar</button>
+        <button type="button" class="btn" onclick="listarEquipes()">Listar</button>
         <button type="button" class="btn" onclick="history.back()">Voltar</button>
     </div>
     <div id="resultado"></div>
-</div>
 
 <script>
+    function montaEquipes(idEquipe) {
+        async function montaEquipes(idEquipe) {
+
+            const disponiveis =
+                await fetch(`http://localhost:8080/usuarios/disponiveis/${idEquipe}`)
+                    .then(r => r.json());
+
+            const membros =
+                await fetch(`http://localhost:8080/equipes/membros/${idEquipe}`)
+                    .then(r => r.json());
+
+            const comboDisponiveis =
+                document.getElementById("usuariosDisponiveis");
+
+            const comboMembros =
+                document.getElementById("usuariosEquipe");
+
+            comboDisponiveis.innerHTML = "";
+            comboMembros.innerHTML = "";
+
+            disponiveis.forEach(usuario => {
+                comboDisponiveis.innerHTML +=
+                    `<option value="${usuario.idusuario}">
+                ${usuario.nome}
+             </option>`;
+            });
+
+            membros.forEach(usuario => {
+                comboMembros.innerHTML +=
+                    `<option value="${usuario.idusuario}">
+                ${usuario.nome}
+             </option>`;
+            });
+        }
+    }
+    async function adicionarMembro(){
+
+        const idEquipe =
+            document.getElementById("idequipe").value;
+
+        const usuario =
+            document.getElementById("usuariosDisponiveis");
+
+        if(!usuario.value) return;
+
+        await fetch(
+            `http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
+            {
+                method:"POST"
+            }
+        );
+
+        montaEquipes(idEquipe);
+    }
+    async function removerMembro(){
+
+        const idEquipe =
+            document.getElementById("idequipe").value;
+
+        const usuario =
+            document.getElementById("usuariosEquipe");
+
+        if(!usuario.value) return;
+
+        await fetch(
+            `http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
+            {
+                method:"DELETE"
+            }
+        );
+
+        montaEquipes(idEquipe);
+    }
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
         const conteudos = document.querySelectorAll('.conteudo-aba');
@@ -261,7 +349,7 @@
     }
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EQUPES = 'http://localhost:8080/equipes'
-    async function SalvarEquipes() {
+    async function salvarEquipes() {
         const idequipe = document.getElementById('idequipe').value;
         const descequipe = document.getElementById('descequipe').value;
         const obsequipe = document.getElementById('obsequipe').value;
@@ -269,7 +357,7 @@
              campoAtiva = 0;
         else campoAtiva = 1;
 
-        const equipes = {
+        const equipe = {
             idequipe: idequipe || null,
             descequipe: descequipe || null,
             obsequipe: obsequipe || null,
@@ -362,11 +450,11 @@
             document.getElementById('descequipe').value = equipe.descricao;
             // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
             document.getElementById('ativa').checked = equipe.ativa || 0;
+            montaEquipes(equipe.idequipe);
         } catch (error) {
             mostrarMensagemNaTela("Erro ao carregar: " + error.message);
         }
     }
 </script>
-
 </body>
 </html>

@@ -1,6 +1,5 @@
 package br.com.taskboard.demo.Controller;
 
-import br.com.taskboard.demo.DTO.EquipeUsuarioDTO;
 import br.com.taskboard.demo.Modelo.Equipe;
 import br.com.taskboard.demo.Modelo.EquipeUsuario;
 import br.com.taskboard.demo.Modelo.Usuario;
@@ -8,12 +7,12 @@ import br.com.taskboard.demo.Respository.EquipeRepository;
 import br.com.taskboard.demo.Respository.EquipeUsuarioRepository;
 import br.com.taskboard.demo.Respository.UsuarioRepository;
 import br.com.taskboard.demo.Service.EquipeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -89,14 +88,14 @@ public class EquipeController {
     @PostMapping("/{idEquipe}/adicionarmembros")
     public ResponseEntity<?> adicionarMembro(
             @PathVariable Long idEquipe,
-            @RequestBody EquipeUsuarioDTO dto) {
+            @PathVariable Long idUsuario) {
 
         Equipe equipe = equipeRepository
                 .findById(idEquipe)
                 .orElseThrow();
 
         Usuario usuario = usuarioRepository
-                .findById(dto.getIdusuario())
+                .findById(idUsuario)
                 .orElseThrow();
 
         EquipeUsuario equipeUsuario =
@@ -127,4 +126,11 @@ public class EquipeController {
 
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/{idEquipe}/membros_em_equipe")
+    public List<Usuario> listarMembrosEqupe(
+            @PathVariable Long idEquipe){
+
+        return equipeUsuarioRepository.buscarUsuariosPorEquipe(idEquipe);
+    }
+
 }

@@ -33,7 +33,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> listar() {
-        return repository.listarUsuarios();
+        return repository.findAll();
     }
 
     public Usuario atualizar(Usuario usuario) {

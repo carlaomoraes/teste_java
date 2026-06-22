@@ -1,6 +1,7 @@
 package br.com.taskboard.demo.Respository;
 
 import br.com.taskboard.demo.Modelo.EquipeUsuario;
+import br.com.taskboard.demo.Modelo.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,12 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
     void removerMembro(
                     @Param("idEquipe") Long idEquipe,
                     @Param("idUsuario") Long idUsuario);
- }
+
+    @Query("""
+    SELECT DISTINCT eu.usuario
+    FROM EquipeUsuario eu
+    WHERE eu.equipe.idequipe = :idequipe
+    ORDER BY eu.usuario.nome
+""")
+    List<Usuario> buscarUsuariosPorEquipe(@Param("idequipe") Long idequipe);
+}
