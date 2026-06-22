@@ -205,6 +205,20 @@
             transition: all 0.2s ease-in-out;
             margin-bottom: 4px;
         }
+        .membros-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            align-items: center;
+        }
+
+        .membros-coluna {
+            flex: 1;
+        }
+
+        .membros-coluna select {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -226,70 +240,71 @@
                 <input type="checkbox" id="ativa" value="0"> Ativa ?
             </label>
         </div>
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn"  onclick="salvarEquipes()">Salvar</button>
+            <button type="button" class="btn" onclick="listarEquipes()">Listar</button>
+            <button type="button" class="btn" onclick="history.back()">Voltar</button>
+        </div>
+
     </div>
     <div id="equipe" class="conteudo-aba">
         <div class="membros-container">
-
             <div class="membros-coluna">
-                <h3>Usuários disponíveis</h3>
-                <select id="usuariosDisponiveis" size="12" multiple>
-                </select>
+                <h1>Usuários disponíveis</h1>
+                <select id="usuariosDisponiveis" size="12" multiple></select>
             </div>
-
             <div class="membros-acoes">
-                <button type="button" class="btn" onclick="adicionarMembro()">➜</button>
-                <button type="button" class="btn" onclick="removerMembro()">⬅</button>
-            </div>
-
-            <div class="membros-coluna">
-                <h3>Membros da equipe</h3>
+                <button type="button" class="btn btn-add" onclick="adicionarMembro()">
+                    Adicionar →
+                </button>
+                <button type="button" class="btn btn-remove" onclick="removerMembro()">
+                    ← Remover
+                </button></div>
+             <div class="membros-coluna">
+                <h1>Membros da equipe</h1>
                 <select id="usuariosEquipe" size="12" multiple>  </select>
             </div>
         </div>
     </div>
-    <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn"  onclick="salvarEquipes()">Salvar</button>
-        <button type="button" class="btn" onclick="listarEquipes()">Listar</button>
-        <button type="button" class="btn" onclick="history.back()">Voltar</button>
-    </div>
     <div id="resultado"></div>
-
+</div>
 <script>
-    function montaEquipes(idEquipe) {
-        async function montaEquipes(idEquipe) {
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_EQUIPES = 'http://localhost:8080/equipes';
 
-            const disponiveis =
-                await fetch(`http://localhost:8080/usuarios/disponiveis/${idEquipe}`)
-                    .then(r => r.json());
-
-            const membros =
-                await fetch(`http://localhost:8080/equipes/membros/${idEquipe}`)
-                    .then(r => r.json());
-
-            const comboDisponiveis =
-                document.getElementById("usuariosDisponiveis");
-
-            const comboMembros =
-                document.getElementById("usuariosEquipe");
-
-            comboDisponiveis.innerHTML = "";
-            comboMembros.innerHTML = "";
-
-            disponiveis.forEach(usuario => {
-                comboDisponiveis.innerHTML +=
-                    `<option value="${usuario.idusuario}">
-                ${usuario.nome}
-             </option>`;
-            });
-
-            membros.forEach(usuario => {
-                comboMembros.innerHTML +=
-                    `<option value="${usuario.idusuario}">
-                ${usuario.nome}
-             </option>`;
-            });
-        }
+    async function limpaFormulario() {
+        document.getElementById('idequipe').value = "";
+        document.getElementById('descequipe').value = "";
+        document.getElementById('observacao').value = "";
+        document.getElementById('ativa').value = false;
     }
+
+    async function montaEquipes(idEquipe) {
+        const disponiveis = await fetch(`${API_EQUIPES}/listar/disponiveis/${idEquipe}`)
+            .then(r => r.json());
+
+        const membros = await fetch(`${API_EQUIPES}/${idEquipe}/membros/`)
+            .then(r => r.json());
+
+        const comboDisponiveis = document.getElementById("usuariosDisponiveis");
+        const comboMembros = document.getElementById("usuariosEquipe");
+
+        comboDisponiveis.innerHTML = "";
+        comboMembros.innerHTML = "";
+
+        disponiveis.forEach(usuario => {
+            comboDisponiveis.innerHTML += `
+            <option value="${usuario.idusuario}">${usuario.nome}</option>
+        `;
+        });
+
+        membros.forEach(usuario => {
+            comboMembros.innerHTML += `
+            <option value="${usuario.idusuario}">${usuario.nome}</option>
+        `;
+        });
+    }
+
     async function adicionarMembro(){
 
         const idEquipe =
@@ -299,8 +314,7 @@
             document.getElementById("usuariosDisponiveis");
 
         if(!usuario.value) return;
-
-        await fetch(
+            await fetch(
             `http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
             {
                 method:"POST"
@@ -331,6 +345,7 @@
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
         const conteudos = document.querySelectorAll('.conteudo-aba');
+
         conteudos.forEach(conteudo => {
             conteudo.classList.remove('ativo');
         });
@@ -352,19 +367,14 @@
     async function salvarEquipes() {
         const idequipe = document.getElementById('idequipe').value;
         const descequipe = document.getElementById('descequipe').value;
-        const obsequipe = document.getElementById('obsequipe').value;
-        if(document.getElementById('ativa').checked)
-             campoAtiva = 0;
-        else campoAtiva = 1;
-
+        const campoAtiva = document.getElementById('ativa').checked ? 1 : 0;
         const equipe = {
             idequipe: idequipe || null,
             descequipe: descequipe || null,
-            obsequipe: obsequipe || null,
-            bloqueado: campoBlooqueado
+            ativa: campoAtiva
         };
         try {
-            const response = await fetch(`${API}/salvar`, {
+            const response = await fetch(`${API_EQUPES}/salvar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -372,13 +382,14 @@
                 body: JSON.stringify(equipe)
             });
             const data = await response.json();
-            mostrarMensagemNaTela('Equipe gravada com sucesso');
+            mostrarMensagemNaTela('Equipe gravada com sucesso',1);
             limpaFormulario();
             listarEquipes();
         } catch (error) {
             mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
     }
+
     async function listarEquipes() {
         try {
             const response = await fetch(`${API_EQUPES}/listar`);
@@ -401,10 +412,9 @@
                                 style="cursor:pointer;">
                                 <th>${equipe.idequipe}</th>
                                 <th>${equipe.nomeequipe}</th>
-                                <th>${equipe.descricao}</th>
+                                <th>${equipe.descequipe}</th>
                                 <th>${equipe.ativa ? '✅ Sim' : '❌ Não'}</th>
-                                <th> <button type="button" class="btn" onclick="excluirEquipes(${equipe.idequipe})">Excluir</button></th>
-
+                                <th> <button type="button" class="btn" id="btnExcluirEquipe" onclick="event.stopPropagation();excluirEquipes(${equipe.idequipe})">Excluir</button></th>
                            </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
@@ -429,12 +439,8 @@
 
     // Função para injetar a mensagem no HTML
     function mostrarMensagemNaTela(mensagem, aba) {
-        if(aba == 1){
-            container = document.getElementById("resultado");
-        } else {
-            container = document.getElementById("resultadoequipes");
-        }
-        if (container) {
+       container = document.getElementById("resultado");
+       if (container) {
             container.textContent = mensagem;
             container.style.color = "red"; // Deixa o texto vermelho
         } else {
@@ -447,7 +453,7 @@
             const equipe = await response.json();
             document.getElementById('idequipe').value = equipe.idequipe;
             document.getElementById('nomeequipe').value = equipe.nomeequipe;
-            document.getElementById('descequipe').value = equipe.descricao;
+            document.getElementById('descequipe').value = equipe.descequipe;
             // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
             document.getElementById('ativa').checked = equipe.ativa || 0;
             montaEquipes(equipe.idequipe);

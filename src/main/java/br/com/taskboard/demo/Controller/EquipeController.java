@@ -10,6 +10,7 @@ import br.com.taskboard.demo.Service.EquipeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -86,51 +87,35 @@ public class EquipeController {
         }
     }
     @PostMapping("/{idEquipe}/adicionarmembros")
-    public ResponseEntity<?> adicionarMembro(
-            @PathVariable Long idEquipe,
-            @PathVariable Long idUsuario) {
-
-        Equipe equipe = equipeRepository
-                .findById(idEquipe)
-                .orElseThrow();
-
-        Usuario usuario = usuarioRepository
-                .findById(idUsuario)
-                .orElseThrow();
-
-        EquipeUsuario equipeUsuario =
-                new EquipeUsuario();
-
+    public ResponseEntity<?> adicionarMembro(@PathVariable Long idEquipe, @PathVariable Long idUsuario) {
+        Equipe equipe = equipeRepository.findById(idEquipe).orElseThrow();
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElseThrow();
+        EquipeUsuario equipeUsuario = new EquipeUsuario();
         equipeUsuario.setEquipe(equipe);
         equipeUsuario.setUsuario(usuario);
-
         equipeUsuarioRepository.save(equipeUsuario);
-
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{idEquipe}/membros")
     public List<EquipeUsuario> listarMembros(
             @PathVariable Long idEquipe){
-
         return equipeUsuarioRepository.listarMembros(idEquipe);
     }
     @DeleteMapping("/{idEquipe}/membros/{idUsuario}")
     public ResponseEntity<?> removerMembro(
             @PathVariable Long idEquipe,
             @PathVariable Long idUsuario) {
-
-        equipeUsuarioRepository.removerMembro(
-                idEquipe,
-                idUsuario);
-
+        equipeUsuarioRepository.removerMembro(idEquipe,idUsuario);
         return ResponseEntity.ok().build();
     }
     @GetMapping("/{idEquipe}/membros_em_equipe")
     public List<Usuario> listarMembrosEqupe(
             @PathVariable Long idEquipe){
-
         return equipeUsuarioRepository.buscarUsuariosPorEquipe(idEquipe);
     }
-
+    @GetMapping("/{idEquipe}/disponiveis")
+    public List<Usuario> listarMembrosDisponiveis(@PathVariable Long idEquipe){
+        return equipeUsuarioRepository.buscarUsuariosDisponiveis(idEquipe);
+    }
 }
