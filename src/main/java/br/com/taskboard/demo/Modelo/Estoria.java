@@ -1,6 +1,6 @@
 package br.com.taskboard.demo.Modelo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import br.com.taskboard.demo.Enuns.Prioridade;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,4 +23,6 @@ public class Estoria {
     @JoinColumn(name = "idepico")
     private Epico idepico;
     private Boolean bloqueada;
+    @Column(name = "status", length = 20)
+    private Prioridade status;
 }
