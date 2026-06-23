@@ -35,7 +35,6 @@ public class UsuarioController {
     // SALVAR
     @PostMapping("/salvar")
     public Usuario salvar(@RequestBody Usuario usuario) {
-
         return service.salvar(usuario);
     }
 

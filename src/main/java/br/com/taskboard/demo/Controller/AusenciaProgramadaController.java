@@ -33,13 +33,22 @@ public class AusenciaProgramadaController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody AusenciaProgramada ausencia) {
-        if(ausencia.getData_inicio().isAfter(ausencia.getData_fim())) {
-            return ResponseEntity.badRequest().body("Data final deve ser maior que a data inicial.");
+        if (ausencia.getData_inicio() == null || ausencia.getData_fim() == null) {
+            return ResponseEntity.badRequest()
+                    .body("Data início e data fim são obrigatórias.");
         }
-        service.salvar(ausencia);
-        return ResponseEntity.ok().build();
+        if (ausencia.getData_inicio().isAfter(ausencia.getData_fim())) {
+            return ResponseEntity.badRequest()
+                    .body("Data final deve ser maior que a data inicial.");
+        }
+        try {
+            service.salvar(ausencia);
+            return ResponseEntity.ok(ausencia);
+        }
+        catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
-
     // ATUALIZAR
     @PutMapping("/atualizar/{idAusenciaProgramada}")
     public AusenciaProgramada atualizar(@PathVariable Long idAusenciaProgramada,

@@ -545,7 +545,6 @@
                                 <td>${usuario.email}</td>
                                 <td style="width: 30px">${usuario.senha ? '•'.repeat(30) : ''}</td>
                                 <td> <button type="button" class="btn" onclick="event.stopPropagation(); excluirUsuario(${usuario.idusuario})">Excluir</button></td>
-
             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
@@ -593,7 +592,6 @@
                     id_tipo_ausencia: idtipoausencia,
                 },
             };
-            mostrarMensagemNaTela(ausencias, 2);
             try {
                 const response = await fetch(`${API_AUSENCIAS}/salvar`, {
                     method: 'POST',
@@ -602,10 +600,9 @@
                     },
                     body: JSON.stringify(ausencias)
                 });
-
                 const data = await response.json();
             } catch (error) {
-                mostrarMensagemNaTela(error, 2);
+                mostrarMensagemNaTela(error.message, 2);
             }
         }
     }
@@ -638,6 +635,7 @@
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
+                        <th class="table-header">I.D.</th>
                         <th class="table-header">Data inicial</th>
                         <th class="table-header">Data final</th>
                         <th class="table-header">Tipo ausência</th>
@@ -650,11 +648,12 @@
         data.forEach(ausencias => {
             tabela += `<tr onclick="buscarPorLinha(${ausencias.idausencia})"
                                 style="cursor:pointer;">
+                                <td>${ausencias.idausencia}</td>
                                 <td>${ausencias.data_inicio}</td>
                                 <td>${ausencias.data_fim}</td>
                                 <td>${ausencias.tipoausencia.desc_tipo_ausencia}</td>
                                 <td>${ausencias.observacao}</td>
-                                <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencias.tipoausencia.id_tipo_ausencia})">Excluir</button></td>
+                                <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencias.idausencia})">Excluir</button></td>
             </tr>`;
         });
         tabela += `</tbody></table>`;
@@ -668,7 +667,6 @@
             });
             const texto = await response.text();
             mostrarMensagemNaTela(texto || 'Ausência programada excluída com sucesso',2);
-            listarAusencias(sessionStorage.getItem('idusuario'));
         } catch (error) {
             mostrarMensagemNaTela(error, 2);
         }

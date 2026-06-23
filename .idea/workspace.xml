@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de equipes e membros">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de equipes e membros - Finalizado">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Equipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Equipe.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EquipeUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EquipeUsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EquipeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EquipeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/equipe.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/AusenciaProgramadaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/AusenciaProgramadaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/UsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Usuario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -380,15 +377,7 @@
       <workItem from="1782092142657" duration="2777000" />
       <workItem from="1782138368512" duration="10885000" />
       <workItem from="1782153515768" duration="921000" />
-      <workItem from="1782154908664" duration="9319000" />
-    </task>
-    <task id="LOCAL-00002" summary="Commit #2">
-      <option name="closed" value="true" />
-      <created>1779728478614</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1779728478614</updated>
+      <workItem from="1782154908664" duration="14329000" />
     </task>
     <task id="LOCAL-00003" summary="Commit #2">
       <option name="closed" value="true" />
@@ -774,7 +763,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782154429010</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Cadastro de equipes e membros - Finalizado">
+      <option name="closed" value="true" />
+      <created>1782227362725</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1782227362726</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -814,7 +811,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Commit #2" />
     <MESSAGE value="Commit #3" />
     <MESSAGE value="Controller/Service Usuario funcionando" />
     <MESSAGE value="Controller/Service Epico começando" />
@@ -839,7 +835,8 @@
     <MESSAGE value="Cadastro de equipes" />
     <MESSAGE value="Cadastro de usuario / ausencias programadas" />
     <MESSAGE value="Cadastro de equipes e membros" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de equipes e membros" />
+    <MESSAGE value="Cadastro de equipes e membros - Finalizado" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de equipes e membros - Finalizado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -896,7 +893,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>614</line>
+          <line>611</line>
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -906,7 +903,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/resources/static/usuario.html</url>
-          <line>684</line>
+          <line>682</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -933,11 +930,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/SprintController.java</url>
           <line>34</line>
           <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/AusenciaProgramadaController.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EquipeUsuarioDTO.java</url>
