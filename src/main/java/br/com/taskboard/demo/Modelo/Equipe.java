@@ -16,8 +16,12 @@ public class Equipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idequipe;
 
+    @Column(name="nomeequipe")
     private String nomeequipe;
 
+    @Column(name="descequipe")
     private String descequipe;
+
+    @Column(name="ativa")
     private String ativa;
 }

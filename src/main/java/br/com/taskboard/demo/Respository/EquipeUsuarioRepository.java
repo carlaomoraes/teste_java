@@ -42,7 +42,7 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
       FROM Usuario u
      WHERE u.idusuario NOT IN (SELECT eu.usuario.idusuario
                                  FROM EquipeUsuario eu
-                                WHERE eu.equipe.idequipe = :idEquipe)
+                                WHERE eu.equipe.idequipe = :idequipe)
   ORDER BY u.nome""")
     List<Usuario> buscarUsuariosDisponiveis(@Param("idequipe") Long idequipe);
 }

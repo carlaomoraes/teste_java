@@ -219,6 +219,28 @@
         .membros-coluna select {
             width: 100%;
         }
+
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: none;
+            border-radius: 10px;
+            background: #f5f7fa;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            cursor: pointer;
+            box-shadow: inset 0 0 0 1px #ddd;
+            transition: 0.3s;
+        }
+
+        select:hover {
+            background: #eef2f7;
+        }
+
+        select:focus {
+            box-shadow: 0 0 0 2px #4a90e2;
+        }
     </style>
 </head>
 <body>
@@ -245,7 +267,7 @@
             <button type="button" class="btn" onclick="listarEquipes()">Listar</button>
             <button type="button" class="btn" onclick="history.back()">Voltar</button>
         </div>
-
+        <div id="resultado"></div>
     </div>
     <div id="equipe" class="conteudo-aba">
         <div class="membros-container">
@@ -266,7 +288,6 @@
             </div>
         </div>
     </div>
-    <div id="resultado"></div>
 </div>
 <script>
     const API_USUARIOS = 'http://localhost:8080/usuarios';
@@ -280,10 +301,10 @@
     }
 
     async function montaEquipes(idEquipe) {
-        const disponiveis = await fetch(`${API_EQUIPES}/listar/disponiveis/${idEquipe}`)
+        const disponiveis = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios/disponiveis`)
             .then(r => r.json());
 
-        const membros = await fetch(`${API_EQUIPES}/${idEquipe}/membros/`)
+        const membros = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios`)
             .then(r => r.json());
 
         const comboDisponiveis = document.getElementById("usuariosDisponiveis");
@@ -320,7 +341,6 @@
                 method:"POST"
             }
         );
-
         montaEquipes(idEquipe);
     }
     async function removerMembro(){
@@ -365,14 +385,17 @@
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EQUPES = 'http://localhost:8080/equipes'
     async function salvarEquipes() {
-        const idequipe = document.getElementById('idequipe').value;
+        const idequipe = document.getElementById("idequipe").value;
         const descequipe = document.getElementById('descequipe').value;
+        const nomeequipe = document.getElementById('nomeequipe').value;
         const campoAtiva = document.getElementById('ativa').checked ? 1 : 0;
         const equipe = {
-            idequipe: idequipe || null,
+            idequipe: Number(idequipe) || null,
+            nomeequipe: nomeequipe || null,
             descequipe: descequipe || null,
             ativa: campoAtiva
         };
+
         try {
             const response = await fetch(`${API_EQUPES}/salvar`, {
                 method: 'POST',
@@ -381,6 +404,7 @@
                 },
                 body: JSON.stringify(equipe)
             });
+            mostrarMensagemNaTela(equipe);
             const data = await response.json();
             mostrarMensagemNaTela('Equipe gravada com sucesso',1);
             limpaFormulario();
@@ -389,7 +413,6 @@
             mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }
     }
-
     async function listarEquipes() {
         try {
             const response = await fetch(`${API_EQUPES}/listar`);
@@ -405,8 +428,7 @@
                         <th class="table-header">Ação</th>
                     </tr>
                 </thead>
-                <tbody>
-        `;
+                <tbody>`;
             data.forEach(equipe => {
                 tabela += `<tr onclick="buscarPorLinha(${equipe.idequipe})"
                                 style="cursor:pointer;">
@@ -433,6 +455,7 @@
             mostrarMensagemNaTela(error,1);
         }
     }
+
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
     });

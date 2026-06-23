@@ -431,7 +431,7 @@
             const email = document.getElementById('email').value;
             const alterasenha = document.getElementById('alterasenha').value;
             const usuario = {
-                idusuario: idusuario || null,
+                idusuario: Number(idusuario) || null,
                 nome: nome || null,
                 login: login || null,
                 senha: senha || null,
