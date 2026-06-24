@@ -74,7 +74,7 @@ public class LoginController {
         // 4. Se passou nas validações, criptografa a nova senha antes de salvar
         String novaSenhaCriptografada = encoder.encode(dadosLogin.getSenha());
         usuario.setSenha(novaSenhaCriptografada);
-        usuario.setAlterasenha(0);
+        usuario.setAlterasenha(false);
 
         usuarioRepository.save(usuario);
 

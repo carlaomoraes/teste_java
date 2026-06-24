@@ -430,12 +430,14 @@
             const senha = document.getElementById('senha').value;
             const email = document.getElementById('email').value;
             const alterasenha = document.getElementById('alterasenha').checked;
+            const ativo = document.getElementById('ativo').checked
             const usuario = {
                 nome: nome || null,
                 login: login || null,
                 senha: senha || null,
                 email: email || null,
                 alterasenha: alterasenha,
+                ativo: ativo,
                 papel: {
                     idPapel: document.getElementById('comboPapel').value
                 }
@@ -464,6 +466,8 @@
             document.getElementById('email').value = usuario.email;
             document.getElementById('senha').value = usuario.senha;
             document.getElementById('alterasenha').checked = usuario.alterasenha;
+            document.getElementById('ativo').checked = usuario.ativo;
+            document.getElementById('comboPapel').value = usuario.papel;
             sessionStorage.setItem('idusuario',usuario.idusuario);
             listarAusencias(sessionStorage.getItem('idusuario'));
         } catch (error) {
@@ -550,13 +554,6 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         }
-    }
-    async function limpaFormulario() {
-        document.getElementById('idusuario').value = "";
-        document.getElementById('nome').value = "";
-        document.getElementById('login').value = "";
-        document.getElementById('email').value = "";
-        document.getElementById('senha').value = "";
     }
     // Função para injetar a mensagem no HTML
     function mostrarMensagemNaTela(mensagem, aba) {

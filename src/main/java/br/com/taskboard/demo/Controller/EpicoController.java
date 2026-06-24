@@ -68,12 +68,7 @@ public class EpicoController {
     // EXCLUIR
     @DeleteMapping("/excluir/{idepico}")
     public ResponseEntity<String> excluir(@PathVariable Long idepico) {
-        String Messagem = String.format("Não é possível excluir este %s pois ele está vinculado %s.",Long.toString(idepico),"Estória");
-        try {
-            service.excluir(idepico);
-            return ResponseEntity.ok().body("Épico excluído com sucesso!");
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.ok().body(Messagem);
-        }
+        service.excluir(idepico);
+        return ResponseEntity.ok().body("Épico excluído com sucesso");
     }
 }

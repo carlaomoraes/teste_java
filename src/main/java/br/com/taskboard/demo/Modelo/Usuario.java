@@ -32,7 +32,7 @@ public class Usuario {
     private Papel papel;
 
     @Column(name = "alterasenha")
-    private int alterasenha;
+    private boolean alterasenha;
     // Getters e Setters
 
     public Usuario() {

@@ -81,18 +81,8 @@ public class EquipeController {
     // EXCLUIR
     @DeleteMapping("/excluir/{idequipe}")
     public ResponseEntity<String> excluir(@PathVariable Long idequipe) {
-
-        String mensagem = String.format(
-                "Não é possível excluir a equipe %d pois ela está vinculada a Sprint.",
-                idequipe
-        );
-
-        try {
-            service.excluir(idequipe);
-            return ResponseEntity.ok("Equipe excluída com sucesso!");
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(mensagem);
-        }
+         service.excluir(idequipe);
+         return ResponseEntity.ok("Equipe excluída com sucesso!");
     }
 
     // =========================

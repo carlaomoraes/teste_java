@@ -55,12 +55,7 @@ public class EstoriaController {
     // EXCLUIR
     @DeleteMapping("/excluir/{idEstoria}")
     public ResponseEntity<String> excluir(@PathVariable Long idEstoria) {
-        String Messagem = String.format("Não é possível excluir este %s pois ele está vinculado %s.",Long.toString(idEstoria),"tarefa");
-        try {
-            service.excluir(idEstoria);
-            return ResponseEntity.ok().body("Estoria excluída com sucesso!");
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.ok().body(Messagem);
-        }
+        service.excluir(idEstoria);
+        return ResponseEntity.ok().body("Estoria excluída com sucesso!");
     }
 }

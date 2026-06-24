@@ -267,7 +267,6 @@
             <button type="button" class="btn" onclick="listarEquipes()">Listar</button>
             <button type="button" class="btn" onclick="history.back()">Voltar</button>
         </div>
-        <div id="resultado"></div>
     </div>
     <div id="equipe" class="conteudo-aba">
         <div class="membros-container">
@@ -288,9 +287,23 @@
             </div>
         </div>
     </div>
+    <div id="resultado"></div>
 </div>
 <script>
-    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const tabela = document.getElementById('resultado');
+
+    // Monitora a troca de abas no navegador
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            // O usuário saiu da aba: trava a tabela
+            tabela.classList.add('tabela-travada');
+            console.log('Aba oculta: tabela travada.');
+        } else {
+            // O usuário voltou para a aba: destrava a tabela
+            tabela.classList.remove('tabela-travada');
+            console.log('Aba ativa: tabela liberada.');
+        }
+    })
     const API_EQUIPES = 'http://localhost:8080/equipes';
 
     async function limpaFormulario() {
@@ -335,8 +348,7 @@
             document.getElementById("usuariosDisponiveis");
 
         if(!usuario.value) return;
-            await fetch(
-            `http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
+            await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
             {
                 method:"POST"
             }
@@ -383,7 +395,6 @@
         event.currentTarget.classList.add('ativa');
     }
     //--------------------- MANIPULAÇÃO DOS DADOS
-    const API_EQUPES = 'http://localhost:8080/equipes'
     async function salvarEquipes() {
         const idequipe = document.getElementById("idequipe").value;
         const descequipe = document.getElementById('descequipe').value;
@@ -397,7 +408,7 @@
         };
 
         try {
-            const response = await fetch(`${API_EQUPES}/salvar`, {
+            const response = await fetch(`${API_EQUIPES}/salvar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -415,7 +426,7 @@
     }
     async function listarEquipes() {
         try {
-            const response = await fetch(`${API_EQUPES}/listar`);
+            const response = await fetch(`${API_EQUIPES}/listar`);
             const data = await response.json();
             let tabela = `
             <table class="table">
@@ -446,7 +457,7 @@
     }
     async function excluirEquipes(idequipe) {
         try {
-            const response = await fetch(`${API_EQUPES}/excluir/${idequipe}`, {
+            const response = await fetch(`${API_EQUIPES}/excluir/${idequipe}`, {
                 method: 'DELETE'
             });
             const texto = await response.text();
@@ -472,7 +483,7 @@
     }
     async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API_EQUPES}/${id}`);
+            const response = await fetch(`${API_EQUIPES}/${id}`);
             const equipe = await response.json();
             document.getElementById('idequipe').value = equipe.idequipe;
             document.getElementById('nomeequipe').value = equipe.nomeequipe;
