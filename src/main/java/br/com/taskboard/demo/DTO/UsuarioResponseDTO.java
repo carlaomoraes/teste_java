@@ -10,5 +10,4 @@ public class UsuarioResponseDTO {
     private String senha;
     private Papel papel;
     private int alterasenha;
-    // Getters e Setters
 }
