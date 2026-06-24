@@ -1,14 +1,11 @@
-package br.com.taskboard.demo.Modelo;
-
-import jakarta.persistence.*;
+package br.com.taskboard.demo.DTO;
 
 import java.time.LocalDate;
 
-public class Empreendimento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmpreendimentoResquestDTO {
     private Long ideempreendimento;
     private String descempreendimento;
     private LocalDate data_inicio;
     private LocalDate data_fim;
+
 }

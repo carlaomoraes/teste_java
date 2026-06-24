@@ -1,10 +1,10 @@
 package br.com.taskboard.demo.Controller;
 
-import br.com.taskboard.demo.Excecoes.ViolacaoChaveEstrangeiraException;
 import br.com.taskboard.demo.Modelo.Papel;
 import br.com.taskboard.demo.Respository.PapelRepository;
 import br.com.taskboard.demo.Service.PapelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +59,7 @@ public class PapelController {
         try {
             service.excluir(idPapel);
             return ResponseEntity.ok().body("Papel excluído com sucesso!");
-        } catch (ViolacaoChaveEstrangeiraException e) {
+        } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
