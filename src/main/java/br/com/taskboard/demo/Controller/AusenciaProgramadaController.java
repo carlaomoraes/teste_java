@@ -1,5 +1,8 @@
 package br.com.taskboard.demo.Controller;
 
+import br.com.taskboard.demo.DTO.AusenciaProgramadaRequestDTO;
+import br.com.taskboard.demo.DTO.AusenciaProgramadaResponseDTO;
+import br.com.taskboard.demo.Mapper.AusenciaProgramadaMapper;
 import br.com.taskboard.demo.Modelo.AusenciaProgramada;
 import br.com.taskboard.demo.Service.AusenciaProgramadaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,64 +22,40 @@ public class AusenciaProgramadaController {
     private AusenciaProgramadaService service;
 
     // BUSCAR POR ID
-    @GetMapping("/{idAusenciaProgramada}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Long idAusenciaProgramada) {
-        try {
-            AusenciaProgramada AusenciaProgramada = service.buscarPorId(
-                    idAusenciaProgramada);
-            return ResponseEntity.ok().body(AusenciaProgramada);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ausência programada não encontrada");
-        }
+    @GetMapping("/{id}")
+    public AusenciaProgramadaResponseDTO buscarPorId(@PathVariable Long id) {
+        return AusenciaProgramadaMapper.toDTO(service.buscarPorId(id));
     }
 
     // SALVAR
     @PostMapping("/salvar")
-    public ResponseEntity<?> salvar(@RequestBody AusenciaProgramada ausencia) {
-        if (ausencia.getData_inicio() == null || ausencia.getData_fim() == null) {
-            return ResponseEntity.badRequest()
-                    .body("Data início e data fim são obrigatórias.");
-        }
-        if (ausencia.getData_inicio().isAfter(ausencia.getData_fim())) {
-            return ResponseEntity.badRequest()
-                    .body("Data final deve ser maior que a data inicial.");
-        }
-        try {
-            service.salvar(ausencia);
-            return ResponseEntity.ok(ausencia);
-        }
-        catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+    public AusenciaProgramadaResponseDTO salvar(@RequestBody AusenciaProgramadaRequestDTO dto) {
+        AusenciaProgramada ausenciaProgramada = AusenciaProgramadaMapper.toEntity(dto);
+        return AusenciaProgramadaMapper.toDTO(service.salvar(ausenciaProgramada));
     }
     // ATUALIZAR
     @PutMapping("/atualizar/{idAusenciaProgramada}")
-    public AusenciaProgramada atualizar(@PathVariable Long idAusenciaProgramada,
-                             @RequestBody AusenciaProgramada AusenciaProgramada) {
-        AusenciaProgramada.setIdausencia(idAusenciaProgramada);
-        return service.atualizar(AusenciaProgramada);
+    public AusenciaProgramadaResponseDTO atualizar(@PathVariable Long idAusenciaProgramada,
+                             @RequestBody AusenciaProgramadaRequestDTO dto) {
+        AusenciaProgramada ausenciaProgramada = service.atualizar(idAusenciaProgramada, AusenciaProgramadaMapper.toEntity(dto));
+        return AusenciaProgramadaMapper.toDTO(ausenciaProgramada);
     }
 
     // LISTAR
     @GetMapping("/listar")
-    public List<AusenciaProgramada> listar() {
-        return service.listar();
+    public List<AusenciaProgramadaResponseDTO> listar() {
+        return service.listar().stream().map(AusenciaProgramadaMapper::toDTO).toList();
     }
 
     // EXCLUIR
     @DeleteMapping("/excluir/{idAusenciaProgramada}")
-    public ResponseEntity<String> excluir(@PathVariable Long idAusenciaProgramada) {
-        String Messagem = String.format("Não é possível excluir esta %s pois ela está vinculado %s.",Long.toString(idAusenciaProgramada),"Sprint");
-        try {
-            service.excluir(idAusenciaProgramada);
-            return ResponseEntity.ok().body("Ausência programada excluída com sucesso!");
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.ok().body(Messagem);
-        }
+    public ResponseEntity<Void> excluir(@PathVariable Long idAusenciaProgramada) {
+        service.excluir(idAusenciaProgramada);
+        return ResponseEntity.noContent().build();
     }
-    //PREENCHE A ABA AUSENCIAS PROGRAMADAS NO CADASTRO DE USUARIOS
     @GetMapping("/usuario/{idUsuario}")
-    public List<AusenciaProgramada> buscarPorIdUsuario(@PathVariable Long idUsuario) {
-            return service.listarAuasenciaPorUsuario(idUsuario);
+    public ResponseEntity<List<AusenciaProgramada>> listarPorUsuario(@PathVariable Long idUsuario) {
+        List<AusenciaProgramada> lista = service.listarPorUsuario(idUsuario);
+        return ResponseEntity.ok(lista);
     }
 }

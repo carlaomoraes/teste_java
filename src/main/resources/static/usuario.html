@@ -329,7 +329,7 @@
             <input type="checkbox" id="ativo" value="1"> Usuário Ativo
         </label>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn"  onclick="salvarUsuario(document.getElementById('idusuario').value)">Salvar</button>
+            <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
             <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
             <button type="button" class="btn" onclick="buscarUsuario(document.getElementById('idusuario').value)">Buscar por ID</button>
             <button type="button" class="btn" onclick="history.back()">Voltar</button>
@@ -407,7 +407,7 @@
             const resposta = await fetch(`${API_PAPEL}/listar`);
             const papel = await resposta.json();
             papel.forEach(u => {
-                const idVal = u.idPapel || u.idPapel;
+                const idVal = u.idPapel;
                 // Cria opção para o combo papel
                 const opt1 = document.createElement('option');
                 opt1.value = idVal;
@@ -423,20 +423,22 @@
         carregarTipoAusencia();
         carregarPapel();
     });
-    async function salvarUsuario(idusuario) {
+    async function salvarUsuario() {
         if(validaEntrada(1)) {
             const nome = document.getElementById('nome').value;
             const login = document.getElementById('login').value;
             const senha = document.getElementById('senha').value;
             const email = document.getElementById('email').value;
-            const alterasenha = document.getElementById('alterasenha').value;
+            const alterasenha = document.getElementById('alterasenha').checked;
             const usuario = {
-                idusuario: Number(idusuario) || null,
                 nome: nome || null,
                 login: login || null,
                 senha: senha || null,
                 email: email || null,
                 alterasenha: alterasenha,
+                papel: {
+                    idPapel: document.getElementById('comboPapel').value
+                }
             };
             try {
                 const response = await fetch(`${API_USUARIOS}/salvar`, {
@@ -448,7 +450,7 @@
                 });
                 const data = await response.json();
             } catch (error) {
-                mostrarMensagemNaTela(error,1);
+                //mostrarMensagemNaTela(error,1);
             }
         }
     }
@@ -461,7 +463,7 @@
             document.getElementById('login').value = usuario.login;
             document.getElementById('email').value = usuario.email;
             document.getElementById('senha').value = usuario.senha;
-            document.getElementById('alterasenha').value = usuario.alterasenha;
+            document.getElementById('alterasenha').checked = usuario.alterasenha;
             sessionStorage.setItem('idusuario',usuario.idusuario);
             listarAusencias(sessionStorage.getItem('idusuario'));
         } catch (error) {
@@ -494,8 +496,7 @@
                                 <td>${usuario.login}</td>
                                 <td>${usuario.email}</td>
                                 <td style="width: 30px">${usuario.senha ? '•'.repeat(30) : ''}</td>
-                                <td> <button type="button" class="btn" onclick="excluirUsuario(${usuario.idusuario})">Excluir</button></td>
-
+                                <td> <button type="button" class="btn" onclick="event.stopPropagation();excluirUsuario(${usuario.idusuario})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
@@ -573,16 +574,15 @@
     }
     async function salvarAusencias(idUsuario) {
         const dataAtual = new Date();
-        console.log(dataAtual.toLocaleDateString('pt-BR'));
         if(validaEntrada(2)) {
             const idtipoausencia = parseInt(document.getElementById("combotipo").value);
             const datainicial = document.getElementById('datainicial').value;
             const datafinal = document.getElementById('datafinal').value;
             const observacao = document.getElementById('observacao').value;
-            const status = document.getElementById('status').value;
+            const status = document.getElementById('status').checked;
             const ausencias = {
-                data_inicio: datainicial || dataAtual.toLocaleDateString('pt-BR'),
-                data_fim: datafinal || dataAtual.toLocaleDateString('pt-BR'),
+                data_inicio: datainicial || dataAtual.toISOString().split("T")[0],
+                data_fim: datafinal || dataAtual.toISOString().split("T")[0],
                 observacao: observacao || "N/A",
                 status: status || "",
                 idusuario: {
@@ -608,57 +608,93 @@
     }
 
     async function listarAusencias(idUsuario) {
-        const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
-        const data = await response.json();
-        container = document.getElementById("resultadoAusencias");
-        container.textContent = data;
-        if(data.length === 0){
-            let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+        async function listarAusencias(idUsuario) {
+            const container = document.getElementById("resultadoAusencias");
+
+            try {
+                const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
+
+                if (!response.ok) {
+                    const msg = await response.text();
+                    mostrarMensagemNaTela(msg || "Erro ao listar ausências!", 2);
+                    return;
+                }
+
+                const data = await response.json();
+
+                // Se não houver registros
+                if (!data || data.length === 0) {
+                    container.innerHTML = `
+                <table class="table">
                     <thead>
                         <tr>
-                            <th class="table-header">Data inícial</th>
-                            <th class="table-header">Data final</th>
-                            <th class="table-header">Tipo ausência</th>
-                            <th class="table-header">Obeservação</th>
+                            <th>Data inicial</th>
+                            <th>Data final</th>
+                            <th>Tipo ausência</th>
+                            <th>Observação</th>
                         </tr>
                     </thead>
-                    <tbody>`;
-            tabela += `</tbody></table>`;
-            document.getElementById('resultadoAusencias').innerHTML = tabela;
-            return;
-        }
-        if(!response.ok) {
-            mostrarMensagemNaTela("Erro ao listar ausências!",2);
-            return;
-        }
-        let tabela = `
-            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                    <tbody>
+                        <tr>
+                            <td colspan="4" style="text-align:center;">
+                                Nenhuma ausência cadastrada
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+                    return;
+                }
+
+                // Monta tabela com dados
+                let tabela = `
+            <table class="table">
                 <thead>
                     <tr>
-                        <th class="table-header">I.D.</th>
-                        <th class="table-header">Data inicial</th>
-                        <th class="table-header">Data final</th>
-                        <th class="table-header">Tipo ausência</th>
-                        <th class="table-header">Obeservação</th>
-                        <th class="table-header">Excluir</th>
+                        <th>ID</th>
+                        <th>Data inicial</th>
+                        <th>Data final</th>
+                        <th>Tipo ausência</th>
+                        <th>Observação</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
         `;
-        data.forEach(ausencias => {
-            tabela += `<tr onclick="buscarPorLinha(${ausencias.idausencia})"
-                                style="cursor:pointer;">
-                                <td>${ausencias.idausencia}</td>
-                                <td>${ausencias.data_inicio}</td>
-                                <td>${ausencias.data_fim}</td>
-                                <td>${ausencias.tipoausencia.desc_tipo_ausencia}</td>
-                                <td>${ausencias.observacao}</td>
-                                <td> <button type="button" class="btn" onclick="excluirAusencia(${ausencias.idausencia})">Excluir</button></td>
-            </tr>`;
-        });
-        tabela += `</tbody></table>`;
-        document.getElementById('resultadoAusencias').innerHTML = tabela;
 
+                data.forEach(a => {
+                    tabela += `
+                <tr onclick="buscarAusenciaPorLinha(${a.idausencia})" style="cursor:pointer;">
+                    <td>${a.idausencia}</td>
+                    <td>${a.data_inicio}</td>
+                    <td>${a.data_fim}</td>
+                    <td>${a.tipoausencia?.desc_tipo_ausencia ?? ''}</td>
+                    <td>${a.observacao ?? ''}</td>
+                    <td>
+                        <button type="button"
+                            class="btn"
+                            onclick="event.stopPropagation(); excluirAusencia(${a.idausencia})">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+            `;
+                });
+
+                tabela += `
+                </tbody>
+            </table>
+        `;
+
+                container.innerHTML = tabela;
+
+            } catch (error) {
+                mostrarMensagemNaTela(
+                    error?.message || "Erro inesperado ao listar ausências",
+                    2
+                );
+            }
+        }
     }
     async function excluirAusencia(idausencia) {
         try {
@@ -677,7 +713,7 @@
         document.getElementById('datainicial').value = "";
         document.getElementById('datafinal').value = "";
         document.getElementById('observacao').value = "";
-        document.getElementById('status').value = 0;
+        document.getElementById('status').checked = true;
     }
     async function validaEntrada(aba) {
         if (aba == 1) {
@@ -697,7 +733,7 @@
                 document.getElementById('datainicial').value === "" ||
                 document.getElementById('datafinal').value === "" ||
                 document.getElementById('observacao').value.trim() === "" ||
-                document.getElementById('status').value === 0;
+                !document.getElementById('status').checked;
             if (invalido) {
                 mostrarMensagemNaTela("Todos os campos devem estar preenchidos", 1);
                 return false;

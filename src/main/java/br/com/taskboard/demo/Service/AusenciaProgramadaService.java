@@ -18,33 +18,25 @@ public class AusenciaProgramadaService {
     @Autowired
     private AusenciaProgramadaRepository repository;
 
-    @Autowired
-    private UsuarioRepository repositoryUsuario;
-
-    @Autowired
-    private TipoAusenciaRepository repositoryTipoAusencia;
-
-    @Autowired
-    private AusenciaProgramadaUsuarioRepository repositoryAusenciaProgramadaUsuario;
 
     public AusenciaProgramada salvar(AusenciaProgramada ausenciaProgramada) {
-        TipoAusencia tipoAusencia = repositoryTipoAusencia.findById(ausenciaProgramada.getTipoausencia().getId_tipo_ausencia()).orElseThrow();
-        Usuario usuario = repositoryUsuario.findById(ausenciaProgramada.getIdusuario().getIdusuario()).orElseThrow();
-        ausenciaProgramada.setIdusuario(usuario);
-        ausenciaProgramada.setTipoausencia(tipoAusencia);
         return repository.save(ausenciaProgramada);
     }
 
     public List<AusenciaProgramada> listar() {
-
         return repository.findAll();
     }
 
-    public AusenciaProgramada atualizar(AusenciaProgramada ausenciaProgramada) {
-        TipoAusencia tipoAusencia = repositoryTipoAusencia.findById(ausenciaProgramada.getTipoausencia().getId_tipo_ausencia()).orElseThrow();
-        Usuario usuario = repositoryUsuario.findById(ausenciaProgramada.getIdusuario().getIdusuario()).orElseThrow();
-        ausenciaProgramada.setIdusuario(usuario);
-        ausenciaProgramada.setTipoausencia(tipoAusencia);
+    public AusenciaProgramada atualizar(Long id, AusenciaProgramada novaAusenciaProgramada) {
+        AusenciaProgramada ausenciaProgramada = buscarPorId(id);
+        ausenciaProgramada.setIdausencia(novaAusenciaProgramada.getIdausencia());
+        ausenciaProgramada.setIdusuario(novaAusenciaProgramada.getIdusuario());
+        ausenciaProgramada.setData_inicio(novaAusenciaProgramada.getData_inicio());
+        ausenciaProgramada.setData_fim(novaAusenciaProgramada.getData_fim());
+        ausenciaProgramada.setObservacao(novaAusenciaProgramada.getObservacao());
+        ausenciaProgramada.setStatus(novaAusenciaProgramada.getStatus());
+        ausenciaProgramada.setData_cadastro(novaAusenciaProgramada.getData_cadastro());
+        ausenciaProgramada.setTipoausencia(novaAusenciaProgramada.getTipoausencia());
         return repository.save(ausenciaProgramada);
     }
     public void excluir(Long idAusencia) {
@@ -55,7 +47,7 @@ public class AusenciaProgramadaService {
         return repository.findById(idAusencia).orElseThrow(() -> new RuntimeException("Ausência não encontrada"));
     }
 
-    public List<AusenciaProgramada> listarAuasenciaPorUsuario(Long idUsuario) {
-        return repositoryAusenciaProgramadaUsuario.buscarPorUsuario(idUsuario);
+    public List<AusenciaProgramada> listarPorUsuario(Long idUsuario) {
+        return repository.findByIdusuario_Idusuario(idUsuario);
     }
 }
