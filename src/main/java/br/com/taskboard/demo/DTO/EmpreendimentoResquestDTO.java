@@ -1,20 +1,27 @@
 package br.com.taskboard.demo.DTO;
 
+import br.com.taskboard.demo.Modelo.Usuario;
+import jakarta.persistence.OneToMany;
+
 import java.time.LocalDate;
 
 public class EmpreendimentoResquestDTO {
-    private Long ideempreendimento;
+    private Long idempreendimento;
     private String descempreendimento;
     private LocalDate data_inicio;
     private LocalDate data_fim;
     private String siglaempreendimento;
+    private LocalDate data_cadastro;
+    private Long idstatus;
+    @OneToMany
+    private Usuario idgestor;
 
-    public Long getIdeempreendimento() {
-        return ideempreendimento;
+    public Long getIdempreendimento() {
+        return idempreendimento;
     }
 
-    public void setIdeempreendimento(Long ideempreendimento) {
-        this.ideempreendimento = ideempreendimento;
+    public void setIdempreendimento(Long idempreendimento) {
+        this.idempreendimento = idempreendimento;
     }
 
     public String getDescempreendimento() {
@@ -47,5 +54,29 @@ public class EmpreendimentoResquestDTO {
 
     public void setSiglaempreendimento(String siglaempreendimento) {
         this.siglaempreendimento = siglaempreendimento;
+    }
+
+    public LocalDate getData_cadastro() {
+        return data_cadastro;
+    }
+
+    public void setData_cadastro(LocalDate data_cadastro) {
+        this.data_cadastro = data_cadastro;
+    }
+
+    public Long getIdstatus() {
+        return idstatus;
+    }
+
+    public void setIdstatus(Long idstatus) {
+        this.idstatus = idstatus;
+    }
+
+    public Usuario getIdgestor() {
+        return idgestor;
+    }
+
+    public void setIdgestor(Usuario idgestor) {
+        this.idgestor = idgestor;
     }
 }

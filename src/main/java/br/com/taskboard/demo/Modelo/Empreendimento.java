@@ -1,56 +1,28 @@
 package br.com.taskboard.demo.Modelo;
 
-import br.com.taskboard.demo.DTO.AusenciaProgramadaRequestDTO;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Entity
+@Getter
+@Setter
 public class Empreendimento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ideempreendimento;
+    private Long idempreendimento;
     private String descempreendimento;
     private LocalDate data_inicio;
     private LocalDate data_fim;
+    private LocalDate data_cadastro;
+    @ManyToOne
+    @JoinColumn(name = "idstatus")
+    private Status idstatus;
     private String siglaempreendimento;
+    @ManyToOne
+    @JoinColumn(name = "idgestor")
+    private Usuario idgestor;
 
-    public Long getIdeempreendimento() {
-        return ideempreendimento;
-    }
-
-    public void setIdeempreendimento(Long ideempreendimento) {
-        this.ideempreendimento = ideempreendimento;
-    }
-
-    public String getDescempreendimento() {
-        return descempreendimento;
-    }
-
-    public void setDescempreendimento(String descempreendimento) {
-        this.descempreendimento = descempreendimento;
-    }
-
-    public LocalDate getData_inicio() {
-        return data_inicio;
-    }
-
-    public void setData_inicio(LocalDate data_inicio) {
-        this.data_inicio = data_inicio;
-    }
-
-    public LocalDate getData_fim() {
-        return data_fim;
-    }
-
-    public void setData_fim(LocalDate data_fim) {
-        this.data_fim = data_fim;
-    }
-
-    public String getSiglaempreendimento() {
-        return siglaempreendimento;
-    }
-
-    public void setSiglaempreendimento(String siglaempreendimento) {
-        this.siglaempreendimento = siglaempreendimento;
-    }
 }

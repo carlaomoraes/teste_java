@@ -81,8 +81,8 @@ public class EquipeController {
     // EXCLUIR
     @DeleteMapping("/excluir/{idequipe}")
     public ResponseEntity<String> excluir(@PathVariable Long idequipe) {
-         service.excluir(idequipe);
-         return ResponseEntity.ok("Equipe excluída com sucesso!");
+        service.excluir(idequipe);
+        return ResponseEntity.ok().body("Equipe excluído com sucesso");
     }
 
     // =========================

@@ -56,12 +56,8 @@ public class PapelController {
     // EXCLUIR
     @DeleteMapping("/excluir/{idPapel}")
     public ResponseEntity<String> excluir(@PathVariable Long idPapel) {
-        try {
-            service.excluir(idPapel);
-            return ResponseEntity.ok().body("Papel excluído com sucesso!");
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        service.excluir(idPapel);
+        return ResponseEntity.ok().body("Papel excluído com sucesso");
     }
 }
 

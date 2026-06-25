@@ -1,6 +1,5 @@
 package br.com.taskboard.demo.Modelo;
 
-import br.com.taskboard.demo.Enuns.Prioridade;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +15,7 @@ public class Tarefa {
     private Long idtarefa;
     private String desctarefa;
     @Column(name = "status", length = 20)
-    private Prioridade status;
+    private Status status;
     @ManyToOne
     @JoinColumn(name = "idestoria")
     private Estoria estoria;

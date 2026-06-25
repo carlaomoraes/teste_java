@@ -48,7 +48,6 @@ public class EstoriaController {
     // LISTAR
     @GetMapping("/listar")
     public List<Estoria> listar() {
-
         return service.listar();
     }
 

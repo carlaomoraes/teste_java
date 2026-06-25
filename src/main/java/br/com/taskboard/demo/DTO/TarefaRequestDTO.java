@@ -1,7 +1,7 @@
 package br.com.taskboard.demo.DTO;
 
-import br.com.taskboard.demo.Enuns.Prioridade;
 import br.com.taskboard.demo.Modelo.Estoria;
+import br.com.taskboard.demo.Modelo.Status;
 import br.com.taskboard.demo.Modelo.Usuario;
 import jakarta.persistence.*;
 
@@ -11,7 +11,7 @@ public class TarefaRequestDTO {
     private Long idtarefa;
     private String desctarefa;
     @Column(name = "status", length = 20)
-    private Prioridade status;
+    private Status status;
     private Estoria estoria;
     private Usuario criador;
     private Usuario responsavel;

@@ -1,7 +1,7 @@
 package br.com.taskboard.demo.DTO;
 
-import br.com.taskboard.demo.Enuns.Prioridade;
 import br.com.taskboard.demo.Modelo.Epico;
+import br.com.taskboard.demo.Modelo.Status;
 import br.com.taskboard.demo.Modelo.Usuario;
 
 public class EstoriaResquestDTO {
@@ -11,7 +11,7 @@ public class EstoriaResquestDTO {
     private Usuario idresponsavel;
     private Epico idepico;
     private Boolean bloqueada;
-    private Prioridade status;
+    private Status status;
 
     public Long getIdestoria() {
         return idestoria;
@@ -61,11 +61,11 @@ public class EstoriaResquestDTO {
         this.bloqueada = bloqueada;
     }
 
-    public Prioridade getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Prioridade status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }
