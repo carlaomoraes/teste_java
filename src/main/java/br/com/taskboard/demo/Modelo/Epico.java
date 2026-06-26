@@ -20,9 +20,7 @@ public class Epico {
     private String obsepico;
     @Column(name = "bloqueado")
     private int bloqueado;
-    @ManyToOne
-    @JoinColumn(name = "idstatus")
-    private Status idstatus;
+    private String status;
     @ManyToOne
     @JoinColumn(name = "responsavel")
     private Usuario responsavel;

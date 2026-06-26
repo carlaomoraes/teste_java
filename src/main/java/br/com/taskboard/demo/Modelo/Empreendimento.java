@@ -19,7 +19,7 @@ public class Empreendimento {
     private LocalDate data_cadastro;
     @ManyToOne
     @JoinColumn(name = "idstatus")
-    private Status idstatus;
+    private StatusEntidades status;
     private String siglaempreendimento;
     @ManyToOne
     @JoinColumn(name = "idgestor")

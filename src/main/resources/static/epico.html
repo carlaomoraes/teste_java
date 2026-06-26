@@ -11,11 +11,12 @@
 
 <div class="container">
     <h1>Cadastro de épicos</h1>
-
+    <label for="comboEmpreendimento">Empreendimento:</label>
+    <select id="comboEmpreendimento" name="comboEmpreendimento">
+        <option value="">-- Selecione o empreendimento --</option>
+    </select>
     <input type="number" id="idepico" placeholder="ID do épico">
-
     <input type="text" id="descepico" placeholder="Descrição do épico">
-
     <input type="text" id="obsepico" placeholder="Observação">
 
     <label class="checkbox-group">
@@ -32,7 +33,31 @@
 </div>
 
 <script>
+    //--------------------- MANIPULAÇÃO DOS DADOS
+    const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API = 'http://localhost:8080/epicos';
+
+
+    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
+    async function carregarEmpreendimento() {
+        const comboGestor = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const empreendimentos = await resposta.json();
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.descempreendimento;
+                opcao.textContent = e.idempreendimento
+                comboGestor.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela(error,1);
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarEmpreendimento();
+    });
     async function salvarEpico() {
         const idepico = document.getElementById('idepico').value;
         const descepico = document.getElementById('descepico').value;

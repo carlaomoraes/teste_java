@@ -11,25 +11,27 @@ public class EmpreendimentoMapper {
 
     public static Empreendimento toEntity(EmpreendimentoResquestDTO dto) {
         Empreendimento e = new Empreendimento();
-        e.setIdempreendimento(dto.getIdempreendimento());
+        e.setIdgestor(dto.getIdgestor());
         e.setDescempreendimento(dto.getDescempreendimento());
         e.setData_inicio(dto.getData_inicio());
         e.setData_fim(dto.getData_fim());
         e.setSiglaempreendimento(dto.getSiglaempreendimento());
         e.setData_cadastro(dto.getData_cadastro());
+        e.setStatus(dto.getStatus());
         e.setIdgestor(dto.getIdgestor());
         return e;
     }
 
     public static EmpreendimentoResponseDTO toDTO(Empreendimento e) {
         EmpreendimentoResponseDTO dto = new EmpreendimentoResponseDTO();
-        dto.setIdempreendimento(e.getIdempreendimento());
+        dto.setIdgestor(e.getIdgestor());
         dto.setDescempreendimento(e.getDescempreendimento());
         dto.setData_inicio(e.getData_inicio());
         dto.setData_fim(e.getData_fim());
-        dto.setSiglaempreendimento(e.getSiglaempreendimento());
-        dto.setData_cadastro(e.getData_cadastro());
+        dto.setStatus(e.getStatus());
         dto.setIdgestor(e.getIdgestor());
+        dto.setData_cadastro(e.getData_cadastro());
+        dto.setSiglaempreendimento(e.getSiglaempreendimento());
         return dto;
     }
 }

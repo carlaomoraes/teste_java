@@ -12,7 +12,6 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
             background-color: #f4f6f9;
             color: #333;
@@ -291,6 +290,7 @@
 </div>
 <script>
     const tabela = document.getElementById('resultado');
+    let Operacao = 0;
 
     // Monitora a troca de abas no navegador
     document.addEventListener('visibilitychange', () => {
@@ -308,9 +308,10 @@
 
     async function limpaFormulario() {
         document.getElementById('idequipe').value = "";
+        document.getElementById('nomeequipe').value = "";
         document.getElementById('descequipe').value = "";
-        document.getElementById('observacao').value = "";
         document.getElementById('ativa').value = false;
+        Operacao = 0;
     }
 
     async function montaEquipes(idEquipe) {
@@ -340,15 +341,11 @@
     }
 
     async function adicionarMembro(){
-
-        const idEquipe =
-            document.getElementById("idequipe").value;
-
-        const usuario =
-            document.getElementById("usuariosDisponiveis");
-
-        if(!usuario.value) return;
-            await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
+        const idEquipe = document.getElementById("idequipe").value;
+        const usuario =  document.getElementById("usuariosDisponiveis");
+        if(!usuario.value)
+            return;
+        await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
             {
                 method:"POST"
             }
@@ -356,15 +353,10 @@
         montaEquipes(idEquipe);
     }
     async function removerMembro(){
-
-        const idEquipe =
-            document.getElementById("idequipe").value;
-
-        const usuario =
-            document.getElementById("usuariosEquipe");
-
-        if(!usuario.value) return;
-
+        const idEquipe = document.getElementById("idequipe").value;
+        const usuario = document.getElementById("usuariosEquipe");
+        if(!usuario.value)
+            return;
         await fetch(
             `http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
             {
@@ -393,35 +385,47 @@
 
         // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
+
+        // 5. QUANDO ENTRAR NA ABA DE EQUIPE, CARREGA O GRID
+        if (idAbaDestino === 'equipe') {
+            const idEquipe = document.getElementById("idequipe").value;
+
+            if (idEquipe) {
+                montaEquipes(idEquipe);
+            }
+        }
     }
     //--------------------- MANIPULAÇÃO DOS DADOS
     async function salvarEquipes() {
-        const idequipe = document.getElementById("idequipe").value;
-        const descequipe = document.getElementById('descequipe').value;
-        const nomeequipe = document.getElementById('nomeequipe').value;
-        const campoAtiva = document.getElementById('ativa').checked ? 1 : 0;
-        const equipe = {
-            idequipe: Number(idequipe) || null,
-            nomeequipe: nomeequipe || null,
-            descequipe: descequipe || null,
-            ativa: campoAtiva
-        };
+        if(validaEntrada(Operacao)) {
+            const idequipe = document.getElementById("idequipe").value;
+            const descequipe = document.getElementById('descequipe').value;
+            const nomeequipe = document.getElementById('nomeequipe').value;
+            const campoAtiva = document.getElementById('ativa').checked ? 1 : 0;
+            const equipe = {
+                idequipe: Number(idequipe) || null,
+                nomeequipe: nomeequipe || null,
+                descequipe: descequipe || null,
+                ativa: campoAtiva
+            };
 
-        try {
-            const response = await fetch(`${API_EQUIPES}/salvar`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(equipe)
-            });
-            mostrarMensagemNaTela(equipe);
-            const data = await response.json();
-            mostrarMensagemNaTela('Equipe gravada com sucesso',1);
-            limpaFormulario();
-            listarEquipes();
-        } catch (error) {
-            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+            try {
+                const response = await fetch(`${API_EQUIPES}/salvar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(equipe)
+                });
+                mostrarMensagemNaTela(equipe);
+                const data = await response.json();
+                mostrarMensagemNaTela('Equipe gravada com sucesso',1);
+                limpaFormulario();
+                listarEquipes();
+                Operacao = 0;
+            } catch (error) {
+                mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+            }
         }
     }
     async function listarEquipes() {
@@ -462,10 +466,14 @@
             });
             const texto = await response.text();
             mostrarMensagemNaTela(texto || 'Equipe excluída com sucesso',1);
+            limpaFormulario();
+            listarEquipes();
+            Operacao = 0;
         } catch (error) {
             mostrarMensagemNaTela(error,1);
         }
     }
+
 
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
@@ -491,9 +499,25 @@
             // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
             document.getElementById('ativa').checked = equipe.ativa || 0;
             montaEquipes(equipe.idequipe);
+            Operacao = 1;
         } catch (error) {
             mostrarMensagemNaTela("Erro ao carregar: " + error.message);
         }
+    }
+    function validaEntrada(Operacao) {
+        if((document.getElementById('idequipe').value !== "" ) && (Operacao === 1)) {
+            mostrarMensagemNaTela("ID deve estar vazio ");
+            return false;
+        }
+        if(document.getElementById('nomeequipe').value === "" ) {
+            mostrarMensagemNaTela("Nome não deve estar vazio ");
+            return false;
+        }
+        if(document.getElementById('descequipe').value === "" ) {
+            mostrarMensagemNaTela("Nome não deve estar vazio ");
+            return false;
+        }
+        return true;
     }
 </script>
 </body>

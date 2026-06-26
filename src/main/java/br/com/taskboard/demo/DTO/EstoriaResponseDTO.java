@@ -1,7 +1,6 @@
 package br.com.taskboard.demo.DTO;
 
 import br.com.taskboard.demo.Modelo.Epico;
-import br.com.taskboard.demo.Modelo.Status;
 import br.com.taskboard.demo.Modelo.Usuario;
 
 public class EstoriaResponseDTO {
@@ -11,7 +10,7 @@ public class EstoriaResponseDTO {
     private Usuario idresponsavel;
     private Epico idepico;
     private Boolean bloqueada;
-    private Status status;
+    private String status;
 
     public Long getIdestoria() {
         return idestoria;
@@ -59,12 +58,5 @@ public class EstoriaResponseDTO {
 
     public void setBloqueada(Boolean bloqueada) {
         this.bloqueada = bloqueada;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-    public void setStatus(Status status) {
-        this.status = status;
     }
 }

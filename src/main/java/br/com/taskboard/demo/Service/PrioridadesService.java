@@ -1,19 +1,19 @@
 package br.com.taskboard.demo.Service;
 
-import br.com.taskboard.demo.Modelo.Prioridade;
-import br.com.taskboard.demo.Respository.PrioridadeRepository;
+import br.com.taskboard.demo.Modelo.Prioridades;
+import br.com.taskboard.demo.Respository.PrioridadesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PrioridadeService {
+public class PrioridadesService {
 
     @Autowired
-    private PrioridadeRepository repository;
+    private PrioridadesRepository repository;
 
-    public List<Prioridade> listar() {
+    public List<Prioridades> listar() {
         return repository.findAll();
     }
 

@@ -44,7 +44,7 @@ public class EmpreendimentoController {
                 EmpreendimentoExistente.setData_fim(novoEmpreendimento.getData_fim());
                 EmpreendimentoExistente.setSiglaempreendimento(novoEmpreendimento.getSiglaempreendimento());
                 EmpreendimentoExistente.setData_cadastro(novoEmpreendimento.getData_cadastro());
-                EmpreendimentoExistente.setIdstatus(novoEmpreendimento.getIdstatus());
+                EmpreendimentoExistente.setStatus(novoEmpreendimento.getStatus());
                 EmpreendimentoExistente.setIdgestor(novoEmpreendimento.getIdgestor());
                 return service.salvar(EmpreendimentoExistente);
             } else {

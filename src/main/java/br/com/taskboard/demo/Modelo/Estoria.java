@@ -22,6 +22,5 @@ public class Estoria {
     @JoinColumn(name = "idepico")
     private Epico idepico;
     private Boolean bloqueada;
-    @Column(name = "status", length = 20)
-    private Prioridade status;
+    private String status;
 }

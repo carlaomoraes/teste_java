@@ -316,7 +316,10 @@
        </div>
     <div id="empreendimento" class="conteudo-aba ativo">
         <input type="number" name="idempreendimento" id="idempreendimento" placeholder="ID do empreendimento (Deixe vazio para novo)">
-        <input type="text" id="nome" placeholder="Nome do empreendimento">
+        <label for="descempreendimento">Nome do empreendimento:</label>
+        <input type="text" id="descempreendimento">
+        <label for="sigla">Sigla</label>
+        <input type="text" id="sigla" maxlength="3">
         <label for="data_inicio">Data início:</label> <input type="date" id="data_inicio" name="datainicial">
         <label for="data_fim">Data Final:</label> <input type="date" id="data_fim" name="datafinal">
         <label for="comboStatus">Status:</label>
@@ -343,7 +346,14 @@
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
-    const API_STATUS = 'http://localhost:8080/status';
+    const API_STATUS = 'http://localhost:8080/status_entidades';
+
+    function formatarData(data) {
+        if (!data) return "";
+
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
 
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
@@ -392,7 +402,7 @@
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela(error.message,1);
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -404,17 +414,17 @@
         const descempreendimento = document.getElementById('descempreendimento').value;
         const data_inicio = document.getElementById('data_inicio').value;
         const data_fim = document.getElementById('data_fim').value;
-        const siglaempreendimento = document.getElementById('siglaempreendimento').value;
-        const status = document.getElementById('status').value
+        const sigla = document.getElementById('sigla').value;
+        const idstatus = document.getElementById('comboStatus').value;
+        const idGestor = document.getElementById('comboGestor').value;
+        }
         const empreendimento = {
             descempreendimento: descempreendimento || null,
             data_inicio: data_inicio || null,
             data_fim: data_fim || null,
-            siglaempreendimento: siglaempreendimento || null,
-            status: status || null,
-            gestor: {
-                idgestor: document.getElementById('comboGestor').value
-            }
+            sigla: sigla || null,
+            status: idstatus ? { idstatus: Number(idStatus) } : null ,
+            gestor: idgestor ? { idgestor: Number(idGestor) } : null
         };
             try {
                 const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
@@ -426,7 +436,7 @@
                 });
                 const data = await response.json();
             } catch (error) {
-                mostrarMensagemNaTela(error,1);
+                mostrarMensagemNaTela(error.message,1);
             }
     }
     async function buscarEmpreendimentoPorLinha(id) {
@@ -437,11 +447,11 @@
             document.getElementById('descempreendimento').value = empreendimento.descempreendimento;
             document.getElementById('data_inicio').value = empreendimento.data_inicio;
             document.getElementById('data_fim').value = empreendimento.data_fim;
-            document.getElementById('siglaempreendimento').value = empreendimento.siglaempreendimento;
+            document.getElementById('sigla').value = empreendimento.siglaempreendimento;
             document.getElementById('status').value = empreendimento.status;
             document.getElementById('comboGestor').value = empreendimento.idgestor;
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela(error.message,1);
         }
     }
     async function listarEmpreendimentos() {
@@ -469,9 +479,9 @@
                                 <td>${empreendimento.idempreendimento}</td>
                                 <td>${empreendimento.descempreendimento}</td>
                                 <td>${empreendimento.siglaempreendimento}</td>
-                                <td>${empreendimento.status}</td>
-                                <td>${empreendimento.data_inicio}</td>
-                                <td>${empreendimento.data_fim}</td>
+                                <td>${empreendimento.descstatus}</td>
+                                <td>${formatarData(empreendimento.data_inicio)}</td>
+                                <td>${formatarData(empreendimento.data_fim)}</td>
                                 <td> <button type="button" class="btn" onclick="event.stopPropagation();excluirEmpreendimento(${empreendimento.idempreendimento})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
@@ -488,7 +498,7 @@
             const texto = await response.text();
             mostrarMensagemNaTela(texto || 'Empreendimento excluído com sucesso',1);
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela(error.message,1);
         }
     }
 
@@ -521,13 +531,21 @@
                                 <td>${empreendimento.idempreendimento}</td>
                                 <td>${empreendimento.descempreendimento}</td>
                                 <td>${empreendimento.siglaempreendimento}</td>
-                                <td>${empreendimento.status}</td>
-                                <td>${empreendimento.data_inicio}</td>
-                                <td>${empreendimento.data_fim}</td>
+                                <td>${empreendimento.descstatus}</td>
+                                <td>${formatarData(empreendimento.data_inicio)}</td>
+                                <td>${formatarData(empreendimento.data_fim)}</td>
                                 <td> <button type="button" class="btn" onclick="event.stopPropagation();excluirEmpreendimento(${empreendimento.idempreendimento})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
+    }
+    function mostrarMensagemNaTela(mensagem) {
+        const container = document.getElementById("resultado");
+        if (container) {
+            container.innerHTML = `<p style="color:red;">${mensagem}</p>`;
+        } else {
+            alert(mensagem);
+        }
     }
 </script>
 </body>

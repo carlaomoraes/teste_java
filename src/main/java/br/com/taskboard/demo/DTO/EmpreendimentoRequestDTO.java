@@ -7,7 +7,7 @@ import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDate;
 
-public class EmpreendimentoResponseDTO {
+public class EmpreendimentoRequestDTO {
     private Long idempreendimento;
     private String descempreendimento;
     private LocalDate data_inicio;

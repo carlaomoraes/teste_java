@@ -1,5 +1,6 @@
 package br.com.taskboard.demo.DTO;
 
+import br.com.taskboard.demo.Modelo.StatusEntidades;
 import br.com.taskboard.demo.Modelo.Usuario;
 import jakarta.persistence.OneToMany;
 
@@ -12,7 +13,8 @@ public class EmpreendimentoResquestDTO {
     private LocalDate data_fim;
     private String siglaempreendimento;
     private LocalDate data_cadastro;
-    private Long idstatus;
+    @OneToMany
+    private StatusEntidades status;
     @OneToMany
     private Usuario idgestor;
 
@@ -64,12 +66,12 @@ public class EmpreendimentoResquestDTO {
         this.data_cadastro = data_cadastro;
     }
 
-    public Long getIdstatus() {
-        return idstatus;
+    public StatusEntidades getStatus() {
+        return status;
     }
 
-    public void setIdstatus(Long idstatus) {
-        this.idstatus = idstatus;
+    public void setStatus(StatusEntidades status) {
+        this.status = status;
     }
 
     public Usuario getIdgestor() {

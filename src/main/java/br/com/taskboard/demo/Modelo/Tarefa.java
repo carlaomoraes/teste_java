@@ -15,7 +15,7 @@ public class Tarefa {
     private Long idtarefa;
     private String desctarefa;
     @Column(name = "status", length = 20)
-    private Status status;
+    private String status;
     @ManyToOne
     @JoinColumn(name = "idestoria")
     private Estoria estoria;
