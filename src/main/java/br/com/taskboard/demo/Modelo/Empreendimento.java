@@ -17,6 +17,10 @@ public class Empreendimento {
     private LocalDate data_inicio;
     private LocalDate data_fim;
     private LocalDate data_cadastro;
+    @PrePersist
+    public void prePersist() {
+        data_cadastro = LocalDate.now();
+    }
     @ManyToOne
     @JoinColumn(name = "idstatus")
     private StatusEntidades status;
@@ -24,5 +28,4 @@ public class Empreendimento {
     @ManyToOne
     @JoinColumn(name = "idgestor")
     private Usuario idgestor;
-
 }

@@ -316,23 +316,20 @@
        </div>
     <div id="empreendimento" class="conteudo-aba ativo">
         <input type="number" name="idempreendimento" id="idempreendimento" placeholder="ID do empreendimento (Deixe vazio para novo)">
-        <label for="descempreendimento">Nome do empreendimento:</label>
-        <input type="text" id="descempreendimento">
-        <label for="sigla">Sigla</label>
-        <input type="text" id="sigla" maxlength="3">
+        <input type="text" id="descempreendimento" placeholder="Nome do empreendimento">
+        <input type="text" id="siglaempreendimento" maxlength="3" placeholder="Sigla do empreendimento">
         <label for="data_inicio">Data início:</label> <input type="date" id="data_inicio" name="datainicial">
         <label for="data_fim">Data Final:</label> <input type="date" id="data_fim" name="datafinal">
         <label for="comboStatus">Status:</label>
         <select id="comboStatus" name="comboStatus">
             <option value="">-- Selecione o status do empreendimento --</option>
         </select>
-
         <label for="comboGestor">Gestor:</label>
         <select id="comboGestor" name="comboGestor">
             <option value="">-- Selecione o gestor do empreendimento --</option>
         </select>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn"  onclick="salvarEmpreendimento()">Salvar</button>
+            <button type="button" class="btn"  onclick="salvarEmpreendimento();">Salvar</button>
             <button type="button" class="btn" onclick="listarEmpreendimentos()">Listar</button>
             <button type="button" class="btn" onclick="buscarEmpreendimento(document.getElementById('idempreendimento').value)">Buscar por ID</button>
             <button type="button" class="btn" onclick="history.back()">Voltar</button>
@@ -382,7 +379,7 @@
             const usuarios = await resposta.json();
             usuarios.forEach(usuario => {
                 const opcao = document.createElement('option');
-                opcao.value = usuario.idUsuario;
+                opcao.value = usuario.idusuario;
                 opcao.textContent = usuario.nome;
                 comboGestor.appendChild(opcao);
             });
@@ -411,19 +408,18 @@
         carregarStatus();
     });
     async function salvarEmpreendimento() {
-        const descempreendimento = document.getElementById('descempreendimento').value;
-        const data_inicio = document.getElementById('data_inicio').value;
-        const data_fim = document.getElementById('data_fim').value;
-        const sigla = document.getElementById('sigla').value;
-        const idStatus = document.getElementById('comboStatus').value;
-        const idGestor = document.getElementById('comboGestor').value;
         const empreendimento = {
-            descempreendimento: descempreendimento || null,
-            data_inicio: data_inicio || null,
-            data_fim: data_fim || null,
-            sigla: sigla || null,
-            status: idStatus ? { idStatus: Number(idStatus) } : null ,
-            gestor: idGestor ? { idGestor: Number(idGestor) } : null
+            descempreendimento: document.getElementById("descempreendimento").value,
+            siglaempreendimento: document.getElementById("siglaempreendimento").value,
+            data_inicio: document.getElementById("data_inicio").value,
+            data_fim: document.getElementById("data_fim").value,
+            status: {
+                idstatus: parseInt(document.getElementById("comboStatus").value)
+            },
+
+            idgestor: {
+                idusuario: parseInt(document.getElementById("comboGestor").value)
+            }
         };
         try {
                 const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
@@ -530,7 +526,7 @@
                                 <td>${empreendimento.idempreendimento}</td>
                                 <td>${empreendimento.descempreendimento}</td>
                                 <td>${empreendimento.siglaempreendimento}</td>
-                                <td>${empreendimento.descstatus}</td>
+                                <td>${empreendimento.status.descstatus}</td>
                                 <td>${formatarData(empreendimento.data_inicio)}</td>
                                 <td>${formatarData(empreendimento.data_fim)}</td>
                                 <td> <button type="button" class="btn" onclick="event.stopPropagation();excluirEmpreendimento(${empreendimento.idempreendimento})">Excluir</button></td>

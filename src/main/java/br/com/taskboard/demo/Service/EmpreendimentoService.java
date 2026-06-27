@@ -14,7 +14,8 @@ public class EmpreendimentoService {
     private EmpreendimentoRepository repository;
 
     public Empreendimento salvar(Empreendimento Empreendimento) {
-         return repository.save(Empreendimento);
+
+        return repository.save(Empreendimento);
     }
 
     public List<Empreendimento> listar() {
