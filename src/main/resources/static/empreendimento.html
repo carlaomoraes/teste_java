@@ -415,18 +415,17 @@
         const data_inicio = document.getElementById('data_inicio').value;
         const data_fim = document.getElementById('data_fim').value;
         const sigla = document.getElementById('sigla').value;
-        const idstatus = document.getElementById('comboStatus').value;
+        const idStatus = document.getElementById('comboStatus').value;
         const idGestor = document.getElementById('comboGestor').value;
-        }
         const empreendimento = {
             descempreendimento: descempreendimento || null,
             data_inicio: data_inicio || null,
             data_fim: data_fim || null,
             sigla: sigla || null,
-            status: idstatus ? { idstatus: Number(idStatus) } : null ,
-            gestor: idgestor ? { idgestor: Number(idGestor) } : null
+            status: idStatus ? { idStatus: Number(idStatus) } : null ,
+            gestor: idGestor ? { idGestor: Number(idGestor) } : null
         };
-            try {
+        try {
                 const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
                     method: 'POST',
                     headers: {
@@ -435,9 +434,9 @@
                     body: JSON.stringify(empreendimento)
                 });
                 const data = await response.json();
-            } catch (error) {
+        } catch (error) {
                 mostrarMensagemNaTela(error.message,1);
-            }
+        }
     }
     async function buscarEmpreendimentoPorLinha(id) {
         try {
