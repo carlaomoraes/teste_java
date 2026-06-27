@@ -24,12 +24,13 @@
         }
 
         .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.05);
             width: 100%;
-            max-width: 1500px;
+            max-width: 750px;   /* antes era 1500 */
+            margin: auto;
         }
 
         h1 {
@@ -306,6 +307,16 @@
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
         }
+        .form-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:15px;
+        }
+
+        .form-grid > div{
+            display:flex;
+            flex-direction:column;
+        }
     </style>
 </head>
 <body>
@@ -316,22 +327,43 @@
        </div>
     <div id="empreendimento" class="conteudo-aba ativo">
         <input type="number" name="idempreendimento" id="idempreendimento" placeholder="ID do empreendimento (Deixe vazio para novo)">
-        <input type="text" id="descempreendimento" placeholder="Nome do empreendimento">
-        <input type="text" id="siglaempreendimento" maxlength="3" placeholder="Sigla do empreendimento">
-        <label for="data_inicio">Data início:</label> <input type="date" id="data_inicio" name="datainicial">
-        <label for="data_fim">Data Final:</label> <input type="date" id="data_fim" name="datafinal">
-        <label for="comboStatus">Status:</label>
-        <select id="comboStatus" name="comboStatus">
-            <option value="">-- Selecione o status do empreendimento --</option>
-        </select>
-        <label for="comboGestor">Gestor:</label>
-        <select id="comboGestor" name="comboGestor">
-            <option value="">-- Selecione o gestor do empreendimento --</option>
-        </select>
+        <div class="form-grid">
+
+            <div>
+                <label>Nome</label>
+                <input type="text" id="descempreendimento" oninput="converterMaiusculo(this)">
+            </div>
+
+            <div>
+                <label>Sigla</label>
+                <input type="text" id="siglaempreendimento" oninput="converterMaiusculo(this)">
+            </div>
+
+            <div>
+                <label>Data início</label>
+                <input type="date" id="data_inicio">
+            </div>
+
+            <div>
+                <label>Data fim</label>
+                <input type="date" id="data_fim">
+            </div>
+
+            <div>
+                <label>Status</label>
+                <select id="comboStatus"></select>
+            </div>
+
+            <div>
+                <label>Gestor</label>
+                <select id="comboGestor"></select>
+            </div>
+
+        </div>
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn"  onclick="salvarEmpreendimento();">Salvar</button>
             <button type="button" class="btn" onclick="listarEmpreendimentos()">Listar</button>
-            <button type="button" class="btn" onclick="buscarEmpreendimento(document.getElementById('idempreendimento').value)">Buscar por ID</button>
+            <button type="button" class="btn" onclick="buscarEmpreendimentoPorLinha(document.getElementById('idempreendimento').value)">Buscar por ID</button>
             <button type="button" class="btn" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado"></div>
@@ -350,6 +382,9 @@
 
         const [ano, mes, dia] = data.split("-");
         return `${dia}/${mes}/${ano}`;
+    }
+    function converterMaiusculo(campo) {
+        campo.value = campo.value.toUpperCase();
     }
 
     function alternarAba(event, idAbaDestino) {
@@ -497,43 +532,6 @@
         }
     }
 
-    async function buscarEmpreendimento(idEmpreendimento) {
-        const response = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}`);
-        if(!response.ok) {
-            const messageError = await response.text();
-            mostrarMensagemNaTela(messageError,1);
-            return;
-        }
-        const data = await response.json();
-        let tabela = `
-            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th class="table-header">ID</th>
-                        <th class="table-header">Descrição</th>
-                        <th class="table-header">Sigla</th>
-                        <th class="table-header">Status</th>
-                        <th class="table-header">Data inicial</th>
-                        <th class="table-header">Data final</th>
-                        <th class="table-header">Excluir</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-            data.forEach(empreendimento => {
-                tabela += `<tr onclick="buscarEmpreendimentoPorLinha(${empreendimento.idempreendimento})"
-                                style="cursor:pointer;">
-                                <td>${empreendimento.idempreendimento}</td>
-                                <td>${empreendimento.descempreendimento}</td>
-                                <td>${empreendimento.siglaempreendimento}</td>
-                                <td>${empreendimento.status.descstatus}</td>
-                                <td>${formatarData(empreendimento.data_inicio)}</td>
-                                <td>${formatarData(empreendimento.data_fim)}</td>
-                                <td> <button type="button" class="btn" onclick="event.stopPropagation();excluirEmpreendimento(${empreendimento.idempreendimento})">Excluir</button></td>
-            </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
-    }
     function mostrarMensagemNaTela(mensagem) {
         const container = document.getElementById("resultado");
         if (container) {
