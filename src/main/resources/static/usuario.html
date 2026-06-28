@@ -428,37 +428,35 @@
         carregarPapel();
     });
     async function salvarUsuario() {
-        if(validaEntrada(1)) {
-            const nome = document.getElementById('nome').value;
-            const login = document.getElementById('login').value;
-            const senha = document.getElementById('senha').value;
-            const email = document.getElementById('email').value;
-            const alterasenha = document.getElementById('alterasenha').checked;
-            const ativo = document.getElementById('ativo').checked
-            const usuario = {
-                nome: nome || null,
-                login: login || null,
-                senha: senha || null,
-                email: email || null,
-                alterasenha: alterasenha,
-                ativo: ativo,
-                papel: {
-                    idPapel: document.getElementById('comboPapel').value
-                }
-            };
-            try {
-                const response = await fetch(`${API_USUARIOS}/salvar`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(usuario)
-                });
-                const data = await response.json();
-            } catch (error) {
-                //mostrarMensagemNaTela(error,1);
+        const nome = document.getElementById('nome').value;
+        const login = document.getElementById('login').value;
+        const senha = document.getElementById('senha').value;
+        const email = document.getElementById('email').value;
+        const alterasenha = document.getElementById('alterasenha').checked;
+        const ativo = document.getElementById('ativo').checked
+        const usuario = {
+            nome: nome || null,
+            login: login || null,
+            senha: senha || null,
+            email: email || null,
+            alterasenha: alterasenha,
+            ativo: ativo,
+            papel: {
+                 idPapel: document.getElementById('comboPapel').value
             }
+        };
+        const response = await fetch(`${API_USUARIOS}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(usuario)
+        });
+        if (!response.ok) {
+           mostrarMensagemNaTela(data.mensagem);
+            return;
         }
+        mostrarMensagemNaTela(data.mensagem);
     }
     async function buscarUsuarioPorLinha(id) {
         try {

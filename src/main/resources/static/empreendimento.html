@@ -470,19 +470,19 @@
         }
     }
     async function buscarEmpreendimentoPorLinha(id) {
-        try {
-            const response = await fetch(`${API_EMPREENDIMENTO}/${id}`);
-            const empreendimento = await response.json();
-            document.getElementById('idempreendimento').value = empreendimento.idempreendimento;
-            document.getElementById('descempreendimento').value = empreendimento.descempreendimento;
-            document.getElementById('data_inicio').value = empreendimento.data_inicio;
-            document.getElementById('data_fim').value = empreendimento.data_fim;
-            document.getElementById('sigla').value = empreendimento.siglaempreendimento;
-            document.getElementById('status').value = empreendimento.status;
-            document.getElementById('comboGestor').value = empreendimento.idgestor;
-        } catch (error) {
-            mostrarMensagemNaTela(error.message,1);
-        }
+        const response = await fetch(`${API_EMPREENDIMENTO}/${id}`);
+        const data = await response.json();
+        if(!response.ok) {
+           mostrarMensagemNaTela(data.mensagem);
+           return;
+         }
+         document.getElementById('idempreendimento').value = data.idempreendimento;
+         document.getElementById('descempreendimento').value = data.descempreendimento;
+         document.getElementById('data_inicio').value = data.data_inicio;
+         document.getElementById('data_fim').value = data.data_fim;
+         document.getElementById('siglaempreendimento').value = data.siglaempreendimento;
+         document.getElementById('status').value = data.status.idstatus;
+         document.getElementById('comboGestor').value = data.gestor.idgestor;
     }
     async function listarEmpreendimentos() {
         try {

@@ -22,12 +22,8 @@ public class EmpreendimentoController {
     // BUSCAR POR ID
     @GetMapping("/{idEmpreendimento}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long idEmpreendimento) {
-        try {
-            Empreendimento Empreendimento = service.buscarPorId(idEmpreendimento);
-            return ResponseEntity.ok().body(Empreendimento);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Empreendimento não encontrado");
-        }
+        Empreendimento Empreendimento = service.buscarPorId(idEmpreendimento);
+        return ResponseEntity.ok().body(Empreendimento);
     }
 
     // SALVAR

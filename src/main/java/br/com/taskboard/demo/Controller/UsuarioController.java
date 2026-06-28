@@ -1,9 +1,9 @@
 package br.com.taskboard.demo.Controller;
 
+import br.com.taskboard.demo.Modelo.Empreendimento;
 import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,25 +19,21 @@ public class UsuarioController {
     // BUSCAR POR ID
     @GetMapping("/{idusuario}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long idusuario) {
-        try {
-            Usuario usuario = service.buscarPorId(idusuario);
-            return ResponseEntity.ok().body(usuario);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuário não encontrado");
-        }
+        Usuario usuario = service.buscarPorId(idusuario);
+        return ResponseEntity.ok().body(usuario);
     }
 
     // SALVAR
     @PostMapping("/salvar")
-    public Usuario salvar(@RequestBody Usuario usuario) {
-        return service.salvar(usuario);
+    public ResponseEntity<?> salvar(@RequestBody Usuario usuario) {
+        return ResponseEntity.ok().body(service.salvar(usuario));
     }
 
     // ATUALIZAR
     @PutMapping("/atualizar/{idusuario}")
-    public Usuario atualizar(@PathVariable Long idusuario,
+    public ResponseEntity<?> atualizar(@PathVariable Long idusuario,
                              @RequestBody Usuario usuario) {
-        return service.atualizar(usuario);
+        return ResponseEntity.ok().body(service.atualizar(usuario));
     }
 
     // LISTAR

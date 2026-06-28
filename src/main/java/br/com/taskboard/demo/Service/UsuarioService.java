@@ -18,15 +18,11 @@ public class UsuarioService {
     private UsuarioRepository repository;
 
     public Usuario salvar(Usuario usuario) {
-        String Messagem = String.format("ID %s deve ser único.", usuario.getIdusuario());
+        Usuario usuarioSalvo;
         String senha = encoder.encode(usuario.getSenha());
         usuario.setSenha(senha);
-        try {
-            repository.save(usuario);
-        } catch (RuntimeException e) {
-            throw new DataIntegrityViolationException(Messagem);
-        }
-        return usuario;
+        usuarioSalvo = repository.save(usuario);
+        return usuarioSalvo;
     }
 
     public List<Usuario> listar() {
@@ -41,13 +37,7 @@ public class UsuarioService {
 
 
     public void excluir(Long idusuario) {
-        Usuario usuario = buscarPorId(idusuario);
-        String Messagem = String.format("Não é possível excluir %s pois ele está vinculado %s.",usuario.getNome(),"Estória");
-        try {
-            repository.deleteById(idusuario);
-        } catch (DataIntegrityViolationException e) {
-            throw new RuntimeException(Messagem);
-        }
+        repository.deleteById(idusuario);
     }
 
     public Usuario buscarPorId(Long idusuario) {
