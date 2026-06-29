@@ -28,4 +28,5 @@ public class Empreendimento {
     @ManyToOne
     @JoinColumn(name = "idgestor")
     private Usuario idgestor;
+    private String cor;
 }

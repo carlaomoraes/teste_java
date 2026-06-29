@@ -1,7 +1,11 @@
 package br.com.taskboard.demo.Service;
 
 import br.com.taskboard.demo.Modelo.Empreendimento;
+import br.com.taskboard.demo.Modelo.EmpreendimentoEquipe;
+import br.com.taskboard.demo.Modelo.Equipe;
 import br.com.taskboard.demo.Respository.EmpreendimentoRepository;
+import br.com.taskboard.demo.Respository.EquipeEmpreendimentoRepository;
+import br.com.taskboard.demo.Respository.EquipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,27 +15,83 @@ import java.util.List;
 public class EmpreendimentoService {
 
     @Autowired
-    private EmpreendimentoRepository repository;
+    private EmpreendimentoRepository empreendimentoRepository;
 
-    public Empreendimento salvar(Empreendimento Empreendimento) {
+    @Autowired
+    private EquipeRepository equipeRepository;
 
-        return repository.save(Empreendimento);
+    @Autowired
+    private EquipeEmpreendimentoRepository relacionamentoRepository;
+
+    // CRUD
+    public Empreendimento salvar(Empreendimento empreendimento) {
+        return empreendimentoRepository.save(empreendimento);
+    }
+
+    public Empreendimento atualizar(Empreendimento empreendimento) {
+        return empreendimentoRepository.save(empreendimento);
+    }
+
+    public Empreendimento buscarPorId(Long id) {
+        return empreendimentoRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Empreendimento não encontrado."));
     }
 
     public List<Empreendimento> listar() {
-
-        return repository.findAll();
+        return empreendimentoRepository.findAll();
     }
 
-    public Empreendimento atualizar(Empreendimento Empreendimento) {
-
-        return repository.save(Empreendimento);
-    }
-    public void excluir(Long idEmpreendimento) {
-        repository.deleteById(idEmpreendimento);
+    public void excluir(Long id) {
+        empreendimentoRepository.deleteById(id);
     }
 
-    public Empreendimento buscarPorId(Long idEmpreendimento) {
-        return repository.findById(idEmpreendimento).orElseThrow(() -> new RuntimeException("Épico não encontrado"));
+    //===================================
+    // EQUIPES
+    //===================================
+
+    public void adicionarEquipe(Long idEmpreendimento, Long idEquipe) {
+
+        if (relacionamentoRepository
+                .existsByEmpreendimentoIdempreendimentoAndEquipeIdequipe(
+                        idEmpreendimento,
+                        idEquipe)) {
+
+            throw new RuntimeException("Equipe já vinculada ao empreendimento.");
+        }
+
+        Empreendimento empreendimento = empreendimentoRepository.findById(idEmpreendimento)
+                .orElseThrow(() ->
+                        new RuntimeException("Empreendimento não encontrado."));
+
+        Equipe equipe = equipeRepository.findById(idEquipe)
+                .orElseThrow(() ->
+                        new RuntimeException("Equipe não encontrada."));
+
+        EmpreendimentoEquipe relacionamento = new EmpreendimentoEquipe();
+
+        relacionamento.setEmpreendimento(empreendimento);
+        relacionamento.setEquipe(equipe);
+
+        relacionamentoRepository.save(relacionamento);
+    }
+
+    public void removerEquipe(Long idEmpreendimento,
+                              Long idEquipe) {
+
+        relacionamentoRepository.removerMembro(
+                idEquipe,
+                idEmpreendimento);
+    }
+
+    public List<Equipe> listarEquipes(Long idEmpreendimento) {
+
+        return relacionamentoRepository
+                .buscarEquipesPorEmpreendimento(idEmpreendimento);
+    }
+
+    public List<Equipe> listarEquipesDisponiveis(Long idEmpreendimento) {
+
+        return relacionamentoRepository.buscarEquipesDisponiveis(idEmpreendimento);
     }
 }

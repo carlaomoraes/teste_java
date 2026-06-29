@@ -428,6 +428,7 @@
         carregarPapel();
     });
     async function salvarUsuario() {
+        const idusuario = document.getElementById("idusuario").value;
         const nome = document.getElementById('nome').value;
         const login = document.getElementById('login').value;
         const senha = document.getElementById('senha').value;
@@ -435,6 +436,7 @@
         const alterasenha = document.getElementById('alterasenha').checked;
         const ativo = document.getElementById('ativo').checked
         const usuario = {
+            idusuario: idusuario || null,
             nome: nome || null,
             login: login || null,
             senha: senha || null,

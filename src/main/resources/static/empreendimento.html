@@ -323,40 +323,39 @@
 <div class="container">
     <h1>Empreendimento - TaskController 1.0</h1>
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'usuarios')">Empreendimento</button>
-       </div>
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'empreendimento')">Empreendimento</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
+    </div>
     <div id="empreendimento" class="conteudo-aba ativo">
         <input type="number" name="idempreendimento" id="idempreendimento" placeholder="ID do empreendimento (Deixe vazio para novo)">
         <div class="form-grid">
-
             <div>
                 <label>Nome</label>
                 <input type="text" id="descempreendimento" oninput="converterMaiusculo(this)">
             </div>
-
             <div>
                 <label>Sigla</label>
                 <input type="text" id="siglaempreendimento" oninput="converterMaiusculo(this)">
             </div>
-
             <div>
                 <label>Data início</label>
                 <input type="date" id="data_inicio">
             </div>
-
             <div>
                 <label>Data fim</label>
                 <input type="date" id="data_fim">
             </div>
-
             <div>
                 <label>Status</label>
                 <select id="comboStatus"></select>
             </div>
-
             <div>
                 <label>Gestor</label>
                 <select id="comboGestor"></select>
+            </div>
+            <div>
+                <label for="cor">Cor de identificação do empreendimeto:</label>
+                <input type="color" id="cor" value="#2196F3">
             </div>
 
         </div>
@@ -368,14 +367,30 @@
         </div>
         <div id="resultado"></div>
     </div>
-
+    <div id="equipe" class="conteudo-aba">
+        <div class="membros-container">
+            <div class="membros-coluna">
+                <h1>Equipes disponíveis</h1>
+                <select id="equipesDisponiveis" size="12" multiple></select>
+            </div>
+            <div class="membros-acoes">
+                <button type="button" class="btn btn-add" onclick="adicionarMembro()">
+                    Adicionar →
+                </button>
+                <button type="button" class="btn btn-remove" onclick="removerMembro()">
+                    ← Remover
+                </button></div>
+            <div class="membros-coluna">
+                <h1>Equipes vinculadas</h1>
+                <select id="EquipeVinculadas" size="12" multiple>  </select>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
-    const API_USUARIOS = 'http://localhost:8080/usuarios';
-    const API_STATUS = 'http://localhost:8080/status_entidades';
 
     function formatarData(data) {
         if (!data) return "";
@@ -406,6 +421,64 @@
         // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
     }
+    // ------- MONTAGEM DAS LISTAS
+    async function montaEquipes(idEquipe) {
+        const disponiveis = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios/disponiveis`)
+            .then(r => r.json());
+
+        const membros = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios`)
+            .then(r => r.json());
+
+        const comboDisponiveis = document.getElementById("usuariosDisponiveis");
+        const comboMembros = document.getElementById("usuariosEquipe");
+
+        comboDisponiveis.innerHTML = "";
+        comboMembros.innerHTML = "";
+
+        disponiveis.forEach(usuario => {
+            comboDisponiveis.innerHTML += `
+            <option value="${usuario.idusuario}">${usuario.nome}</option>
+        `;
+        });
+
+        membros.forEach(usuario => {
+            comboMembros.innerHTML += `
+            <option value="${usuario.idusuario}">${usuario.nome}</option>
+        `;
+        });
+    }
+
+    async function adicionarMembro(){
+        const idEquipe = document.getElementById("idequipe").value;
+        const usuario =  document.getElementById("usuariosDisponiveis");
+        if(!usuario.value)
+            return;
+        await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
+            {
+                method:"POST"
+            }
+        );
+        montaEquipes(idEquipe);
+    }
+    async function removerMembro(){
+        const idEquipe = document.getElementById("idequipe").value;
+        const usuario = document.getElementById("usuariosEquipe");
+        if(!usuario.value)
+            return;
+        await fetch(
+            `http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
+            {
+                method:"DELETE"
+            }
+        );
+
+        montaEquipes(idEquipe);
+    }
+
+
+
+
+
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
         const comboGestor = document.getElementById("comboGestor");
@@ -444,10 +517,12 @@
     });
     async function salvarEmpreendimento() {
         const empreendimento = {
+            idempreendimento: document.getElementById('idempreendimento').value,
             descempreendimento: document.getElementById("descempreendimento").value,
             siglaempreendimento: document.getElementById("siglaempreendimento").value,
             data_inicio: document.getElementById("data_inicio").value,
             data_fim: document.getElementById("data_fim").value,
+            cor: document.getElementById("cor").value,
             status: {
                 idstatus: parseInt(document.getElementById("comboStatus").value)
             },
@@ -504,16 +579,25 @@
                 <tbody>
         `;
             data.forEach(empreendimento => {
-                tabela += `<tr onclick="buscarEmpreendimentoPorLinha(${empreendimento.idempreendimento})"
-                                style="cursor:pointer;">
-                                <td>${empreendimento.idempreendimento}</td>
-                                <td>${empreendimento.descempreendimento}</td>
-                                <td>${empreendimento.siglaempreendimento}</td>
-                                <td>${empreendimento.descstatus}</td>
-                                <td>${formatarData(empreendimento.data_inicio)}</td>
-                                <td>${formatarData(empreendimento.data_fim)}</td>
-                                <td> <button type="button" class="btn" onclick="event.stopPropagation();excluirEmpreendimento(${empreendimento.idempreendimento})">Excluir</button></td>
-            </tr>`;});
+                tabela += `
+        <tr onclick="buscarEmpreendimentoPorLinha(${empreendimento.idempreendimento})"
+            style="cursor:pointer;">
+            <td style="border-left:8px solid ${empreendimento.cor};">
+                ${empreendimento.idempreendimento}
+            </td>
+            <td>${empreendimento.descempreendimento}</td>
+            <td>${empreendimento.siglaempreendimento}</td>
+            <td>${empreendimento.descstatus}</td>
+            <td>${formatarData(empreendimento.data_inicio)}</td>
+            <td>${formatarData(empreendimento.data_fim)}</td>
+            <td>
+                <button type="button" class="btn"
+                    onclick="event.stopPropagation(); excluirEmpreendimento(${empreendimento.idempreendimento})">
+                    Excluir
+                </button>
+            </td>
+        </tr>`;
+            });
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {

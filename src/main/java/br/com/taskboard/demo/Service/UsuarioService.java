@@ -18,11 +18,7 @@ public class UsuarioService {
     private UsuarioRepository repository;
 
     public Usuario salvar(Usuario usuario) {
-        Usuario usuarioSalvo;
-        String senha = encoder.encode(usuario.getSenha());
-        usuario.setSenha(senha);
-        usuarioSalvo = repository.save(usuario);
-        return usuarioSalvo;
+        return repository.save(usuario);
     }
 
     public List<Usuario> listar() {
@@ -30,8 +26,6 @@ public class UsuarioService {
     }
 
     public Usuario atualizar(Usuario usuario) {
-        String senha = encoder.encode(usuario.getSenha());
-        usuario.setSenha(senha);
         return repository.save(usuario);
     }
 

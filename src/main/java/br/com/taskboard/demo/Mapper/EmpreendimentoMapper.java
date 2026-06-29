@@ -1,15 +1,12 @@
 package br.com.taskboard.demo.Mapper;
 
-import br.com.taskboard.demo.DTO.AusenciaProgramadaRequestDTO;
-import br.com.taskboard.demo.DTO.AusenciaProgramadaResponseDTO;
+import br.com.taskboard.demo.DTO.EmpreendimentoRequestDTO;
 import br.com.taskboard.demo.DTO.EmpreendimentoResponseDTO;
-import br.com.taskboard.demo.DTO.EmpreendimentoResquestDTO;
-import br.com.taskboard.demo.Modelo.AusenciaProgramada;
 import br.com.taskboard.demo.Modelo.Empreendimento;
 
 public class EmpreendimentoMapper {
 
-    public static Empreendimento toEntity(EmpreendimentoResquestDTO dto) {
+    public static Empreendimento toEntity(EmpreendimentoRequestDTO dto) {
         Empreendimento e = new Empreendimento();
         e.setIdgestor(dto.getIdgestor());
         e.setDescempreendimento(dto.getDescempreendimento());

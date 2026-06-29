@@ -20,6 +20,7 @@ public class EmpreendimentoResponseDTO {
     @ManyToOne
     @JoinColumn(name = "idgestor")
     private Usuario idgestor;
+    private String cor;
 
     public Long getIdempreendimento() {
         return idempreendimento;
@@ -83,5 +84,13 @@ public class EmpreendimentoResponseDTO {
 
     public void setIdgestor(Usuario idgestor) {
         this.idgestor = idgestor;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
     }
 }

@@ -255,8 +255,8 @@
     <div id="dados-gerais" class="conteudo-aba ativo">
         <div class="form-group">
             <input type="number" name="idequipe" id="idequipe" placeholder="ID da equipe (Deixe vazio para novo)">
-            <input type="text" id="nomeequipe" placeholder="Nome da equipe">
-            <input type="text" id="descequipe" placeholder="Descrição da equipe"> <br>
+            <input type="text" id="nomeequipe" placeholder="Nome da equipe" oninput="converterMaiusculo(this)">
+            <input type="text" id="descequipe" placeholder="Descrição da equipe" oninput="converterMaiusculo(this)"> <br>
             <label class="checkbox-group">
                 <input type="checkbox" id="ativa" value="0"> Ativa ?
             </label>
@@ -289,6 +289,9 @@
     <div id="resultado"></div>
 </div>
 <script>
+    function converterMaiusculo(campo) {
+        campo.value = campo.value.toUpperCase();
+    }
     const tabela = document.getElementById('resultado');
     let Operacao = 0;
 
@@ -408,7 +411,6 @@
                 descequipe: descequipe || null,
                 ativa: campoAtiva
             };
-
             try {
                 const response = await fetch(`${API_EQUIPES}/salvar`, {
                     method: 'POST',
