@@ -4,106 +4,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuração - TaskController 1.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* Reset básico e tipografia */
+        /* ==========================================================================
+           RESET E VARIÁVEIS GLOBAIS
+           ========================================================================== */
+        :root {
+            --primary-color: #1a417a;
+            --active-blue: #cce0ff;
+            --bg-body: #f4f6f8;
+            --bg-card: #ffffff;
+            --border-color: #cbd5e1;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --status-green: #10b981;
+            --action-red: #ef4444;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
-            background-color: #f4f6f9;
+            background-color: var(--bg-body);
             color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
-    min-height: 100vh;
+            min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            background-color: #ffffff;
-            padding: 30px;
+            background-color: var(--bg-card);
+            padding: 32px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow);
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         h1 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 20px;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-color);
         }
 
         /* ==========================================================================
-           ESTRUTURA DAS ABAS (CSS)
+           ESTRUTURA DAS ABAS
            ========================================================================== */
-
-        /* Container dos botões das abas */
         .abas-container {
             display: flex;
             border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 20px;
         }
 
-        /* Estilo de cada botão de aba */
         .aba-botao {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             padding: 12px 24px;
             font-size: 15px;
             font-weight: 600;
-            color: #64748b;
+            color: var(--text-muted);
             background: none;
             border: none;
             cursor: pointer;
-            border-bottom: 2px solid transparent; /* Reserva o espaço para a borda ativa */
-            margin-bottom: -2px; /* Joga a borda por cima da linha do container */
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
             transition: all 0.2s ease-in-out;
         }
 
         .aba-botao:hover {
-            color: #1e293b;
+            color: var(--text-dark);
             background-color: #f8fafc;
         }
 
-        /* Estado da Aba Ativa (Selecionada) */
         .aba-botao.ativa {
-            color: #2563eb; /* Azul padrão do sistema */
-            border-bottom: 2px solid #2563eb;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            background-color: var(--active-blue);
+            border-radius: 6px 6px 0 0;
         }
 
-        /* Container do conteúdo */
         .conteudo-aba {
-            display: none; /* 🌟 ESCONDE TODAS AS ABAS POR PADRÃO */
-            padding: 10px 5px;
-            animation: surgir 0.3s ease-in-out; /* Efeito visual suave */
+            display: none;
+            padding: 10px 0;
+            animation: surgir 0.25s ease-in-out;
         }
 
-        /* Estado do Conteúdo Ativo */
         .conteudo-aba.ativo {
-            display: block; /* 🌟 MOSTRA APENAS A ABA ATIVA */
+            display: block;
         }
 
-        /* Pequena animação para o conteúdo aparecer suavemente */
         @keyframes surgir {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* ==========================================================================
-           Botões (Grupo)
+           FORMULÁRIOS E INPUTS
+           ========================================================================== */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #fff;
+            color: #333;
+            transition: all 0.2s ease-in-out;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26, 65, 122, 0.15);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           BOTÕES DO SISTEMA
            ========================================================================== */
         .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap; /* Ajusta em telas menores */
+            flex-wrap: wrap;
         }
 
         .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             padding: 10px 20px;
             font-size: 14px;
             font-weight: 600;
@@ -113,132 +178,155 @@
             transition: background-color 0.2s, transform 0.1s;
         }
 
-        /* Botão Principal (Salvar) */
-        .btn-group .btn:nth-child(1) {
-            background-color: #2563eb;
-            color: white;
-        }
-        .btn-group .btn:nth-child(1):hover { background-color: #1d4ed8; }
+        .btn-salvar { background-color: var(--primary-color); color: white; }
+        .btn-salvar:hover { background-color: #112d55; }
 
-        /* Botão Secundário (Listar) */
-        .btn-group .btn:nth-child(2) {
-            background-color: #10b981;
-            color: white;
-        }
-        .btn-group .btn:nth-child(2):hover { background-color: #059669; }
+        .btn-listar { background-color: var(--status-green); color: white; }
+        .btn-listar:hover { background-color: #059669; }
 
-        /* Botão Buscar */
-        .btn-group .btn:nth-child(3) {
-            background-color: #64748b;
-            color: white;
-        }
-        .btn-group .btn:nth-child(3):hover { background-color: #475569; }
+        .btn-voltar { background-color: #e2e8f0; color: #475569; }
+        .btn-voltar:hover { background-color: #cbd5e1; }
 
-        /* Botão Voltar */
-        .btn-group .btn:nth-child(4) {
-            background-color: #e2e8f0;
-            color: #475569;
-        }
-        .btn-group .btn:nth-child(4):hover { background-color: #cbd5e1; }
+        .btn-add { background-color: var(--primary-color); color: white; width: 100%; }
+        .btn-remove { background-color: #8c97a5; color: white; width: 100%; }
 
         .btn:active { transform: scale(0.98); }
+
         /* ==========================================================================
-           Tabela de Resultados Dinâmica
+           COMPONENTE DE MEMBROS (LISTAS ESPELHADAS)
+           ========================================================================== */
+        .membros-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .membros-coluna {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .membros-coluna h2 {
+            font-size: 20px;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Substitutos visuais do antigo <select size="12"> */
+        .membros-lista-custom {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            height: 320px;
+            background-color: #fcfcfd;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .membro-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: auto auto;
+            gap: 2px 14px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #eef2f5;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .membro-item:hover { background-color: #f4f8fb; }
+        .membro-item.selecionado { background-color: #e2e8f0; }
+
+        .membro-avatar {
+            grid-row: span 2;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .membro-login { font-weight: 700; color: var(--text-dark); font-size: 15px; }
+        .membro-nome { font-size: 13px; color: var(--text-muted); }
+
+        .membros-acoes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 140px;
+            justify-content: center;
+        }
+
+        /* ==========================================================================
+           TABELA DE RESULTADOS
            ========================================================================== */
         table.table {
             width: 100%;
-            border-collapse: collapse; /* Remove aquelas bordas duplas antigas */
-            margin-top: 15px;
+            border-collapse: collapse;
+            margin-top: 25px;
             background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden; /* Garante o arredondamento dos cantos */
+            border-radius: var(--border-radius);
+            overflow: hidden;
             border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow);
         }
 
         table.table th {
             background-color: #f8fafc;
-            color: #64748b;
-            font-weight: 600;
+            color: var(--text-muted);
+            font-weight: 700;
             text-align: left;
-            padding: 12px 16px;
-            font-size: 14px;
+            padding: 14px 16px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             border-bottom: 2px solid #e2e8f0;
         }
 
         table.table td {
             padding: 14px 16px;
             font-size: 14px;
-            color: #334155;
+            color: var(--text-dark);
             border-bottom: 1px solid #f1f5f9;
+            font-weight: 600;
         }
 
-        /* Efeito Zebrado nas linhas da tabela */
-        table.table tbody tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
+        table.table tbody tr:nth-child(even) { background-color: #f8fafc; }
+        table.table tbody tr:hover { background-color: #f1f5f9 !important; }
 
-        /* Efeito de Hover ao passar o mouse na linha */
-        table.table tbody tr:hover {
-            background-color: #f1f5f9 !important;
-        }
-
-        /* Botão de Excluir específico dentro da tabela */
-        table.table .btn {
+        table.table .btn-excluir {
             padding: 6px 12px;
             font-size: 12px;
-            background-color: #ef4444;
+            background-color: var(--action-red);
             color: white;
         }
-        table.table .btn:hover { background-color: #dc2626; }
-        input[type="text"],
-        input[type="number"],
-        input[type="date"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px 14px;
-            font-size: 15px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            background-color: #fff;
-            color: #333;
-            transition: all 0.2s ease-in-out;
-            margin-bottom: 4px;
+        table.table .btn-excluir:hover { background-color: #dc2626; }
+
+        /* Status travado e feedbacks de mensagens */
+        .tabela-travada {
+            opacity: 0.3;
+            pointer-events: none;
+            cursor: not-allowed;
+            user-select: none;
+            transition: all 0.3s ease;
         }
-        .membros-container {
-            display: flex;
-            gap: 20px;
+
+        #resultado {
             margin-top: 10px;
-            align-items: center;
-        }
-
-        .membros-coluna {
-            flex: 1;
-        }
-
-        .membros-coluna select {
-            width: 100%;
-        }
-
-        select {
-            width: 100%;
-            padding: 12px 14px;
-            border: none;
-            border-radius: 10px;
-            background: #f5f7fa;
+            font-weight: 600;
             font-size: 14px;
-            color: #333;
-            outline: none;
-            cursor: pointer;
-            box-shadow: inset 0 0 0 1px #ddd;
-            transition: 0.3s;
         }
 
-        select:hover {
-            background: #eef2f7;
-        }
-
-        select:focus {
-            box-shadow: 0 0 0 2px #4a90e2;
+        @media(max-width: 768px) {
+            .membros-container { grid-template-columns: 1fr; }
+            .membros-acoes { width: 100%; flex-direction: row; }
         }
     </style>
 </head>
@@ -248,190 +336,209 @@
     <h1>Cadastro de equipe - TaskController 1.0</h1>
 
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'dados-gerais')">Dados gerais</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">Membros</button>
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'dados-gerais')">
+            <i class="fa-solid fa-gear"></i> Dados gerais
+        </button>
+        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">
+            <i class="fa-solid fa-users"></i> Membros
+        </button>
     </div>
 
     <div id="dados-gerais" class="conteudo-aba ativo">
         <div class="form-group">
             <input type="number" name="idequipe" id="idequipe" placeholder="ID da equipe (Deixe vazio para novo)">
             <input type="text" id="nomeequipe" placeholder="Nome da equipe" oninput="converterMaiusculo(this)">
-            <input type="text" id="descequipe" placeholder="Descrição da equipe" oninput="converterMaiusculo(this)"> <br>
+            <input type="text" id="descequipe" placeholder="Descrição da equipe" oninput="converterMaiusculo(this)">
             <label class="checkbox-group">
-                <input type="checkbox" id="ativa" value="0"> Ativa ?
+                <input type="checkbox" id="ativa"> Ativa?
             </label>
         </div>
-        <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn"  onclick="salvarEquipes()">Salvar</button>
-            <button type="button" class="btn" onclick="listarEquipes()">Listar</button>
-            <button type="button" class="btn" onclick="history.back()">Voltar</button>
+        <div class="btn-group">
+            <button type="button" class="btn btn-salvar" onclick="salvarEquipes()">Salvar</button>
+            <button type="button" class="btn btn-listar" onclick="listarEquipes()">Listar</button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
     </div>
+
     <div id="equipe" class="conteudo-aba">
         <div class="membros-container">
             <div class="membros-coluna">
-                <h1>Usuários disponíveis</h1>
-                <select id="usuariosDisponiveis" size="12" multiple></select>
+                <h2>Usuários disponíveis</h2>
+                <div id="usuariosDisponiveis" class="membros-lista-custom"></div>
             </div>
+
             <div class="membros-acoes">
                 <button type="button" class="btn btn-add" onclick="adicionarMembro()">
-                    Adicionar →
+                    Adicionar <i class="fa-solid fa-arrow-right"></i>
                 </button>
                 <button type="button" class="btn btn-remove" onclick="removerMembro()">
-                    ← Remover
-                </button></div>
-             <div class="membros-coluna">
-                <h1>Membros da equipe</h1>
-                <select id="usuariosEquipe" size="12" multiple>  </select>
+                    <i class="fa-solid fa-arrow-left"></i> Remover
+                </button>
+            </div>
+
+            <div class="membros-coluna">
+                <h2>Membros da equipe</h2>
+                <div id="usuariosEquipe" class="membros-lista-custom"></div>
             </div>
         </div>
     </div>
+
     <div id="resultado"></div>
 </div>
+
 <script>
+    // Variáveis globais para rastreamento dos itens selecionados nos seletores customizados
+    let usuarioDisponivelSelecionado = null;
+    let usuarioEquipeSelecionado = null;
+
+    const API_EQUIPES = 'http://localhost:8080/equipes';
+
     function converterMaiusculo(campo) {
         campo.value = campo.value.toUpperCase();
     }
-    const tabela = document.getElementById('resultado');
-    let Operacao = 0;
 
-    // Monitora a troca de abas no navegador
     document.addEventListener('visibilitychange', () => {
+        const containerTabela = document.getElementById('resultado');
+        if (!containerTabela) return;
+
         if (document.hidden) {
-            // O usuário saiu da aba: trava a tabela
-            tabela.classList.add('tabela-travada');
-            console.log('Aba oculta: tabela travada.');
+            containerTabela.classList.add('tabela-travada');
         } else {
-            // O usuário voltou para a aba: destrava a tabela
-            tabela.classList.remove('tabela-travada');
-            console.log('Aba ativa: tabela liberada.');
+            containerTabela.classList.remove('tabela-travada');
         }
-    })
-    const API_EQUIPES = 'http://localhost:8080/equipes';
+    });
 
     async function limpaFormulario() {
         document.getElementById('idequipe').value = "";
         document.getElementById('nomeequipe').value = "";
         document.getElementById('descequipe').value = "";
-        document.getElementById('ativa').value = false;
-        Operacao = 0;
+        document.getElementById('ativa').checked = false;
+        usuarioDisponivelSelecionado = null;
+        usuarioEquipeSelecionado = null;
+    }
+
+    // Renderiza a lista customizada mapeando os eventos de clique
+    function renderizarListaCustom(containerId, listaUsuarios, tipo) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+
+        if (listaUsuarios.length === 0) {
+            container.innerHTML = `<div style="padding: 20px; color: #94a3b8; text-align:center; font-size:14px;">Nenhum usuário encontrado</div>`;
+            return;
+        }
+
+        listaUsuarios.forEach(usuario => {
+            const item = document.createElement('div');
+            item.className = 'membro-item';
+            item.dataset.id = usuario.idusuario;
+
+            item.innerHTML = `
+                <div class="membro-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="membro-login">${usuario.nome.split(' ')[0].toLowerCase()}</div>
+                <div class="membro-name">${usuario.nome}</div>
+            `;
+
+            item.addEventListener('click', () => {
+                // Remove seleção anterior do escopo específico
+                container.querySelectorAll('.membro-item').forEach(el => el.classList.remove('selecionado'));
+                item.classList.add('selecionado');
+
+                if (tipo === 'disponivel') {
+                    usuarioDisponivelSelecionado = usuario.idusuario;
+                } else {
+                    usuarioEquipeSelecionado = usuario.idusuario;
+                }
+            });
+
+            container.appendChild(item);
+        });
     }
 
     async function montaEquipes(idEquipe) {
-        const disponiveis = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios/disponiveis`)
-            .then(r => r.json());
+        try {
+            const disponiveis = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios/disponiveis`).then(r => r.json());
+            const membros = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios`).then(r => r.json());
 
-        const membros = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios`)
-            .then(r => r.json());
+            renderizarListaCustom("usuariosDisponiveis", disponiveis, 'disponivel');
+            renderizarListaCustom("usuariosEquipe", membros, 'equipe');
 
-        const comboDisponiveis = document.getElementById("usuariosDisponiveis");
-        const comboMembros = document.getElementById("usuariosEquipe");
-
-        comboDisponiveis.innerHTML = "";
-        comboMembros.innerHTML = "";
-
-        disponiveis.forEach(usuario => {
-            comboDisponiveis.innerHTML += `
-            <option value="${usuario.idusuario}">${usuario.nome}</option>
-        `;
-        });
-
-        membros.forEach(usuario => {
-            comboMembros.innerHTML += `
-            <option value="${usuario.idusuario}">${usuario.nome}</option>
-        `;
-        });
+            usuarioDisponivelSelecionado = null;
+            usuarioEquipeSelecionado = null;
+        } catch(e) {
+            mostrarMensagemNaTela("Erro ao montar colunas de membros: " + e.message);
+        }
     }
 
     async function adicionarMembro(){
         const idEquipe = document.getElementById("idequipe").value;
-        const usuario =  document.getElementById("usuariosDisponiveis");
-        if(!usuario.value)
+        if(!idEquipe || !usuarioDisponivelSelecionado) {
+            mostrarMensagemNaTela("Selecione um usuário disponível e garanta que a equipe possua um ID válido.");
             return;
-        await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
-            {
-                method:"POST"
-            }
-        );
+        }
+        await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioDisponivelSelecionado}`, { method:"POST" });
         montaEquipes(idEquipe);
     }
+
     async function removerMembro(){
         const idEquipe = document.getElementById("idequipe").value;
-        const usuario = document.getElementById("usuariosEquipe");
-        if(!usuario.value)
+        if(!idEquipe || !usuarioEquipeSelecionado) {
             return;
-        await fetch(
-            `http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
-            {
-                method:"DELETE"
-            }
-        );
-
+        }
+        await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioEquipeSelecionado}`, { method:"DELETE" });
         montaEquipes(idEquipe);
     }
+
     function alternarAba(event, idAbaDestino) {
-        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
-        const conteudos = document.querySelectorAll('.conteudo-aba');
+        document.querySelectorAll('.conteudo-aba').forEach(conteudo => conteudo.classList.remove('ativo'));
+        document.querySelectorAll('.aba-botao').forEach(botao => botao.classList.remove('ativa'));
 
-        conteudos.forEach(conteudo => {
-            conteudo.classList.remove('ativo');
-        });
-
-        // 2. Pega todos os botões e remove a classe 'ativa'
-        const botoes = document.querySelectorAll('.aba-botao');
-        botoes.forEach(botao => {
-            botao.classList.remove('ativa');
-        });
-
-        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
         document.getElementById(idAbaDestino).classList.add('ativo');
-
-        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
 
-        // 5. QUANDO ENTRAR NA ABA DE EQUIPE, CARREGA O GRID
         if (idAbaDestino === 'equipe') {
             const idEquipe = document.getElementById("idequipe").value;
-
             if (idEquipe) {
                 montaEquipes(idEquipe);
+            } else {
+                document.getElementById("usuariosDisponiveis").innerHTML = `<div style="padding: 20px; color: #ef4444; text-align:center; font-size:14px;">Selecione ou salve uma equipe primeiro para gerenciar os membros.</div>`;
+                document.getElementById("usuariosEquipe").innerHTML = "";
             }
         }
     }
-    //--------------------- MANIPULAÇÃO DOS DADOS
+
     async function salvarEquipes() {
-        if(validaEntrada(Operacao)) {
+        if(validaEntrada()) {
             const idequipe = document.getElementById("idequipe").value;
             const descequipe = document.getElementById('descequipe').value;
             const nomeequipe = document.getElementById('nomeequipe').value;
             const campoAtiva = document.getElementById('ativa').checked ? 1 : 0;
+
             const equipe = {
                 idequipe: Number(idequipe) || null,
                 nomeequipe: nomeequipe || null,
                 descequipe: descequipe || null,
                 ativa: campoAtiva
             };
+
             try {
                 const response = await fetch(`${API_EQUIPES}/salvar`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(equipe)
                 });
-                const data = await response.json();
-                mostrarMensagemNaTela('Equipe gravada com sucesso',1);
+                mostrarMensagemNaTela("Gravado com sucesso!", "green");
                 setTimeout(() => {
-                    limparCampos();
+                    limpaFormulario();
                     listarEquipes();
                 }, 1000);
-                Operacao = 0;
             } catch (error) {
                 mostrarMensagemNaTela("Erro ao salvar: " + error.message);
             }
         }
     }
+
     async function listarEquipes() {
+        if (document.hidden) return;
         try {
             const response = await fetch(`${API_EQUIPES}/listar`);
             const data = await response.json();
@@ -439,59 +546,56 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="table-header">ID</th>
-                        <th class="table-header">Nome</th>
-                        <th class="table-header">Descrição</th>
-                        <th class="table-header">Ativa</th>
-                        <th class="table-header">Ação</th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Ativa</th>
+                        <th style="text-align:center;">Ação</th>
                     </tr>
                 </thead>
                 <tbody>`;
             data.forEach(equipe => {
-                tabela += `<tr onclick="buscarPorLinha(${equipe.idequipe})"
-                                style="cursor:pointer;">
-                                <th>${equipe.idequipe}</th>
-                                <th>${equipe.nomeequipe}</th>
-                                <th>${equipe.descequipe}</th>
-                                <th>${equipe.ativa ? '✅ Sim' : '❌ Não'}</th>
-                                <th> <button type="button" class="btn" id="btnExcluirEquipe" onclick="event.stopPropagation();excluirEquipes(${equipe.idequipe})">Excluir</button></th>
-                           </tr>`;});
+                tabela += `<tr onclick="buscarPorLinha(${equipe.idequipe})" style="cursor:pointer;">
+                                <td>${equipe.idequipe}</td>
+                                <td>${equipe.nomeequipe}</td>
+                                <td>${equipe.descequipe}</td>
+                                <td>${equipe.ativa ? '✅ Sim' : '❌ Não'}</td>
+                                <td style="text-align:center;">
+                                    <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();excluirEquipes(${equipe.idequipe})">
+                                        <i class="fa-solid fa-trash-can"></i> Excluir
+                                    </button>
+                                </td>
+                           </tr>`;
+            });
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("Erro ao listar: " + error.message);
         }
     }
+
     async function excluirEquipes(idequipe) {
         try {
-            const response = await fetch(`${API_EQUIPES}/excluir/${idequipe}`, {
-                method: 'DELETE'
-            });
+            const response = await fetch(`${API_EQUIPES}/excluir/${idequipe}`, { method: 'DELETE' });
             const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Equipe excluída com sucesso',1);
+            mostrarMensagemNaTela(texto || 'Equipe excluída com sucesso', "green");
             limpaFormulario();
             listarEquipes();
-            Operacao = 0;
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela(error.message);
         }
     }
 
-
-    // Inicializa os seletores assim que o HTML carregar completamente
-    document.addEventListener('DOMContentLoaded', () => {
-    });
-
-    // Função para injetar a mensagem no HTML
-    function mostrarMensagemNaTela(mensagem, aba) {
-       container = document.getElementById("resultado");
-       if (container) {
+    function mostrarMensagemNaTela(mensagem, cor = "red") {
+        const container = document.getElementById("resultado");
+        if (container) {
             container.textContent = mensagem;
-            container.style.color = "red"; // Deixa o texto vermelho
+            container.style.color = cor === "green" ? "#10b981" : "#ef4444";
         } else {
-            alert(mensagem); // Feedback visual simples caso não tenha o container
+            alert(mensagem);
         }
     }
+
     async function buscarPorLinha(id) {
         try {
             const response = await fetch(`${API_EQUIPES}/${id}`);
@@ -499,25 +603,23 @@
             document.getElementById('idequipe').value = equipe.idequipe;
             document.getElementById('nomeequipe').value = equipe.nomeequipe;
             document.getElementById('descequipe').value = equipe.descequipe;
-            // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-            document.getElementById('ativa').checked = equipe.ativa || 0;
+            document.getElementById('ativa').checked = !!equipe.ativa;
+
+            // Limpa mensagens e monta equipe se o usuário mudar de aba depois
+            mostrarMensagemNaTela("Equipe selecionada: " + equipe.nomeequipe, "green");
             montaEquipes(equipe.idequipe);
-            Operacao = 1;
         } catch (error) {
             mostrarMensagemNaTela("Erro ao carregar: " + error.message);
         }
     }
-    function validaEntrada(Operacao) {
-        if((document.getElementById('idequipe').value !== "" ) && (Operacao === 1)) {
-            mostrarMensagemNaTela("ID deve estar vazio ");
+
+    function validaEntrada() {
+        if(document.getElementById('nomeequipe').value.trim() === "" ) {
+            mostrarMensagemNaTela("O nome da equipe não deve estar vazio");
             return false;
         }
-        if(document.getElementById('nomeequipe').value === "" ) {
-            mostrarMensagemNaTela("Nome não deve estar vazio ");
-            return false;
-        }
-        if(document.getElementById('descequipe').value === "" ) {
-            mostrarMensagemNaTela("Nome não deve estar vazio ");
+        if(document.getElementById('descequipe').value.trim() === "" ) {
+            mostrarMensagemNaTela("A descrição da equipe não deve estar vazia");
             return false;
         }
         return true;

@@ -1,12 +1,12 @@
 package br.com.taskboard.demo.Controller;
 
 import br.com.taskboard.demo.Modelo.Empreendimento;
-import br.com.taskboard.demo.Modelo.EmpreendimentoEquipe;
 import br.com.taskboard.demo.Modelo.Equipe;
-import br.com.taskboard.demo.Respository.EmpreendimentoRepository;
-import br.com.taskboard.demo.Respository.EquipeEmpreendimentoRepository;
-import br.com.taskboard.demo.Respository.EquipeRepository;
+import br.com.taskboard.demo.Modelo.StatusEntidades;
+import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Service.EmpreendimentoService;
+import br.com.taskboard.demo.Service.StatusEntidadesService;
+import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,11 @@ public class EmpreendimentoController {
 
     @Autowired
     private EmpreendimentoService service;
+    @Autowired
+    private StatusEntidadesService statusService;
+    @Autowired
+    private UsuarioService usuarioService;
+
 
     //==========================
     // CRUD
@@ -28,7 +33,6 @@ public class EmpreendimentoController {
     @GetMapping("/{idEmpreendimento}")
     public ResponseEntity<Empreendimento> buscarPorId(
             @PathVariable Long idEmpreendimento) {
-
         return ResponseEntity.ok(service.buscarPorId(idEmpreendimento));
     }
 
@@ -40,27 +44,41 @@ public class EmpreendimentoController {
     @PostMapping("/salvar")
     public ResponseEntity<Empreendimento> salvar(
             @RequestBody Empreendimento empreendimento) {
-
+        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
+        if (statusEntidades == null) {
+            return ResponseEntity.notFound().build();
+        }
+        empreendimento.setStatus(statusEntidades);
+        Usuario usuario = usuarioService.buscarPorId(empreendimento.getIdgestor().getIdusuario());
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        empreendimento.setIdgestor(usuario);
         return ResponseEntity.ok(service.salvar(empreendimento));
     }
 
-    @PutMapping("/{idEmpreendimento}")
+    @PutMapping("/atualizar/{idEmpreendimento}")
     public ResponseEntity<Empreendimento> atualizar(
             @PathVariable Long idEmpreendimento,
             @RequestBody Empreendimento empreendimento) {
-
-        empreendimento.setIdempreendimento(idEmpreendimento);
-
+        Usuario usuario = usuarioService.buscarPorId(empreendimento.getIdgestor().getIdusuario());
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        empreendimento.setIdgestor(usuario);
+        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
+        if (statusEntidades == null) {
+            return ResponseEntity.notFound().build();
+        }
+        empreendimento.setStatus(statusEntidades);
         return ResponseEntity.ok(service.atualizar(empreendimento));
     }
 
-    @DeleteMapping("/{idEmpreendimento}")
-    public ResponseEntity<Void> excluir(
+    @DeleteMapping("/excluir/{idEmpreendimento}")
+    public ResponseEntity<String> excluir(
             @PathVariable Long idEmpreendimento) {
-
         service.excluir(idEmpreendimento);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Excluído com sucesso.");
     }
 
     //==========================

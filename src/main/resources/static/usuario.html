@@ -368,6 +368,14 @@
         campo.value = campo.value.toUpperCase();
     }
 
+    function formatarData(data) {
+        if (!data) return "";
+
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
+
+
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
         const conteudos = document.querySelectorAll('.conteudo-aba');
@@ -411,10 +419,9 @@
             const resposta = await fetch(`${API_PAPEL}/listar`);
             const papel = await resposta.json();
             papel.forEach(u => {
-                const idVal = u.idPapel;
                 // Cria opção para o combo papel
                 const opt1 = document.createElement('option');
-                opt1.value = idVal;
+                opt1.value = u.idpapel;
                 opt1.textContent = u.descpapel;
                 comboPapel.appendChild(opt1);
             });
@@ -444,26 +451,26 @@
             alterasenha: alterasenha,
             ativo: ativo,
             papel: {
-                 idPapel: document.getElementById('comboPapel').value
+                idpapel: document.getElementById('comboPapel').value || null,
             }
         };
-        const response = await fetch(`${API_USUARIOS}/salvar`, {
+        try {
+            const response = await fetch(`${API_USUARIOS}/salvar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(usuario)
-        });
-        if (!response.ok) {
-           mostrarMensagemNaTela(data.mensagem);
-            return;
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("Gravado com sucesso!");
+            setTimeout(() => {
+                limparCampos();
+                listarUsuarios();
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela(error.message, 1);
         }
-        mostrarMensagemNaTela("Gravado com sucesso!");
-        setTimeout(() => {
-            limparCampos();
-            listarUsuarios();
-        }, 1000);
-
     }
     async function buscarUsuarioPorLinha(id) {
         try {
@@ -476,7 +483,7 @@
             document.getElementById('senha').value = usuario.senha;
             document.getElementById('alterasenha').checked = usuario.alterasenha;
             document.getElementById('ativo').checked = usuario.ativo;
-            document.getElementById('comboPapel').value = usuario.papel;
+            document.getElementById('comboPapel').value = usuario.papel.idpapel;
             sessionStorage.setItem('idusuario',usuario.idusuario);
             listarAusencias(sessionStorage.getItem('idusuario'));
         } catch (error) {
@@ -607,6 +614,10 @@
                     body: JSON.stringify(ausencias)
                 });
                 const data = await response.json();
+                mostrarMensagemNaTela("Gravado com sucesso!");
+                setTimeout(() => {
+                    listarAusencias(idUsuario);
+                }, 1000);
             } catch (error) {
                 mostrarMensagemNaTela(error.message, 2);
             }
@@ -614,24 +625,18 @@
     }
 
     async function listarAusencias(idUsuario) {
-        async function listarAusencias(idUsuario) {
-            const container = document.getElementById("resultadoAusencias");
-
-            try {
-                const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
-
-                if (!response.ok) {
-                    const msg = await response.text();
-                    mostrarMensagemNaTela(msg || "Erro ao listar ausências!", 2);
-                    return;
-                }
-
-                const data = await response.json();
-
+         const container = document.getElementById("resultadoAusencias");
+         try {
+             const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
+              if (!response.ok) {
+                  const msg = await response.text();
+                  mostrarMensagemNaTela(msg || "Erro ao listar ausências!", 2);
+                  return;
+              }
+              const data = await response.json();
                 // Se não houver registros
                 if (!data || data.length === 0) {
-                    container.innerHTML = `
-                <table class="table">
+                    container.innerHTML = `<table class="table">
                     <thead>
                         <tr>
                             <th>Data inicial</th>
@@ -672,8 +677,8 @@
                     tabela += `
                 <tr onclick="buscarAusenciaPorLinha(${a.idausencia})" style="cursor:pointer;">
                     <td>${a.idausencia}</td>
-                    <td>${a.data_inicio}</td>
-                    <td>${a.data_fim}</td>
+                    <td>${formatarData(a.data_inicio)}</td>
+                    <td>${formatarData(a.data_fim)}</td>
                     <td>${a.tipoausencia?.desc_tipo_ausencia ?? ''}</td>
                     <td>${a.observacao ?? ''}</td>
                     <td>
@@ -695,12 +700,8 @@
                 container.innerHTML = tabela;
 
             } catch (error) {
-                mostrarMensagemNaTela(
-                    error?.message || "Erro inesperado ao listar ausências",
-                    2
-                );
+                mostrarMensagemNaTela(error.message || "Erro inesperado ao listar ausências",2);
             }
-        }
     }
     async function excluirAusencia(idausencia) {
         try {

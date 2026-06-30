@@ -370,19 +370,22 @@
     <div id="equipe" class="conteudo-aba">
         <div class="membros-container">
             <div class="membros-coluna">
-                <h1>Equipes disponíveis</h1>
-                <select id="equipesDisponiveis" size="12" multiple></select>
+                <h2>Equipes disponíveis</h2>
+                <div id="equipesDisponiveis" class="membros-lista-custom"></div>
             </div>
+
             <div class="membros-acoes">
                 <button type="button" class="btn btn-add" onclick="adicionarMembro()">
-                    Adicionar →
+                    Adicionar <i class="fa-solid fa-arrow-right"></i>
                 </button>
                 <button type="button" class="btn btn-remove" onclick="removerMembro()">
-                    ← Remover
-                </button></div>
+                    <i class="fa-solid fa-arrow-left"></i> Remover
+                </button>
+            </div>
+
             <div class="membros-coluna">
-                <h1>Equipes vinculadas</h1>
-                <select id="EquipeVinculadas" size="12" multiple>  </select>
+                <h2>Equipes vinculadas</h2>
+                <div id="EquipesVinculadas" class="membros-lista-custom"></div>
             </div>
         </div>
     </div>
@@ -425,11 +428,8 @@
         event.currentTarget.classList.add('ativa');
     }
     // ------- MONTAGEM DAS LISTAS
-    async function montaEquipes(idEquipe) {
-        const disponiveis = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios/disponiveis`)
-            .then(r => r.json());
-
-        const membros = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios`)
+    async function montaEquipes(idEmpreendimento) {
+        const disponiveis = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}/euipes`)
             .then(r => r.json());
 
         const comboDisponiveis = document.getElementById("usuariosDisponiveis");
@@ -438,9 +438,9 @@
         comboDisponiveis.innerHTML = "";
         comboMembros.innerHTML = "";
 
-        disponiveis.forEach(usuario => {
+        disponiveis.forEach(equipe => {
             comboDisponiveis.innerHTML += `
-            <option value="${usuario.idusuario}">${usuario.nome}</option>
+            <option value="${equipe.idequipe}">${equipe.descequipe}</option>
         `;
         });
 
@@ -514,22 +514,22 @@
         carregarStatus();
     });
     async function salvarEmpreendimento() {
-        const empreendimento = {
-            idempreendimento: document.getElementById('idempreendimento').value,
-            descempreendimento: document.getElementById("descempreendimento").value,
-            siglaempreendimento: document.getElementById("siglaempreendimento").value,
-            data_inicio: document.getElementById("data_inicio").value,
-            data_fim: document.getElementById("data_fim").value,
-            cor: document.getElementById("cor").value,
-            status: {
-                idstatus: parseInt(document.getElementById("comboStatus").value)
-            },
-
-            idgestor: {
-                idusuario: parseInt(document.getElementById("comboGestor").value)
-            }
-        };
-        try {
+        if(await validaEntrada()) {
+            const empreendimento = {
+                idempreendimento: document.getElementById('idempreendimento').value,
+                descempreendimento: document.getElementById("descempreendimento").value,
+                siglaempreendimento: document.getElementById("siglaempreendimento").value,
+                data_inicio: document.getElementById("data_inicio").value,
+                data_fim: document.getElementById("data_fim").value,
+                cor: document.getElementById("cor").value,
+                status: {
+                    idstatus: parseInt(document.getElementById("comboStatus").value)
+                },
+                idgestor: {
+                    idusuario: parseInt(document.getElementById("comboGestor").value)
+                }
+            };
+            try {
                 const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
                     method: 'POST',
                     headers: {
@@ -543,8 +543,9 @@
                     limparCampos();
                     listarEmpreendimentos();
                 }, 1000);
-        } catch (error) {
-                mostrarMensagemNaTela(error.message,1);
+            } catch (error) {
+                mostrarMensagemNaTela(error.message, 1);
+            }
         }
     }
     async function buscarEmpreendimentoPorLinha(id) {
@@ -559,8 +560,10 @@
          document.getElementById('data_inicio').value = data.data_inicio;
          document.getElementById('data_fim').value = data.data_fim;
          document.getElementById('siglaempreendimento').value = data.siglaempreendimento;
-         document.getElementById('status').value = data.status.idstatus;
-         document.getElementById('comboGestor').value = data.gestor.idgestor;
+         document.getElementById('combostatus').value = data.status.idstatus || "";
+         document.getElementById('comboGestor').value = data.idgestor.idusuario || "";
+
+         montaEquipes(data.idempreendimento);
     }
     async function listarEmpreendimentos() {
         try {
@@ -624,8 +627,47 @@
         document.getElementById('data_inicio').value = "";
         document.getElementById('data_fim').value = "";
         document.getElementById('siglaempreendimento').value = "";
-        document.getElementById('status').value = "";
-        document.getElementById('comboGestor').value = "";
+
+    }
+    async function validaEntrada() {
+        // 1. Captura os valores dos elementos
+        const desc = document.getElementById('descempreendimento').value.trim();
+        const dataInicio = document.getElementById('data_inicio').value;
+        const dataFim = document.getElementById('data_fim').value;
+        const sigla = document.getElementById('siglaempreendimento').value.trim();
+
+        // Validação: Descrição do Empreendimento
+        if (desc === "") {
+            mostrarMensagemNaTela("A descrição do empreendimento é obrigatória!");
+            return false;
+        }
+        // Validação: Sigla (Exemplo: obrigatória e com limite de caracteres)
+        if (sigla === "") {
+            mostrarMensagemNaTela("A sigla do empreendimento é obrigatória!");
+            return false;
+       } else if (sigla.length > 3) {
+             mostrarMensagemNaTela("A sigla deve ter no máximo 3 caracteres.");
+             return false;
+       }
+      // Validação: Datas Obrigatórias
+      if (!dataInicio) {
+          mostrarMensagemNaTela("A data de início é obrigatória.");
+          return false;
+      }
+      if (!dataFim) {
+          mostrarMensagemNaTela("A data de fim é obrigatória.");
+          return false;
+      }
+     // Validação Lógica: Data Fim não pode ser menor que Data Início
+      if (dataInicio && dataFim) {
+         const dataInicDate = new Date(dataInicio);
+         const dataFimDate = new Date(dataFim);
+        if (dataFimDate < dataInicDate) {
+            mostrarMensagemNaTela("A data de fim não pode ser anterior à data de início.");
+            return false;
+        }
+      }
+      return true;
     }
     async function mostrarMensagemNaTela(mensagem) {
         const container = document.getElementById("resultado");
