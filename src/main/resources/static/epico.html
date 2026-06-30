@@ -84,9 +84,12 @@
                 body: JSON.stringify(epico)
             });
             const data = await response.json();
-            mostrarMensagemNaTela('Épico gravado com sucesso');
-            limpaFormulario();
-            listarEpico();
+            mostrarMensagemNaTela("Gravado com sucesso!");
+            setTimeout(() => {
+                limparCampos();
+                listarEpico();
+            }, 1000);
+
         } catch (error) {
             mostrarMensagemNaTela("Erro ao salvar: " + error.message);
         }

@@ -458,7 +458,12 @@
            mostrarMensagemNaTela(data.mensagem);
             return;
         }
-        mostrarMensagemNaTela(data.mensagem);
+        mostrarMensagemNaTela("Gravado com sucesso!");
+        setTimeout(() => {
+            limparCampos();
+            listarUsuarios();
+        }, 1000);
+
     }
     async function buscarUsuarioPorLinha(id) {
         try {

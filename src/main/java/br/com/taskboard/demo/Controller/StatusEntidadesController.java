@@ -16,8 +16,6 @@ public class StatusEntidadesController {
 
     @Autowired
     private StatusEntidadesService service;
-    @Autowired
-    private StatusEntidadesRepository tipoTarefaRepository;
 
     // LISTAR
     @GetMapping("/listar")

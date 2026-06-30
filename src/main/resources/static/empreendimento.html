@@ -391,6 +391,9 @@
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+    const API_STATUS = 'http://localhost:8080/status_entidades';
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_EQUIPES = 'http://localhost:8080/equipes';
 
     function formatarData(data) {
         if (!data) return "";
@@ -474,11 +477,6 @@
 
         montaEquipes(idEquipe);
     }
-
-
-
-
-
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
         const comboGestor = document.getElementById("comboGestor");
@@ -540,6 +538,11 @@
                     body: JSON.stringify(empreendimento)
                 });
                 const data = await response.json();
+                mostrarMensagemNaTela("Gravado com sucesso!");
+                setTimeout(() => {
+                    limparCampos();
+                    listarEmpreendimentos();
+                }, 1000);
         } catch (error) {
                 mostrarMensagemNaTela(error.message,1);
         }
@@ -587,7 +590,7 @@
             </td>
             <td>${empreendimento.descempreendimento}</td>
             <td>${empreendimento.siglaempreendimento}</td>
-            <td>${empreendimento.descstatus}</td>
+            <td>${empreendimento.status.descstatus}</td>
             <td>${formatarData(empreendimento.data_inicio)}</td>
             <td>${formatarData(empreendimento.data_fim)}</td>
             <td>
@@ -615,8 +618,16 @@
             mostrarMensagemNaTela(error.message,1);
         }
     }
-
-    function mostrarMensagemNaTela(mensagem) {
+    async function limparCampos() {
+        document.getElementById('idempreendimento').value = "";
+        document.getElementById('descempreendimento').value = "";
+        document.getElementById('data_inicio').value = "";
+        document.getElementById('data_fim').value = "";
+        document.getElementById('siglaempreendimento').value = "";
+        document.getElementById('status').value = "";
+        document.getElementById('comboGestor').value = "";
+    }
+    async function mostrarMensagemNaTela(mensagem) {
         const container = document.getElementById("resultado");
         if (container) {
             container.innerHTML = `<p style="color:red;">${mensagem}</p>`;

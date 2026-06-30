@@ -4,21 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de Empreendimento funcionando">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/EmpreendimentoEquipe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EquipeEmpreendimentoRepository.java" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EmpreendimentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EmpreendimentoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/UsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EmpreendimentoRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EmpreendimentoRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EmpreendimentoResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EmpreendimentoResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EmpreendimentoResquestDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Mapper/EmpreendimentoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Mapper/EmpreendimentoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Empreendimento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Empreendimento.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EmpreendimentoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EmpreendimentoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/UsuarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/StatusEntidadesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/StatusEntidadesController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/equipe.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
@@ -390,14 +381,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00016" summary="css - arquivo sprint.html começando">
-      <option name="closed" value="true" />
-      <created>1781090647592</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1781090647592</updated>
     </task>
     <task id="LOCAL-00017" summary="login implementado">
       <option name="closed" value="true" />
@@ -783,7 +766,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782613627174</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento">
+      <option name="closed" value="true" />
+      <created>1782766628868</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1782766628869</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -823,7 +814,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Saida implementada" />
     <MESSAGE value="Campo de bloqueio implementado" />
     <MESSAGE value="Campo de trocar senha" />
     <MESSAGE value="Campo de senha encriptado" />
@@ -848,7 +838,8 @@
     <MESSAGE value="Cadastro de Empreendimento" />
     <MESSAGE value="Cadastro de Empreendimento finalizado" />
     <MESSAGE value="Cadastro de Empreendimento funcionando" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de Empreendimento funcionando" />
+    <MESSAGE value="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

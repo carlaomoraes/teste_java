@@ -419,11 +419,12 @@
                     },
                     body: JSON.stringify(equipe)
                 });
-                mostrarMensagemNaTela(equipe);
                 const data = await response.json();
                 mostrarMensagemNaTela('Equipe gravada com sucesso',1);
-                limpaFormulario();
-                listarEquipes();
+                setTimeout(() => {
+                    limparCampos();
+                    listarEquipes();
+                }, 1000);
                 Operacao = 0;
             } catch (error) {
                 mostrarMensagemNaTela("Erro ao salvar: " + error.message);
