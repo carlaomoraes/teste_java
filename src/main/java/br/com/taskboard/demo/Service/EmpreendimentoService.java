@@ -1,7 +1,7 @@
 package br.com.taskboard.demo.Service;
 
 import br.com.taskboard.demo.Modelo.Empreendimento;
-import br.com.taskboard.demo.Modelo.EmpreendimentoEquipe;
+import br.com.taskboard.demo.Modelo.Empreendimento_Equipe;
 import br.com.taskboard.demo.Modelo.Equipe;
 import br.com.taskboard.demo.Respository.EmpreendimentoRepository;
 import br.com.taskboard.demo.Respository.EquipeEmpreendimentoRepository;
@@ -68,7 +68,7 @@ public class EmpreendimentoService {
                 .orElseThrow(() ->
                         new RuntimeException("Equipe não encontrada."));
 
-        EmpreendimentoEquipe relacionamento = new EmpreendimentoEquipe();
+        Empreendimento_Equipe relacionamento = new Empreendimento_Equipe();
 
         relacionamento.setEmpreendimento(empreendimento);
         relacionamento.setEquipe(equipe);

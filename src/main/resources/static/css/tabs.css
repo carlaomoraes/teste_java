@@ -1,0 +1,15 @@
+.nav-tabs .nav-link{
+
+    color:#6b7280;
+
+}
+
+.nav-tabs .nav-link.active{
+
+    color:var(--primary);
+
+    font-weight:600;
+
+    border-bottom:3px solid var(--primary);
+
+}

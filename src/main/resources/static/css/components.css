@@ -1,0 +1,19 @@
+.btn-primary{
+
+    background:var(--primary);
+
+    border:none;
+
+}
+
+.btn-success{
+
+    background:var(--success);
+
+}
+
+.btn-danger{
+
+    background:var(--danger);
+
+}

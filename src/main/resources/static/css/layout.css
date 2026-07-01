@@ -1,0 +1,21 @@
+body{
+
+    background:var(--background);
+
+}
+
+.container-page{
+
+    max-width:1200px;
+
+    margin:auto;
+
+}
+
+.page-title{
+
+    font-size:32px;
+
+    font-weight:bold;
+
+}

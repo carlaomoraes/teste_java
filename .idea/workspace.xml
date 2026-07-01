@@ -4,13 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento funcionando">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de Empreendimento funcionando / Novo lay-out do cadastro de equipe">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/cards.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/components.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/forms.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/layout.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/empreendimento.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/equipe.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/usuario.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/table.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/tabs.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/variables.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EmpreendimentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EmpreendimentoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/UsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/StatusEntidadesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/StatusEntidadesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/EmpreendimentoEquipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Empreendimento_Equipe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EquipeEmpreendimentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EquipeEmpreendimentoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EmpreendimentoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EmpreendimentoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/equipe.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/estilos.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/estoria.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/estoria.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/trocasenha.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/trocasenha.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,11 +45,11 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
-        <option value="HTML File" />
         <option value="Interface" />
         <option value="Enum" />
         <option value="Exception" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -108,7 +126,7 @@
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/test/java/br/com/taskboard/demo/Controller",
-    "last_opened_file_path": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static",
+    "last_opened_file_path": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/css/pages",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -129,11 +147,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static\css\pages" />
+      <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static\css" />
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static" />
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static\imagens" />
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static\css" />
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\java\br\com\taskboard\demo" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
@@ -381,14 +402,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00018" summary="login implementado">
-      <option name="closed" value="true" />
-      <created>1781095751894</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1781095751894</updated>
     </task>
     <task id="LOCAL-00019" summary="login implementado">
       <option name="closed" value="true" />
@@ -774,7 +787,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782827097308</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="Cadastro de Empreendimento funcionando / Novo lay-out do cadastro de equipe">
+      <option name="closed" value="true" />
+      <created>1782847555317</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1782847555317</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -814,7 +835,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Campo de trocar senha" />
     <MESSAGE value="Campo de senha encriptado" />
     <MESSAGE value="Campo de senha encriptado / &#10;campo bloqueado" />
     <MESSAGE value="Tela para trocar de senha" />
@@ -839,7 +859,8 @@
     <MESSAGE value="Cadastro de Empreendimento funcionando" />
     <MESSAGE value="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento" />
     <MESSAGE value="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento funcionando" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento funcionando" />
+    <MESSAGE value="Cadastro de Empreendimento funcionando / Novo lay-out do cadastro de equipe" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de Empreendimento funcionando / Novo lay-out do cadastro de equipe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,9 +1,7 @@
 package br.com.taskboard.demo.Respository;
 
-import br.com.taskboard.demo.Modelo.EmpreendimentoEquipe;
+import br.com.taskboard.demo.Modelo.Empreendimento_Equipe;
 import br.com.taskboard.demo.Modelo.Equipe;
-import br.com.taskboard.demo.Modelo.EquipeUsuario;
-import br.com.taskboard.demo.Modelo.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,19 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface EquipeEmpreendimentoRepository extends JpaRepository<EmpreendimentoEquipe, Long> {
+public interface EquipeEmpreendimentoRepository extends JpaRepository<Empreendimento_Equipe, Long> {
     @Query("""
     SELECT ee
-      FROM EmpreendimentoEquipe ee
+      FROM Empreendimento_Equipe ee
      WHERE ee.empreendimento.idempreendimento = :idempreendimento
 """)
-    List<EmpreendimentoEquipe> listarMembros(
+    List<Empreendimento_Equipe> listarMembros(
             @Param("idempreendimento") Long idempreendimento);
     @Modifying
     @Transactional
     @Query("""
     DELETE
-      FROM EmpreendimentoEquipe ee
+      FROM Empreendimento_Equipe ee
      WHERE ee.equipe.idequipe = :idEquipe
        AND ee.empreendimento.idempreendimento = :idEmpreendimento
 """)
@@ -34,7 +32,7 @@ public interface EquipeEmpreendimentoRepository extends JpaRepository<Empreendim
 
     @Query("""
     SELECT ee.equipe
-      FROM EmpreendimentoEquipe ee
+      FROM Empreendimento_Equipe ee
      WHERE ee.empreendimento.idempreendimento = :idempreendimento
      ORDER BY ee.equipe.descequipe
 """)
@@ -45,7 +43,7 @@ public interface EquipeEmpreendimentoRepository extends JpaRepository<Empreendim
       FROM Equipe e
      WHERE e.idequipe NOT IN (
             SELECT ee.equipe.idequipe
-              FROM EmpreendimentoEquipe ee
+              FROM Empreendimento_Equipe ee
              WHERE ee.empreendimento.idempreendimento = :idempreendimento
      )
      ORDER BY e.descequipe
