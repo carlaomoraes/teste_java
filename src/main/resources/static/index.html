@@ -4,105 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - TaskController 1.0</title>
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    <!-- CSS Global -->
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
-
-    <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/equipe.css">
+    <link rel="stylesheet" href="css/pages/configuracao.css">
 </head>
+
 <body>
 
-<div class="login-container">
-    <h2>TaskController 1.0</h2>
-    <p class="subtitle">Insira suas credenciais para acessar o sistema</p>
+<div class="container vh-100 d-flex justify-content-center align-items-center">
 
-    <form id="formLogin" onsubmit="realizarLogin(event)">
-        <label for="login">Usuário / Login:</label>
-        <input type="text" id="login" placeholder="Digite seu login" required>
+    <div class="card shadow p-4 login-container" style="max-width:420px;width:100%;">
 
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" placeholder="Digite sua senha" required>
+        <div class="text-center mb-4">
+            <h2>TaskController 1.0</h2>
+            <p class="text-muted">
+                Insira suas credenciais para acessar o sistema
+            </p>
+        </div>
 
-        <button type="submit" class="btn-entrar">Entrar no Sistema</button>
-    </form>
+        <form id="formLogin" onsubmit="realizarLogin(event)">
 
-    <div id="mensagem"></div>
+            <div class="mb-3">
+                <label for="login" class="form-label">
+                    Usuário / Login
+                </label>
+
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-person"></i>
+                    </span>
+
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="login"
+                            name="login"
+                            placeholder="Digite seu login"
+                            autocomplete="username"
+                            required>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="senha" class="form-label">
+                    Senha
+                </label>
+
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-lock"></i>
+                    </span>
+
+                    <input
+                            type="password"
+                            class="form-control"
+                            id="senha"
+                            name="senha"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Entrar no Sistema
+            </button>
+
+        </form>
+
+        <div id="mensagem"
+             class="text-center mt-3"
+             role="alert">
+        </div>
+
+    </div>
+
 </div>
 
 <script>
-    const API_AUTH = 'http://localhost:8080/taskboard/login';
 
-    async function realizarLogin(event) {
-        // Evita que a página recarregue ao submeter o formulário
+    const API_AUTH = "http://localhost:8080/taskboard/login";
+
+    async function realizarLogin(event){
+
         event.preventDefault();
 
-        const loginVal = document.getElementById("login").value;
-        const senhaVal = document.getElementById("senha").value;
-        const idusuarioVal = 0;
-        const nomeVal = "";
+        const login = document.getElementById("login").value.trim();
+        const senha = document.getElementById("senha").value;
 
-        const msgContainer = document.getElementById("mensagem");
+        const mensagem = document.getElementById("mensagem");
 
-        msgContainer.style.color = "#64748b";
-        msgContainer.innerText = "Autenticando...";
-
-        // Monta os dados para validação
+        mensagem.className = "text-secondary mt-3";
+        mensagem.innerHTML = "Autenticando...";
 
         const dadosLogin = {
-            login: loginVal,
-            senha: senhaVal,
-            nome: nomeVal,
-            idusuario: idusuarioVal
+            idusuario: 0,
+            nome: "",
+            login,
+            senha
         };
-        try {
-            const response = await fetch(API_AUTH, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dadosLogin)
+
+        try{
+
+            const response = await fetch(API_AUTH,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(dadosLogin)
             });
-            if (response.ok) {
-                const usuarioLogado = await response.json();
-                sessionStorage.setItem("usuarioNome", usuarioLogado.nome);
-                sessionStorage.setItem("usuarioIdUsuario", usuarioLogado.idUsuario);
-                sessionStorage.setItem("usuarioLogin", usuarioLogado.login);
-                sessionStorage.setItem("usuarioSenha", usuarioLogado.senha);
-                if (usuarioLogado.alterasenha == 1) {
-                    // abre formulario de alterar senha
-                    msgContainer.style.color = "#64748b";
-                    msgContainer.innerText = "Abrindo formulário para alterar a senha...";
-                    setTimeout(() => {
-                        window.location.href = "trocasenha.html";
-                    }, 1500);
-                }
-                else {
-                    msgContainer.style.color = "green";
-                    msgContainer.innerText = `Sucesso! Bem-vindo, ${usuarioLogado.nome}.`;
 
-                    // Guarda temporariamente o nome do usuário para usar no sistema se quiser
-                    sessionStorage.setItem("usuarioNome", usuarioLogado.nome);
+            if(response.ok){
 
-                    // Redireciona para a tela do Menu Principal (index.html) após 1.5 segundos
-                    setTimeout(() => {
-                        window.location.href = "home.html";
-                    }, 1500);
+                const usuario = await response.json();
+
+                sessionStorage.setItem("usuarioNome", usuario.nome);
+                sessionStorage.setItem("usuarioIdUsuario", usuario.idUsuario);
+                sessionStorage.setItem("usuarioLogin", usuario.login);
+
+                // Não grave a senha no navegador
+                // sessionStorage.setItem("usuarioSenha", usuario.senha);
+
+                if(usuario.alterasenha == 1){
+
+                    mensagem.className = "text-warning mt-3";
+                    mensagem.innerHTML = "Redirecionando para alteração de senha...";
+
+                    setTimeout(()=>{
+                        window.location.href="trocasenha.html";
+                    },1500);
+
+                }else{
+
+                    mensagem.className = "text-success mt-3";
+                    mensagem.innerHTML = `Bem-vindo, ${usuario.nome}!`;
+
+                    setTimeout(()=>{
+                        window.location.href="home.html";
+                    },1500);
                 }
-            } else {
-                const textoErro = await response.text();
-                msgContainer.style.color = "red";
-                msgContainer.innerText = "⚠️ " + (textoErro || "Usuário ou senha inválidos.");
+
+            }else{
+
+                const erro = await response.text();
+
+                mensagem.className = "text-danger mt-3";
+                mensagem.innerHTML = erro || "Usuário ou senha inválidos.";
+
             }
 
-        } catch (error) {
-            msgContainer.style.color = "red";
-            msgContainer.innerText = "⚠️ Erro ao conectar com o servidor.";
+        }catch(e){
+
+            mensagem.className = "text-danger mt-3";
+            mensagem.innerHTML = "Erro ao conectar com o servidor.";
+
         }
+
     }
+
 </script>
+
 </body>
 </html>

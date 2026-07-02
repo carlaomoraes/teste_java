@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/usuario.css">
+    <link rel="stylesheet" href="css/pages/empreendimento.css">
 </head>
 <body>
 <div class="container">
@@ -64,11 +64,11 @@
         </div>
         <div id="resultado"></div>
     </div>
-    <div id="equipe" class="conteudo-aba">
+    <div id="equipes" class="conteudo-aba">
         <div class="membros-container">
             <div class="membros-coluna">
                 <h2>Equipes disponíveis</h2>
-                <div id="equipesDisponiveis" class="membros-lista-custom"></div>
+                <div id="equipesDisponiveis"  class="membros-lista-custom"></div>
             </div>
 
             <div class="membros-acoes">
@@ -82,18 +82,23 @@
 
             <div class="membros-coluna">
                 <h2>Equipes vinculadas</h2>
-                <div id="EquipesVinculadas" class="membros-lista-custom"></div>
+                <div id="equipesVinculadas" class="membros-lista-custom"></div>
             </div>
         </div>
     </div>
+
 </div>
+</body>
 
 <script>
+    // Variáveis globais para rastreamento dos itens selecionados nos seletores customizados
+    let equipeDisponivelSelecionado = null;
+    let equipeSelecionado = null;
+
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
-    const API_EQUIPES = 'http://localhost:8080/equipes';
 
     function formatarData(data) {
         if (!data) return "";
@@ -104,75 +109,97 @@
     function converterMaiusculo(campo) {
         campo.value = campo.value.toUpperCase();
     }
-
     function alternarAba(event, idAbaDestino) {
-        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
-        const conteudos = document.querySelectorAll('.conteudo-aba');
-        conteudos.forEach(conteudo => {
-            conteudo.classList.remove('ativo');
-        });
-
-        // 2. Pega todos os botões e remove a classe 'ativa'
-        const botoes = document.querySelectorAll('.aba-botao');
-        botoes.forEach(botao => {
-            botao.classList.remove('ativa');
-        });
-
-        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
-        document.getElementById(idAbaDestino).classList.add('ativo');
-
-        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
-        event.currentTarget.classList.add('ativa');
+        document.querySelectorAll('.conteudo-aba') .forEach(c => c.classList.remove('ativo')); document.querySelectorAll('.aba-botao') .forEach(b => b.classList.remove('ativa')); document.getElementById(idAbaDestino).classList.add('ativo'); event.currentTarget.classList.add('ativa');
+        // Carrega as equipes quando abrir a aba EQUIPES
+        if (idAbaDestino === 'equipes') {
+            const idEmpreendimento = document.getElementById("idempreendimento").value;
+            if (idEmpreendimento) {
+                montaEquipes(idEmpreendimento);
+            } else {
+                document.getElementById("equipesDisponiveis").innerHTML = '<div style="padding:20px;color:#ef4444;text-align:center;">' + 'Selecione ou salve um empreendimento primeiro.' + '</div>';
+                document.getElementById("equipesVinculadas").innerHTML = "";
+            }
+        }
     }
+    // Renderiza a lista customizada mapeando os eventos de clique
+    function renderizarListaCustom(containerId, listaEquipes, tipo) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+
+        if (listaEquipes.length === 0) {
+            container.innerHTML = `<div style="padding: 20px; color: #94a3b8; text-align:center; font-size:14px;">Nenhum usuário encontrado</div>`;
+            return;
+        }
+
+        listaEquipes.forEach(equipe => {
+            const item = document.createElement('div');
+            item.className = 'membro-item';
+            item.dataset.id = equipe.idequipe;
+
+            item.innerHTML = `
+                <div class="membro-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="membro-name">${equipe.descequipe.split(' ')[0].toLowerCase()}</div>
+                <div class="membro-name">${equipe.nomeequipe}</div>
+            `;
+
+            item.addEventListener('click', () => {
+                // Remove seleção anterior do escopo específico
+                container.querySelectorAll('.membro-item').forEach(el => el.classList.remove('selecionado'));
+                item.classList.add('selecionado');
+
+                if (tipo === 'disponivel') {
+                    equipeDisponivelSelecionado = equipe.idequipe;
+                } else {
+                    equipeSelecionado = equipe.idequipe;
+                }
+            });
+
+            container.appendChild(item);
+        });
+    }
+
     // ------- MONTAGEM DAS LISTAS
     async function montaEquipes(idEmpreendimento) {
-        const disponiveis = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}/euipes`)
-            .then(r => r.json());
+        try {
+            const disponiveis = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}/equipes/disponiveis`).then(r => r.json());
+            const membros = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}/equipes`).then(r => r.json());
 
-        const comboDisponiveis = document.getElementById("usuariosDisponiveis");
-        const comboMembros = document.getElementById("usuariosEquipe");
+            renderizarListaCustom("equipesDisponiveis", disponiveis, 'disponivel');
+            renderizarListaCustom("equipesVinculadas", membros, 'equipe');
 
-        comboDisponiveis.innerHTML = "";
-        comboMembros.innerHTML = "";
-
-        disponiveis.forEach(equipe => {
-            comboDisponiveis.innerHTML += `
-            <option value="${equipe.idequipe}">${equipe.descequipe}</option>
-        `;
-        });
-
-        membros.forEach(usuario => {
-            comboMembros.innerHTML += `
-            <option value="${usuario.idusuario}">${usuario.nome}</option>
-        `;
-        });
+            equipeDisponivelSelecionado = null;
+            equipeSelecionado = null;
+        } catch(e) {
+            await mostrarMensagemNaTela("Erro ao montar colunas de membros: " + e.message);
+        }
     }
 
     async function adicionarMembro(){
-        const idEquipe = document.getElementById("idequipe").value;
-        const usuario =  document.getElementById("usuariosDisponiveis");
-        if(!usuario.value)
+        const idEmpreendimento = document.getElementById("idempreendimento").value;
+        const equipes =  document.getElementById("equipesDisponiveis").value;
+        if(!idEmpreendimento || !equipeDisponivelSelecionado) {
+            mostrarMensagemNaTela("Selecione um empreendimento disponível e garanta que a equipe possua um ID válido.");
             return;
-        await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
+        }
+        await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${equipes.value}`,
             {
                 method:"POST"
             }
         );
-        montaEquipes(idEquipe);
+        await montaEquipes(idEmpreendimento);
     }
     async function removerMembro(){
-        const idEquipe = document.getElementById("idequipe").value;
-        const usuario = document.getElementById("usuariosEquipe");
-        if(!usuario.value)
+        const idEmpreendimento = document.getElementById("idempreendimento").value;
+        if(!idEmpreendimento || !equipeSelecionado)
             return;
-        await fetch(
-            `http://localhost:8080/equipes/${idEquipe}/membros/${usuario.value}`,
+        await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${equipeSelecionado.value}`,
             {
                 method:"DELETE"
             }
         );
 
-        montaEquipes(idEquipe);
+        montaEquipes(idEmpreendimento);
     }
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
@@ -249,18 +276,20 @@
         const response = await fetch(`${API_EMPREENDIMENTO}/${id}`);
         const data = await response.json();
         if(!response.ok) {
-           mostrarMensagemNaTela(data.mensagem);
-           return;
-         }
-         document.getElementById('idempreendimento').value = data.idempreendimento;
-         document.getElementById('descempreendimento').value = data.descempreendimento;
-         document.getElementById('data_inicio').value = data.data_inicio;
-         document.getElementById('data_fim').value = data.data_fim;
-         document.getElementById('siglaempreendimento').value = data.siglaempreendimento;
-         document.getElementById('combostatus').value = data.status.idstatus || "";
-         document.getElementById('comboGestor').value = data.idgestor.idusuario || "";
+            mostrarMensagemNaTela(data.mensagem);
+            return;
+        }
+        document.getElementById('idempreendimento').value = data.idempreendimento;
+        document.getElementById('descempreendimento').value = data.descempreendimento;
+        document.getElementById('data_inicio').value = data.data_inicio;
+        document.getElementById('data_fim').value = data.data_fim;
+        document.getElementById('siglaempreendimento').value = data.siglaempreendimento;
+      //  document.getElementById('combostatus').value = data.status.idstatus || "";
+      //  document.getElementById('comboGestor').value = data.idgestor.idusuario || "";
 
-         montaEquipes(data.idempreendimento);
+        // Limpa mensagens e monta equipe se o usuário mudar de aba depois
+        mostrarMensagemNaTela("Equipe selecionada: " + data.descempreendimento, "green");
+        montaEquipes(data.idempreendimento);
     }
     async function listarEmpreendimentos() {
         try {
@@ -342,29 +371,29 @@
         if (sigla === "") {
             mostrarMensagemNaTela("A sigla do empreendimento é obrigatória!");
             return false;
-       } else if (sigla.length > 3) {
-             mostrarMensagemNaTela("A sigla deve ter no máximo 3 caracteres.");
-             return false;
-       }
-      // Validação: Datas Obrigatórias
-      if (!dataInicio) {
-          mostrarMensagemNaTela("A data de início é obrigatória.");
-          return false;
-      }
-      if (!dataFim) {
-          mostrarMensagemNaTela("A data de fim é obrigatória.");
-          return false;
-      }
-     // Validação Lógica: Data Fim não pode ser menor que Data Início
-      if (dataInicio && dataFim) {
-         const dataInicDate = new Date(dataInicio);
-         const dataFimDate = new Date(dataFim);
-        if (dataFimDate < dataInicDate) {
-            mostrarMensagemNaTela("A data de fim não pode ser anterior à data de início.");
+        } else if (sigla.length > 3) {
+            mostrarMensagemNaTela("A sigla deve ter no máximo 3 caracteres.");
             return false;
         }
-      }
-      return true;
+        // Validação: Datas Obrigatórias
+        if (!dataInicio) {
+            mostrarMensagemNaTela("A data de início é obrigatória.");
+            return false;
+        }
+        if (!dataFim) {
+            mostrarMensagemNaTela("A data de fim é obrigatória.");
+            return false;
+        }
+        // Validação Lógica: Data Fim não pode ser menor que Data Início
+        if (dataInicio && dataFim) {
+            const dataInicDate = new Date(dataInicio);
+            const dataFimDate = new Date(dataFim);
+            if (dataFimDate < dataInicDate) {
+                mostrarMensagemNaTela("A data de fim não pode ser anterior à data de início.");
+                return false;
+            }
+        }
+        return true;
     }
     async function mostrarMensagemNaTela(mensagem) {
         const container = document.getElementById("resultado");
