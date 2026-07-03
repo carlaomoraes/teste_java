@@ -49,17 +49,11 @@ public class EmpreendimentoService {
     //===================================
     // EQUIPES
     //===================================
-
     public void adicionarEquipe(Long idEmpreendimento, Long idEquipe) {
-
-        if (relacionamentoRepository
-                .existsByEmpreendimentoIdempreendimentoAndEquipeIdequipe(
-                        idEmpreendimento,
-                        idEquipe)) {
-
+        long cont = relacionamentoRepository.contarRelacionamentos(idEmpreendimento, idEquipe);
+        if (cont > 1) {
             throw new RuntimeException("Equipe já vinculada ao empreendimento.");
         }
-
         Empreendimento empreendimento = empreendimentoRepository.findById(idEmpreendimento)
                 .orElseThrow(() ->
                         new RuntimeException("Empreendimento não encontrado."));
@@ -78,10 +72,7 @@ public class EmpreendimentoService {
 
     public void removerEquipe(Long idEmpreendimento,
                               Long idEquipe) {
-
-        relacionamentoRepository.removerMembro(
-                idEquipe,
-                idEmpreendimento);
+            relacionamentoRepository.removerMembro(idEquipe,idEmpreendimento);
     }
 
     public List<Equipe> listarEquipes(Long idEmpreendimento) {

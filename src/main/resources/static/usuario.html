@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/pages/usuario.css">
 </head>
 <body>
+<script src="js/utils/mensagens.js"></script>
 <div class="container">
     <h1>Usuários - TaskController 1.0</h1>
     <div class="abas-container">
@@ -39,7 +40,6 @@
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
             <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
-            <button type="button" class="btn" onclick="buscarUsuario(document.getElementById('idusuario').value)">Buscar por ID</button>
             <button type="button" class="btn" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado"></div>
@@ -244,39 +244,6 @@
         }
     }
 
-    async function buscarUsuario(idUsuario) {
-        const response = await fetch(`${API_USUARIOS}/${idUsuario}`);
-        const data = await response.json();
-        if(!response.ok) {
-            const messageError = await response.text();
-            mostrarMensagemNaTela(messageError,1);
-        }
-        else  {
-            let tabela = `
-            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th class="table-header">ID</th>
-                        <th class="table-header">Nome</th>
-                        <th class="table-header">Login</th>
-                        <th class="table-header">Email</th>
-                        <th>Excluir</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-            data.forEach(usuario => {
-                tabela += `<tr onclick="buscarUsuarioPorLinha(${usuario.idusuario})"
-                                style="cursor:pointer;">
-                                <td>${usuario.idusuario}</td>
-                                <td>${usuario.nome}</td>
-                                <td>${usuario.login}</td>
-                                <td>${usuario.email}</td>
-                                <td> <button type="button" class="btn" onclick="event.stopPropagation(); excluirUsuario(${usuario.idusuario})">Excluir</button></td>
-            </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
-        }
-    }
     // Função para injetar a mensagem no HTML
     function mostrarMensagemNaTela(mensagem, aba) {
         if(aba == 1){
@@ -380,7 +347,7 @@
 
                 data.forEach(a => {
                     tabela += `
-                <tr onclick="buscarAusenciaPorLinha(${a.idausencia})" style="cursor:pointer;">
+                <tr style="cursor:pointer;">
                     <td>${a.idausencia}</td>
                     <td>${formatarData(a.data_inicio)}</td>
                     <td>${formatarData(a.data_fim)}</td>

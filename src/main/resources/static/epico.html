@@ -14,58 +14,179 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/usuario.css">
+    <link rel="stylesheet" href="css/pages/epico.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Cadastro de épicos</h1>
-    <label for="comboEmpreendimento">Empreendimento:</label>
-    <select id="comboEmpreendimento" name="comboEmpreendimento">
-        <option value="">-- Selecione o empreendimento --</option>
-    </select>
-    <input type="number" id="idepico" placeholder="ID do épico">
-    <input type="text" id="descepico" placeholder="Descrição do épico">
-    <input type="text" id="obsepico" placeholder="Observação">
-
-    <label class="checkbox-group">
-        <input type="checkbox" id="bloqueado" value="1">🚫 Bloquear ?
-    </label>
-
-    <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn"  onclick="salvarEpico()">Salvar</button>
-        <button type="button" class="btn" onclick="listarEpico()">Listar</button>
-        <button type="button" class="btn" onclick="buscarEpico()">Buscar por ID</button>
-        <button type="button" class="btn" onclick="history.back()">Voltar</button>
+    <h1>Épico - TaskController 1.0</h1>
+    <div class="abas-container">
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')">Geral</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'anexos')">Anexos</button>
     </div>
-    <div id="resultado"></div>
-</div>
+    <div id="epicos" class="conteudo-aba ativo">
+        <input type="number" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
+        <div class="form-grid">
+            <div>
+                <label>Nome</label>
+                <input type="text" id="nomeepico" oninput="converterMaiusculo(this)">
+            </div>
+            <div>
+                <label>Código</label>
+                <input type="text" id="codigo" oninput="converterMaiusculo(this)" maxlength="10">
+            </div>
+            <div>
+                <label>Status</label>
+                <select id="comboStatus">
+                    <option value="">-- Selecione o status --</option>
+                </select>
+            </div>
+            <div>
+                <label>Empreendimento</label>
+                <select id="comboEmpreendimento">
+                    <option value="">-- Selecione o empreendimento --</option>
+                </select>
+            </div>
+            <div>
+                <label>Pioridade</label>
+                <select id="comboPrioridade">
+                    <option value="">-- Selecione prioridade --</option>
+                </select>
+            </div>
+            <div>
+                <label>Gestor</label>
+                <select id="comboGestor">
+                    <option value="">-- Selecione o gestor --</option>
+                </select>
+            </div>
+            <div>
+                <label for="cor">Cor de identificação do épico</label>
+                <input type="color" id="cor" value="#2196F3">
+            </div>
+            <label class="checkbox-group">
+                <input type="checkbox" id="bloqueado value="0"> Épico bloqueado
+            </label>
+        </div>
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn btn-salvar" onclick="salvarEpico();">Salvar</button>
+            <button type="button" class="btn btn-listar"  onclick="listarEpicos()">Listar</button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+        </div>
+        <div id="resultado"></div>
+    </div>
+    <div id="equipes" class="conteudo-aba">
+        <div class="membros-container">
+            <div class="membros-coluna">
+                <h2>Equipes disponíveis</h2>
+                <div id="equipesDisponiveis"  class="membros-lista-custom"></div>
+            </div>
 
+            <div class="membros-acoes">
+                <button type="button" class="btn btn-add" onclick="adicionarMembro()">
+                    Adicionar <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-remove" onclick="removerMembro()">
+                    <i class="fa-solid fa-arrow-left"></i> Remover
+                </button>
+            </div>
+
+            <div class="membros-coluna">
+                <h2>Equipes vinculadas</h2>
+                <div id="equipesVinculadas" class="membros-lista-custom"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
-    const API = 'http://localhost:8080/epicos';
+    const API_EPICO = 'http://localhost:8080/epicos';
+    const API_STATUS = 'http://localhost:8080/status_entidades';
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_PRIORIDADE = 'http://localhost:8080/prioridade';
 
 
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
-    async function carregarEmpreendimento() {
-        const comboGestor = document.getElementById("comboEmpreendimento");
+    async function carregarGestor() {
+        const comboGestor = document.getElementById("comboGestor");
         try {
-            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
-            const empreendimentos = await resposta.json();
-            empreendimentos.forEach(e => {
+            const resposta = await fetch(`${API_USUARIOS}/listar`);
+            const usuarios = await resposta.json();
+            usuarios.forEach(usuario => {
                 const opcao = document.createElement('option');
-                opcao.value = e.descempreendimento;
-                opcao.textContent = e.idempreendimento
+                opcao.value = usuario.idusuario;
+                opcao.textContent = usuario.nome;
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela(error,1);
         }
     }
+    async function carregarPrioridade() {
+        const comboGestor = document.getElementById("comboPrioridade");
+        try {
+            const resposta = await fetch(`${API_PRIORIDADE}/listar`);
+            const prioridades = await resposta.json();
+            prioridades.forEach(prioridade => {
+                const opcao = document.createElement('option');
+                opcao.value = prioridade.idprioridade;
+                opcao.textContent = prioridade.descprioridade;
+                comboGestor.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela(error,1);
+        }
+    }
+    async function carregarStatus() {
+        const comboStatus = document.getElementById("comboStatus");
+        try {
+            const resposta = await fetch(`${API_STATUS}/listar`);
+            const vetor = await resposta.json();
+            vetor.forEach(i => {
+                const opcao = document.createElement('option');
+                opcao.value = i.idstatus;
+                opcao.textContent = i.descstatus;
+                comboStatus.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao carregar status: " + error.message);
+        }
+    }
+    async function carregarEmpreendimento() {
+        const comboE = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const empreendimentos = await resposta.json();
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idempreendimento;
+                opcao.textContent = e.descempreendimento;
+                comboE.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela(error,1);
+        }
+    }
+    function formatarData(data) {
+        if (!data) return "";
+
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
+    function converterMaiusculo(campo) {
+        campo.value = campo.value.toUpperCase();
+    }
+
+
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
         carregarEmpreendimento();
+        carregarGestor();
+        carregarStatus();
+        carregarPrioridade();
     });
     async function salvarEpico() {
         const idepico = document.getElementById('idepico').value;
@@ -96,7 +217,7 @@
             mostrarMensagemNaTela("Gravado com sucesso!");
             setTimeout(() => {
                 limparCampos();
-                listarEpico();
+                listarEpicos();
             }, 1000);
 
         } catch (error) {
@@ -114,8 +235,10 @@
                     <tr>
                         <th class="table-header">ID</th>
                         <th class="table-header">Descrição</th>
-                        <th class="table-header">Observação</th>
-                        <th class="table-header">Bloqueado</th>
+                        <th class="table-header">Código</th>
+                        <th class="table-header">Status</th>
+                        <th class="table-header">Data inicial</th>
+                        <th class="table-header">Data final</th>
                         <th class="table-header">Excluir</th>
                     </tr>
                 </thead>
@@ -125,19 +248,21 @@
                 tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
                                 style="cursor:pointer;">
                                 <td>${epico.descepico}</td>
-                                <td>${epico.obsepico}</td>
-                                <td>${epico.bloqueado} ? '✅ Sim' : '❌ Não'}</td>
+                                <td>${epico.codepico}</td>
+                                <td>${epico.status.descstatus}</td>
+                                <td>${formatarData(epico.data_inicio)}</td>
+                                <td>${formatarData(epico.data_fim_prevista)}</td>
                                 <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+            mostrarMensagemNaTela("Erro ao buscar épico: " + error.message);
         }
     }
-    async function listarEpico() {
+    async function listarEpicos() {
         try {
-            const response = await fetch(`${API}/listar`);
+            const response = await fetch(`${API_EPICO}/listar`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
@@ -145,8 +270,10 @@
                     <tr>
                         <th class="table-header">ID</th>
                         <th class="table-header">Descrição</th>
-                        <th class="table-header">Observação</th>
-                        <th class="table-header">Bloqueado</th>
+                        <th class="table-header">Sigla</th>
+                        <th class="table-header">Status</th>
+                        <th class="table-header">Data inicial</th>
+                        <th class="table-header">Data final</th>
                         <th class="table-header">Excluir</th>
                     </tr>
                 </thead>
@@ -155,16 +282,17 @@
             data.forEach(epico => {
                 tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
                                 style="cursor:pointer;">
-                                <td>${epico.idepico}</td>
                                 <td>${epico.descepico}</td>
-                                <td>${epico.obsepico}</td>
-                                <td>${epico.bloqueado ? '✅ Sim' : '❌ Não'}</td>
+                                <td>${epico.codepico}</td>
+                                <td>${epico.idstatus.descstatus} || "" </td>
+                                <td>${formatarData(epico.data_inicio)}</td>
+                                <td>${formatarData(epico.data_fim_prevista)}</td>
                                 <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-                mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+            mostrarMensagemNaTela("Erro ao listar Épicos",1);
         }
     }
 

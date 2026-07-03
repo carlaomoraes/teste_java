@@ -8,7 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <!-- CSS Global -->
     <link rel="stylesheet" href="css/style.css">
@@ -51,16 +52,15 @@
                 <select id="comboGestor"></select>
             </div>
             <div>
-                <label for="cor">Cor de identificação do empreendimeto:</label>
+                <label for="cor">Cor de identificação do empreendimento</label>
                 <input type="color" id="cor" value="#2196F3">
             </div>
 
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn"  onclick="salvarEmpreendimento();">Salvar</button>
-            <button type="button" class="btn" onclick="listarEmpreendimentos()">Listar</button>
-            <button type="button" class="btn" onclick="buscarEmpreendimentoPorLinha(document.getElementById('idempreendimento').value)">Buscar por ID</button>
-            <button type="button" class="btn" onclick="history.back()">Voltar</button>
+            <button type="button" class="btn btn-salvar" onclick="salvarEmpreendimento();">Salvar</button>
+            <button type="button" class="btn btn-listar"  onclick="listarEmpreendimentos()">Listar</button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado"></div>
     </div>
@@ -118,7 +118,7 @@
                 montaEquipes(idEmpreendimento);
             } else {
                 document.getElementById("equipesDisponiveis").innerHTML = '<div style="padding:20px;color:#ef4444;text-align:center;">' + 'Selecione ou salve um empreendimento primeiro.' + '</div>';
-                document.getElementById("equipesVinculadas").innerHTML = "";
+                document.getElementById("equipesVinculadas").innerHTML = '<div style="padding:20px;color:#ef4444;text-align:center;">' + 'Selecione ou salve um empreendimento primeiro.' + '</div>';
             }
         }
     }
@@ -128,7 +128,7 @@
         container.innerHTML = "";
 
         if (listaEquipes.length === 0) {
-            container.innerHTML = `<div style="padding: 20px; color: #94a3b8; text-align:center; font-size:14px;">Nenhum usuário encontrado</div>`;
+            container.innerHTML = `<div style="padding: 20px; color: #94a3b8; text-align:center; font-size:14px;">Nenhuma equipe encontrada!</div>`;
             return;
         }
 
@@ -139,7 +139,6 @@
 
             item.innerHTML = `
                 <div class="membro-avatar"><i class="fa-solid fa-user"></i></div>
-                <div class="membro-name">${equipe.descequipe.split(' ')[0].toLowerCase()}</div>
                 <div class="membro-name">${equipe.nomeequipe}</div>
             `;
 
@@ -177,12 +176,16 @@
 
     async function adicionarMembro(){
         const idEmpreendimento = document.getElementById("idempreendimento").value;
-        const equipes =  document.getElementById("equipesDisponiveis").value;
-        if(!idEmpreendimento || !equipeDisponivelSelecionado) {
-            mostrarMensagemNaTela("Selecione um empreendimento disponível e garanta que a equipe possua um ID válido.");
+        const idEquipe = equipeDisponivelSelecionado;
+        if(!idEmpreendimento) {
+            mostrarMensagemNaTela("Selecione um empreendimento.");
             return;
         }
-        await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${equipes.value}`,
+        if(!idEquipe || !equipeDisponivelSelecionado) {
+            mostrarMensagemNaTela("Selecione uma equipe disponivel para adicionar ao empreendimento.");
+            return;
+        }
+        await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${idEquipe}`,
             {
                 method:"POST"
             }
@@ -191,9 +194,17 @@
     }
     async function removerMembro(){
         const idEmpreendimento = document.getElementById("idempreendimento").value;
-        if(!idEmpreendimento || !equipeSelecionado)
+        const idEquipe = equipeSelecionado;
+        if(!idEmpreendimento) {
+            mostrarMensagemNaTela("Selecione um empreendimento.");
             return;
-        await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${equipeSelecionado.value}`,
+        }
+        if(!idEquipe || !equipeSelecionado) {
+            mostrarMensagemNaTela("Selecione uma equipe disponivel para retirar do empreendimento.");
+            return;
+        }
+
+        await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${equipeSelecionado}`,
             {
                 method:"DELETE"
             }
@@ -263,10 +274,6 @@
                 });
                 const data = await response.json();
                 mostrarMensagemNaTela("Gravado com sucesso!");
-                setTimeout(() => {
-                    limparCampos();
-                    listarEmpreendimentos();
-                }, 1000);
             } catch (error) {
                 mostrarMensagemNaTela(error.message, 1);
             }
@@ -395,14 +402,7 @@
         }
         return true;
     }
-    async function mostrarMensagemNaTela(mensagem) {
-        const container = document.getElementById("resultado");
-        if (container) {
-            container.innerHTML = `<p style="color:red;">${mensagem}</p>`;
-        } else {
-            alert(mensagem);
-        }
-    }
+
 </script>
 </body>
 </html>

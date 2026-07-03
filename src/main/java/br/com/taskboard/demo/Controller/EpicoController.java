@@ -1,8 +1,14 @@
 package br.com.taskboard.demo.Controller;
 
 import br.com.taskboard.demo.Modelo.Epico;
+import br.com.taskboard.demo.Modelo.Prioridades;
+import br.com.taskboard.demo.Modelo.StatusEntidades;
+import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Respository.EpicoRepository;
 import br.com.taskboard.demo.Service.EpicoService;
+import br.com.taskboard.demo.Service.PrioridadesService;
+import br.com.taskboard.demo.Service.StatusEntidadesService;
+import br.com.taskboard.demo.Service.UsuarioService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,7 +25,11 @@ public class EpicoController {
     @Autowired
     private EpicoService service;
     @Autowired
-    private EpicoRepository epicoRepository;
+    private StatusEntidadesService statusService;
+    @Autowired
+    private UsuarioService usuarioService;
+    @Autowired
+    private PrioridadesService prioridadesService;
 
     // BUSCAR POR ID
     @GetMapping("/{idepico}")
@@ -34,21 +44,23 @@ public class EpicoController {
 
     // SALVAR
     @PostMapping("/salvar")
-    public Epico salvar(@RequestBody Epico epico) {
-        if (epico.getIdepico() == null) {
-            return service.salvar(epico);
-        } else {
-            Epico epicoExistente = service.buscarPorId(epico.getIdepico());
-            if (epicoExistente != null) {
-                epicoExistente.setIdepico(epico.getIdepico());
-                epicoExistente.setDescepico(epico.getDescepico());
-                epicoExistente.setObsepico(epico.getObsepico());
-                epicoExistente.setBloqueado(epico.getBloqueado());
-                return service.salvar(epicoExistente);
-            } else {
-                return service.salvar(epico);
-            }
+    public ResponseEntity<Epico> salvar(@RequestBody Epico epico) {
+        StatusEntidades statusEntidades = statusService.buscarPorId(epico.getStatus().getIdstatus());
+        if (statusEntidades == null) {
+            return ResponseEntity.notFound().build();
         }
+        epico.setStatus(statusEntidades);
+        Usuario usuario = usuarioService.buscarPorId(epico.getResponsavel().getIdusuario());
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        epico.setResponsavel(usuario);
+        Prioridades prioridades = prioridadesService.buscarPorId(epico.getPrioridade().getIdprioridade());
+        if (prioridades == null) {
+            return ResponseEntity.notFound().build();
+        }
+        epico.setPrioridade(prioridades);
+        return ResponseEntity.ok(service.salvar(epico));
     }
 
     // ATUALIZAR

@@ -51,7 +51,13 @@ public interface EquipeEmpreendimentoRepository extends JpaRepository<Empreendim
     List<Equipe> buscarEquipesDisponiveis(
             @Param("idempreendimento") Long idempreendimento);
 
-    boolean existsByEmpreendimentoIdempreendimentoAndEquipeIdequipe(
-            Long idempreendimento,
-            Long idequipe);
+    @Query("""
+    SELECT COUNT(ee)
+      FROM Empreendimento_Equipe ee
+     WHERE ee.empreendimento.idempreendimento = :idEmpreendimento
+       AND ee.equipe.idequipe = :idEquipe
+""")
+    long contarRelacionamentos(
+            @Param("idEmpreendimento") Long idEmpreendimento,
+            @Param("idEquipe") Long idEquipe);
 }
