@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="css/pages/equipe.css">
 </head>
 <body>
-
+<script src="js/utils/funcoes.js"></script>
 <div class="container">
     <h1>Cadastro de equipe - TaskController 1.0</h1>
 
@@ -32,7 +32,7 @@
 
     <div id="dados-gerais" class="conteudo-aba ativo">
         <div class="form-group">
-            <input type="number" name="idequipe" id="idequipe" placeholder="ID da equipe (Deixe vazio para novo)">
+            <input type="number" name="idequipe" id="idequipe" onblur="buscarPorLinha(document.getElementById('idequipe').value)" placeholder="ID da equipe (Deixe vazio para novo)">
             <input type="text" id="nomeequipe" placeholder="Nome da equipe" oninput="converterMaiusculo(this)">
             <input type="text" id="descequipe" placeholder="Descrição da equipe" oninput="converterMaiusculo(this)">
             <label class="checkbox-group">
@@ -294,7 +294,7 @@
             mostrarMensagemNaTela("Equipe selecionada: " + equipe.nomeequipe, "green");
             montaEquipes(equipe.idequipe);
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar: " + error.message);
+            mostrarMensagemNaTela("Erro ao carregar: " + error.message, "error");
         }
     }
 

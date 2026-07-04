@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="css/pages/epico.css">
 </head>
 <body>
-
+<script src="js/utils/funcoes.js"></script>
 <div class="container">
     <h1>Épico - TaskController 1.0</h1>
     <div class="abas-container">
@@ -28,7 +28,7 @@
         <button class="aba-botao" onclick="alternarAba(event, 'anexos')">Anexos</button>
     </div>
     <div id="epicos" class="conteudo-aba ativo">
-        <input type="number" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value)" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Nome</label>
@@ -63,11 +63,19 @@
                 </select>
             </div>
             <div>
+                <label>Data inicial</label>
+                <input type="date" id="data_inicio">
+            </div>
+            <div>
+                <label>Data final prevista</label>
+                <input type="date" id="data_fim">
+            </div>
+            <div>
                 <label for="cor">Cor de identificação do épico</label>
                 <input type="color" id="cor" value="#2196F3">
             </div>
             <label class="checkbox-group">
-                <input type="checkbox" id="bloqueado value="0"> Épico bloqueado
+                <input type="checkbox" id="bloqueado" value="0"> Épico bloqueado
             </label>
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
@@ -122,7 +130,7 @@
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela("Erro ao carregar gestor: "+error.message,"error");
         }
     }
     async function carregarPrioridade() {
@@ -137,7 +145,7 @@
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela("Erro ao carregar prioridade: "+error.message,"error");
         }
     }
     async function carregarStatus() {
@@ -152,7 +160,7 @@
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar status: " + error.message);
+            mostrarMensagemNaTela("Erro ao carregar status: " + error.message, "error");
         }
     }
     async function carregarEmpreendimento() {
@@ -167,7 +175,7 @@
                 comboE.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela("Erro ao carregar empreendimento: "+error.message,"error");
         }
     }
     function formatarData(data) {
@@ -179,7 +187,6 @@
     function converterMaiusculo(campo) {
         campo.value = campo.value.toUpperCase();
     }
-
 
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
@@ -198,15 +205,18 @@
         else {
             campoBlooqueado = 1;
         }
-
+        const data_inicio = document.getElementById('data_inicio').value;
+        const data_fim = document.getElementById('data_fim').value;
         const epico = {
             idepico: Number(idepico) || null,
             descepico: descepico || null,
             obsepico: obsepico || null,
-            bloqueado: campoBlooqueado
+            bloqueado: campoBlooqueado,
+            data_inicio: data_inicio,
+            data_fim: data_fim,
         };
         try {
-            const response = await fetch(`${API}/salvar`, {
+            const response = await fetch(`${API_EPICO}/salvar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -214,27 +224,28 @@
                 body: JSON.stringify(epico)
             });
             const data = await response.json();
-            mostrarMensagemNaTela("Gravado com sucesso!");
+            mostrarMensagemNaTela("Épico salvo com sucesso! ","success");
             setTimeout(() => {
                 limparCampos();
                 listarEpicos();
             }, 1000);
 
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+            mostrarMensagemNaTela("Erro ao salvar épico: "+error.message,"error");
         }
     }
-    async function buscarEpico() {
-        const idepico = document.getElementById('idepico').value;
+    async function listarEpicos() {
+        cor = "6c757d";
         try {
-            const response = await fetch(`${API}/${idepico}`);
+            const response = await fetch(`${API_EPICO}/listar`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
+                        <th class="table-header">% Concluído</th>
                         <th class="table-header">ID</th>
-                        <th class="table-header">Descrição</th>
+                        <th class="table-header">Nome</th>
                         <th class="table-header">Código</th>
                         <th class="table-header">Status</th>
                         <th class="table-header">Data inicial</th>
@@ -245,9 +256,13 @@
                 <tbody>
         `;
             data.forEach(epico => {
+                cor = corHexValida(epico.cor) ? epico.cor : "#6c757d";
                 tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
                                 style="cursor:pointer;">
-                                <td>${epico.descepico}</td>
+                          <td>${montarProgresso(epico.percentual)}</td>
+                           <td style="border-left:8px solid ${cor};">
+                              ${epico.idepico}</td>
+                                <td>${epico.nome}</td>
                                 <td>${epico.codepico}</td>
                                 <td>${epico.status.descstatus}</td>
                                 <td>${formatarData(epico.data_inicio)}</td>
@@ -257,84 +272,81 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao buscar épico: " + error.message);
-        }
-    }
-    async function listarEpicos() {
-        try {
-            const response = await fetch(`${API_EPICO}/listar`);
-            const data = await response.json();
-            let tabela = `
-            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th class="table-header">ID</th>
-                        <th class="table-header">Descrição</th>
-                        <th class="table-header">Sigla</th>
-                        <th class="table-header">Status</th>
-                        <th class="table-header">Data inicial</th>
-                        <th class="table-header">Data final</th>
-                        <th class="table-header">Excluir</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-            data.forEach(epico => {
-                tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
-                                style="cursor:pointer;">
-                                <td>${epico.descepico}</td>
-                                <td>${epico.codepico}</td>
-                                <td>${epico.idstatus.descstatus} || "" </td>
-                                <td>${formatarData(epico.data_inicio)}</td>
-                                <td>${formatarData(epico.data_fim_prevista)}</td>
-                                <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
-            </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
-        } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar Épicos",1);
+            mostrarMensagemNaTela("Erro ao listar épicos: " + error.message,"error");
         }
     }
 
     async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API}/${id}`);
+            const response = await fetch(`${API_EPICO}/${id}`);
             const epico = await response.json();
-            document.getElementById('idepico').value = epico.idepico;
-            document.getElementById('descepico').value = epico.descepico;
-            document.getElementById('obsepico').value = epico.obsepico;
-            // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-            document.getElementById('bloqueado').checked = epico.bloqueado || 0;
+            if(!response.ok) {
+                mostrarMensagemNaTela(epico.mensagem,"error");
+            } else {
+                document.getElementById('idepico').value = epico.idepico;
+                document.getElementById('nomeepico').value = epico.nome;
+                document.getElementById('codigo').value = epico.codepico;
+                document.getElementById('cor').value = corHexValida(epico.cor) ? epico.cor : "#6c757d";
+                // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+                document.getElementById('bloqueado').checked = epico.bloqueado || 0;
+                // CARREGANDO OS COMBOS
+                document.getElementById('comboStatus').value = epico.status.idstatus;
+                document.getElementById('comboEmpreendimento').value = epico.empreendimento.idempreendimento;
+                document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
+                document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
+                document.getElementById('comboGestor').value = epico.responsavel.idusuario;
+                document.getElementById('data_inicio').value = epico.data_inicio;
+                document.getElementById('data_fim').value = epico.data_fim_prevista;
 
+
+            }
         } catch (error) {
-            document.getElementById('resultado').innerText = error;
+            mostrarMensagemNaTela("Erro ao carregar épico: "+error.message,"error");
         }
     }
     async function excluirEpico(idEpico) {
         try {
-            const response = await fetch(`${API}/excluir/${idEpico}`, {
+            const response = await fetch(`${API_EPICO}/excluir/${idEpico}`, {
                 method: 'DELETE'
             });
-            const texto = await response.text();
-            document.getElementById('resultado').innerText = texto || 'Épico excluído com sucesso';
+            mostrarMensagemNaTela("Épico excluído com sucesso", "success");
             limpaFormulario();
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao excluir: " + error.message);
+            mostrarMensagemNaTela("Erro ao excluir: " + error.message, "error");
         }
     }
     async function limpaFormulario() {
         document.getElementById('idepico').value = "";
-        document.getElementById('descepico').value = "";
-        document.getElementById('obsepico').value = "";
-        document.getElementById('bloqueado').value = false;
+        document.getElementById('nomeepico').value = "";
+        document.getElementById('codigo').value = "";
+        document.getElementById('cor').value = "";
+        document.getElementById('bloqueado').checked = false;
     }
-    function mostrarMensagemNaTela(mensagem) {
-        const container = document.getElementById("resultado");
-        if (container) {
-            container.innerHTML = `<p style="color:red;">${mensagem}</p>`;
-        } else {
-            alert(mensagem);
+    function montarProgresso(percentual) {
+        percentual = Number(percentual) || 0;
+
+        let cor = "#dc3545"; // vermelho
+
+        if (percentual >= 100) {
+            cor = "#198754";
+        } else if (percentual >= 75) {
+            cor = "#20c997";
+        } else if (percentual >= 50) {
+            cor = "#ffc107";
+        } else if (percentual >= 25) {
+            cor = "#fd7e14";
         }
+
+        return `
+        <div class="progresso-grid">
+            <div class="barra">
+                <div class="preenchimento"
+                     style="width:${percentual}%; background:${cor};">
+                </div>
+            </div>
+            <span>${percentual}%</span>
+        </div>
+    `;
     }
 </script>
 </body>

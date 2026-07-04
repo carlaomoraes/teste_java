@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="css/pages/usuario.css">
 </head>
 <body>
-<script src="js/utils/mensagens.js"></script>
+<script src="js/utils/funcoes.js"></script>
 <div class="container">
     <h1>Usuários - TaskController 1.0</h1>
     <div class="abas-container">
@@ -25,7 +25,7 @@
         <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Ausências programadas</button>
     </div>
     <div id="usuarios" class="conteudo-aba ativo">
-        <input type="number" name="idusuario" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idusuario').value)" name="idusuario" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
         <input type="text" id="nome" placeholder="Nome do usuário" oninput="converterMaiusculo(this)">
         <input type="text" id="login" placeholder="Login" oninput="converterMaiusculo(this)">
         <input type="text" id="email" placeholder="E-mail" oninput="converterMaiusculo(this)">
@@ -180,9 +180,13 @@
             mostrarMensagemNaTela("Erro ao gravar usuário: "+error.message, "error");
         }
     }
-    async function buscarUsuarioPorLinha(id) {
+    async function buscarPorLinha(id) {
         try {
             const response = await fetch(`${API_USUARIOS}/${id}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("Usuário não encontrado","error");
+                return;
+            }
             const usuario = await response.json();
             document.getElementById('idusuario').value = usuario.idusuario;
             document.getElementById('nome').value = usuario.nome;
@@ -217,7 +221,7 @@
                 <tbody>
         `;
             data.forEach(usuario => {
-                tabela += `<tr onclick="buscarUsuarioPorLinha(${usuario.idusuario})"
+                tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
                                 style="cursor:pointer;">
                                 <td>${usuario.idusuario}</td>
                                 <td>${usuario.nome}</td>

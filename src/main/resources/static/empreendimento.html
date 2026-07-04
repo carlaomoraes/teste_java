@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/pages/empreendimento.css">
 </head>
 <body>
+<script src="js/utils/funcoes.js"></script>
 <div class="container">
     <h1>Empreendimento - TaskController 1.0</h1>
     <div class="abas-container">
@@ -170,7 +171,7 @@
             equipeDisponivelSelecionado = null;
             equipeSelecionado = null;
         } catch(e) {
-            await mostrarMensagemNaTela("Erro ao montar colunas de membros: " + e.message);
+            await mostrarMensagemNaTela("Erro ao montar colunas de membros: " + e.message, "error");
         }
     }
 
@@ -178,11 +179,11 @@
         const idEmpreendimento = document.getElementById("idempreendimento").value;
         const idEquipe = equipeDisponivelSelecionado;
         if(!idEmpreendimento) {
-            mostrarMensagemNaTela("Selecione um empreendimento.");
+            mostrarMensagemNaTela("Selecione um empreendimento.","warnning");
             return;
         }
         if(!idEquipe || !equipeDisponivelSelecionado) {
-            mostrarMensagemNaTela("Selecione uma equipe disponivel para adicionar ao empreendimento.");
+            mostrarMensagemNaTela("Selecione uma equipe disponivel para adicionar ao empreendimento.","warnning");
             return;
         }
         try {
@@ -192,7 +193,7 @@
                 }
             );
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao adicionar membro: " + error.message);
+            mostrarMensagemNaTela("Erro ao adicionar membro: " + error.message, "error");
         }
         await montaEquipes(idEmpreendimento);
     }
@@ -200,11 +201,11 @@
         const idEmpreendimento = document.getElementById("idempreendimento").value;
         const idEquipe = equipeSelecionado;
         if(!idEmpreendimento) {
-            mostrarMensagemNaTela("Selecione um empreendimento.");
+            mostrarMensagemNaTela("Selecione um empreendimento.","warnning");
             return;
         }
         if(!idEquipe || !equipeSelecionado) {
-            mostrarMensagemNaTela("Selecione uma equipe disponivel para retirar do empreendimento.");
+            mostrarMensagemNaTela("Selecione uma equipe disponivel para retirar do empreendimento.","warnning");
             return;
         }
         try {
@@ -214,7 +215,7 @@
                 }
             );
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao remover membro: " + error.message);
+            mostrarMensagemNaTela("Erro ao remover membro: " + error.message,"error");
         }
 
         montaEquipes(idEmpreendimento);
@@ -232,7 +233,7 @@
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar gestor: "+error.message,1);
+            mostrarMensagemNaTela("Erro ao carregar gestor: "+error.message,"error");
         }
     }
     async function carregarStatus() {
@@ -247,7 +248,7 @@
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar status: "+error.message,1);
+            mostrarMensagemNaTela("Erro ao carregar status: "+error.message,"error");
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -280,32 +281,36 @@
                     body: JSON.stringify(empreendimento)
                 });
                 const data = await response.json();
-                mostrarMensagemNaTela("Gravado com sucesso!");
+                mostrarMensagemNaTela("Gravado com sucesso!","success");
             } catch (error) {
-            mostrarMensagemNaTela("Erro ao salvar: "+error.message, 1);
+                 mostrarMensagemNaTela("Erro ao salvar: "+error.message, "error");
             }
         }
     }
     async function buscarEmpreendimentoPorLinha(id) {
         const response = await fetch(`${API_EMPREENDIMENTO}/${id}`);
-        const data = await response.json();
+        const empreendimento = await response.json();
         if(!response.ok) {
-            mostrarMensagemNaTela(data.mensagem);
+            mostrarMensagemNaTela(empreendimento.mensagem);
             return;
         }
-        document.getElementById('idempreendimento').value = data.idempreendimento;
-        document.getElementById('descempreendimento').value = data.descempreendimento;
-        document.getElementById('data_inicio').value = data.data_inicio;
-        document.getElementById('data_fim').value = data.data_fim;
-        document.getElementById('siglaempreendimento').value = data.siglaempreendimento;
+        const cor = corHexValida(empreendimento.cor) ? empreendimento.cor : "#6c757d";
+        document.getElementById('idempreendimento').value = empreendimento.idempreendimento;
+        document.getElementById('descempreendimento').value = empreendimento.descempreendimento;
+        document.getElementById('data_inicio').value = empreendimento.data_inicio;
+        document.getElementById('data_fim').value = empreendimento.data_fim;
+        document.getElementById('siglaempreendimento').value = empreendimento.siglaempreendimento;
+        document.getElementById('cor').value = cor;
       //  document.getElementById('combostatus').value = data.status.idstatus || "";
       //  document.getElementById('comboGestor').value = data.idgestor.idusuario || "";
 
+
         // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-        mostrarMensagemNaTela("Equipe selecionada: " + data.descempreendimento, "green");
+        mostrarMensagemNaTela("Equipe selecionada: " + data.descempreendimento, "success");
         montaEquipes(data.idempreendimento);
     }
     async function listarEmpreendimentos() {
+        cor = "6c757d";
         try {
             const response = await fetch(`${API_EMPREENDIMENTO}/listar`);
             const data = await response.json();
@@ -325,10 +330,11 @@
                 <tbody>
         `;
             data.forEach(empreendimento => {
+                cor = corHexValida(empreendimento.cor) ? empreendimento.cor : "#6c757d";
                 tabela += `
         <tr onclick="buscarEmpreendimentoPorLinha(${empreendimento.idempreendimento})"
             style="cursor:pointer;">
-            <td style="border-left:8px solid ${empreendimento.cor};">
+            <td style="border-left:8px solid ${cor};">
                 ${empreendimento.idempreendimento}
             </td>
             <td>${empreendimento.descempreendimento}</td>
@@ -337,7 +343,7 @@
             <td>${formatarData(empreendimento.data_inicio)}</td>
             <td>${formatarData(empreendimento.data_fim)}</td>
             <td>
-                <button type="button" class="btn"
+                 <button type="button" class="btn btn-excluir"
                     onclick="event.stopPropagation(); excluirEmpreendimento(${empreendimento.idempreendimento})">
                     Excluir
                 </button>
@@ -347,7 +353,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar Empreendimento: "+error.message,1);
+            mostrarMensagemNaTela("Erro ao listar Empreendimento: "+error.message,"error");
         }
     }
     async function excluirEmpreendimento(idEmpreendimento) {
@@ -356,9 +362,9 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Empreendimento excluído com sucesso',1);
+            mostrarMensagemNaTela(texto || 'Empreendimento excluído com sucesso',"success");
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao excluir Empreendimento: "+error.message,1);
+            mostrarMensagemNaTela("Erro ao excluir Empreendimento: "+error.message, "error");
         }
     }
     async function limparCampos() {
@@ -378,24 +384,24 @@
 
         // Validação: Descrição do Empreendimento
         if (desc === "") {
-            mostrarMensagemNaTela("A descrição do empreendimento é obrigatória!");
+            mostrarMensagemNaTela("A descrição do empreendimento é obrigatória!","warning");
             return false;
         }
         // Validação: Sigla (Exemplo: obrigatória e com limite de caracteres)
         if (sigla === "") {
-            mostrarMensagemNaTela("A sigla do empreendimento é obrigatória!");
+            mostrarMensagemNaTela("A sigla do empreendimento é obrigatória!","warning");
             return false;
         } else if (sigla.length > 3) {
-            mostrarMensagemNaTela("A sigla deve ter no máximo 3 caracteres.");
+            mostrarMensagemNaTela("A sigla deve ter no máximo 3 caracteres.","warning");
             return false;
         }
         // Validação: Datas Obrigatórias
         if (!dataInicio) {
-            mostrarMensagemNaTela("A data de início é obrigatória.");
+            mostrarMensagemNaTela("A data de início é obrigatória.","warning");
             return false;
         }
         if (!dataFim) {
-            mostrarMensagemNaTela("A data de fim é obrigatória.");
+            mostrarMensagemNaTela("A data de fim é obrigatória.","warning");
             return false;
         }
         // Validação Lógica: Data Fim não pode ser menor que Data Início
@@ -403,7 +409,7 @@
             const dataInicDate = new Date(dataInicio);
             const dataFimDate = new Date(dataFim);
             if (dataFimDate < dataInicDate) {
-                mostrarMensagemNaTela("A data de fim não pode ser anterior à data de início.");
+                mostrarMensagemNaTela("A data de fim não pode ser anterior à data de início.","warning");
                 return false;
             }
         }

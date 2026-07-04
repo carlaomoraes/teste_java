@@ -2,7 +2,7 @@ function mostrarMensagemNaTela(mensagem, tipoMensagem = "error") {
     const container = document.getElementById("resultado");
     if (!container) {
         alert(mensagem);
-    return;
+        return;
     }
     let cor;
     switch (tipoMensagem) {
@@ -15,7 +15,11 @@ function mostrarMensagemNaTela(mensagem, tipoMensagem = "error") {
         case "error":
         default:
             cor = "#dc2626";
-        break;
+            break;
     }
     container.innerHTML = `<p style="color:${cor};">${mensagem}</p>`;
+}
+//Verifica se a cor é válida
+function corHexValida(cor) {
+    return /^#([0-9A-F]{3}|[0-9A-F]{6})$/i.test(cor);
 }
