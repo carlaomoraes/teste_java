@@ -185,11 +185,15 @@
             mostrarMensagemNaTela("Selecione uma equipe disponivel para adicionar ao empreendimento.");
             return;
         }
-        await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${idEquipe}`,
-            {
-                method:"POST"
-            }
-        );
+        try {
+            await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${idEquipe}`,
+                {
+                    method:"POST"
+                }
+            );
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao adicionar membro: " + error.message);
+        }
         await montaEquipes(idEmpreendimento);
     }
     async function removerMembro(){
@@ -203,12 +207,15 @@
             mostrarMensagemNaTela("Selecione uma equipe disponivel para retirar do empreendimento.");
             return;
         }
-
-        await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${equipeSelecionado}`,
-            {
-                method:"DELETE"
-            }
-        );
+        try {
+            await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${equipeSelecionado}`,
+                {
+                    method:"DELETE"
+                }
+            );
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao remover membro: " + error.message);
+        }
 
         montaEquipes(idEmpreendimento);
     }
@@ -225,7 +232,7 @@
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela("Erro ao carregar gestor: "+error.message,1);
         }
     }
     async function carregarStatus() {
@@ -240,7 +247,7 @@
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(error.message,1);
+            mostrarMensagemNaTela("Erro ao carregar status: "+error.message,1);
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -275,7 +282,7 @@
                 const data = await response.json();
                 mostrarMensagemNaTela("Gravado com sucesso!");
             } catch (error) {
-                mostrarMensagemNaTela(error.message, 1);
+            mostrarMensagemNaTela("Erro ao salvar: "+error.message, 1);
             }
         }
     }
@@ -340,7 +347,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar Empreendimento",1);
+            mostrarMensagemNaTela("Erro ao listar Empreendimento: "+error.message,1);
         }
     }
     async function excluirEmpreendimento(idEmpreendimento) {
@@ -351,7 +358,7 @@
             const texto = await response.text();
             mostrarMensagemNaTela(texto || 'Empreendimento excluído com sucesso',1);
         } catch (error) {
-            mostrarMensagemNaTela(error.message,1);
+            mostrarMensagemNaTela("Erro ao excluir Empreendimento: "+error.message,1);
         }
     }
     async function limparCampos() {
@@ -402,7 +409,6 @@
         }
         return true;
     }
-
 </script>
 </body>
 </html>

@@ -171,13 +171,13 @@
                 body: JSON.stringify(usuario)
             });
             const data = await response.json();
-            mostrarMensagemNaTela("Gravado com sucesso!");
+            mostrarMensagemNaTela("Gravado com sucesso!", "success");
             setTimeout(() => {
                 limparCampos();
                 listarUsuarios();
             }, 1000);
         } catch (error) {
-            mostrarMensagemNaTela(error.message, 1);
+            mostrarMensagemNaTela("Erro ao gravar usuário: "+error.message, "error");
         }
     }
     async function buscarUsuarioPorLinha(id) {
@@ -195,7 +195,7 @@
             sessionStorage.setItem('idusuario',usuario.idusuario);
             listarAusencias(sessionStorage.getItem('idusuario'));
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
+            mostrarMensagemNaTela("Erro ao buscar usuário: "+error.message,"error");
         }
     }
     async function listarUsuarios() {
@@ -229,7 +229,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar usuários",1);
+            mostrarMensagemNaTela("Erro ao listar usuários: "+ error.message,"error");
         }
     }
     async function excluirUsuario(idusuario) {
@@ -238,24 +238,9 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Usuário excluído com sucesso',1);
+            mostrarMensagemNaTela(texto || 'Usuário excluído com sucesso',"success");
         } catch (error) {
-            mostrarMensagemNaTela(error,1);
-        }
-    }
-
-    // Função para injetar a mensagem no HTML
-    function mostrarMensagemNaTela(mensagem, aba) {
-        if(aba == 1){
-            container = document.getElementById("resultado");
-        } else {
-            container = document.getElementById("resultadoAusencias");
-        }
-        if (container) {
-            container.textContent = mensagem;
-            container.style.color = "red"; // Deixa o texto vermelho
-        } else {
-            alert(mensagem); // Feedback visual simples caso não tenha o container
+            mostrarMensagemNaTela("Erro ao excluir usuário: "+error.message,"error");
         }
     }
     async function salvarAusencias(idUsuario) {
@@ -287,12 +272,12 @@
                     body: JSON.stringify(ausencias)
                 });
                 const data = await response.json();
-                mostrarMensagemNaTela("Gravado com sucesso!");
+                mostrarMensagemNaTela("Gravado com sucesso!", "success");
                 setTimeout(() => {
                     listarAusencias(idUsuario);
                 }, 1000);
             } catch (error) {
-                mostrarMensagemNaTela(error.message, 2);
+                mostrarMensagemNaTela(error.message, "error");
             }
         }
     }
@@ -370,7 +355,7 @@
         `;
         container.innerHTML = tabela;
       } catch (error) {
-                mostrarMensagemNaTela(error.message || "Erro inesperado ao listar ausências",2);
+            mostrarMensagemNaTela(error.message || ". Erro inesperado ao listar ausências","error");
       }
     }
     async function excluirAusencia(idausencia) {
@@ -379,9 +364,9 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Ausência programada excluída com sucesso',2);
+            mostrarMensagemNaTela(texto || '. Ausência programada excluída com sucesso',"success");
         } catch (error) {
-            mostrarMensagemNaTela(error, 2);
+            mostrarMensagemNaTela("Erro ao excluir ausência: "+ error, "error");
         }
     }
     async function cancelarAusencia(idUsuario) {
@@ -401,7 +386,7 @@
                 document.getElementById('senha').value === "" ||
                 document.getElementById('comboPapel').value === "";
             if (invalido) {
-                mostrarMensagemNaTela("Todos os campos devem estar preenchidos", 1);
+                mostrarMensagemNaTela("Todos os campos devem estar preenchidos", "warning");
                 return false;
             }
         } else {
@@ -412,14 +397,14 @@
                 document.getElementById('observacao').value.trim() === "" ||
                 !document.getElementById('status').checked;
             if (invalido) {
-                mostrarMensagemNaTela("Todos os campos devem estar preenchidos", 1);
+                mostrarMensagemNaTela("Todos os campos devem estar preenchidos", "warning");
                 return false;
             }
             // validação adicional das datas
             const datainicial = document.getElementById('datainicial').value;
             const datafinal = document.getElementById('datafinal').value;
             if (new Date(datafinal) < new Date(datainicial)) {
-                mostrarMensagemNaTela("Data final não pode ser menor que a data inicial", 1);
+                mostrarMensagemNaTela("Data final não pode ser menor que a data inicial", "warning");
                 return false;
             }
         }
