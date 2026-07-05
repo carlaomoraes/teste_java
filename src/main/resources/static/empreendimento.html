@@ -3,64 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empreendimento - TaskController 1.0</title>
+    <title>Épicos - TaskController 1.0</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <!-- CSS Global -->
     <link rel="stylesheet" href="css/style.css">
 
     <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/empreendimento.css">
+    <link rel="stylesheet" href="css/pages/epico.css">
 </head>
 <body>
 <script src="js/utils/funcoes.js"></script>
 <div class="container">
-    <h1>Empreendimento - TaskController 1.0</h1>
+    <h1>Épico - TaskController 1.0</h1>
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'empreendimento')">Empreendimento</button>
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')">Geral</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
         <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'anexos')">Anexos</button>
     </div>
-    <div id="empreendimento" class="conteudo-aba ativo">
-        <input type="number" name="idempreendimento" id="idempreendimento" placeholder="ID do empreendimento (Deixe vazio para novo)">
+    <div id="epicos" class="conteudo-aba ativo">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value)" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Nome</label>
-                <input type="text" id="descempreendimento" oninput="converterMaiusculo(this)">
+                <input type="text" id="nomeepico" oninput="converterMaiusculo(this)">
             </div>
             <div>
-                <label>Sigla</label>
-                <input type="text" id="siglaempreendimento" oninput="converterMaiusculo(this)">
-            </div>
-            <div>
-                <label>Data início</label>
-                <input type="date" id="data_inicio">
-            </div>
-            <div>
-                <label>Data fim</label>
-                <input type="date" id="data_fim">
+                <label>Código</label>
+                <input type="text" id="codigo" oninput="converterMaiusculo(this)" maxlength="10">
             </div>
             <div>
                 <label>Status</label>
-                <select id="comboStatus"></select>
+                <select id="comboStatus">
+                    <option value="">-- Selecione o status --</option>
+                </select>
+            </div>
+            <div>
+                <label>Empreendimento</label>
+                <select id="comboEmpreendimento">
+                    <option value="">-- Selecione o empreendimento --</option>
+                </select>
+            </div>
+            <div>
+                <label>Pioridade</label>
+                <select id="comboPrioridade">
+                    <option value="">-- Selecione prioridade --</option>
+                </select>
             </div>
             <div>
                 <label>Gestor</label>
-                <select id="comboGestor"></select>
+                <select id="comboGestor">
+                    <option value="">-- Selecione o gestor --</option>
+                </select>
             </div>
             <div>
-                <label for="cor">Cor de identificação do empreendimento</label>
+                <label>Data inicial</label>
+                <input type="date" id="data_inicio">
+            </div>
+            <div>
+                <label>Data final prevista</label>
+                <input type="date" id="data_fim">
+            </div>
+            <div>
+                <label for="cor">Cor de identificação do épico</label>
                 <input type="color" id="cor" value="#2196F3">
             </div>
-
+            <label class="checkbox-group">
+                <input type="checkbox" id="bloqueado" value="0"> Épico bloqueado
+            </label>
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="salvarEmpreendimento();">Salvar</button>
-            <button type="button" class="btn btn-listar"  onclick="listarEmpreendimentos()">Listar</button>
+            <button type="button" class="btn btn-salvar" onclick="salvarEpico();">Salvar</button>
+            <button type="button" class="btn btn-listar"  onclick="listarEpicos()">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado"></div>
@@ -87,139 +107,16 @@
             </div>
         </div>
     </div>
-
 </div>
-</body>
-
 <script>
-    // Variáveis globais para rastreamento dos itens selecionados nos seletores customizados
-    let equipeDisponivelSelecionado = null;
-    let equipeSelecionado = null;
-
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+    const API_EPICO = 'http://localhost:8080/epicos';
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_PRIORIDADE = 'http://localhost:8080/prioridade';
 
-    function formatarData(data) {
-        if (!data) return "";
 
-        const [ano, mes, dia] = data.split("-");
-        return `${dia}/${mes}/${ano}`;
-    }
-    function converterMaiusculo(campo) {
-        campo.value = campo.value.toUpperCase();
-    }
-    function alternarAba(event, idAbaDestino) {
-        document.querySelectorAll('.conteudo-aba') .forEach(c => c.classList.remove('ativo')); document.querySelectorAll('.aba-botao') .forEach(b => b.classList.remove('ativa')); document.getElementById(idAbaDestino).classList.add('ativo'); event.currentTarget.classList.add('ativa');
-        // Carrega as equipes quando abrir a aba EQUIPES
-        if (idAbaDestino === 'equipes') {
-            const idEmpreendimento = document.getElementById("idempreendimento").value;
-            if (idEmpreendimento) {
-                montaEquipes(idEmpreendimento);
-            } else {
-                document.getElementById("equipesDisponiveis").innerHTML = '<div style="padding:20px;color:#ef4444;text-align:center;">' + 'Selecione ou salve um empreendimento primeiro.' + '</div>';
-                document.getElementById("equipesVinculadas").innerHTML = '<div style="padding:20px;color:#ef4444;text-align:center;">' + 'Selecione ou salve um empreendimento primeiro.' + '</div>';
-            }
-        }
-    }
-    // Renderiza a lista customizada mapeando os eventos de clique
-    function renderizarListaCustom(containerId, listaEquipes, tipo) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = "";
-
-        if (listaEquipes.length === 0) {
-            container.innerHTML = `<div style="padding: 20px; color: #94a3b8; text-align:center; font-size:14px;">Nenhuma equipe encontrada!</div>`;
-            return;
-        }
-
-        listaEquipes.forEach(equipe => {
-            const item = document.createElement('div');
-            item.className = 'membro-item';
-            item.dataset.id = equipe.idequipe;
-
-            item.innerHTML = `
-                <div class="membro-avatar"><i class="fa-solid fa-user"></i></div>
-                <div class="membro-name">${equipe.nomeequipe}</div>
-            `;
-
-            item.addEventListener('click', () => {
-                // Remove seleção anterior do escopo específico
-                container.querySelectorAll('.membro-item').forEach(el => el.classList.remove('selecionado'));
-                item.classList.add('selecionado');
-
-                if (tipo === 'disponivel') {
-                    equipeDisponivelSelecionado = equipe.idequipe;
-                } else {
-                    equipeSelecionado = equipe.idequipe;
-                }
-            });
-
-            container.appendChild(item);
-        });
-    }
-
-    // ------- MONTAGEM DAS LISTAS
-    async function montaEquipes(idEmpreendimento) {
-        try {
-            const disponiveis = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}/equipes/disponiveis`).then(r => r.json());
-            const membros = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}/equipes`).then(r => r.json());
-
-            renderizarListaCustom("equipesDisponiveis", disponiveis, 'disponivel');
-            renderizarListaCustom("equipesVinculadas", membros, 'equipe');
-
-            equipeDisponivelSelecionado = null;
-            equipeSelecionado = null;
-        } catch(e) {
-            await mostrarMensagemNaTela("Erro ao montar colunas de membros: " + e.message, "error");
-        }
-    }
-
-    async function adicionarMembro(){
-        const idEmpreendimento = document.getElementById("idempreendimento").value;
-        const idEquipe = equipeDisponivelSelecionado;
-        if(!idEmpreendimento) {
-            mostrarMensagemNaTela("Selecione um empreendimento.","warnning");
-            return;
-        }
-        if(!idEquipe || !equipeDisponivelSelecionado) {
-            mostrarMensagemNaTela("Selecione uma equipe disponivel para adicionar ao empreendimento.","warnning");
-            return;
-        }
-        try {
-            await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${idEquipe}`,
-                {
-                    method:"POST"
-                }
-            );
-        } catch (error) {
-            mostrarMensagemNaTela("Erro ao adicionar membro: " + error.message, "error");
-        }
-        await montaEquipes(idEmpreendimento);
-    }
-    async function removerMembro(){
-        const idEmpreendimento = document.getElementById("idempreendimento").value;
-        const idEquipe = equipeSelecionado;
-        if(!idEmpreendimento) {
-            mostrarMensagemNaTela("Selecione um empreendimento.","warnning");
-            return;
-        }
-        if(!idEquipe || !equipeSelecionado) {
-            mostrarMensagemNaTela("Selecione uma equipe disponivel para retirar do empreendimento.","warnning");
-            return;
-        }
-        try {
-            await fetch(`http://localhost:8080/empreendimento/${idEmpreendimento}/equipes/${equipeSelecionado}`,
-                {
-                    method:"DELETE"
-                }
-            );
-        } catch (error) {
-            mostrarMensagemNaTela("Erro ao remover membro: " + error.message,"error");
-        }
-
-        montaEquipes(idEmpreendimento);
-    }
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
         const comboGestor = document.getElementById("comboGestor");
@@ -236,91 +133,120 @@
             mostrarMensagemNaTela("Erro ao carregar gestor: "+error.message,"error");
         }
     }
+    async function carregarPrioridade() {
+        const comboGestor = document.getElementById("comboPrioridade");
+        try {
+            const resposta = await fetch(`${API_PRIORIDADE}/listar`);
+            const prioridades = await resposta.json();
+            prioridades.forEach(prioridade => {
+                const opcao = document.createElement('option');
+                opcao.value = prioridade.idprioridade;
+                opcao.textContent = prioridade.descprioridade;
+                comboGestor.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao carregar prioridade: "+error.message,"error");
+        }
+    }
     async function carregarStatus() {
         const comboStatus = document.getElementById("comboStatus");
         try {
             const resposta = await fetch(`${API_STATUS}/listar`);
-            const status = await resposta.json();
-            status.forEach(s => {
+            const vetor = await resposta.json();
+            vetor.forEach(i => {
                 const opcao = document.createElement('option');
-                opcao.value = s.idstatus;
-                opcao.textContent = s.descstatus;
+                opcao.value = i.idstatus;
+                opcao.textContent = i.descstatus;
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar status: "+error.message,"error");
+            mostrarMensagemNaTela("Erro ao carregar status: " + error.message, "error");
         }
     }
+    async function carregarEmpreendimento() {
+        const comboE = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const empreendimentos = await resposta.json();
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idempreendimento;
+                opcao.textContent = e.descempreendimento;
+                comboE.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao carregar empreendimento: "+error.message,"error");
+        }
+    }
+    function formatarData(data) {
+        if (!data) return "";
+
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
+    function converterMaiusculo(campo) {
+        campo.value = campo.value.toUpperCase();
+    }
+
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
+        carregarEmpreendimento();
         carregarGestor();
         carregarStatus();
+        carregarPrioridade();
     });
-    async function salvarEmpreendimento() {
-        if(await validaEntrada()) {
-            const empreendimento = {
-                idempreendimento: document.getElementById('idempreendimento').value,
-                descempreendimento: document.getElementById("descempreendimento").value,
-                siglaempreendimento: document.getElementById("siglaempreendimento").value,
-                data_inicio: document.getElementById("data_inicio").value,
-                data_fim: document.getElementById("data_fim").value,
-                cor: document.getElementById("cor").value,
-                status: {
-                    idstatus: parseInt(document.getElementById("comboStatus").value)
+    async function salvarEpico() {
+        const idepico = document.getElementById('idepico').value;
+        const descepico = document.getElementById('descepico').value;
+        const obsepico = document.getElementById('obsepico').value;
+        if(document.getElementById('bloqueado').checked) {
+            campoBlooqueado = 0;
+        }
+        else {
+            campoBlooqueado = 1;
+        }
+        const data_inicio = document.getElementById('data_inicio').value;
+        const data_fim = document.getElementById('data_fim').value;
+        const epico = {
+            idepico: Number(idepico) || null,
+            descepico: descepico || null,
+            obsepico: obsepico || null,
+            bloqueado: campoBlooqueado,
+            data_inicio: data_inicio,
+            data_fim: data_fim,
+        };
+        try {
+            const response = await fetch(`${API_EPICO}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                idgestor: {
-                    idusuario: parseInt(document.getElementById("comboGestor").value)
-                }
-            };
-            try {
-                const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(empreendimento)
-                });
-                const data = await response.json();
-                mostrarMensagemNaTela("Gravado com sucesso!","success");
-            } catch (error) {
-                 mostrarMensagemNaTela("Erro ao salvar: "+error.message, "error");
-            }
+                body: JSON.stringify(epico)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("Épico salvo com sucesso! ","success");
+            setTimeout(() => {
+                limparCampos();
+                listarEpicos();
+            }, 1000);
+
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao salvar épico: "+error.message,"error");
         }
     }
-    async function buscarEmpreendimentoPorLinha(id) {
-        const response = await fetch(`${API_EMPREENDIMENTO}/${id}`);
-        const empreendimento = await response.json();
-        if(!response.ok) {
-            mostrarMensagemNaTela(empreendimento.mensagem);
-            return;
-        }
-        const cor = corHexValida(empreendimento.cor) ? empreendimento.cor : "#6c757d";
-        document.getElementById('idempreendimento').value = empreendimento.idempreendimento;
-        document.getElementById('descempreendimento').value = empreendimento.descempreendimento;
-        document.getElementById('data_inicio').value = empreendimento.data_inicio;
-        document.getElementById('data_fim').value = empreendimento.data_fim;
-        document.getElementById('siglaempreendimento').value = empreendimento.siglaempreendimento;
-        document.getElementById('cor').value = cor;
-      //  document.getElementById('combostatus').value = data.status.idstatus || "";
-      //  document.getElementById('comboGestor').value = data.idgestor.idusuario || "";
-
-
-        // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-        mostrarMensagemNaTela("Equipe selecionada: " + data.descempreendimento, "success");
-        montaEquipes(data.idempreendimento);
-    }
-    async function listarEmpreendimentos() {
+    async function listarEpicos() {
         cor = "6c757d";
         try {
-            const response = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const response = await fetch(`${API_EPICO}/listar`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
+                        <th class="table-header">% Concluído</th>
                         <th class="table-header">ID</th>
-                        <th class="table-header">Descrição</th>
-                        <th class="table-header">Sigla</th>
+                        <th class="table-header">Nome</th>
+                        <th class="table-header">Código</th>
                         <th class="table-header">Status</th>
                         <th class="table-header">Data inicial</th>
                         <th class="table-header">Data final</th>
@@ -329,91 +255,98 @@
                 </thead>
                 <tbody>
         `;
-            data.forEach(empreendimento => {
-                cor = corHexValida(empreendimento.cor) ? empreendimento.cor : "#6c757d";
-                tabela += `
-        <tr onclick="buscarEmpreendimentoPorLinha(${empreendimento.idempreendimento})"
-            style="cursor:pointer;">
-            <td style="border-left:8px solid ${cor};">
-                ${empreendimento.idempreendimento}
-            </td>
-            <td>${empreendimento.descempreendimento}</td>
-            <td>${empreendimento.siglaempreendimento}</td>
-            <td>${empreendimento.status.descstatus}</td>
-            <td>${formatarData(empreendimento.data_inicio)}</td>
-            <td>${formatarData(empreendimento.data_fim)}</td>
-            <td>
-                 <button type="button" class="btn btn-excluir"
-                    onclick="event.stopPropagation(); excluirEmpreendimento(${empreendimento.idempreendimento})">
-                    Excluir
-                </button>
-            </td>
-        </tr>`;
-            });
+            data.forEach(epico => {
+                cor = corHexValida(epico.cor) ? epico.cor : "#6c757d";
+                tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
+                                style="cursor:pointer;">
+                          <td>${montarProgresso(epico.percentual)}</td>
+                           <td style="border-left:8px solid ${cor};">
+                              ${epico.idepico}</td>
+                                <td>${epico.nome}</td>
+                                <td>${epico.codepico}</td>
+                                <td>${epico.status.descstatus}</td>
+                                <td>${formatarData(epico.data_inicio)}</td>
+                                <td>${formatarData(epico.data_fim_prevista)}</td>
+                                <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
+            </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar Empreendimento: "+error.message,"error");
+            mostrarMensagemNaTela("Erro ao listar épicos: " + error.message,"error");
         }
     }
-    async function excluirEmpreendimento(idEmpreendimento) {
+
+    async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API_EMPREENDIMENTO}/excluir/${idEmpreendimento}`, {
+            const response = await fetch(`${API_EPICO}/${id}`);
+            const epico = await response.json();
+            if(!response.ok) {
+                mostrarMensagemNaTela(epico.mensagem,"error");
+            } else {
+                document.getElementById('idepico').value = epico.idepico;
+                document.getElementById('nomeepico').value = epico.nome;
+                document.getElementById('codigo').value = epico.codepico;
+                document.getElementById('cor').value = corHexValida(epico.cor) ? epico.cor : "#6c757d";
+                // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+                document.getElementById('bloqueado').checked = epico.bloqueado || 0;
+                // CARREGANDO OS COMBOS
+                document.getElementById('comboStatus').value = epico.status.idstatus;
+                document.getElementById('comboEmpreendimento').value = epico.empreendimento.idempreendimento;
+                document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
+                document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
+                document.getElementById('comboGestor').value = epico.responsavel.idusuario;
+                document.getElementById('data_inicio').value = epico.data_inicio;
+                document.getElementById('data_fim').value = epico.data_fim_prevista;
+
+
+            }
+        } catch (error) {
+            mostrarMensagemNaTela("Erro ao carregar épico: "+error.message,"error");
+        }
+    }
+    async function excluirEpico(idEpico) {
+        try {
+            const response = await fetch(`${API_EPICO}/excluir/${idEpico}`, {
                 method: 'DELETE'
             });
-            const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Empreendimento excluído com sucesso',"success");
+            mostrarMensagemNaTela("Épico excluído com sucesso", "success");
+            limpaFormulario();
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao excluir Empreendimento: "+error.message, "error");
+            mostrarMensagemNaTela("Erro ao excluir: " + error.message, "error");
         }
     }
-    async function limparCampos() {
-        document.getElementById('idempreendimento').value = "";
-        document.getElementById('descempreendimento').value = "";
-        document.getElementById('data_inicio').value = "";
-        document.getElementById('data_fim').value = "";
-        document.getElementById('siglaempreendimento').value = "";
-
+    async function limpaFormulario() {
+        document.getElementById('idepico').value = "";
+        document.getElementById('nomeepico').value = "";
+        document.getElementById('codigo').value = "";
+        document.getElementById('cor').value = "";
+        document.getElementById('bloqueado').checked = false;
     }
-    async function validaEntrada() {
-        // 1. Captura os valores dos elementos
-        const desc = document.getElementById('descempreendimento').value.trim();
-        const dataInicio = document.getElementById('data_inicio').value;
-        const dataFim = document.getElementById('data_fim').value;
-        const sigla = document.getElementById('siglaempreendimento').value.trim();
+    function montarProgresso(percentual) {
+        percentual = Number(percentual) || 0;
 
-        // Validação: Descrição do Empreendimento
-        if (desc === "") {
-            mostrarMensagemNaTela("A descrição do empreendimento é obrigatória!","warning");
-            return false;
+        let cor = "#dc3545"; // vermelho
+
+        if (percentual >= 100) {
+            cor = "#198754";
+        } else if (percentual >= 75) {
+            cor = "#20c997";
+        } else if (percentual >= 50) {
+            cor = "#ffc107";
+        } else if (percentual >= 25) {
+            cor = "#fd7e14";
         }
-        // Validação: Sigla (Exemplo: obrigatória e com limite de caracteres)
-        if (sigla === "") {
-            mostrarMensagemNaTela("A sigla do empreendimento é obrigatória!","warning");
-            return false;
-        } else if (sigla.length > 3) {
-            mostrarMensagemNaTela("A sigla deve ter no máximo 3 caracteres.","warning");
-            return false;
-        }
-        // Validação: Datas Obrigatórias
-        if (!dataInicio) {
-            mostrarMensagemNaTela("A data de início é obrigatória.","warning");
-            return false;
-        }
-        if (!dataFim) {
-            mostrarMensagemNaTela("A data de fim é obrigatória.","warning");
-            return false;
-        }
-        // Validação Lógica: Data Fim não pode ser menor que Data Início
-        if (dataInicio && dataFim) {
-            const dataInicDate = new Date(dataInicio);
-            const dataFimDate = new Date(dataFim);
-            if (dataFimDate < dataInicDate) {
-                mostrarMensagemNaTela("A data de fim não pode ser anterior à data de início.","warning");
-                return false;
-            }
-        }
-        return true;
+
+        return `
+        <div class="progresso-grid">
+            <div class="barra">
+                <div class="preenchimento"
+                     style="width:${percentual}%; background:${cor};">
+                </div>
+            </div>
+            <span>${percentual}%</span>
+        </div>
+    `;
     }
 </script>
 </body>
