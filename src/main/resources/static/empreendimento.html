@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Épicos - TaskController 1.0</title>
+    <title>Empreendimentos - TaskController 1.0</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/epico.css">
+    <link rel="stylesheet" href="css/pages/Empreendimento.css">
 </head>
 <body>
 <script src="js/utils/funcoes.js"></script>
 <div class="container">
-    <h1>Épico - TaskController 1.0</h1>
+    <h1>Empreendimento - TaskController 1.0</h1>
     <div class="abas-container">
         <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')">Geral</button>
         <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
@@ -27,12 +27,12 @@
         <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
         <button class="aba-botao" onclick="alternarAba(event, 'anexos')">Anexos</button>
     </div>
-    <div id="epicos" class="conteudo-aba ativo">
-        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value)" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
+    <div id="Empreendimentos" class="conteudo-aba ativo">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idEmpreendimento').value)" name="idEmpreendimento" id="idEmpreendimento" placeholder="ID do Empreendimento (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Nome</label>
-                <input type="text" id="nomeepico" oninput="converterMaiusculo(this)">
+                <input type="text" id="nomeEmpreendimento" oninput="converterMaiusculo(this)">
             </div>
             <div>
                 <label>Código</label>
@@ -71,16 +71,16 @@
                 <input type="date" id="data_fim">
             </div>
             <div>
-                <label for="cor">Cor de identificação do épico</label>
+                <label for="cor">Cor de identificação do Empreendimento</label>
                 <input type="color" id="cor" value="#2196F3">
             </div>
             <label class="checkbox-group">
-                <input type="checkbox" id="bloqueado" value="0"> Épico bloqueado
+                <input type="checkbox" id="bloqueado" value="0"> Empreendimento bloqueado
             </label>
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="salvarEpico();">Salvar</button>
-            <button type="button" class="btn btn-listar"  onclick="listarEpicos()">Listar</button>
+            <button type="button" class="btn btn-salvar" onclick="salvarEmpreendimento();">Salvar</button>
+            <button type="button" class="btn btn-listar"  onclick="listarEmpreendimentos()">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado"></div>
@@ -111,7 +111,7 @@
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
-    const API_EPICO = 'http://localhost:8080/epicos';
+    const API_Empreendimento = 'http://localhost:8080/Empreendimentos';
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
@@ -195,10 +195,10 @@
         carregarStatus();
         carregarPrioridade();
     });
-    async function salvarEpico() {
-        const idepico = document.getElementById('idepico').value;
-        const descepico = document.getElementById('descepico').value;
-        const obsepico = document.getElementById('obsepico').value;
+    async function salvarEmpreendimento() {
+        const idEmpreendimento = document.getElementById('idEmpreendimento').value;
+        const descEmpreendimento = document.getElementById('descEmpreendimento').value;
+        const obsEmpreendimento = document.getElementById('obsEmpreendimento').value;
         if(document.getElementById('bloqueado').checked) {
             campoBlooqueado = 0;
         }
@@ -207,37 +207,37 @@
         }
         const data_inicio = document.getElementById('data_inicio').value;
         const data_fim = document.getElementById('data_fim').value;
-        const epico = {
-            idepico: Number(idepico) || null,
-            descepico: descepico || null,
-            obsepico: obsepico || null,
+        const Empreendimento = {
+            idEmpreendimento: Number(idEmpreendimento) || null,
+            descEmpreendimento: descEmpreendimento || null,
+            obsEmpreendimento: obsEmpreendimento || null,
             bloqueado: campoBlooqueado,
             data_inicio: data_inicio,
             data_fim: data_fim,
         };
         try {
-            const response = await fetch(`${API_EPICO}/salvar`, {
+            const response = await fetch(`${API_Empreendimento}/salvar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(epico)
+                body: JSON.stringify(Empreendimento)
             });
             const data = await response.json();
-            mostrarMensagemNaTela("Épico salvo com sucesso! ","success");
+            mostrarMensagemNaTela("Empreendimento salvo com sucesso! ","success");
             setTimeout(() => {
                 limparCampos();
-                listarEpicos();
+                listarEmpreendimentos();
             }, 1000);
 
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao salvar épico: "+error.message,"error");
+            mostrarMensagemNaTela("Erro ao salvar Empreendimento: "+error.message,"error");
         }
     }
-    async function listarEpicos() {
+    async function listarEmpreendimentos() {
         cor = "6c757d";
         try {
-            const response = await fetch(`${API_EPICO}/listar`);
+            const response = await fetch(`${API_Empreendimento}/listar`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
@@ -255,69 +255,69 @@
                 </thead>
                 <tbody>
         `;
-            data.forEach(epico => {
-                cor = corHexValida(epico.cor) ? epico.cor : "#6c757d";
-                tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
+            data.forEach(Empreendimento => {
+                cor = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
+                tabela += `<tr onclick="buscarPorLinha(${Empreendimento.idEmpreendimento})"
                                 style="cursor:pointer;">
-                          <td>${montarProgresso(epico.percentual)}</td>
+                          <td>${montarProgresso(Empreendimento.percentual)}</td>
                            <td style="border-left:8px solid ${cor};">
-                              ${epico.idepico}</td>
-                                <td>${epico.nome}</td>
-                                <td>${epico.codepico}</td>
-                                <td>${epico.status.descstatus}</td>
-                                <td>${formatarData(epico.data_inicio)}</td>
-                                <td>${formatarData(epico.data_fim_prevista)}</td>
-                                <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
+                              ${Empreendimento.idEmpreendimento}</td>
+                                <td>${Empreendimento.nome}</td>
+                                <td>${Empreendimento.codEmpreendimento}</td>
+                                <td>${Empreendimento.status.descstatus}</td>
+                                <td>${formatarData(Empreendimento.data_inicio)}</td>
+                                <td>${formatarData(Empreendimento.data_fim_prevista)}</td>
+                                <td> <button type="button" class="btn" onclick="excluirEmpreendimento(${Empreendimento.idEmpreendimento})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar épicos: " + error.message,"error");
+            mostrarMensagemNaTela("Erro ao listar Empreendimentos: " + error.message,"error");
         }
     }
 
     async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API_EPICO}/${id}`);
-            const epico = await response.json();
+            const response = await fetch(`${API_Empreendimento}/${id}`);
+            const Empreendimento = await response.json();
             if(!response.ok) {
-                mostrarMensagemNaTela(epico.mensagem,"error");
+                mostrarMensagemNaTela(Empreendimento.mensagem,"error");
             } else {
-                document.getElementById('idepico').value = epico.idepico;
-                document.getElementById('nomeepico').value = epico.nome;
-                document.getElementById('codigo').value = epico.codepico;
-                document.getElementById('cor').value = corHexValida(epico.cor) ? epico.cor : "#6c757d";
+                document.getElementById('idEmpreendimento').value = Empreendimento.idEmpreendimento;
+                document.getElementById('nomeEmpreendimento').value = Empreendimento.nome;
+                document.getElementById('codigo').value = Empreendimento.codEmpreendimento;
+                document.getElementById('cor').value = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
                 // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-                document.getElementById('bloqueado').checked = epico.bloqueado || 0;
+                document.getElementById('bloqueado').checked = Empreendimento.bloqueado || 0;
                 // CARREGANDO OS COMBOS
-                document.getElementById('comboStatus').value = epico.status.idstatus;
-                document.getElementById('comboEmpreendimento').value = epico.empreendimento.idempreendimento;
-                document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
-                document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
-                document.getElementById('comboGestor').value = epico.responsavel.idusuario;
-                document.getElementById('data_inicio').value = epico.data_inicio;
-                document.getElementById('data_fim').value = epico.data_fim_prevista;
+                document.getElementById('comboStatus').value = Empreendimento.status.idstatus;
+                document.getElementById('comboEmpreendimento').value = Empreendimento.empreendimento.idempreendimento;
+                document.getElementById('comboPrioridade').value = Empreendimento.prioridade.idprioridade;
+                document.getElementById('comboPrioridade').value = Empreendimento.prioridade.idprioridade;
+                document.getElementById('comboGestor').value = Empreendimento.responsavel.idusuario;
+                document.getElementById('data_inicio').value = Empreendimento.data_inicio;
+                document.getElementById('data_fim').value = Empreendimento.data_fim_prevista;
 
 
             }
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar épico: "+error.message,"error");
+            mostrarMensagemNaTela("Erro ao carregar Empreendimento: "+error.message,"error");
         }
     }
-    async function excluirEpico(idEpico) {
+    async function excluirEmpreendimento(idEmpreendimento) {
         try {
-            const response = await fetch(`${API_EPICO}/excluir/${idEpico}`, {
+            const response = await fetch(`${API_Empreendimento}/excluir/${idEmpreendimento}`, {
                 method: 'DELETE'
             });
-            mostrarMensagemNaTela("Épico excluído com sucesso", "success");
+            mostrarMensagemNaTela("Empreendimento excluído com sucesso", "success");
             limpaFormulario();
         } catch (error) {
             mostrarMensagemNaTela("Erro ao excluir: " + error.message, "error");
         }
     }
     async function limpaFormulario() {
-        document.getElementById('idepico').value = "";
-        document.getElementById('nomeepico').value = "";
+        document.getElementById('idEmpreendimento').value = "";
+        document.getElementById('nomeEmpreendimento').value = "";
         document.getElementById('codigo').value = "";
         document.getElementById('cor').value = "";
         document.getElementById('bloqueado').checked = false;
