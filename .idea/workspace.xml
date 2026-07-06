@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="lay-out de empreendimento.html - ok">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="lay-out de empreendimento.html - parcialmente">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/pages/empreendimento.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/empreendimento.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -386,14 +388,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00028" summary="Campo de senha encriptado">
-      <option name="closed" value="true" />
-      <created>1781290345780</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1781290345780</updated>
     </task>
     <task id="LOCAL-00029" summary="Campo de senha encriptado">
       <option name="closed" value="true" />
@@ -779,7 +773,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783265936323</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="lay-out de empreendimento.html - parcialmente">
+      <option name="closed" value="true" />
+      <created>1783297883019</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1783297883020</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -819,7 +821,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajuste do logo / usuarios" />
     <MESSAGE value="Ausencia programada" />
     <MESSAGE value="Grid das Ausencias programadas" />
     <MESSAGE value="Tela de equipes" />
@@ -844,7 +845,8 @@
     <MESSAGE value="Cadastro de épico - ok" />
     <MESSAGE value="Cadastro de épico funcionando" />
     <MESSAGE value="lay-out de empreendimento.html - ok" />
-    <option name="LAST_COMMIT_MESSAGE" value="lay-out de empreendimento.html - ok" />
+    <MESSAGE value="lay-out de empreendimento.html - parcialmente" />
+    <option name="LAST_COMMIT_MESSAGE" value="lay-out de empreendimento.html - parcialmente" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
