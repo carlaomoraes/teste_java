@@ -243,7 +243,7 @@
                 <tbody>
         `;
             data.forEach(emp => {
-                cor = corHexValida(emp.cor) ? emp.cor : "#6c757d";
+                const cor = corHexValida(emp.cor) ? emp.cor : "#6c757d";
                 tabela += `<tr onclick="buscarPorLinha(${emp.idempreendimento})"
                                 style="cursor:pointer;">
                           <td width="10px">${montarProgresso(emp.percentual)}</td>
@@ -261,7 +261,6 @@
             mostrarMensagemNaTela("Erro ao listar Empreendimentos: " + error.message,"error");
         }
     }
-
     async function buscarPorLinha(id) {
         try {
             const response = await fetch(`${API_EMPREENDIMENTO}/${id}`);
@@ -270,18 +269,22 @@
                 mostrarMensagemNaTela(Empreendimento.mensagem,"error");
             } else {
                 document.getElementById('idempreendimento').value = Empreendimento.idempreendimento;
+                alert(Empreendimento.idempreendimento);
                 document.getElementById('descempreendimento').value = Empreendimento.descempreendimento;
+                alert(Empreendimento.descempreendimento);
                 document.getElementById('cor').value = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
-               /* // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+                alert(Empreendimento.cor);
+                // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                 document.getElementById('bloqueado').checked = Empreendimento.bloqueado || 0;
+                alert(Empreendimento.bloqueado);
                 // CARREGANDO OS COMBOS
-                document.getElementById('comboStatus').value = Empreendimento.status.idstatus;
-                document.getElementById('comboEmpreendimento').value = Empreendimento.empreendimento.idempreendimento;
-                document.getElementById('comboPrioridade').value = Empreendimento.prioridade.idprioridade;
-                document.getElementById('comboGestor').value = Empreendimento.responsavel.idusuario;
+                document.getElementById('comboStatus').value = Empreendimento.status.idstatus || 0;
+                document.getElementById('comboEmpreendimento').value = Empreendimento.empreendimento.idempreendimento || 0;
+                document.getElementById('comboPrioridade').value = Empreendimento.prioridade.idprioridade || 0;
+                document.getElementById('comboGestor').value = Empreendimento.responsavel.idusuario || 0;
                 document.getElementById('data_inicio').value = Empreendimento.data_inicio;
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
-            */}
+            }
         } catch (error) {
             mostrarMensagemNaTela("Erro ao carregar Empreendimento: "+error.message,"error");
         }

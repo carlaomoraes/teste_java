@@ -28,7 +28,7 @@
         <button class="aba-botao" onclick="alternarAba(event, 'anexos')">Anexos</button>
     </div>
     <div id="epicos" class="conteudo-aba ativo">
-        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value)" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value, 'EPICOS')" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Nome</label>
@@ -57,7 +57,7 @@
                 </select>
             </div>
             <div>
-                <label>Gestor</label>
+                <label>Criador</label>
                 <select id="comboGestor">
                     <option value="">-- Selecione o gestor --</option>
                 </select>
@@ -83,29 +83,60 @@
             <button type="button" class="btn btn-listar"  onclick="listarEpicos()">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
-        <div id="resultado"></div>
+        <div id="resultado_epico"></div>
     </div>
-    <div id="equipes" class="conteudo-aba">
-        <div class="membros-container">
-            <div class="membros-coluna">
-                <h2>Equipes disponíveis</h2>
-                <div id="equipesDisponiveis"  class="membros-lista-custom"></div>
+    <div id="estoria" class="conteudo-aba">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idestoria').value, 'ESTORIAS')" name="idestoria" id="idestoria" placeholder="ID da estoria (Deixe vazio para novo)">
+        <div class="form-grid">
+            <div>
+                <label>Descrição</label>
+                <input type="text" id="descestoria" oninput="converterMaiusculo(this)">
+            </div>
+            <div>
+                <label>Status</label>
+                <select id="comboStatusEstoria">
+                    <option value="">-- Selecione o status --</option>
+                </select>
+            </div>
+            <div>
+                <label>Criador</label>
+                <select id="comboCriadorEstoria">
+                    <option value="">-- Selecione o criador --</option>
+                </select>
+            </div>
+            <div>
+                <label>Responsavel</label>
+                <select id="comboResponsavelEstoria">
+                    <option value="">-- Selecione o responsável --</option>
+                </select>
+            </div>
+            <div>
+                <label>Data inicial</label>
+                <input type="date" id="data_inicio_estoria">
+            </div>
+            <div>
+                <label>Data final prevista</label>
+                <input type="date" id="data_fim_estoria">
+            </div>
+            <div>
+                <label>Resumo</label>
+                <input type="text" id="resumo" oninput="converterMaiusculo(this)">
+            </div>
+            <div>
+                <label>Pontos estimador</label>
+                <input type="number" id="pontos" disabled>
             </div>
 
-            <div class="membros-acoes">
-                <button type="button" class="btn btn-add" onclick="adicionarMembro()">
-                    Adicionar <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <button type="button" class="btn btn-remove" onclick="removerMembro()">
-                    <i class="fa-solid fa-arrow-left"></i> Remover
-                </button>
-            </div>
-
-            <div class="membros-coluna">
-                <h2>Equipes vinculadas</h2>
-                <div id="equipesVinculadas" class="membros-lista-custom"></div>
-            </div>
+            <label class="checkbox-group">
+                <input type="checkbox" id="bloqueada_estoria" value="0"> Estória bloqueada
+            </label>
         </div>
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn btn-salvar" onclick="salvarEstoria();">Salvar</button>
+            <button type="button" class="btn btn-listar"  onclick="listarEstoria()">Listar</button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+        </div>
+        <div id="resultado_estoria"></div>
     </div>
 </div>
 <script>
@@ -116,6 +147,25 @@
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
 
+    function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
+    }
 
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
@@ -257,7 +307,7 @@
         `;
             data.forEach(epico => {
                 cor = corHexValida(epico.cor) ? epico.cor : "#6c757d";
-                tabela += `<tr onclick="buscarPorLinha(${epico.idepico})"
+                tabela += `<tr onclick="buscarPorLinha(${epico.idepico}, 'EPICO')"
                                 style="cursor:pointer;">
                           <td>${montarProgresso(epico.percentual)}</td>
                            <td style="border-left:8px solid ${cor};">
@@ -270,39 +320,49 @@
                                 <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
+            document.getElementById('resultado_epico').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("Erro ao listar épicos: " + error.message,"error");
         }
     }
 
-    async function buscarPorLinha(id) {
-        try {
-            const response = await fetch(`${API_EPICO}/${id}`);
-            const epico = await response.json();
-            if(!response.ok) {
-                mostrarMensagemNaTela(epico.mensagem,"error");
-            } else {
-                document.getElementById('idepico').value = epico.idepico;
-                document.getElementById('nomeepico').value = epico.nome;
-                document.getElementById('codigo').value = epico.codepico;
-                document.getElementById('cor').value = corHexValida(epico.cor) ? epico.cor : "#6c757d";
-                // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-                document.getElementById('bloqueado').checked = epico.bloqueado || 0;
-                // CARREGANDO OS COMBOS
-                document.getElementById('comboStatus').value = epico.status.idstatus;
-                document.getElementById('comboEmpreendimento').value = epico.empreendimento.idempreendimento;
-                document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
-                document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
-                document.getElementById('comboGestor').value = epico.responsavel.idusuario;
-                document.getElementById('data_inicio').value = epico.data_inicio;
-                document.getElementById('data_fim').value = epico.data_fim_prevista;
-
-
+    async function buscarPorLinha(id, ABA) {
+        if(ABA == "GERAL") {
+            try {
+                const response = await fetch(`${API_EPICO}/${id}`);
+                const epico = await response.json();
+                if (!response.ok) {
+                    mostrarMensagemNaTela(epico.mensagem, "error");
+                } else {
+                    document.getElementById('idepico').value = epico.idepico;
+                    document.getElementById('nomeepico').value = epico.nome;
+                    document.getElementById('codigo').value = epico.codepico;
+                    document.getElementById('cor').value = corHexValida(epico.cor) ? epico.cor : "#6c757d";
+                    // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+                    document.getElementById('bloqueado').checked = epico.bloqueado || 0;
+                    // CARREGANDO OS COMBOS
+                    document.getElementById('comboStatus').value = epico.status.idstatus;
+                    document.getElementById('comboEmpreendimento').value = epico.empreendimento.idempreendimento;
+                    document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
+                    document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
+                    document.getElementById('comboGestor').value = epico.responsavel.idusuario;
+                    document.getElementById('data_inicio').value = epico.data_inicio;
+                    document.getElementById('data_fim').value = epico.data_fim_prevista;
+                }
+            } catch (error) {
+                mostrarMensagemNaTela("Erro ao carregar épico: " + error.message, "error");
             }
-        } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar épico: "+error.message,"error");
+        } else if (ABA == "ESTORIAS") {
+
+        } else if (ABA == "TAREFAS") {
+
+        } else if (ABA == "EQUIPES") {
+
         }
+        else if (ABA == "ANEXOS") {
+
+        }
+
     }
     async function excluirEpico(idEpico) {
         try {

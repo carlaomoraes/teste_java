@@ -7,6 +7,7 @@
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="lay-out de empreendimento.html - layout - OK">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +97,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.DemoApplication.executor": "Run",
-    "Spring Boot.TaskControllerApplication.executor": "Debug",
+    "Spring Boot.TaskControllerApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
@@ -387,14 +388,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00033" summary="Tela para trocar de senha">
-      <option name="closed" value="true" />
-      <created>1781547626038</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1781547626038</updated>
     </task>
     <task id="LOCAL-00034" summary="AusenciaProgramada/tipo de ausencia">
       <option name="closed" value="true" />
@@ -780,7 +773,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783307723424</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="lay-out de empreendimento.html - layout - OK">
+      <option name="closed" value="true" />
+      <created>1783308658646</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1783308658646</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
