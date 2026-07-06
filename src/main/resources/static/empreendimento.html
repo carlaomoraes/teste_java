@@ -171,7 +171,7 @@
         carregarPrioridade();
     });
     async function salvarEmpreendimento() {
-        LocalDate dataAtual = LocalDate.now();
+        const hoje = new Date();
 
         const idempreendimento = document.getElementById('idempreendimento').value;
         const descempreendimento = document.getElementById('descempreendimento').value;
@@ -189,10 +189,10 @@
         const Empreendimento = {
             idempreendimento: Number(idempreendimento) || null,
             descempreendimento: descempreendimento || null,
-            data_inicio: data_inicio || dataAtual ,
+            data_inicio: data_inicio || hoje ,
             bloqueado: campoBlooqueado,
-            data_inicio: data_inicio || null,
-            data_fim: data_fim || null,
+            data_inicio: data_inicio || hoje,
+            data_fim: data_fim || hoje,
             sigla: sigla || null,
             cor: cor || "6c757d",
             codempreendimento: codempreendimento || null,
