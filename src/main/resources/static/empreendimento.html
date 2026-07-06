@@ -22,10 +22,7 @@
     <h1>Empreendimento - TaskController 1.0</h1>
     <div class="abas-container">
         <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')">Geral</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
         <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'anexos')">Anexos</button>
     </div>
     <div id="Empreendimentos" class="conteudo-aba ativo">
         <input type="number" onblur="buscarPorLinha(document.getElementById('idEmpreendimento').value)" name="idEmpreendimento" id="idEmpreendimento" placeholder="ID do Empreendimento (Deixe vazio para novo)">
@@ -42,12 +39,6 @@
                 <label>Status</label>
                 <select id="comboStatus">
                     <option value="">-- Selecione o status --</option>
-                </select>
-            </div>
-            <div>
-                <label>Empreendimento</label>
-                <select id="comboEmpreendimento">
-                    <option value="">-- Selecione o empreendimento --</option>
                 </select>
             </div>
             <div>
@@ -111,7 +102,6 @@
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
-    const API_Empreendimento = 'http://localhost:8080/Empreendimentos';
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
@@ -163,34 +153,12 @@
             mostrarMensagemNaTela("Erro ao carregar status: " + error.message, "error");
         }
     }
-    async function carregarEmpreendimento() {
-        const comboE = document.getElementById("comboEmpreendimento");
-        try {
-            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
-            const empreendimentos = await resposta.json();
-            empreendimentos.forEach(e => {
-                const opcao = document.createElement('option');
-                opcao.value = e.idempreendimento;
-                opcao.textContent = e.descempreendimento;
-                comboE.appendChild(opcao);
-            });
-        } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar empreendimento: "+error.message,"error");
-        }
-    }
-    function formatarData(data) {
-        if (!data) return "";
-
-        const [ano, mes, dia] = data.split("-");
-        return `${dia}/${mes}/${ano}`;
-    }
     function converterMaiusculo(campo) {
         campo.value = campo.value.toUpperCase();
     }
 
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
-        carregarEmpreendimento();
         carregarGestor();
         carregarStatus();
         carregarPrioridade();
@@ -216,7 +184,7 @@
             data_fim: data_fim,
         };
         try {
-            const response = await fetch(`${API_Empreendimento}/salvar`, {
+            const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -237,7 +205,7 @@
     async function listarEmpreendimentos() {
         cor = "6c757d";
         try {
-            const response = await fetch(`${API_Empreendimento}/listar`);
+            const response = await fetch(`${API_EMPREENDIMENTO}/listar`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
@@ -245,8 +213,7 @@
                     <tr>
                         <th class="table-header">% Concluído</th>
                         <th class="table-header">ID</th>
-                        <th class="table-header">Nome</th>
-                        <th class="table-header">Código</th>
+                        <th class="table-header">Descrição</th>
                         <th class="table-header">Status</th>
                         <th class="table-header">Data inicial</th>
                         <th class="table-header">Data final</th>
@@ -255,19 +222,18 @@
                 </thead>
                 <tbody>
         `;
-            data.forEach(Empreendimento => {
-                cor = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
-                tabela += `<tr onclick="buscarPorLinha(${Empreendimento.idEmpreendimento})"
+            data.forEach(emp => {
+                cor = corHexValida(emp.cor) ? emp.cor : "#6c757d";
+                tabela += `<tr onclick="buscarPorLinha(${emp.idempreendimento})"
                                 style="cursor:pointer;">
-                          <td>${montarProgresso(Empreendimento.percentual)}</td>
+                          <td>${montarProgresso(emp.percentual)}</td>
                            <td style="border-left:8px solid ${cor};">
-                              ${Empreendimento.idEmpreendimento}</td>
-                                <td>${Empreendimento.nome}</td>
-                                <td>${Empreendimento.codEmpreendimento}</td>
-                                <td>${Empreendimento.status.descstatus}</td>
-                                <td>${formatarData(Empreendimento.data_inicio)}</td>
-                                <td>${formatarData(Empreendimento.data_fim_prevista)}</td>
-                                <td> <button type="button" class="btn" onclick="excluirEmpreendimento(${Empreendimento.idEmpreendimento})">Excluir</button></td>
+                              ${emp.idempreendimento}</td>
+                                <td>${emp.descempreendimento}</td>
+                                <td>${emp.status.descstatus}</td>
+                                <td>${formatarData(emp.data_inicio)}</td>
+                                <td>${formatarData(emp.data_fim)}</td>
+                                <td> <button type="button" class="btn" onclick="excluirEmpreendimento(${emp.idempreendimento})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
@@ -278,14 +244,13 @@
 
     async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API_Empreendimento}/${id}`);
+            const response = await fetch(`${API_EMPREENDIMENTO}/${id}`);
             const Empreendimento = await response.json();
             if(!response.ok) {
                 mostrarMensagemNaTela(Empreendimento.mensagem,"error");
             } else {
-                document.getElementById('idEmpreendimento').value = Empreendimento.idEmpreendimento;
-                document.getElementById('nomeEmpreendimento').value = Empreendimento.nome;
-                document.getElementById('codigo').value = Empreendimento.codEmpreendimento;
+                document.getElementById('idempreendimento').value = Empreendimento.idempreendimento;
+                document.getElementById('descempreendimento').value = Empreendimento.descempreendimento;
                 document.getElementById('cor').value = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
                 // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                 document.getElementById('bloqueado').checked = Empreendimento.bloqueado || 0;
@@ -293,12 +258,9 @@
                 document.getElementById('comboStatus').value = Empreendimento.status.idstatus;
                 document.getElementById('comboEmpreendimento').value = Empreendimento.empreendimento.idempreendimento;
                 document.getElementById('comboPrioridade').value = Empreendimento.prioridade.idprioridade;
-                document.getElementById('comboPrioridade').value = Empreendimento.prioridade.idprioridade;
                 document.getElementById('comboGestor').value = Empreendimento.responsavel.idusuario;
                 document.getElementById('data_inicio').value = Empreendimento.data_inicio;
-                document.getElementById('data_fim').value = Empreendimento.data_fim_prevista;
-
-
+                document.getElementById('data_fim').value = Empreendimento.data_fim;
             }
         } catch (error) {
             mostrarMensagemNaTela("Erro ao carregar Empreendimento: "+error.message,"error");
@@ -306,7 +268,7 @@
     }
     async function excluirEmpreendimento(idEmpreendimento) {
         try {
-            const response = await fetch(`${API_Empreendimento}/excluir/${idEmpreendimento}`, {
+            const response = await fetch(`${API_EMPREENDIMENTO}/excluir/${idEmpreendimento}`, {
                 method: 'DELETE'
             });
             mostrarMensagemNaTela("Empreendimento excluído com sucesso", "success");
@@ -316,12 +278,19 @@
         }
     }
     async function limpaFormulario() {
-        document.getElementById('idEmpreendimento').value = "";
-        document.getElementById('nomeEmpreendimento').value = "";
+        document.getElementById('idempreendimento').value = "";
+        document.getElementById('descempreendimento').value = "";
         document.getElementById('codigo').value = "";
         document.getElementById('cor').value = "";
         document.getElementById('bloqueado').checked = false;
     }
+    function formatarData(data) {
+        if (!data) return "";
+
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
+
     function montarProgresso(percentual) {
         percentual = Number(percentual) || 0;
 
