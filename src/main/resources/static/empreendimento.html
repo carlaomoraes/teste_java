@@ -25,15 +25,22 @@
         <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
     </div>
     <div id="Empreendimentos" class="conteudo-aba ativo">
-        <input type="number" onblur="buscarPorLinha(document.getElementById('idEmpreendimento').value)" name="idEmpreendimento" id="idEmpreendimento" placeholder="ID do Empreendimento (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
+                <label>I.D.</label>
+                <input type="number" onblur="buscarPorLinha(document.getElementById('idempreendimento').value)" name="idempreendimento" id="idEmpreendimento" placeholder="ID do Empreendimento (Deixe vazio para novo)">
+            </div>
+            <div>
+                <label>Sigle</label>
+                <input type="text" id="siglaempreendimento" oninput="converterMaiusculo(this)" maxlength="3">
+            </div>
+            <div>
                 <label>Nome</label>
-                <input type="text" id="nomeEmpreendimento" oninput="converterMaiusculo(this)">
+                <input type="text" id="descempreendimento" oninput="converterMaiusculo(this)">
             </div>
             <div>
                 <label>Código</label>
-                <input type="text" id="codigo" oninput="converterMaiusculo(this)" maxlength="10">
+                <input type="text" id="codempreendimento" oninput="converterMaiusculo(this)" maxlength="10">
             </div>
             <div>
                 <label>Status</label>
@@ -164,24 +171,37 @@
         carregarPrioridade();
     });
     async function salvarEmpreendimento() {
-        const idEmpreendimento = document.getElementById('idEmpreendimento').value;
-        const descEmpreendimento = document.getElementById('descEmpreendimento').value;
-        const obsEmpreendimento = document.getElementById('obsEmpreendimento').value;
+        LocalDate dataAtual = LocalDate.now();
+
+        const idempreendimento = document.getElementById('idempreendimento').value;
+        const descempreendimento = document.getElementById('descempreendimento').value;
+        const data_inicio = document.getElementById('data_inicio').value;
+        const data_fim = document.getElementById('data_fim').value;
+        const sigla = document.getElementById('sigla').value;
+        const cor = corHexValida(document.getElementById(cor).value);
+        const codempreendimento = document.getElementById('codempreendimento').value;
         if(document.getElementById('bloqueado').checked) {
             campoBlooqueado = 0;
         }
         else {
             campoBlooqueado = 1;
         }
-        const data_inicio = document.getElementById('data_inicio').value;
-        const data_fim = document.getElementById('data_fim').value;
         const Empreendimento = {
-            idEmpreendimento: Number(idEmpreendimento) || null,
-            descEmpreendimento: descEmpreendimento || null,
-            obsEmpreendimento: obsEmpreendimento || null,
+            idempreendimento: Number(idempreendimento) || null,
+            descempreendimento: descempreendimento || null,
+            data_inicio: data_inicio || dataAtual ,
             bloqueado: campoBlooqueado,
-            data_inicio: data_inicio,
-            data_fim: data_fim,
+            data_inicio: data_inicio || null,
+            data_fim: data_fim || null,
+            sigla: sigla || null,
+            cor: cor || "6c757d",
+            codempreendimento: codempreendimento || null,
+            gestor: {
+                idgestor: document.getElementById('comboGestor').value || null,
+            },
+            status: {
+                idstatus: document.getElementById('comboStatus').value || null,
+            },
         };
         try {
             const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
