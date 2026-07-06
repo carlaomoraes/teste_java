@@ -246,7 +246,7 @@
                 cor = corHexValida(emp.cor) ? emp.cor : "#6c757d";
                 tabela += `<tr onclick="buscarPorLinha(${emp.idempreendimento})"
                                 style="cursor:pointer;">
-                          <td>${montarProgresso(emp.percentual)}</td>
+                          <td width="10px">${montarProgresso(emp.percentual)}</td>
                            <td style="border-left:8px solid ${cor};">
                               ${emp.idempreendimento}</td>
                                 <td>${emp.descempreendimento}</td>
@@ -272,7 +272,7 @@
                 document.getElementById('idempreendimento').value = Empreendimento.idempreendimento;
                 document.getElementById('descempreendimento').value = Empreendimento.descempreendimento;
                 document.getElementById('cor').value = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
-                // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+               /* // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                 document.getElementById('bloqueado').checked = Empreendimento.bloqueado || 0;
                 // CARREGANDO OS COMBOS
                 document.getElementById('comboStatus').value = Empreendimento.status.idstatus;
@@ -281,7 +281,7 @@
                 document.getElementById('comboGestor').value = Empreendimento.responsavel.idusuario;
                 document.getElementById('data_inicio').value = Empreendimento.data_inicio;
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
-            }
+            */}
         } catch (error) {
             mostrarMensagemNaTela("Erro ao carregar Empreendimento: "+error.message,"error");
         }
