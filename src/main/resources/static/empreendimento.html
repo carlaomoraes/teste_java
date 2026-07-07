@@ -28,10 +28,10 @@
         <div class="form-grid">
             <div>
                 <label>I.D.</label>
-                <input type="number" onblur="buscarPorLinha(document.getElementById('idempreendimento').value)" name="idempreendimento" id="idEmpreendimento" placeholder="ID do Empreendimento (Deixe vazio para novo)">
+                <input type="number" onblur="buscarPorLinha(document.getElementById('idempreendimento').value)" name="idempreendimento" id="idempreendimento" placeholder="ID do Empreendimento (Deixe vazio para novo)">
             </div>
             <div>
-                <label>Sigle</label>
+                <label>Sigla</label>
                 <input type="text" id="siglaempreendimento" oninput="converterMaiusculo(this)" maxlength="3">
             </div>
             <div>
@@ -112,6 +112,26 @@
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
+
+        function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
+    }
 
 
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---

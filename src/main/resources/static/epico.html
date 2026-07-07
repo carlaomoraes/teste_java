@@ -123,7 +123,7 @@
                 <input type="text" id="resumo" oninput="converterMaiusculo(this)">
             </div>
             <div>
-                <label>Pontos estimador</label>
+                <label>Pontos estimados</label>
                 <input type="number" id="pontos" disabled>
             </div>
 
@@ -365,7 +365,7 @@
     }
 
     async function buscarPorLinha(id, ABA) {
-        if(ABA == "GERAL") {
+        if(ABA === "EPICO") {
             try {
                 const response = await fetch(`${API_EPICO}/${id}`);
                 const epico = await response.json();
@@ -390,7 +390,7 @@
             } catch (error) {
                 mostrarMensagemNaTela("Erro ao carregar épico: " + error.message, "error");
             }
-        } else if (ABA == "ESTORIAS") {
+        } else if (ABA === "ESTORIAS") {
             try {
                 const response = await fetch(`${API_EPICO}/${id}`);
                 const epico = await response.json();
@@ -415,12 +415,12 @@
             } catch (error) {
                 mostrarMensagemNaTela("Erro ao carregar épico: " + error.message, "error");
             }
-        } else if (ABA == "TAREFAS") {
+        } else if (ABA === "TAREFAS") {
 
-        } else if (ABA == "EQUIPES") {
+        } else if (ABA === "EQUIPES") {
 
         }
-        else if (ABA == "ANEXOS") {
+        else if (ABA === "ANEXOS") {
 
         }
 

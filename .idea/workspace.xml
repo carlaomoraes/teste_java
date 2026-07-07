@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de épicos - ok&#10;Cadastro de estórias">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/EpicoEstoriasRepository.java" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de épicos - ok&#10;Cadastro de estórias - ok &#10;Repository pronto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EpicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EpicoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EpicoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/EpicoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -391,22 +389,6 @@
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
     </task>
-    <task id="LOCAL-00036" summary="AusenciaProgramada/tipo de ausencia / papel">
-      <option name="closed" value="true" />
-      <created>1781644422647</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1781644422647</updated>
-    </task>
-    <task id="LOCAL-00037" summary="AusenciaProgramada/tipo de ausencia / papel">
-      <option name="closed" value="true" />
-      <created>1781644931701</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1781644931701</updated>
-    </task>
     <task id="LOCAL-00038" summary="Ajuste do logo / usuarios">
       <option name="closed" value="true" />
       <created>1781700652130</created>
@@ -783,7 +765,23 @@
       <option name="project" value="LOCAL" />
       <updated>1783349918344</updated>
     </task>
-    <option name="localTasksCounter" value="85" />
+    <task id="LOCAL-00085" summary="Cadastro de épicos - ok&#10;Cadastro de estórias - ok &#10;Repository pronto">
+      <option name="closed" value="true" />
+      <created>1783374274497</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1783374274498</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Cadastro de épicos - ok&#10;Cadastro de estórias - ok &#10;Repository pronto">
+      <option name="closed" value="true" />
+      <created>1783374319426</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1783374319426</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -823,7 +821,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tela de equipes" />
     <MESSAGE value="Ajustes nas classes para refletir as tabelas do BD" />
     <MESSAGE value="Cadastro de equipes-usuarios" />
     <MESSAGE value="Cadastro de equipes" />
@@ -848,7 +845,8 @@
     <MESSAGE value="lay-out de empreendimento.html - parcialmente" />
     <MESSAGE value="lay-out de empreendimento.html - layout - OK" />
     <MESSAGE value="Cadastro de épicos - ok&#10;Cadastro de estórias" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de épicos - ok&#10;Cadastro de estórias" />
+    <MESSAGE value="Cadastro de épicos - ok&#10;Cadastro de estórias - ok &#10;Repository pronto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de épicos - ok&#10;Cadastro de estórias - ok &#10;Repository pronto" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
