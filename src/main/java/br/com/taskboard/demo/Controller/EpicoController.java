@@ -90,19 +90,23 @@ public class EpicoController {
     // ESTORIAS POR ÉPICOS
     // =========================
     // BUSCAR POR ID
-    @GetMapping("/{idepico}/estorias/{idestorias}")
-    public ResponseEntity<?> buscarEstoriaPorId(@PathVariable Long idestoria) {
-        try {
-            Estoria estoria = epicoEstoriasRepository.buscarPorId(idestoria);
-            return ResponseEntity.ok().body(estoria);
-        } catch (RuntimeException e) {
+    @GetMapping("/{idepico}/estorias/{idestoria}")
+    public ResponseEntity<?> buscarEstoriaPorId(@PathVariable Long idepico,
+                                                @PathVariable Long idestoria) {
+        Epico epico = service.buscarPorId(idepico);
+        if (epico == null) {
+            ResponseEntity.status(HttpStatus.CONFLICT).body("Épico não encontrado");
+        }
+        Estoria estoria = epicoEstoriasRepository.buscarPorId(idepico, idestoria);
+        if (estoria == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Estória não encontrada");
         }
+        return ResponseEntity.ok().body(estoria);
     }
     // LISTAR TODAS ESTÓRIAS POR ÉPICO
     @GetMapping("/{idEpico}/estorias")
     public List<Estoria> listarEstoriaPorEpico(@PathVariable Long idEpico) {
-        return epicoEstoriasRepository.buscarEstoriaPorEpico(idEpico);
+        return epicoEstoriasRepository.findByIdepico_IdepicoOrderByDescestoria(idEpico);
     }
 
     @PostMapping("/{idEpico}/adicionarEstoria")

@@ -21,14 +21,14 @@
 <div class="container">
     <h1>Épico - TaskController 1.0</h1>
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')">Geral</button>
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'epico')">Geral</button>
         <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
         <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
         <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
         <button class="aba-botao" onclick="alternarAba(event, 'anexos')">Anexos</button>
     </div>
-    <div id="epicos" class="conteudo-aba ativo">
-        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value, 'EPICOS')" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
+    <div id="epico" class="conteudo-aba ativo">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value,0, 'EPICOS')" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Nome</label>
@@ -40,7 +40,7 @@
             </div>
             <div>
                 <label>Status</label>
-                <select id="comboStatus">
+                <select id="comboStatusEP">
                     <option value="">-- Selecione o status --</option>
                 </select>
             </div>
@@ -52,13 +52,13 @@
             </div>
             <div>
                 <label>Pioridade</label>
-                <select id="comboPrioridade">
+                <select id="comboPrioridadeEP">
                     <option value="">-- Selecione prioridade --</option>
                 </select>
             </div>
             <div>
                 <label>Criador</label>
-                <select id="comboGestor">
+                <select id="comboGestorEP">
                     <option value="">-- Selecione o gestor --</option>
                 </select>
             </div>
@@ -86,7 +86,7 @@
         <div id="resultado_epico"></div>
     </div>
     <div id="estoria" class="conteudo-aba">
-        <input type="number" onblur="buscarPorLinha(document.getElementById('idestoria').value, 'ESTORIAS')" name="idestoria" id="idestoria" placeholder="ID da estoria (Deixe vazio para novo)">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value,document.getElementById('idestoria').value, 'ESTORIAS')" name="idestoria" id="idestoria" placeholder="ID da estoria (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Descrição</label>
@@ -94,19 +94,19 @@
             </div>
             <div>
                 <label>Status</label>
-                <select id="comboStatusEstoria">
+                <select id="comboStatusES">
                     <option value="">-- Selecione o status --</option>
                 </select>
             </div>
             <div>
                 <label>Criador</label>
-                <select id="comboCriadorEstoria">
+                <select id="comboCriadorES">
                     <option value="">-- Selecione o criador --</option>
                 </select>
             </div>
             <div>
                 <label>Responsavel</label>
-                <select id="comboResponsavelEstoria">
+                <select id="comboResponsavelES">
                     <option value="">-- Selecione o responsável --</option>
                 </select>
             </div>
@@ -125,6 +125,14 @@
             <div>
                 <label>Pontos estimados</label>
                 <input type="number" id="pontos" disabled>
+            </div>
+            <div>
+                <label>Horas estimadas</label>
+                <input type="number" id="horas_estimadas" disabled>
+            </div>
+            <div>
+                <label>Horas realizadas</label>
+                <input type="number" id="horas_realizadas" disabled>
             </div>
 
             <label class="checkbox-group">
@@ -169,7 +177,10 @@
 
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
-        const comboGestor = document.getElementById("comboGestor");
+        const comboGestorEP = document.getElementById("comboGestorEP");
+        const comboCriadorES = document.getElementById("comboCriadorES");
+        const comboResponsavelES = document.getElementById("comboResponsavelES");
+
         try {
             const resposta = await fetch(`${API_USUARIOS}/listar`);
             const usuarios = await resposta.json();
@@ -177,14 +188,16 @@
                 const opcao = document.createElement('option');
                 opcao.value = usuario.idusuario;
                 opcao.textContent = usuario.nome;
-                comboGestor.appendChild(opcao);
+                comboGestorEP.appendChild(opcao);
+                comboCriadorES.appendChild(opcao);
+                comboResponsavelES.appendChild(opcao)
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar gestor: "+error.message,"error");
+            mostrarMensagemNaTela("resultado_epico", "Erro ao carregar gestor: "+error.message,"error");
         }
     }
     async function carregarPrioridade() {
-        const comboGestor = document.getElementById("comboPrioridade");
+        const comboPrioridadeEP = document.getElementById("comboPrioridadeEP");
         try {
             const resposta = await fetch(`${API_PRIORIDADE}/listar`);
             const prioridades = await resposta.json();
@@ -192,14 +205,15 @@
                 const opcao = document.createElement('option');
                 opcao.value = prioridade.idprioridade;
                 opcao.textContent = prioridade.descprioridade;
-                comboGestor.appendChild(opcao);
+                comboPrioridadeEP.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar prioridade: "+error.message,"error");
+            mostrarMensagemNaTela("resultado_epico","Erro ao carregar prioridade: "+error.message,"error");
         }
     }
     async function carregarStatus() {
-        const comboStatus = document.getElementById("comboStatus");
+        const comboStatusEP = document.getElementById("comboStatusEP");
+        const comboStatusES = document.getElementById("comboStatusES");
         try {
             const resposta = await fetch(`${API_STATUS}/listar`);
             const vetor = await resposta.json();
@@ -207,14 +221,15 @@
                 const opcao = document.createElement('option');
                 opcao.value = i.idstatus;
                 opcao.textContent = i.descstatus;
-                comboStatus.appendChild(opcao);
+                comboStatusEP.appendChild(opcao);
+                comboStatusES.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar status: " + error.message, "error");
+            mostrarMensagemNaTela("resultado_epico","Erro ao carregar status: " + error.message, "error");
         }
     }
     async function carregarEmpreendimento() {
-        const comboE = document.getElementById("comboEmpreendimento");
+        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         try {
             const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
             const empreendimentos = await resposta.json();
@@ -222,10 +237,10 @@
                 const opcao = document.createElement('option');
                 opcao.value = e.idempreendimento;
                 opcao.textContent = e.descempreendimento;
-                comboE.appendChild(opcao);
+                comboEmpreendimento.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar empreendimento: "+error.message,"error");
+            mostrarMensagemNaTela("resultado_epico","Erro ao carregar empreendimento: "+error.message,"error");
         }
     }
     function formatarData(data) {
@@ -246,17 +261,19 @@
         carregarPrioridade();
     });
     async function salvarEpico() {
-        const idepico = document.getElementById('idepico').value;
+        const hoje = new Date();
         const descepico = document.getElementById('descepico').value;
         const obsepico = document.getElementById('obsepico').value;
+        const codepico = document.getElementById('codepico').value;
+        const cor = corHexValida(document.getElementById(cor).value);
         if(document.getElementById('bloqueado').checked) {
             campoBlooqueado = 0;
         }
         else {
             campoBlooqueado = 1;
         }
-        const data_inicio = document.getElementById('data_inicio').value;
-        const data_fim = document.getElementById('data_fim').value;
+        const data_inicio = document.getElementById('data_inicio').value || hoje ;
+        const data_fim = document.getElementById('data_fim').value || hoje ;
         const epico = {
             idepico: Number(idepico) || null,
             descepico: descepico || null,
@@ -264,6 +281,20 @@
             bloqueado: campoBlooqueado,
             data_inicio: data_inicio,
             data_fim: data_fim,
+            codepico: codepico,
+            cor: cor || "6c757d",
+            criador: {
+                idCriador: document.getElementById('comboCriador').value || null,
+            },
+            responsavel: {
+                idresponsavel: document.getElementById('comboResponsavel').value || null,
+            },
+            status: {
+                idstatus: document.getElementById('comboStatus').value || null,
+            },
+            empreendimento: {
+                idEmpreendimento: document.getElementById('comboEmpreendimento').value || null,
+            }
         };
         try {
             const response = await fetch(`${API_EPICO}/salvar`, {
@@ -274,14 +305,14 @@
                 body: JSON.stringify(epico)
             });
             const data = await response.json();
-            mostrarMensagemNaTela("Épico salvo com sucesso! ","success");
+            mostrarMensagemNaTela("resultado_epico","Épico salvo com sucesso! ","success");
             setTimeout(() => {
                 limparCampos();
                 listarEpicos();
             }, 1000);
 
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao salvar épico: "+error.message,"error");
+            mostrarMensagemNaTela("resultado_epico","Erro ao salvar épico: "+error.message,"error");
         }
     }
     async function listarEpicos() {
@@ -307,7 +338,7 @@
         `;
             data.forEach(epico => {
                 cor = corHexValida(epico.cor) ? epico.cor : "#6c757d";
-                tabela += `<tr onclick="buscarPorLinha(${epico.idepico}, 'EPICO')"
+                tabela += `<tr onclick="buscarPorLinha(${epico.idepico},0, 'EPICO')"
                                 style="cursor:pointer;">
                           <td>${montarProgresso(epico.percentual)}</td>
                            <td style="border-left:8px solid ${cor};">
@@ -322,7 +353,56 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado_epico').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar épicos: " + error.message,"error");
+            mostrarMensagemNaTela("resultado_epico","Erro ao listar épicos: " + error.message,"error");
+        }
+    }
+    async function salvarEstoria(idEpico) {
+        const hoje = new Date();
+        const descestoria = document.getElementById('descestoria').value;
+        const resumo = document.getElementById('resumo').value;
+        const idepico = idEpico;
+        campoBlooqueado = document.getElementById('bloqueada_estoria').checked;
+        const data_inicio = document.getElementById('data_inicio').value || hoje ;
+        const data_fim = document.getElementById('data_fim').value || hoje ;
+        const estoria = {
+            idepico: Number(idepico) || null,
+            descEstoria: descestoria || null,
+            obsepico: obsepico || null,
+            bloqueada: campoBlooqueado,
+            data_inicio: data_inicio || hoje,
+            data_fim: data_fim || hoje,
+            codepico: codepico,
+            resumo: resumo,
+            criador: {
+                idCriador: document.getElementById('comboCriador').value || null,
+            },
+            responsavel: {
+                idresponsavel: document.getElementById('comboResponsavel').value || null,
+            },
+            status: {
+                idstatus: document.getElementById('comboStatus').value || null,
+            },
+            pontos: Number(document.getElementById('pontos').value) || 0.0,
+            horas_estimadas: Number(document.getElementById('horas_estimadas').value) || 0.0,
+            horas_realizadas: Number(document.getElementById('horas_realizadas').value) || 0.0,
+        };
+        try {
+            const response = await fetch(`${API_EPICO}/adicionarEstoria`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(estoria)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("resultado_estoria","Estória salva com sucesso! ","success");
+            setTimeout(() => {
+                limparCampos();
+                listarEstoria(idEpico);
+            }, 1000);
+
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_estoria","Erro ao salvar estória: "+error.message,"error");
         }
     }
     async function listarEstoria(idEpico) {
@@ -347,30 +427,36 @@
                 <tbody>
         `;
             data.forEach(estoria => {
-                tabela += `<tr onclick="buscarPorLinha(${estoria.idestoria}, 'ESTORIA')"
-                                style="cursor:pointer;">
-                           <td style="border-left:8px;">
-                              ${estoria.idestoria}</td>
-                                <td>${estoria.descEstoria}</td>
-                                <td>${estoria.status.descstatus}</td>
-                                <td>${formatarData(estoria.data_inicio)}</td>
-                                <td>${formatarData(estoria.data_fim)}</td>
-                                <td> <button type="button" class="btn" onclick="excluirEstoria(${estoria.idestoria})">Excluir</button></td>
-            </tr>`;});
-            tabela += `</tbody></table>`;
+                tabela += `
+    <tr onclick="buscarPorLinha(document.getElementById('idepico').value,${estoria.idestoria}, 'ESTORIA')" style="cursor:pointer;">
+        <td>${estoria.idestoria}</td>
+        <td>${estoria.descestoria}</td>
+        <td>${estoria.status?.descstatus ?? ""}</td>
+        <td>${estoria.idcriador?.nome ?? ""}</td>
+        <td>${estoria.idresponsavel?.nome ?? ""}</td>
+        <td>${formatarData(estoria.data_inicio)}</td>J
+        <td>${formatarData(estoria.data_fim)}</td>
+        <td>
+            <button type="button" class="btn"
+                    onclick="excluirEstoria(${estoria.idestoria}); event.stopPropagation();">
+                Excluir
+            </button>
+        </td>
+    </tr>`;
+            });tabela += `</tbody></table>`;
             document.getElementById('resultado_estoria').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar estória: " + error.message,"error");
+            mostrarMensagemNaTela("resultado_epico","Erro ao listar estória: " + error.message,"error");
         }
     }
 
-    async function buscarPorLinha(id, ABA) {
+    async function buscarPorLinha(idEpico, idEstoria, ABA) {
         if(ABA === "EPICO") {
             try {
-                const response = await fetch(`${API_EPICO}/${id}`);
+                const response = await fetch(`${API_EPICO}/${idEpico}`);
                 const epico = await response.json();
                 if (!response.ok) {
-                    mostrarMensagemNaTela(epico.mensagem, "error");
+                    mostrarMensagemNaTela("resultado_epico",epico.mensagem, "error");
                 } else {
                     document.getElementById('idepico').value = epico.idepico;
                     document.getElementById('nomeepico').value = epico.nome;
@@ -379,41 +465,43 @@
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                     document.getElementById('bloqueado').checked = epico.bloqueado || 0;
                     // CARREGANDO OS COMBOS
-                    document.getElementById('comboStatus').value = epico.status.idstatus;
+                    document.getElementById('comboStatusEP').value = epico.status.idstatus;
                     document.getElementById('comboEmpreendimento').value = epico.empreendimento.idempreendimento;
-                    document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
-                    document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
-                    document.getElementById('comboGestor').value = epico.responsavel.idusuario;
+                    document.getElementById('comboPrioridadeEP').value = epico.prioridade.idprioridade;
+                    document.getElementById('comboGestorEP').value = epico.responsavel.idusuario;
                     document.getElementById('data_inicio').value = epico.data_inicio;
                     document.getElementById('data_fim').value = epico.data_fim_prevista;
+                    // Limpa mensagens e monta equipe se o usuário mudar de aba depois
+                    mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "green");
+                    listarEstoria(epico.idepico);
                 }
             } catch (error) {
-                mostrarMensagemNaTela("Erro ao carregar épico: " + error.message, "error");
+                mostrarMensagemNaTela("resultado_epico","Erro ao carregar épico: " + error.message, "error");
             }
-        } else if (ABA === "ESTORIAS") {
+        } else if (ABA === "ESTORIA") {
             try {
-                const response = await fetch(`${API_EPICO}/${id}`);
-                const epico = await response.json();
+                const response = await fetch(`${API_EPICO}/${idEpico}/estorias/${idEstoria}`);
+                const estoria = await response.json();
                 if (!response.ok) {
-                    mostrarMensagemNaTela(epico.mensagem, "error");
+                    mostrarMensagemNaTela("resultado_estoria",estoria.mensagem, "error");
                 } else {
-                    document.getElementById('idepico').value = epico.idepico;
-                    document.getElementById('nomeepico').value = epico.nome;
-                    document.getElementById('codigo').value = epico.codepico;
-                    document.getElementById('cor').value = corHexValida(epico.cor) ? epico.cor : "#6c757d";
+                    document.getElementById('idestoria').value = estoria.idestoria;
+                    document.getElementById('descestoria').value = estoria.descestoria;
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-                    document.getElementById('bloqueado').checked = epico.bloqueado || 0;
+                    document.getElementById('bloqueada_estoria').checked = estoria.bloqueada || 0;
+                    document.getElementById('data_inicio').value = estoria.data_inicio;
+                    document.getElementById('data_fim').value = estoria.data_fim;
+                    document.getElementById('pontos').value = estoria.pontos;
+                    document.getElementById('resumo').value = estoria.resumo;
+                    document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
+                    document.getElementById('horas_realizadas').value = estoria.horas_realizadas;
                     // CARREGANDO OS COMBOS
-                    document.getElementById('comboStatus').value = epico.status.idstatus;
-                    document.getElementById('comboEmpreendimento').value = epico.empreendimento.idempreendimento;
-                    document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
-                    document.getElementById('comboPrioridade').value = epico.prioridade.idprioridade;
-                    document.getElementById('comboGestor').value = epico.responsavel.idusuario;
-                    document.getElementById('data_inicio').value = epico.data_inicio;
-                    document.getElementById('data_fim').value = epico.data_fim_prevista;
+                    document.getElementById('comboStatusES').value = estoria.status.idstatus;
+                    document.getElementById('comboCriadorES').value = estoria.idcriador.idusuario;
+                    document.getElementById('comboGestorEP').value = estoria.idresponsavel.idusuario;
                 }
             } catch (error) {
-                mostrarMensagemNaTela("Erro ao carregar épico: " + error.message, "error");
+                mostrarMensagemNaTela("resultado_estoria","Erro ao carregar épico: " + error.message, "error");
             }
         } else if (ABA === "TAREFAS") {
 
@@ -430,10 +518,10 @@
             const response = await fetch(`${API_EPICO}/excluir/${idEpico}`, {
                 method: 'DELETE'
             });
-            mostrarMensagemNaTela("Épico excluído com sucesso", "success");
+            mostrarMensagemNaTela("resultado_epico","Épico excluído com sucesso", "success");
             limpaFormulario();
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao excluir: " + error.message, "error");
+            mostrarMensagemNaTela("resultado_epico","Erro ao excluir:" + error.message, "error");
         }
     }
     async function limpaFormulario() {

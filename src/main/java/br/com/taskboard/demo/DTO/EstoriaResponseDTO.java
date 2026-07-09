@@ -1,7 +1,14 @@
 package br.com.taskboard.demo.DTO;
 
 import br.com.taskboard.demo.Modelo.Epico;
+import br.com.taskboard.demo.Modelo.StatusEntidades;
 import br.com.taskboard.demo.Modelo.Usuario;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+import java.sql.Blob;
+import java.time.LocalDate;
 
 public class EstoriaResponseDTO {
     private Long idestoria;
@@ -10,7 +17,13 @@ public class EstoriaResponseDTO {
     private Usuario idresponsavel;
     private Epico idepico;
     private Boolean bloqueada;
-    private String status;
+    private StatusEntidades status;
+    private Blob resumo;
+    private LocalDate data_inicio;
+    private LocalDate data_fim;
+    private Long pontos;
+    private Long horas_estimadas;
+    private Long horas_realizadas;
 
     public Long getIdestoria() {
         return idestoria;
@@ -58,5 +71,61 @@ public class EstoriaResponseDTO {
 
     public void setBloqueada(Boolean bloqueada) {
         this.bloqueada = bloqueada;
+    }
+
+    public StatusEntidades getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEntidades status) {
+        this.status = status;
+    }
+
+    public Blob getResumo() {
+        return resumo;
+    }
+
+    public void setResumo(Blob resumo) {
+        this.resumo = resumo;
+    }
+
+    public LocalDate getData_inicio() {
+        return data_inicio;
+    }
+
+    public void setData_inicio(LocalDate data_inicio) {
+        this.data_inicio = data_inicio;
+    }
+
+    public LocalDate getData_fim() {
+        return data_fim;
+    }
+
+    public void setData_fim(LocalDate data_fim) {
+        this.data_fim = data_fim;
+    }
+
+    public Long getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(Long pontos) {
+        this.pontos = pontos;
+    }
+
+    public Long getHoras_estimadas() {
+        return horas_estimadas;
+    }
+
+    public void setHoras_estimadas(Long horas_estimadas) {
+        this.horas_estimadas = horas_estimadas;
+    }
+
+    public Long getHoras_realizadas() {
+        return horas_realizadas;
+    }
+
+    public void setHoras_realizadas(Long horas_realizadas) {
+        this.horas_realizadas = horas_realizadas;
     }
 }

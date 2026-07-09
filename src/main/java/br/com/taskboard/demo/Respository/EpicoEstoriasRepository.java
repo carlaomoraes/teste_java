@@ -11,17 +11,18 @@ import java.util.List;
 
 public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
-
             SELECT e
             FROM Estoria e
            WHERE e.idestoria = :idestoria
+             and e.idepico.idepico = :idepico
           """)
-    Estoria buscarPorId(@Param("idestoria") Long idestoria);
+    Estoria buscarPorId(@Param("idestoria") Long idestoria,
+                        @Param("idepico") Long idepico);
 
        @Query("""                                                         
          SELECT e
            FROM Estoria e
-          WHERE e.idepico = :idepico
+          WHERE e.idepico.idepico = :idepico
        ORDER BY e.descestoria
        """)
      List<Estoria> buscarEstoriaPorEpico(@Param("idepico") Long idepico);
@@ -30,7 +31,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
         SELECT e
           FROM Estoria e
-         WHERE e.idepico IS NULL
+         WHERE e.idepico.idepico IS NULL
          ORDER BY e.descestoria
     """)
     List<Estoria> buscarEstoriasDisponiveis();
@@ -40,7 +41,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
         DELETE
           FROM Estoria e
-         WHERE e.idepico = :idEpico
+         WHERE e.idepico.idepico = :idepico
            AND e.idestoria = :idEstoria
     """)
     void removerDoEpico(
@@ -50,7 +51,9 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
        SELECT COUNT(e)
        FROM Estoria e
-       WHERE e.idepico = :idEpico         
+       WHERE e.idepico.idepico = :idepico
     """)
     long contarRelacionamentos(@Param("idEpico") Long idEpico);
+
+    List<Estoria> findByIdepico_IdepicoOrderByDescestoria(Long idepico);
 }

@@ -150,14 +150,14 @@
             usuarioDisponivelSelecionado = null;
             usuarioEquipeSelecionado = null;
         } catch(e) {
-            mostrarMensagemNaTela("Erro ao montar colunas de membros: " + e.message);
+            mostrarMensagemNaTela(resultado, "Erro ao montar colunas de membros: " + e.message);
         }
     }
 
     async function adicionarMembro(){
         const idEquipe = document.getElementById("idequipe").value;
         if(!idEquipe || !usuarioDisponivelSelecionado) {
-            mostrarMensagemNaTela("Selecione um usuário disponível e garanta que a equipe possua um ID válido.");
+            mostrarMensagemNaTela(resultado, "Selecione um usuário disponível e garanta que a equipe possua um ID válido.");
             return;
         }
         await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioDisponivelSelecionado}`, { method:"POST" });
@@ -211,7 +211,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(equipe)
                 });
-                mostrarMensagemNaTela("Gravado com sucesso!", "green");
+                mostrarMensagemNaTela(resultado, "Gravado com sucesso!", "green");
                 setTimeout(() => {
                     limpaFormulario();
                     listarEquipes();
@@ -255,7 +255,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar: " + error.message);
+            mostrarMensagemNaTela(resultado, "Erro ao listar: " + error.message);
         }
     }
 
@@ -267,20 +267,9 @@
             limpaFormulario();
             listarEquipes();
         } catch (error) {
-            mostrarMensagemNaTela(error.message);
+            mostrarMensagemNaTela(resultado, error.message);
         }
     }
-
-    function mostrarMensagemNaTela(mensagem, cor = "red") {
-        const container = document.getElementById("resultado");
-        if (container) {
-            container.textContent = mensagem;
-            container.style.color = cor === "green" ? "#10b981" : "#ef4444";
-        } else {
-            alert(mensagem);
-        }
-    }
-
     async function buscarPorLinha(id) {
         try {
             const response = await fetch(`${API_EQUIPES}/${id}`);
@@ -291,20 +280,20 @@
             document.getElementById('ativa').checked = !!equipe.ativa;
 
             // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-            mostrarMensagemNaTela("Equipe selecionada: " + equipe.nomeequipe, "green");
+            mostrarMensagemNaTela(resultado, "Equipe selecionada: " + equipe.nomeequipe, "green");
             montaEquipes(equipe.idequipe);
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar: " + error.message, "error");
+            mostrarMensagemNaTela(resultado, "Erro ao carregar: " + error.message, "error");
         }
     }
 
     function validaEntrada() {
         if(document.getElementById('nomeequipe').value.trim() === "" ) {
-            mostrarMensagemNaTela("O nome da equipe não deve estar vazio");
+            mostrarMensagemNaTela(resultado, "O nome da equipe não deve estar vazio");
             return false;
         }
         if(document.getElementById('descequipe').value.trim() === "" ) {
-            mostrarMensagemNaTela("A descrição da equipe não deve estar vazia");
+            mostrarMensagemNaTela(resultado, "A descrição da equipe não deve estar vazia");
             return false;
         }
         return true;

@@ -22,9 +22,9 @@
     <h1>Empreendimento - TaskController 1.0</h1>
     <div class="abas-container">
         <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')">Geral</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">Equipes</button>
     </div>
-    <div id="Empreendimentos" class="conteudo-aba ativo">
+    <div id="geral" class="conteudo-aba ativo">
         <div class="form-grid">
             <div>
                 <label>I.D.</label>
@@ -83,7 +83,7 @@
         </div>
         <div id="resultado"></div>
     </div>
-    <div id="equipes" class="conteudo-aba">
+    <div id="equipe" class="conteudo-aba">
         <div class="membros-container">
             <div class="membros-coluna">
                 <h2>Equipes disponíveis</h2>
@@ -190,6 +190,86 @@
         carregarStatus();
         carregarPrioridade();
     });
+    document.addEventListener('visibilitychange', () => {
+        const containerTabela = document.getElementById('resultado');
+        if (!containerTabela) return;
+
+        if (document.hidden) {
+            containerTabela.classList.add('tabela-travada');
+        } else {
+            containerTabela.classList.remove('tabela-travada');
+        }
+    });
+    async function adicionarMembro(empreendimemto){
+        const idEquipe = document.getElementById("idequipe").value;
+        if(!idEquipe || !equipeDisponivelSelecionada) {
+            mostrarMensagemNaTela("Selecione uma equipe disponível e garanta que o empreendimento possua um ID válido.");
+            return;
+        }
+        await fetch(`http://localhost:8080/${empreendimemto}/equipes/${equipeDisponivelSelecionada}`, { method:"POST" });
+        montaEquipes(idEquipe);
+    }
+
+    async function removerMembro(empreendimemto){
+        const idEquipe = document.getElementById("idequipe").value;
+        if(!idEquipe || !equipeSelecionada) {
+            return;
+        }
+        await fetch(`http://localhost:8080/equipes/${empreendimemto}/equipes/${equipeSelecionada}`, { method:"DELETE" });
+        montaEquipes(idEquipe);
+    }
+
+    // Renderiza a lista customizada mapeando os eventos de clique
+    function renderizarListaCustom(containerId, listaEquipes, tipo) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+
+        if (listaEquipes.length === 0) {
+            container.innerHTML = `<div style="padding: 20px; color: #94a3b8; text-align:center; font-size:14px;">Nenhum usuário encontrado</div>`;
+            return;
+        }
+
+        listaEquipes.forEach(equipe => {
+            const item = document.createElement('div');
+            item.className = 'membro-item';
+            item.dataset.id = equipe.idequipe;
+
+            item.innerHTML = `
+                <div class="membro-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="membro-login">${equipe.nomeequipe.split(' ')[0].toLowerCase()}</div>
+                <div class="membro-name">${equipe.nomeequipe}</div>
+            `;
+
+            item.addEventListener('click', () => {
+                // Remove seleção anterior do escopo específico
+                container.querySelectorAll('.membro-item').forEach(el => el.classList.remove('selecionado'));
+                item.classList.add('selecionado');
+
+                if (tipo === 'disponivel') {
+                    equipeDisponivelSelecionada = equipe.idequipe;
+                } else {
+                    equipeSelecionada = equipe.idequipe;
+                }
+            });
+
+            container.appendChild(item);
+        });
+    }
+    async function montaEquipes(idEquipe) {
+        try {
+            const disponiveis = await fetch(`${API_EMPREENDIMENTO}/${idEquipe}/equipes/disponiveis`).then(r => r.json());
+            const membros = await fetch(`${API_EMPREENDIMENTO}/${idEquipe}/equipes`).then(r => r.json());
+
+            renderizarListaCustom("usuariosDisponiveis", disponiveis, 'disponivel');
+            renderizarListaCustom("usuariosEquipe", membros, 'equipe');
+
+            equipeDisponivelSelecionada = null;
+            equipeSelecionada = null;
+        } catch(e) {
+            mostrarMensagemNaTela("Erro ao montar colunas de membros: " + e.message);
+        }
+    }
+
     async function salvarEmpreendimento() {
         const hoje = new Date();
 
@@ -289,21 +369,19 @@
                 mostrarMensagemNaTela(Empreendimento.mensagem,"error");
             } else {
                 document.getElementById('idempreendimento').value = Empreendimento.idempreendimento;
-                alert(Empreendimento.idempreendimento);
                 document.getElementById('descempreendimento').value = Empreendimento.descempreendimento;
-                alert(Empreendimento.descempreendimento);
                 document.getElementById('cor').value = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
-                alert(Empreendimento.cor);
                 // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                 document.getElementById('bloqueado').checked = Empreendimento.bloqueado || 0;
-                alert(Empreendimento.bloqueado);
                 // CARREGANDO OS COMBOS
                 document.getElementById('comboStatus').value = Empreendimento.status.idstatus || 0;
-                document.getElementById('comboEmpreendimento').value = Empreendimento.empreendimento.idempreendimento || 0;
                 document.getElementById('comboPrioridade').value = Empreendimento.prioridade.idprioridade || 0;
-                document.getElementById('comboGestor').value = Empreendimento.responsavel.idusuario || 0;
+                document.getElementById('comboGestor').value = Empreendimento.idgestor || 0;
                 document.getElementById('data_inicio').value = Empreendimento.data_inicio;
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
+                // Limpa mensagens e monta equipe se o usuário mudar de aba depois
+                mostrarMensagemNaTela("Equipe selecionada: " + Empreendimento.descempreendimento, "green");
+                montaEquipes(Empreendimento.idempreendimento);
             }
         } catch (error) {
             mostrarMensagemNaTela("Erro ao carregar Empreendimento: "+error.message,"error");
