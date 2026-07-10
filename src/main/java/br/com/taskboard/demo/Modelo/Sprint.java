@@ -14,6 +14,9 @@ public class Sprint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idsprint;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idempreendimento", nullable = false)
+    private Empreendimento empreendimento;
     private String descsprint;
     private LocalDate dtiniciosprint;
     private LocalDate dtfinalsprint;

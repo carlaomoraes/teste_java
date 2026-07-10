@@ -13,9 +13,6 @@ import java.util.List;
 public class EpicoService {
 
     @Autowired
-    private EpicoRepository repository;
-
-    @Autowired
     private EstoriaRepository estoriaRepository;
 
     @Autowired
@@ -25,7 +22,7 @@ public class EpicoService {
     private EquipeEmpreendimentoRepository equipeEmpreendimentoRepository;
 
     @Autowired
-    private EpicoRepository epicoRepository;
+    private EpicoRepository repository;
 
     public Epico salvar(Epico Epico) {
          return repository.save(Epico);
@@ -33,7 +30,7 @@ public class EpicoService {
 
     public List<Epico> listar() {
 
-        return repository.findAll();
+        return repository.findByAtivoTrue();
     }
 
     public Epico atualizar(Epico Epico) {
@@ -47,7 +44,7 @@ public class EpicoService {
             throw new RuntimeException("Não é possivel inativar esse épico pois existem estórias");
         }
         epico.setAtivo(0);
-        epicoRepository.save(epico);
+        repository.save(epico);
     }
 
     public Epico buscarPorId(Long idEpico) {

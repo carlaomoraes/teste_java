@@ -6,7 +6,6 @@ import br.com.taskboard.demo.Modelo.StatusEntidades;
 import br.com.taskboard.demo.Modelo.Usuario;
 import br.com.taskboard.demo.Respository.EmpreendimentoRepository;
 import br.com.taskboard.demo.Service.EmpreendimentoService;
-import br.com.taskboard.demo.Service.EquipeService;
 import br.com.taskboard.demo.Service.StatusEntidadesService;
 import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;

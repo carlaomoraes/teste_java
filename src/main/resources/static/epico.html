@@ -58,7 +58,7 @@
             </div>
             <div>
                 <label>Criador</label>
-                <select id="comboGestorEP">
+                <select id="comboCriadorEP">
                     <option value="">-- Selecione o gestor --</option>
                 </select>
             </div>
@@ -177,7 +177,7 @@
 
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
-        const comboGestorEP = document.getElementById("comboGestorEP");
+        const comboCriadorEP = document.getElementById("comboCriadorEP");
         const comboCriadorES = document.getElementById("comboCriadorES");
         const comboResponsavelES = document.getElementById("comboResponsavelES");
 
@@ -188,7 +188,7 @@
                 const opcao = document.createElement('option');
                 opcao.value = usuario.idusuario;
                 opcao.textContent = usuario.nome;
-                comboGestorEP.appendChild(opcao);
+                comboCriadorEP.appendChild(opcao);
                 comboCriadorES.appendChild(opcao);
                 comboResponsavelES.appendChild(opcao)
             });
