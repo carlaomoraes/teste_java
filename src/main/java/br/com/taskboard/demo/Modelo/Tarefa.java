@@ -34,4 +34,8 @@ public class Tarefa {
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
     private LocalDate data_conlusao;
+    private int ativa;
+    @ManyToOne
+    @JoinColumn(name="idtipo_tarefa")
+    private TipoTarefa tipoTarefa;
 }

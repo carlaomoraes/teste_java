@@ -35,6 +35,7 @@ public class Empreendimento {
     private Long percentual;
     private boolean bloqueado;
     private String codempreendimento;
+    private int ativo;
 
     public Long getIdempreendimento() {
         return idempreendimento;
@@ -138,5 +139,13 @@ public class Empreendimento {
 
     public void setCodempreendimento(String codempreendimento) {
         this.codempreendimento = codempreendimento;
+    }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int ativo) {
+        this.ativo = ativo;
     }
 }

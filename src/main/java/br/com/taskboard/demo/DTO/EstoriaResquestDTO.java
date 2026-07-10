@@ -21,6 +21,7 @@ public class EstoriaResquestDTO {
     private Long pontos;
     private Long horas_estimadas;
     private Long horas_realizadas;
+    private int ativa;
 
     public Long getIdestoria() {
         return idestoria;
@@ -124,5 +125,13 @@ public class EstoriaResquestDTO {
 
     public void setHoras_realizadas(Long horas_realizadas) {
         this.horas_realizadas = horas_realizadas;
+    }
+
+    public int getAtiva() {
+        return ativa;
+    }
+
+    public void setAtiva(int ativa) {
+        this.ativa = ativa;
     }
 }

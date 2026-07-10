@@ -63,4 +63,7 @@ public class Epico {
 
     @Column
     private Double percentual = 0.0;
+
+    @Column(length = 10, nullable = false)
+    private int ativo;
 }

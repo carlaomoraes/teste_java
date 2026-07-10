@@ -34,4 +34,5 @@ public class Estoria {
     private Long pontos;
     private Long horas_estimadas;
     private Long horas_realizadas;
+    private int ativa;
 }

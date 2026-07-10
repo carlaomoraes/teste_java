@@ -21,6 +21,7 @@ public class EpicoResponseDTO {
     private String nome;
     private String cor = "#2196F3";
     private Double percentual = 0.0;
+    private int ativo;
 
     public Long getIdepico() {
         return idepico;
@@ -124,5 +125,13 @@ public class EpicoResponseDTO {
 
     public void setPercentual(Double percentual) {
         this.percentual = percentual;
+    }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int ativo) {
+        this.ativo = ativo;
     }
 }

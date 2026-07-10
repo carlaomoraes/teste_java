@@ -21,6 +21,7 @@ public class EmpreendimentoMapper {
         e.setBloqueado(dto.isBloqueado());
         e.setCodempreendimento(dto.getCodempreendimento());
         e.setPrioridade(dto.getPrioridade());
+        e.setAtivo(dto.getAtivo());
         return e;
     }
 
@@ -39,6 +40,7 @@ public class EmpreendimentoMapper {
         dto.setBloqueado(e.isBloqueado());
         dto.setCodempreendimento(e.getCodempreendimento());
         dto.setPrioridade(e.getPrioridade());
+        dto.setAtivo(e.getAtivo());
         return dto;
     }
 }

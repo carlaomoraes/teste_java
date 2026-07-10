@@ -4,6 +4,7 @@ import br.com.taskboard.demo.Modelo.Empreendimento;
 import br.com.taskboard.demo.Modelo.Empreendimento_Equipe;
 import br.com.taskboard.demo.Modelo.Equipe;
 import br.com.taskboard.demo.Respository.EmpreendimentoRepository;
+import br.com.taskboard.demo.Respository.EpicoRepository;
 import br.com.taskboard.demo.Respository.EquipeEmpreendimentoRepository;
 import br.com.taskboard.demo.Respository.EquipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class EmpreendimentoService {
 
     @Autowired
     private EquipeRepository equipeRepository;
+
+    @Autowired
+    private EpicoRepository epicoRepository;
 
     @Autowired
     private EquipeEmpreendimentoRepository relacionamentoRepository;
@@ -38,13 +42,17 @@ public class EmpreendimentoService {
                         new RuntimeException("Empreendimento não encontrado."));
     }
 
-    public List<Empreendimento> listar() {
-        return empreendimentoRepository.findAll();
+    public void excluir(Long id) {
+        Empreendimento empreendimento = empreendimentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Empreendimento não encontrado."));
+        empreendimento.setAtivo(0);
+        empreendimentoRepository.save(empreendimento);
     }
 
-    public void excluir(Long id) {
-        empreendimentoRepository.deleteById(id);
+    public List<Empreendimento> listar() {
+        return empreendimentoRepository.findByAtivoTrue();
     }
+
 
     //===================================
     // EQUIPES
@@ -77,8 +85,7 @@ public class EmpreendimentoService {
 
     public List<Equipe> listarEquipes(Long idEmpreendimento) {
 
-        return relacionamentoRepository
-                .buscarEquipesPorEmpreendimento(idEmpreendimento);
+        return relacionamentoRepository.buscarEquipesPorEmpreendimento(idEmpreendimento);
     }
 
     public List<Equipe> listarEquipesDisponiveis(Long idEmpreendimento) {

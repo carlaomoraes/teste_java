@@ -21,6 +21,7 @@ public class EpicoMapper {
         e.setNome(dto.getNome());
         e.setCor(dto.getCor());
         e.setPercentual(dto.getPercentual());
+        e.setAtivo(dto.getAtivo());
         return e;
     }
 
@@ -39,6 +40,7 @@ public class EpicoMapper {
         dto.setNome(dto.getNome());
         dto.setCor(dto.getCor());
         dto.setPercentual(dto.getPercentual());
+        dto.setAtivo(dto.getAtivo());
         return dto;
     }
 }

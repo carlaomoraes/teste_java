@@ -4,7 +4,9 @@ import br.com.taskboard.demo.Modelo.Empreendimento;
 import br.com.taskboard.demo.Modelo.Equipe;
 import br.com.taskboard.demo.Modelo.StatusEntidades;
 import br.com.taskboard.demo.Modelo.Usuario;
+import br.com.taskboard.demo.Respository.EmpreendimentoRepository;
 import br.com.taskboard.demo.Service.EmpreendimentoService;
+import br.com.taskboard.demo.Service.EquipeService;
 import br.com.taskboard.demo.Service.StatusEntidadesService;
 import br.com.taskboard.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,14 @@ public class EmpreendimentoController {
 
     @Autowired
     private EmpreendimentoService service;
+
     @Autowired
     private StatusEntidadesService statusService;
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private EmpreendimentoRepository  empreendimentoRepository;
 
 
     //==========================
@@ -38,6 +44,7 @@ public class EmpreendimentoController {
 
     @GetMapping("/listar")
     public List<Empreendimento> listar() {
+
         return service.listar();
     }
 
@@ -75,9 +82,11 @@ public class EmpreendimentoController {
     }
 
     @DeleteMapping("/excluir/{idEmpreendimento}")
+    // Eclusão lógica
     public ResponseEntity<String> excluir(
             @PathVariable Long idEmpreendimento) {
         service.excluir(idEmpreendimento);
+
         return ResponseEntity.ok("Excluído com sucesso.");
     }
 
