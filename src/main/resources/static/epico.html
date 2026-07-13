@@ -243,16 +243,6 @@
             mostrarMensagemNaTela("resultado_epico","Erro ao carregar empreendimento: "+error.message,"error");
         }
     }
-    function formatarData(data) {
-        if (!data) return "";
-
-        const [ano, mes, dia] = data.split("-");
-        return `${dia}/${mes}/${ano}`;
-    }
-    function converterMaiusculo(campo) {
-        campo.value = campo.value.toUpperCase();
-    }
-
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
         carregarEmpreendimento();

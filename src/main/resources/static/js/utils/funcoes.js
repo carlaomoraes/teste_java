@@ -24,3 +24,13 @@ function mostrarMensagemNaTela(resultado, mensagem, tipoMensagem = "error") {
 function corHexValida(cor) {
     return /^#([0-9A-F]{3}|[0-9A-F]{6})$/i.test(cor);
 }
+
+function formatarData(data) {
+    if (!data) return "";
+
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}/${mes}/${ano}`;
+}
+function converterMaiusculo(campo) {
+    campo.value = campo.value.toUpperCase();
+}

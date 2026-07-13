@@ -29,6 +29,10 @@
         <input type="number" id="idsprint" onblur="buscarPorLinha(document.getElementById('idsprint').value)" placeholder="ID da sprint (Deixe vazio para novo)">
         <label for="descsprint">Descrição da sprint:</label>
         <input type="text" id="descsprint">
+        <label>Empreendimento</label>
+        <select id="comboEmpreendimento">
+            <option value="">-- Selecione o empreendimento --</option>
+        </select><br>
         <label for="dtiniciosprint">Data de Início:</label>
         <input type="date" id="dtiniciosprint">
         <label for="dtfinalsprint">Data de Término:</label>
@@ -40,7 +44,7 @@
             </div>
             <div class="checkbox-group">
             <input type="checkbox" id="ativa" name="ativa">
-            <label for="ativa">Sprint Ativa</label>
+            <label for="ativa">Sprint ativa</label>
         </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar</button>
@@ -48,17 +52,61 @@
                 <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
             </div>
         </div>
-    <div id="ausencias" class="conteudo-aba ativo">
+    </div>
+    <div id="ausencias" class="conteudo-aba">
+        <h3>Ausências programadas</h3>
+        <div id="resultadoausencia"></div>
     </div>
 
-    <div id="resultado"></div>
+    <div id="resultadogeral"></div>
 </div>
 
 <script>
+    //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
+    const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+
+    function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
+    }
+
+    async function carregarEmpreendimento() {
+        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const empreendimentos = await resposta.json();
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idempreendimento;
+                opcao.textContent = e.descempreendimento;
+                comboEmpreendimento.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral","Erro ao carregar empreendimento: "+error.message,"error");
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarEmpreendimento();
+    });
 
     async function salvarSprint() {
-        const idsprint = document.getElementById('idsprint').value;
         const { value: descsprint } = document.getElementById('descsprint');
         const { value: dataInicio } = document.getElementById('dtiniciosprint');
         const { value: dataFim } = document.getElementById('dtfinalsprint');
@@ -67,13 +115,14 @@
         const visivel = document.getElementById('visivel').checked;
 
         const sprint = {
-            idsprint: idsprint ? parseInt(idsprint) : null,
             descsprint: descsprint || null,
             dataInicio: dataInicio || null,
             dataFim: dataFim || null,
-            visivel: visivel // Envia true/false para o atributo booleano do Spring
+            visivel: visivel, // Envia true/false para o atributo booleano do Spring
+            empreendimento: {
+                idEmpreendimento: document.getElementById('comboEmpreendimento').value || null
+            }
         };
-
         try {
             const response = await fetch(`${API}/salvar`, {
                 method: 'POST',
@@ -84,33 +133,45 @@
             if (!response.ok) throw new Error(await response.text());
 
             const data = await response.json();
-            mostrarMensagemNaTela('Sprint gravada com sucesso');
-
+            mostrarMensagemNaTela("resultadogeral", "Sprint gravada com sucesso", "sucesso");
             limpaFormulario();
             listarSprints();
-
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+            mostrarMensagemNaTela("resultadigeral", "Erro ao salvar: " + error.message, "error");
         }
     }
 
     async function buscarPorLinha(id) {
+        const hoje = new Date().toISOString().split("T")[0];
+        var data_final;
+        var data_inicio;
         try {
             const response = await fetch(`${API}/${id}`);
-            if (!response.ok) throw new Error("Sprint não encontrada");
+            if (!response.ok)
+                mostrarMensagemNaTela("resultadogeral", "Sprint não encontrada", "warnning");
 
             const sprint = await response.json();
+            data_inicio = sprint.dtiniciosprint || hoje;
+            data_final = sprint.dtfinalsprint || hoje;
 
             document.getElementById('idsprint').value = sprint.idsprint;
-            document.getElementById('descsprint').value = sprint.descsprint;
-            document.getElementById('dtiniciosprint').value = sprint.dataInicio;
-            document.getElementById('dtfinalsprint').value = sprint.dataFim;
+            document.getElementById('descsprint').value = sprint.descsprint || null;
+            document.getElementById('dtiniciosprint').value = data_inicio;
+            document.getElementById('dtfinalsprint').value = data_final;
+            document.getElementById('comboEmpreendimento').value = sprint.empreendimento.idempreendimento;
 
             // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
             document.getElementById('visivel').checked = sprint.visivel || false;
 
+            // CARREGA AS AUSENCIAS PROGRAMADAS
+            if(sprint.idsprint != null) {
+                // Limpa mensagens e monta equipe se o usuário mudar de aba depois
+                mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " + sprint.descsprint, "green");
+                await listarAusencias(data_inicio, data_final);
+
+            }
         } catch (error) {
-            mostrarMensagemNaTela(error.message);
+            mostrarMensagemNaTela("resultadogeral", "Erro ao carregar Sprint: " + error.message, "error");
         }
     }
 
@@ -139,21 +200,23 @@
                     <tr onclick="buscarPorLinha(${sprint.idsprint})" style="cursor:pointer;">
                         <td>${sprint.idsprint}</td>
                         <td>${sprint.descsprint || ''}</td>
-                        <td>${formatarDataBR(sprint.dataInicio)}</td>
-                        <td>${formatarDataBR(sprint.dataFim)}</td>
+                        <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
+                        <td>${formatarDataBR(sprint.dtfinalsprint)}</td>
                         <td>${sprint.visivel ? '✅ Sim' : '❌ Não'}</td>
                         <td>${sprint.ativa ? '✅ Sim' : '❌ Não'}</td>
-                        <td>
-                            <button type="button" class="btn" onclick="event.stopPropagation(); excluirSprint(${sprint.idsprint})">Excluir</button>
+                        <td style="text-align:center;">
+                           <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();excluirSprint(${sprint.idsprint})">
+                                        <i class="fa-solid fa-trash-can"></i> Encerrar Sprint
+                                    </button>
                         </td>
                     </tr>`;
             });
 
             tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
+            document.getElementById('resultadogeral').innerHTML = tabela;
 
         } catch (error) {
-            document.getElementById('resultado').innerHTML = `<p style="color:red;">Erro ao listar Sprints</p>`;
+            mostrarMensagemNaTela("resultadogeral","Erro ao listar sprint: " + error.message,"error");
         }
     }
 
@@ -162,60 +225,11 @@
         try {
             const response = await fetch(`${API}/excluir/${idsprint}`, { method: 'DELETE' });
             const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Sprint excluída com sucesso');
+            mostrarMensagemNaTela("resultadigeral", "Excluída com sucesso ", "success");
             limpaFormulario();
             listarSprints();
         } catch (error) {
-            mostrarMensagemNaTela(error.message);
-        }
-    }
-
-    async function buscarSprint() {
-        const idsprint = document.getElementById('idsprint').value;
-        if (!idsprint) {
-            mostrarMensagemNaTela("Por favor, digite um ID para buscar.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API}/${idsprint}`);
-            if (!response.ok) throw new Error(await response.text());
-
-            const sprint = await response.json();
-
-            let tabela = `
-            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Descrição</th>
-                        <th>Data Início</th>
-                        <th>Data Fim</th>
-                        <th>Visivel no quadro?</th>
-                        <th>Ativa?</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-
-            data.forEach(sprint => {
-                tabela += `
-                    <tr onclick="buscarPorLinha(${sprint.idsprint})" style="cursor:pointer;">
-                        <td>${sprint.idsprint}</td>
-                        <td>${sprint.descsprint || ''}</td>
-                        <td>${formatarDataBR(sprint.dataInicio)}</td>
-                        <td>${formatarDataBR(sprint.dataFim)}</td>
-                        <td>${sprint.visivel ? '✅ Sim' : '❌ Não'}</td>
-                        <td>${sprint.ativa ? '✅ Sim' : '❌ Não'}</td>
-                        <td>
-                            <button type="button" class="btn" onclick="event.stopPropagation(); excluirSprint(${sprint.idsprint})">Excluir</button>
-                        </td>
-                    </tr>`;
-            });
-
-            document.getElementById('resultado').innerHTML = tabela;
-        } catch (e) {
-            mostrarMensagemNaTela("Erro na busca: " + e.message);
+            mostrarMensagemNaTela("resultadogeral","Erro ao excluir sprint: " + error.message,"error");
         }
     }
 
@@ -227,14 +241,6 @@
         document.getElementById('visivel').checked = false; // Reseta o checkbox desmarcado
     }
 
-    function mostrarMensagemNaTela(mensagem) {
-        const container = document.getElementById("resultado");
-        if (container) {
-            container.innerHTML = `<p style="color:red;">${mensagem}</p>`;
-        } else {
-            alert(mensagem);
-        }
-    }
     function formatarDataBR(dataString) {
         if (!dataString) return '';
 
@@ -244,6 +250,76 @@
 
         // Remonta no formato "DD/MM/AAAA"
         return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+    async function listarAusencias(data_inicio, data_fim) {
+        const container = document.getElementById("resultadoausencia");
+        try {
+            const response = await fetch(`${API}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
+            if (!response.ok) {
+                const msg = await response.text();
+                mostrarMensagemNaTela(msg || "Erro ao listar ausências!", 2);
+                return;
+            }
+            const data = await response.json();
+            // Se não houver registros
+            if (!data || data.length === 0) {
+                container.innerHTML = `<table class="table">
+                    <thead>
+                        <tr>
+                            <th>Data inicial</th>
+                            <th>Data final</th>
+                            <th>Tipo ausência</th>
+                            <th>Observação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" style="text-align:center;">
+                                Nenhuma ausência cadastrada
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+                return;
+            }
+
+            // Monta tabela com dados
+            let tabela = `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data inicial</th>
+                        <th>Data final</th>
+                        <th>Tipo ausência</th>
+                        <th>Observação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+            data.forEach(a => {
+                tabela += `
+                <tr style="cursor:pointer;">
+                    <td>${a.idausencia}</td>
+                    <td>${formatarDataBR(a.data_inicio)}</td>
+                    <td>${formatarDataBR(a.data_fim)}</td>
+                    <td>${a.tipoausencia?.desc_tipo_ausencia ?? ''}</td>
+                    <td>${a.observacao ?? ''}</td>
+                </tr>
+            `;
+            });
+
+            tabela += `
+                </tbody>
+            </table>
+        `;
+            container.innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela(error.message || ". Erro ao listar ausências","error");
+        }
     }
 </script>
 </body>

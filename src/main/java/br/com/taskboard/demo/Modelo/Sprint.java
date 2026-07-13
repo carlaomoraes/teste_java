@@ -1,6 +1,5 @@
 package br.com.taskboard.demo.Modelo;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

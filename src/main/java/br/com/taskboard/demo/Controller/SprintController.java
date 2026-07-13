@@ -1,6 +1,11 @@
 package br.com.taskboard.demo.Controller;
 
+import br.com.taskboard.demo.Modelo.AusenciaProgramada;
+import br.com.taskboard.demo.Modelo.Empreendimento;
 import br.com.taskboard.demo.Modelo.Sprint;
+import br.com.taskboard.demo.Modelo.StatusEntidades;
+import br.com.taskboard.demo.Respository.AusenciaProgramadaRepository;
+import br.com.taskboard.demo.Service.EmpreendimentoService;
 import br.com.taskboard.demo.Service.SprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +23,13 @@ public class SprintController {
     @Autowired
     private SprintService service;
 
+    @Autowired
+    private EmpreendimentoService empreendimentoService;
+
+    @Autowired
+    private AusenciaProgramadaRepository ausenciaProgramadaRepository;
+
+
     // BUSCAR POR ID
     @GetMapping("/{idSprint}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long idSprint) {
@@ -31,17 +43,28 @@ public class SprintController {
 
     // SALVAR
     @PostMapping("/salvar")
-    public Sprint salvar(@RequestBody Sprint Sprint) {
-        Sprint.setDtiniciosprint(LocalDate.now());
-        return service.salvar(Sprint);
+    public ResponseEntity<Sprint> salvar(@RequestBody Sprint sprint) {
+        Empreendimento empreendimento = empreendimentoService.buscarPorId(sprint.getEmpreendimento().getIdempreendimento());
+        if (empreendimento == null) {
+            return ResponseEntity.notFound().build();
+        }
+        sprint.setEmpreendimento(empreendimento);
+        return ResponseEntity.ok().body(service.salvar(sprint));
     }
 
     // ATUALIZAR
     @PutMapping("/atualizar/{idSprint}")
-    public Sprint atualizar(@PathVariable Long idSprint,
+    public ResponseEntity<Sprint> atualizar(@PathVariable Long idSprint,
                              @RequestBody Sprint Sprint) {
+        Sprint sprint = service.buscarPorId(idSprint);
+        Empreendimento empreendimento = empreendimentoService.buscarPorId(sprint.getEmpreendimento().getIdempreendimento());
+        if (empreendimento == null) {
+            return ResponseEntity.notFound().build();
+        }
+        sprint.setEmpreendimento(empreendimento);
+
         Sprint.setIdsprint(idSprint);
-        return service.atualizar(Sprint);
+        return ResponseEntity.ok().body(service.atualizar(Sprint));
     }
 
     // LISTAR
@@ -62,5 +85,14 @@ public class SprintController {
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.ok().body(Messagem);
         }
+    }
+    // LISTAR AUSENCIA
+    @GetMapping("/listar_ausencias")
+    public List<AusenciaProgramada> listarAusencias(@RequestParam("data_inicio") LocalDate data_inicio,
+                                                    @RequestParam("data_fim") LocalDate data_fim) {
+        System.out.println("Início: " + data_inicio);
+        System.out.println("Fim: " + data_fim);
+
+        return ausenciaProgramadaRepository.buscarAusenciasDaSprint(data_inicio, data_fim);
     }
 }
