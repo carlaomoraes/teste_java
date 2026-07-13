@@ -14,41 +14,41 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/equipe.css">
+    <link rel="stylesheet" href="css/pages/sprint.css">
 </head>
 <body>
 <script src="js/utils/funcoes.js"></script>
 
 <div class="container">
-    <h1>>Sprint - TaskController 1.0</h1>
-
-    <input type="number" id="idsprint" placeholder="ID da sprint (Deixe vazio para novo)">
-    <input type="text" id="descsprint" placeholder="Descrição da sprint">
-
-    <label for="dtiniciosprint">Data de Início:</label>
-    <input type="date" id="dtiniciosprint">
-
-    <label for="dtfinalsprint">Data de Término:</label>
-    <input type="date" id="dtfinalsprint">
-
-    <div class="checkbox-container">
-        <div class="checkbox-group">
-            <input type="checkbox" id="visivel" name="visivel">
-            <label for="visivel">Sprint visível no quadro</label>
-        </div>
-
-        <div class="checkbox-group">
+    <h1>Sprint - TaskController 1.0</h1>
+    <div class="abas-container">
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')">Geral</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Ausências programadas</button>
+    </div>
+    <div id="geral" class="conteudo-aba ativo">
+        <input type="number" id="idsprint" onblur="buscarPorLinha(document.getElementById('idsprint').value)" placeholder="ID da sprint (Deixe vazio para novo)">
+        <label for="descsprint">Descrição da sprint:</label>
+        <input type="text" id="descsprint">
+        <label for="dtiniciosprint">Data de Início:</label>
+        <input type="date" id="dtiniciosprint">
+        <label for="dtfinalsprint">Data de Término:</label>
+        <input type="date" id="dtfinalsprint">
+        <div class="checkbox-container">
+            <div class="checkbox-group">
+                <input type="checkbox" id="visivel" name="visivel">
+                <label for="visivel">Sprint visível no quadro</label>
+            </div>
+            <div class="checkbox-group">
             <input type="checkbox" id="ativa" name="ativa">
             <label for="ativa">Sprint Ativa</label>
         </div>
-    </div>
-    <br>
-
-    <div class="btn-group">
-        <button type="button" class="btn" onclick="salvarSprint()">Salvar</button>
-        <button type="button" class="btn" onclick="listarSprints()">Listar Todas</button>
-        <button type="button" class="btn" onclick="buscarSprint()">Buscar por ID</button>
-        <button type="button" class="btn" onclick="history.back()">Voltar</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar</button>
+                <button type="button" class="btn btn-listar" onclick="listarSprints()">Listar Todas</button>
+                <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+            </div>
+        </div>
+    <div id="ausencias" class="conteudo-aba ativo">
     </div>
 
     <div id="resultado"></div>
