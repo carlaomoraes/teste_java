@@ -1,29 +1,41 @@
 package br.com.taskboard.demo.Modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
-import java.time.LocalDate;
-
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@Entity
 @Table(name = "configuracao")
 public class Configuracao {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idconfiguracao")
     private Long idconfiguracao;
-    private Long duracaominSprint;
-    private Long duracaomaxSprint;
-    private Boolean permitirSprintSobreposta;
-    private Boolean permitirMultiplaSprintAtivas;
-    private Long horasTrabalhoDia;
-    private Boolean considerarFeriados;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idempreendimento", nullable = false)
+    private Empreendimento empreendimento;
+
+    @Column(name = "duracao_min_sprint", nullable = false)
+    private Integer duracao_min_sprint;
+
+    @Column(name = "duracao_max_sprint", nullable = false)
+    private Integer duracao_max_sprint;
+
+    @Column(name = "permitir_sprint_sobreposta", nullable = false)
+    private Boolean permitir_sprint_sobreposta = false;
+
+    @Column(name = "permitir_multiplas_sprint_ativas", nullable = false)
+    private Boolean permitir_multiplas_sprint_ativas = false;
+
+    @Column(name = "horas_trabalho_dia", nullable = false)
+    private Integer horas_trabalho_dia = 8;
+
+    @Column(name = "considerar_Feriados", nullable = false)
+    private Boolean considerar_Feriados = true;
+
 }

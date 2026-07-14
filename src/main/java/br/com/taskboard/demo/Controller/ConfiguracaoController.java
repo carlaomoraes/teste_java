@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/configuracao")
@@ -15,7 +16,7 @@ public class ConfiguracaoController {
     private ConfiguracaoService service;
 
     // BUSCAR POR ID
-    @GetMapping("/{idconfiguracao}")
+    @GetMapping("/buscaPorId/{idconfiguracao}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long idconfiguracao) {
         Configuracao configuracao = service.buscarPorId(idconfiguracao);
         return ResponseEntity.ok().body(configuracao);
@@ -26,4 +27,12 @@ public class ConfiguracaoController {
     public ResponseEntity<?> salvar(@RequestBody Configuracao configuracao) {
             return ResponseEntity.ok().body(service.atualizar(configuracao));
     }
+    // BUSCAR POR ID EMPREENDIMENTO
+    @GetMapping("/buscaPorEmpreendimento/{idempreendimento}")
+    public ResponseEntity<Configuracao> buscarPorEmpreendimento(
+            @PathVariable Long idempreendimento) {
+        return ResponseEntity.ok(service.buscarConfiguracaoPorEmpreendimento(idempreendimento));
+    }
+
+
 }

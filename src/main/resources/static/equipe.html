@@ -217,7 +217,7 @@
                     listarEquipes();
                 }, 1000);
             } catch (error) {
-                mostrarMensagemNaTela("Erro ao salvar: " + error.message);
+                mostrarMensagemNaTela(resultado, "Erro ao salvar: " + error.message);
             }
         }
     }
@@ -267,7 +267,7 @@
             limpaFormulario();
             listarEquipes();
         } catch (error) {
-            mostrarMensagemNaTela(resultado, error.message);
+            mostrarMensagemNaTela(resultado, error.message, "error");
         }
     }
     async function buscarPorLinha(id) {
@@ -280,7 +280,7 @@
             document.getElementById('ativa').checked = !!equipe.ativa;
 
             // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-            mostrarMensagemNaTela(resultado, "Equipe selecionada: " + equipe.nomeequipe, "green");
+            resultado.innerHTML = '';
             montaEquipes(equipe.idequipe);
         } catch (error) {
             mostrarMensagemNaTela(resultado, "Erro ao carregar: " + error.message, "error");
@@ -289,11 +289,11 @@
 
     function validaEntrada() {
         if(document.getElementById('nomeequipe').value.trim() === "" ) {
-            mostrarMensagemNaTela(resultado, "O nome da equipe não deve estar vazio");
+            mostrarMensagemNaTela(resultado, "O nome da equipe não deve estar vazio", "warning");
             return false;
         }
         if(document.getElementById('descequipe').value.trim() === "" ) {
-            mostrarMensagemNaTela(resultado, "A descrição da equipe não deve estar vazia");
+            mostrarMensagemNaTela(resultado, "A descrição da equipe não deve estar vazia","warning");
             return false;
         }
         return true;

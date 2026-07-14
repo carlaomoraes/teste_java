@@ -23,6 +23,7 @@
     <div class="abas-container">
         <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')">Geral</button>
         <button class="aba-botao" onclick="alternarAba(event, 'equipe')">Equipes</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'configuracao')">Configuração</button>
     </div>
     <div id="geral" class="conteudo-aba ativo">
         <div class="form-grid">
@@ -42,23 +43,44 @@
                 <label>Código</label>
                 <input type="text" id="codempreendimento" oninput="converterMaiusculo(this)" maxlength="10">
             </div>
-            <div>
-                <label>Status</label>
-                <select id="comboStatus">
-                    <option value="">-- Selecione o status --</option>
-                </select>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">
+                    Status
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-buildings"></i>
+                    </span>
+                    <select class="form-select" id="comboStatus">
+                        <option value="">-- Selecione status ---</option>
+                    </select>
+                </div>
             </div>
-            <div>
-                <label>Pioridade</label>
-                <select id="comboPrioridade">
-                    <option value="">-- Selecione prioridade --</option>
-                </select>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">
+                    Prioridades
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-buildings"></i>
+                    </span>
+                    <select class="form-select" id="comboPrioridade">
+                        <option value="">-- Selecione status ---</option>
+                    </select>
+                </div>
             </div>
-            <div>
-                <label>Gestor</label>
-                <select id="comboGestor">
-                    <option value="">-- Selecione o gestor --</option>
-                </select>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">
+                    Gestor
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-buildings"></i>
+                    </span>
+                    <select class="form-select" id="comboGestor">
+                        <option value="">-- Selecione gestor ---</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <label>Data inicial</label>
@@ -105,6 +127,70 @@
             </div>
         </div>
     </div>
+    <div id="configuracao" class="conteudo-aba">
+
+        <h5 class="mb-3">Planejamento da Sprint</h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-3">
+                <label class="form-label">Duração mínima (dias)</label>
+                <input type="number" class="form-control"
+                       id="duracao_min_sprint" min="1">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Duração máxima (dias)</label>
+                <input type="number" class="form-control"
+                       id="duracao_max_sprint" min="1">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Horas de trabalho/dia</label>
+                <input type="number" class="form-control"
+                       id="horas_Trabalho_Dia" min="1" max="24">
+            </div>
+
+        </div>
+
+        <hr>
+        <div class="form-check mb-2">
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="permitir_sprint_sobreposta">
+
+            <label class="form-check-label" for="permitir_sprint_sobreposta">
+                Permitir Sprint sobreposta
+            </label>
+        </div>
+
+        <div class="form-check mb-2">
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="permitir_multiplas_sprint_ativas">
+
+            <label class="form-check-label" for="permitir_multiplas_sprint_ativas">
+                Permitir múltiplas Sprints ativas
+            </label>
+        </div>
+
+        <div class="form-check mb-2">
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="considerar_feriados">
+
+            <label class="form-check-label" for="considerar_feriados">
+                Considerar ausências no planejamento
+            </label>
+        </div>
+        <hr>
+
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn btn-salvar" onclick="salvarConfiguracao(document.getElementById('idempreendimento').value);">Salvar configuração</button>
+        </div>
+        <div id="resultadoconfiguracao"></div>
+
+    </div>
 </div>
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
@@ -112,8 +198,9 @@
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
+    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
 
-        function alternarAba(event, idAbaDestino) {
+    function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
         const conteudos = document.querySelectorAll('.conteudo-aba');
         conteudos.forEach(conteudo => {
@@ -147,7 +234,7 @@
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar gestor: "+error.message,"error");
+            mostrarMensagemNaTela(resultado, "Erro ao carregar gestor: "+error.message,"error");
         }
     }
     async function carregarPrioridade() {
@@ -162,7 +249,7 @@
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar prioridade: "+error.message,"error");
+            mostrarMensagemNaTela(resultado, "Erro ao carregar prioridade: "+error.message,"error");
         }
     }
     async function carregarStatus() {
@@ -177,7 +264,7 @@
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar status: " + error.message, "error");
+            mostrarMensagemNaTela(resultado, "Erro ao carregar status: " + error.message, "error");
         }
     }
     function converterMaiusculo(campo) {
@@ -380,11 +467,12 @@
                 document.getElementById('data_inicio').value = Empreendimento.data_inicio;
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
                 // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-                mostrarMensagemNaTela("Equipe selecionada: " + Empreendimento.descempreendimento, "green");
-                montaEquipes(Empreendimento.idempreendimento);
+                resultado.innerHTML = '';
+                await montaEquipes(Empreendimento.idempreendimento);
+                await carregarConfiguracao(Empreendimento.idempreendimento);
             }
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao carregar Empreendimento: "+error.message,"error");
+            mostrarMensagemNaTela(resultado,"Erro ao carregar Empreendimento: "+error.message,"error");
         }
     }
     async function excluirEmpreendimento(idEmpreendimento) {
@@ -392,10 +480,10 @@
             const response = await fetch(`${API_EMPREENDIMENTO}/excluir/${idEmpreendimento}`, {
                 method: 'DELETE'
             });
-            mostrarMensagemNaTela("Empreendimento excluído com sucesso", "success");
+            mostrarMensagemNaTela(resultado,"Empreendimento excluído com sucesso", "success");
             limpaFormulario();
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao excluir: " + error.message, "error");
+            mostrarMensagemNaTela(resultado,"Erro ao excluir: " + error.message, "error");
         }
     }
     async function limpaFormulario() {
@@ -405,6 +493,67 @@
         document.getElementById('cor').value = "";
         document.getElementById('bloqueado').checked = false;
     }
+    async function carregarConfiguracao(idEmpreendimento) {
+        try {
+            const response = await fetch(`${API_CONFIGURACAO}/buscaPorEmpreendimento/${idEmpreendimento}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela(resultado,"Configuração não encontrada","error");
+                return;
+            }
+            const data = await response.json();
+            document.getElementById("idempreendimento").value = data.empreendimento.idempreendimento;
+            document.getElementById("duracao_min_sprint").value = data.duracao_min_sprint;
+            document.getElementById("duracao_min_sprint").value = data.duracao_max_sprint;
+            document.getElementById("horas_Trabalho_Dia").value = data.horas_trabalho_dia;
+            document.getElementById("permitir_sprint_sobreposta").checked =  data.permitir_sprint_sobreposta;
+            document.getElementById("permitir_multiplas_sprint_ativas").checked = data.permitir_multiplas_sprint_ativas;
+            document.getElementById("considerar_feriados").checked = data.considerar_feriados;
+        } catch (error) {
+            mostrarMensagemNaTela(resultado, "Erro ao carregar as configurações: " + error.message,"error");
+        }
+    }
+    async function salvarConfiguracao(idEmpreendimento) {
+        if(validaEntrada()) {
+            const duracao_min_sprint = document.getElementById('duracao_min_sprint').value;
+            const duracao_max_sprint = document.getElementById('duracao_max_sprint').value;
+            if(document.getElementById("permitir_sprint_sobreposta").checked)
+                permitirSprintSobreposta = 1;
+            else
+                permitirSprintSobreposta = 0;
+            if(document.getElementById("permitir_multiplas_sprint_ativas").checked)
+                permitir_multiplas_sprint_ativas = 1;
+            else
+                permitir_multiplas_sprint_ativas= 0;
+            const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
+            const considerar_Feriados = document.getElementById('considerar_feriados').value;
+            const Configuracao = {
+                idEmpreendimento: Number(idEmpreendimento),
+                duracao_min_sprint: Number(duracao_min_sprint),
+                duracao_max_sprint: Number(duracao_max_sprint),
+                permitir_sprint_sobreposta: permitir_sprint_sobreposta,
+                permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas,
+                considerar_feriados: considerar_Feriados,
+                horas_trabalho_dia: horas_Trabalho_Dia,
+            }
+            try {
+                const response = await fetch(`${API_CONFIGURACAO}/salvar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(Configuracao)
+                });
+                const data = await response.json();
+                mostrarMensagemNaTela(resultado,"Configuração salvo com sucesso! ","success");
+                setTimeout(() => {
+                }, 1000);
+
+            } catch (error) {
+                mostrarMensagemNaTela(resultado,"Erro ao salvar configuração: "+error.message,"error");
+            }
+        }
+    }
+
     function formatarData(data) {
         if (!data) return "";
 
@@ -437,6 +586,32 @@
             <span>${percentual}%</span>
         </div>
     `;
+    }
+    function validaEntrada() {
+        if((MultiploDe7(document.getElementById('duracao_min_sprint').value) &&
+           MultiploDe7(document.getElementById('duracao_max_sprint').value))) {
+            mostrarMensagemNaTela("resultadoconfiguracao","Duração mínima e duração máximo devem ser múltiplo de semana!", "error");
+            return false;
+        }
+        if(Number(document.getElementById('duracao_min_sprint').value) < 7) {
+            mostrarMensagemNaTela("resultadoconfiguracao","A sprint deve ter o mínimo de 7 dias!", "error");
+            return false;
+        }
+        if(Number(document.getElementById('duracao_max_sprint').value) > 30) {
+            mostrarMensagemNaTela("resultadoconfiguracao","A sprint deve ter o máximo de 30 dias!", "error");
+            return false;
+        }
+        if(Number(document.getElementById('duracao_min_sprint').value) >= Number(document.getElementById('duracao_max_sprint').value)) {
+            mostrarMensagemNaTela("resultadoconfiguracao","A duração mínima deve ser menor que a duração máxima!", "error");
+            return false;
+        }
+        if(Number(document.getElementById('horas_Trabalho_Dia').value) > 8) {
+            mostrarMensagemNaTela("resultadoconfiguracao","Horas trabalhadas não devem exceder 8 h/dia!", "error");
+            return false;
+        }
+    }
+    function MultiploDe7(numero) {
+        return numero % 7 !== 0;
     }
 </script>
 </body>
