@@ -72,17 +72,6 @@
     const API_PAPEL = 'http://localhost:8080/papel';
     const API_TIPO_AUSENCIAS = 'http://localhost:8080/tipo_ausencia';
 
-    function converterMaiusculo(campo) {
-        campo.value = campo.value.toUpperCase();
-    }
-
-    function formatarData(data) {
-        if (!data) return "";
-
-        const [ano, mes, dia] = data.split("-");
-        return `${dia}/${mes}/${ano}`;
-    }
-
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
         const conteudos = document.querySelectorAll('.conteudo-aba');

@@ -90,9 +90,6 @@ public class SprintController {
     @GetMapping("/listar_ausencias")
     public List<AusenciaProgramada> listarAusencias(@RequestParam("data_inicio") LocalDate data_inicio,
                                                     @RequestParam("data_fim") LocalDate data_fim) {
-        System.out.println("Início: " + data_inicio);
-        System.out.println("Fim: " + data_fim);
-
         return ausenciaProgramadaRepository.buscarAusenciasDaSprint(data_inicio, data_fim);
     }
 }

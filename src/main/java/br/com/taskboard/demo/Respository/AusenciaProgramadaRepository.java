@@ -23,6 +23,6 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
     order by a.idusuario.nome, a.data_inicio
 """)
     List<AusenciaProgramada> buscarAusenciasDaSprint(
-            @Param("dataInicio") LocalDate data_inicio,
-            @Param("dataFim") LocalDate data_fim);
+            @Param("data_inicio") LocalDate data_inicio,
+            @Param("data_fim") LocalDate data_fim);
 }

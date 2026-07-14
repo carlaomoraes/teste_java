@@ -4,15 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de sprint">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de sprint / Ausencia programada">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/ConfiguracaoController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Configuracao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/ConfiguracaoRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Service/ConfiguracaoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/SprintController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/SprintController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Sprint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Sprint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Empreendimento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Modelo/Empreendimento.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Respository/AusenciaProgramadaUsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +113,7 @@
     "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/test/java/br/com/taskboard/demo/Controller",
+    "last_directory_selection": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/java/br/com/taskboard/demo/Controller",
     "last_opened_file_path": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/css/pages",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -161,10 +164,10 @@
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="br.com.taskboard.demo.Respository" />
-      <recent name="br.com.taskboard.demo.Modelo" />
-      <recent name="br.com.taskboard.demo.DTO" />
       <recent name="br.com.taskboard.demo.Service" />
       <recent name="br.com.taskboard.demo.Controller" />
+      <recent name="br.com.taskboard.demo.Modelo" />
+      <recent name="br.com.taskboard.demo.DTO" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TaskControllerApplication">
@@ -393,14 +396,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00043" summary="Tela de equipes">
-      <option name="closed" value="true" />
-      <created>1781900994047</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1781900994048</updated>
     </task>
     <task id="LOCAL-00044" summary="Ajustes nas classes para refletir as tabelas do BD">
       <option name="closed" value="true" />
@@ -786,7 +781,15 @@
       <option name="project" value="LOCAL" />
       <updated>1783905841897</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="Cadastro de sprint / Ausencia programada">
+      <option name="closed" value="true" />
+      <created>1783965990745</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1783965990745</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -826,7 +829,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cadastro de equipes e membros" />
     <MESSAGE value="Cadastro de equipes e membros - Finalizado" />
     <MESSAGE value="Cadastro de usuario/ausencia finalizado" />
     <MESSAGE value="Cadastro de EPICO/ESTORIA/TAREFA sendo reestruturados" />
@@ -851,7 +853,8 @@
     <MESSAGE value="Cadastro de épicos - ok&#10;Cadastro de estórias - ok &#10;Cadastro de tarefas - ok&#10;Exclusão lógica desses itens" />
     <MESSAGE value="Cadastro de épicos - ok&#10;Cadastro de estórias - ok&#10;Cadastro de tarefas - ok&#10;Exclusão lógica desses itens" />
     <MESSAGE value="Cadastro de sprint" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de sprint" />
+    <MESSAGE value="Cadastro de sprint / Ausencia programada" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de sprint / Ausencia programada" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

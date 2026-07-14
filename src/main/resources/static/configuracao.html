@@ -3,156 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuração - TaskController 1.0</title>
-    <!-- Bootstrap -->
+    <title>Administração - TaskController 1.0</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
-
-    <!-- CSS Global -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-
-    <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/usuario.css">
+    <link rel="stylesheet" href="css/pages/configuracao.css">
 </head>
-
 <body>
-<script src="js/utils/funcoes.js"></script>
 <div class="container">
-    <h1> - TaskController 1.0</h1>
+    <h1>
+        <i class="bi bi-gear-fill"></i>
+        Administração do TaskController
+    </h1>
 
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'dados-gerais')">Dados Gerais</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">Apresentação da equipe</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'configuracoes')">Configurações</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'tarefas')">Tipos de tarefas</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'sistemas')">Sistemas (SCRM/KANBAM)</button>
+
+        <button class="aba-botao ativa"
+                onclick="alternarAba(event,'geral')">
+            Geral
+        </button>
+
+        <button class="aba-botao"
+                onclick="alternarAba(event,'parametros')">
+            Parâmetros
+        </button>
+
+        <button class="aba-botao"
+                onclick="alternarAba(event,'cadastros')">
+            Cadastros
+        </button>
+
+        <button class="aba-botao"
+                onclick="alternarAba(event,'equipe')">
+            Equipe
+        </button>
+
+        <button class="aba-botao"
+                onclick="alternarAba(event,'sobre')">
+            Sobre
+        </button>
+
     </div>
 
-    <div id="dados-gerais" class="conteudo-aba ativo">
-        <h3>Visão Geral do Projeto</h3>
-        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
-            Projeto elaborado para controle de estórias/tarefas
-        </p>
+    <!-- GERAL -->
+
+    <div id="geral" class="conteudo-aba ativo">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3>Informações do Sistema</h3>
+
+                <table class="table">
+
+                    <tr>
+                        <th>Nome</th>
+                        <td>TaskController</td>
+                    </tr>
+
+                    <tr>
+                        <th>Versão</th>
+                        <td>1.0</td>
+                    </tr>
+
+                    <tr>
+                        <th>Framework</th>
+                        <td>Spring Boot</td>
+                    </tr>
+
+                    <tr>
+                        <th>Banco</th>
+                        <td>MySQL</td>
+                    </tr>
+
+                    <tr>
+                        <th>Frontend</th>
+                        <td>HTML • Bootstrap • JavaScript</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
     </div>
+
+    <!-- PARAMETROS -->
+
+    <div id="parametros" class="conteudo-aba">
+
+        <div class="card">
+
+            <div class="card-body">
+                <h3>Parâmetros da Sprint</h3>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Duração mínima</label>
+                        <input type="number" class="form-control" value="7">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Duração máxima</label>
+                        <input type="number" class="form-control" value="28">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Horas por dia</label>
+                        <input type="number" class="form-control" value="8">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">
+                        Não permitir Sprint sobreposta
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">
+                        Não permitir duas Sprints ativas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">
+                        Considerar ausências no planejamento
+                    </label>
+                </div>
+
+                <br>
+
+                <button class="btn btn-success">
+
+                    Salvar Configurações
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CADASTROS -->
+
+    <div id="cadastros" class="conteudo-aba">
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <div class="card">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-list-task fs-1"></i>
+
+                        <h5>Tipos de Tarefa</h5>
+
+                        <button class="btn btn-primary">
+                            Gerenciar
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-exclamation-circle fs-1"></i>
+
+                        <h5>Tipos de Ausência</h5>
+
+                        <button class="btn btn-primary">
+                            Gerenciar
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-kanban fs-1"></i>
+
+                        <h5>Tipos de Sistema</h5>
+
+                        <button class="btn btn-primary">
+                            Gerenciar
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- EQUIPE -->
 
     <div id="equipe" class="conteudo-aba">
-        <h3>Membros do Time</h3>
-        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
-            • Carlos Eduardo Barboza Moraes - <a href="mailto:carlaomoraes@hotmail.com">carlaomoraes@hotmail.com</a>
 
-        </p>
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3>Equipe de Desenvolvimento</h3>
+
+                <table class="table">
+
+                    <tr>
+
+                        <th>Nome</th>
+
+                        <th>Função</th>
+
+                        <th>E-mail</th>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Carlos Eduardo Barboza Moraes</td>
+
+                        <td>Desenvolvedor</td>
+
+                        <td>carlaomoraes@hotmail.com</td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div id="configuracoes" class="conteudo-aba">
-        <h3>Configurações do Sistema</h3>
-        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
-            Ajuste os parâmetros de integração com a API, chaves de segurança e controle de permissões de usuários para este módulo do sistema.
-        </p>
-    </div>
-    <div id="tarefas" class="conteudo-aba">
-        <h3>Configurações do Sistema</h3>
-        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
-            Lista os tipos de tarefas.
-        </p>
-    </div>
-    <div id="sistemas" class="conteudo-aba">
-        <h3>Configurações do Sistema</h3>
-        <p style="margin-top: 10px; color: #475569; line-height: 1.6;">
-            Lista os tipos de sistemas.(SCRUM/KANBAM)
-        </p>
+    <!-- SOBRE -->
+
+    <div id="sobre" class="conteudo-aba">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3>Sobre</h3>
+
+                <p>
+
+                    O TaskController é um sistema para gerenciamento de projetos
+                    baseado em Scrum e Kanban.
+
+                </p>
+
+                <p>
+
+                    Desenvolvido em Java Spring Boot.
+
+                </p>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="btn-group" data-toggle="buttons-radio">
-        <button type="button" class="btn" onclick="history.back()">Voltar</button>
-    </div>
+    <br>
+
+    <button class="btn btn-secondary"
+            onclick="history.back()">
+
+        Voltar
+
+    </button>
 
 </div>
 
 <script>
-    function alternarAba(event, idAbaDestino) {
-        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
-        const conteudos = document.querySelectorAll('.conteudo-aba');
-        conteudos.forEach(conteudo => {
-            conteudo.classList.remove('ativo');
-        });
-
-        // 2. Pega todos os botões e remove a classe 'ativa'
-        const botoes = document.querySelectorAll('.aba-botao');
-        botoes.forEach(botao => {
-            botao.classList.remove('ativa');
-        });
-
-        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
-        document.getElementById(idAbaDestino).classList.add('ativo');
-
-        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
-        event.currentTarget.classList.add('ativa');
+    function alternarAba(event,id){
+        document.querySelectorAll(".conteudo-aba")
+            .forEach(c=>c.classList.remove("ativo"));
+        document.querySelectorAll(".aba-botao")
+            .forEach(b=>b.classList.remove("ativa"));
+        document.getElementById(id).classList.add("ativo");
+        event.currentTarget.classList.add("ativa");
     }
-    //--------------------- MANIPULAÇÃO DOS DADOS
-    //---------------------LISTAR OS TIPOS DE TAREFAS
-    const API_TIPO_TAREFAS = 'http://localhost:8080/tipo_tarefa'
-    async function carregarTiposTarefas() {
-        try {
-            const response = await fetch(`${API_TIPO_TAREFAS}/listar`);
-            const data = await response.json();
-            let tabela = `
-            <table class="table" >
-                <thead>
-                    <tr>
-                        <th class="table-header">ID</th>
-                        <th class="table-header">Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-            data.forEach(tipo_tarefa => {
-                tabela += `<tr>
-                                <td>${tipo_tarefa.idtipo_tarefa}</td>
-                                <td>${tipo_tarefa.desctipo_tarefa}</td>
-                           </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('tarefas').innerHTML = tabela;
-        } catch (error) {
-            document.getElementById('tarefas').innerHTML =
-                `<p style="color:red;">Erro ao listar tipos de tarefas</p>`;
-        }
-    }
-    const API_SISTEMAS = 'http://localhost:8080/sistemas'
-    async function carregarSistemas() {
-        try {
-            const response = await fetch(`${API_SISTEMAS}/listar`);
-            const data = await response.json();
-            let tabela = `
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="table-header">ID</th>
-                        <th class="table-header">Descrição</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-            data.forEach(sistema => {
-                tabela += `<tr>
-                                <th>${sistema.idsistema}</th>
-                                <th>${sistema.nomesistema}</th>
-                           </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('sistemas').innerHTML = tabela;
-        } catch (error) {
-            document.getElementById('sistemas').innerHTML =
-                `<p style="color:red;">Erro ao listar tipos de sistemas</p>`;
-        }
-    }
-    // Inicializa os seletores assim que o HTML carregar completamente
-    document.addEventListener('DOMContentLoaded', () => {
-        carregarTiposTarefas();
-        carregarSistemas();
-    });
 
+    async function buscarConfiguracao(idConfiguracao) {
 
+    }
+    async function salvarConfiguracao(idConfiguracao) {
+
+    }
 </script>
 
 </body>
