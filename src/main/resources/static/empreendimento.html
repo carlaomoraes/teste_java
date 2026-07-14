@@ -287,22 +287,24 @@
             containerTabela.classList.remove('tabela-travada');
         }
     });
-    async function adicionarMembro(empreendimemto){
+    async function adicionarMembro(){
         const idEquipe = document.getElementById("idequipe").value;
+        const idEmpreendimento = document.getElementById("idempreendimento").value;
         if(!idEquipe || !equipeDisponivelSelecionada) {
             mostrarMensagemNaTela("Selecione uma equipe disponível e garanta que o empreendimento possua um ID válido.");
             return;
         }
-        await fetch(`http://localhost:8080/${empreendimemto}/equipes/${equipeDisponivelSelecionada}`, { method:"POST" });
+        await fetch(`http://localhost:8080/${idEmpreendimento}/equipes/${equipeDisponivelSelecionada}`, { method:"POST" });
         montaEquipes(idEquipe);
     }
 
-    async function removerMembro(empreendimemto){
+    async function removerMembro(){
         const idEquipe = document.getElementById("idequipe").value;
+        const idEmpreendimento = document.getElementById("idempreendimento").value;
         if(!idEquipe || !equipeSelecionada) {
             return;
         }
-        await fetch(`http://localhost:8080/equipes/${empreendimemto}/equipes/${equipeSelecionada}`, { method:"DELETE" });
+        await fetch(`http://localhost:8080/equipes/${idEmpreendimento}/equipes/${equipeSelecionada}`, { method:"DELETE" });
         montaEquipes(idEquipe);
     }
 
