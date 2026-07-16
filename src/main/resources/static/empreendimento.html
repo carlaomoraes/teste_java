@@ -247,7 +247,7 @@
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(resultado, "Erro ao carregar gestor: "+error.message,"error");
+            mostrarMensagemNaTela("resultado", "Erro ao carregar gestor: "+error.message,"error");
         }
     }
     async function carregarPrioridade() {
@@ -262,7 +262,7 @@
                 comboGestor.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(resultado, "Erro ao carregar prioridade: "+error.message,"error");
+            mostrarMensagemNaTela("resultado", "Erro ao carregar prioridade: "+error.message,"error");
         }
     }
     async function carregarStatus() {
@@ -277,7 +277,7 @@
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela(resultado, "Erro ao carregar status: " + error.message, "error");
+            mostrarMensagemNaTela("resultado", "Erro ao carregar status: " + error.message, "error");
         }
     }
     function converterMaiusculo(campo) {
@@ -291,7 +291,7 @@
         carregarPrioridade();
     });
     document.addEventListener('visibilitychange', () => {
-        const containerTabela = document.getElementById('resultado');
+        const containerTabela = document.getElementById('"resultado"');
         if (!containerTabela) return;
 
         if (document.hidden) {
@@ -368,7 +368,7 @@
             equipeDisponivelSelecionada = null;
             equipeSelecionada = null;
         } catch(e) {
-            mostrarMensagemNaTela("Erro ao montar colunas de membros: " + e.message);
+            mostrarMensagemNaTela("resultado","Erro ao montar colunas de membros: " + e.message);
         }
     }
 
@@ -379,7 +379,7 @@
         const descempreendimento = document.getElementById('descempreendimento').value;
         const data_inicio = document.getElementById('data_inicio').value;
         const data_fim = document.getElementById('data_fim').value;
-        const sigla = document.getElementById('sigla').value;
+        const siglaempreendimento = document.getElementById('descempreendimento').value;
         const cor = corHexValida(document.getElementById(cor).value);
         const codempreendimento = document.getElementById('codempreendimento').value;
         if(document.getElementById('bloqueado').checked) {
@@ -395,7 +395,7 @@
             bloqueado: campoBlooqueado,
             data_inicio: data_inicio || hoje,
             data_fim: data_fim || hoje,
-            sigla: sigla || null,
+            siglaempreendimento: siglaempreendimento || null,
             cor: cor || "6c757d",
             codempreendimento: codempreendimento || null,
             gestor: {
@@ -414,14 +414,14 @@
                 body: JSON.stringify(Empreendimento)
             });
             const data = await response.json();
-            mostrarMensagemNaTela("Empreendimento salvo com sucesso! ","success");
+            mostrarMensagemNaTela("resultado","Empreendimento salvo com sucesso! ","success");
             setTimeout(() => {
                 limpaFormulario();
                 listarEmpreendimentos();
             }, 1000);
 
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao salvar Empreendimento: "+error.message,"error");
+            mostrarMensagemNaTela("resultado","Erro ao salvar Empreendimento: "+error.message,"error");
         }
     }
     async function listarEmpreendimentos() {
@@ -458,7 +458,7 @@
                                 <td> <button type="button" class="btn" onclick="excluirEmpreendimento(${emp.idempreendimento})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
+            document.getElementById("resultado").innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("resultado","Erro ao listar Empreendimentos: " + error.message,"error");
         }
@@ -472,6 +472,7 @@
             } else {
                 document.getElementById('idempreendimento').value = Empreendimento.idempreendimento;
                 document.getElementById('descempreendimento').value = Empreendimento.descempreendimento;
+                document.getElementById('siglaempreendimento').value = Empreendimento.siglaempreendimento;
                 document.getElementById('cor').value = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
                 // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                 document.getElementById('bloqueado').checked = Empreendimento.bloqueado || 0;
@@ -482,7 +483,7 @@
                 document.getElementById('data_inicio').value = Empreendimento.data_inicio;
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
                 // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-                resultado.innerHTML = '';
+                "resultado".innerHTML = '';
                 montaEquipes(Empreendimento.idempreendimento);
                 carregarConfiguracao(Empreendimento.idempreendimento);
             }
@@ -545,7 +546,7 @@
             const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
             const considerar_Feriados = document.getElementById('considerar_feriados').value;
             const Configuracao = {
-                idconfiguracao: Configuracao.idconfiguracao,
+                idconfiguracao: configuracaoSprint.idconfiguracao,
                 empreendimento: {
                     idempreendimento: Number(idEmpreendimento)
                 },
@@ -568,7 +569,6 @@
                 mostrarMensagemNaTela("resultadoconfiguracao","Configuração salvo com sucesso! ","success");
                 setTimeout(() => {
                 }, 1000);
-
             } catch (error) {
                 mostrarMensagemNaTela("resultadoconfiguracao","Erro ao salvar configuração: "+error.message,"error");
             }
