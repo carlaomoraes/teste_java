@@ -15,6 +15,7 @@
 
     <!-- CSS específico da tela -->
     <link rel="stylesheet" href="css/pages/equipe.css">
+    <link rel="stylesheet" href="css/pages/funcoes.css">
 </head>
 <body>
 <script src="js/utils/funcoes.js"></script>
@@ -66,6 +67,7 @@
                 <div id="usuariosEquipe" class="membros-lista-custom"></div>
             </div>
         </div>
+        <div id="resultadoequipe"></div>
     </div>
 
     <div id="resultado"></div>
@@ -150,14 +152,14 @@
             usuarioDisponivelSelecionado = null;
             usuarioEquipeSelecionado = null;
         } catch(e) {
-            mostrarMensagemNaTela(resultado, "Erro ao montar colunas de membros: " + e.message);
+            mostrarMensagemNaTela("resultadoequipe", "Erro ao montar colunas de membros: " + e.message);
         }
     }
 
     async function adicionarMembro(){
         const idEquipe = document.getElementById("idequipe").value;
         if(!idEquipe || !usuarioDisponivelSelecionado) {
-            mostrarMensagemNaTela(resultado, "Selecione um usuário disponível e garanta que a equipe possua um ID válido.");
+            mostrarMensagemNaTela("resultadoequipe", "Selecione um usuário disponível e garanta que a equipe possua um ID válido.");
             return;
         }
         await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioDisponivelSelecionado}`, { method:"POST" });
@@ -211,13 +213,13 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(equipe)
                 });
-                mostrarMensagemNaTela(resultado, "Gravado com sucesso!", "green");
+                mostrarMensagemNaTela("resultado", "Gravado com sucesso!", "success");
                 setTimeout(() => {
                     limpaFormulario();
                     listarEquipes();
                 }, 1000);
             } catch (error) {
-                mostrarMensagemNaTela(resultado, "Erro ao salvar: " + error.message);
+                mostrarMensagemNaTela("resultado", "Erro ao salvar: " + error.message, "error");
             }
         }
     }
@@ -255,7 +257,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela(resultado, "Erro ao listar: " + error.message);
+            mostrarMensagemNaTela("resultado", "Erro ao listar: " + error.message, "error");
         }
     }
 
@@ -263,11 +265,11 @@
         try {
             const response = await fetch(`${API_EQUIPES}/excluir/${idequipe}`, { method: 'DELETE' });
             const texto = await response.text();
-            mostrarMensagemNaTela(texto || 'Equipe excluída com sucesso', "green");
+            mostrarMensagemNaTela("resultadoequipe",texto || 'Equipe excluída com sucesso', "success");
             limpaFormulario();
             listarEquipes();
         } catch (error) {
-            mostrarMensagemNaTela(resultado, error.message, "error");
+            mostrarMensagemNaTela("resultadoequipe", error.message, "error");
         }
     }
     async function buscarPorLinha(id) {
@@ -283,17 +285,17 @@
             resultado.innerHTML = '';
             montaEquipes(equipe.idequipe);
         } catch (error) {
-            mostrarMensagemNaTela(resultado, "Erro ao carregar: " + error.message, "error");
+            mostrarMensagemNaTela("resultado", "Erro ao carregar: " + error.message, "error");
         }
     }
 
     function validaEntrada() {
         if(document.getElementById('nomeequipe').value.trim() === "" ) {
-            mostrarMensagemNaTela(resultado, "O nome da equipe não deve estar vazio", "warning");
+            mostrarMensagemNaTela("resultado", "O nome da equipe não deve estar vazio", "warning");
             return false;
         }
         if(document.getElementById('descequipe').value.trim() === "" ) {
-            mostrarMensagemNaTela(resultado, "A descrição da equipe não deve estar vazia","warning");
+            mostrarMensagemNaTela("resultado", "A descrição da equipe não deve estar vazia","warning");
             return false;
         }
         return true;

@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Configuração da barra de botões">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Resolvido problema de associação equipes e empreendimento.html">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/funcoes.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EmpreendimentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EmpreendimentoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/equipe.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/estoria.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/estoria.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,10 +33,10 @@
         <option value="Interface" />
         <option value="Enum" />
         <option value="Exception" />
-        <option value="CSS File" />
         <option value="Class" />
         <option value="HTML File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -388,14 +395,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00050" summary="Cadastro de equipes e membros">
-      <option name="closed" value="true" />
-      <created>1782154429009</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1782154429010</updated>
     </task>
     <task id="LOCAL-00051" summary="Cadastro de equipes e membros - Finalizado">
       <option name="closed" value="true" />
@@ -781,7 +780,15 @@
       <option name="project" value="LOCAL" />
       <updated>1784210173178</updated>
     </task>
-    <option name="localTasksCounter" value="99" />
+    <task id="LOCAL-00099" summary="Resolvido problema de associação equipes e empreendimento.html">
+      <option name="closed" value="true" />
+      <created>1784214055909</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1784214055909</updated>
+    </task>
+    <option name="localTasksCounter" value="100" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -821,7 +828,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cadastro de épico" />
     <MESSAGE value="Cadastro de Empreendimento" />
     <MESSAGE value="Cadastro de Empreendimento finalizado" />
     <MESSAGE value="Cadastro de Empreendimento funcionando" />
@@ -846,7 +852,8 @@
     <MESSAGE value="Cadastro sprint / empreendimento" />
     <MESSAGE value="Cadastro empreendimento / configuração" />
     <MESSAGE value="Configuração da barra de botões" />
-    <option name="LAST_COMMIT_MESSAGE" value="Configuração da barra de botões" />
+    <MESSAGE value="Resolvido problema de associação equipes e empreendimento.html" />
+    <option name="LAST_COMMIT_MESSAGE" value="Resolvido problema de associação equipes e empreendimento.html" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

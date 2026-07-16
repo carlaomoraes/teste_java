@@ -15,6 +15,7 @@
 
     <!-- CSS específico da tela -->
     <link rel="stylesheet" href="css/pages/sprint.css">
+    <link rel="stylesheet" href="css/pages/funcoes.css">
 </head>
 <body>
 <script src="js/utils/funcoes.js"></script>
@@ -105,6 +106,12 @@
 
         // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
+        if (idAbaDestino === "ausencias" ) {
+            const sprint = document.getElementById("idsprint").value;
+            if(!sprint) {
+                mostrarMensagemNaTela("resultadoausencia", "Sprint não selecionada!", "error");
+            }
+        }
     }
     async function carregarConfiguracao() {
         const idEmpreendimento = document.getElementById("idempreendimento").value;
@@ -182,7 +189,7 @@
                 limpaFormulario();
                 listarSprints();
             } catch (error) {
-                mostrarMensagemNaTela("resultadigeral", "Erro ao salvar: " + error.message, "error");
+                mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message, "error");
             }
         }
     }
@@ -271,7 +278,7 @@
         try {
             const response = await fetch(`${API}/excluir/${idsprint}`, { method: 'DELETE' });
             const texto = await response.text();
-            mostrarMensagemNaTela("resultadigeral", "Encerrada com sucesso ", "success");
+            mostrarMensagemNaTela("resultadogeral", "Encerrada com sucesso ", "success");
             limpaFormulario();
             listarSprints();
         } catch (error) {
@@ -321,7 +328,7 @@
                     <tbody>
                         <tr>
                             <td colspan="4" style="text-align:center;">
-                                Nenhuma ausência cadastrada
+                                <p style="color:red">Nenhuma ausência cadastrada para esta sprint!</p>
                             </td>
                         </tr>
                     </tbody>

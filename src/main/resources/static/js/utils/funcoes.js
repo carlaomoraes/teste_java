@@ -14,7 +14,7 @@ function mostrarMensagemNaTela(resultado, mensagem, tipoMensagem = "error") {
             break;
     }
     if (container) {
-        container.innerHTML = `<p style="color:${cor};">${mensagem}</p>`;
+        container.innerHTML = `<p class="mensagem-centralizada" style="color:${cor}; text-align: center;">${mensagem}</p>`;
     } else {
         alert(mensagem); // Feedback visual simples caso não tenha o container
     }
