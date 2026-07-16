@@ -41,6 +41,7 @@
             </label>
         </div>
         <div class="btn-group">
+            <button type="button" class="btn btn-add"  onclick="criarEquipes()">Novo</button>
             <button type="button" class="btn btn-salvar" onclick="salvarEquipes()">Salvar</button>
             <button type="button" class="btn btn-listar" onclick="listarEquipes()">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
@@ -95,6 +96,9 @@
         }
     });
 
+    async function criarEquipes() {
+        limpaFormulario();
+    }
     async function limpaFormulario() {
         document.getElementById('idequipe').value = "";
         document.getElementById('nomeequipe').value = "";
@@ -102,6 +106,7 @@
         document.getElementById('ativa').checked = false;
         usuarioDisponivelSelecionado = null;
         usuarioEquipeSelecionado = null;
+        mostrarMensagemNaTela("resultado", "", "error");
     }
 
     // Renderiza a lista customizada mapeando os eventos de clique

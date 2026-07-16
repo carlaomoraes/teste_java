@@ -1,4 +1,4 @@
-class Toolbar {
+class toolbar {
 
     acao(idBotao, callback){
         const botao = document.getElementById(idBotao);

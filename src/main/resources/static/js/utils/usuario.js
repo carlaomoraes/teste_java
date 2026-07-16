@@ -1,6 +1,9 @@
-const toolbar = new Toolbar();
+const toolbar = new toolbar();
 
-toolbar.salvar(salvarUsuario);
-toolbar.listar(listarUsuarios);
-toolbar.voltar(() => history.back());
-toolbar.novo(novoUsuario);
+toolbar.criar("toolbar");
+
+toolbar.acao("btnNovo", novoUsuario);
+toolbar.acao("btnSalvar", salvarUsuario);
+toolbar.acao("btnListar", listarUsuarios);
+toolbar.acao("btnCancelar", cancelarUsuario);
+toolbar.acao("btnVoltar", () => history.back());

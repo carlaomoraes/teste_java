@@ -100,7 +100,8 @@
             </label>
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="salvarEmpreendimento();">Salvar</button>
+            <button type="button" class="btn btn-add"  onclick="criarEmpreendimento()">Novo</button>
+            <button type="button" class="btn btn-salvar" onclick="salvarEmpreendimento()">Salvar</button>
             <button type="button" class="btn btn-listar"  onclick="listarEmpreendimentos()">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
@@ -301,6 +302,9 @@
             containerTabela.classList.remove('tabela-travada');
         }
     });
+    async function criarEmpreendimento() {
+        limpaFormulario();
+    }
     async function adicionarMembro() {
         const idEquipe = equipeDisponivelSelecionada;
         const idEmpreendimento = document.getElementById("idempreendimento").value;
@@ -533,8 +537,8 @@
                 document.getElementById('comboGestor').value = Empreendimento.idgestor || 0;
                 document.getElementById('data_inicio').value = Empreendimento.data_inicio;
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
-                // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-                "resultado".innerHTML = '';
+                // Limpa mensagens e monta equipe se o empreendimento mudar de aba depois
+                mostrarMensagemNaTela("resultado", "Empreendimento selecionado: " +  Empreendimento.descempreendimento, "green");
                 montaEquipes(Empreendimento.idempreendimento);
                 carregarConfiguracao(Empreendimento.idempreendimento);
             }
@@ -553,7 +557,7 @@
             mostrarMensagemNaTela("resultado","Erro ao excluir: " + error.message, "error");
         }
     }
-    async function limpaFormulario() {
+    function limpaFormulario() {
         document.getElementById('idempreendimento').value = "";
         document.getElementById('descempreendimento').value = "";
         document.getElementById('codigo').value = "";
@@ -561,6 +565,7 @@
         document.getElementById('bloqueado').checked = false;
         equipeDisponivelSelecionada = null;
         equipeSelecionada = null;
+        mostrarMensagemNaTela("resultado","","success");
     }
     async function carregarConfiguracao(idEmpreendimento) {
         try {

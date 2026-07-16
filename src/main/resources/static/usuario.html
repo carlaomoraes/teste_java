@@ -39,9 +39,10 @@
             <input type="checkbox" id="ativo" value="1"> Usuário Ativo
         </label>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn"  onclick="salvarUsuario()">Salvar</button>
-            <button type="button" class="btn" onclick="listarUsuarios()">Listar</button>
-            <button type="button" class="btn" onclick="history.back()">Voltar</button>
+            <button type="button" class="btn btn-add"  onclick="criarUsuario()">Novo</button>
+            <button type="button" class="btn btn-salvar"  onclick="salvarUsuario()">Salvar</button>
+            <button type="button" class="btn btn-listar" onclick="listarUsuarios()">Listar</button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado"></div>
     </div>
@@ -131,6 +132,9 @@
         carregarTipoAusencia();
         carregarPapel();
     });
+    async function criarUsuario() {
+        await limparFormulario();
+    }
     async function salvarUsuario() {
         const idusuario = document.getElementById("idusuario").value;
         const nome = document.getElementById('nome').value;
@@ -162,12 +166,23 @@
             const data = await response.json();
             mostrarMensagemNaTela("resultado","Gravado com sucesso!", "success");
             setTimeout(() => {
-                limparCampos();
+                limparFormulario();
                 listarUsuarios();
             }, 1000);
         } catch (error) {
             mostrarMensagemNaTela("resultado","Erro ao gravar usuário: "+error.message, "error");
         }
+    }
+    async function limparFormulario() {
+        document.getElementById('idusuario').value = "";
+        document.getElementById('nome').value = "";
+        document.getElementById('login').value = "";
+        document.getElementById('email').value = "";
+        document.getElementById('senha').value = "";
+        document.getElementById('alterasenha').checked = false;
+        document.getElementById('ativo').checked = false;
+        document.getElementById('comboPapel').value = "";
+        mostrarMensagemNaTela("resultado", "", "error");
     }
     async function buscarPorLinha(id) {
         try {
@@ -187,6 +202,8 @@
             document.getElementById('comboPapel').value = usuario.papel.idpapel;
             sessionStorage.setItem('idusuario',usuario.idusuario);
             listarAusencias(sessionStorage.getItem('idusuario'));
+            mostrarMensagemNaTela("resultado", "Usuário selecionado: " +  usuario.nome, "success");
+
         } catch (error) {
             mostrarMensagemNaTela("resultado","Erro ao buscar usuário: "+error.message,"error");
         }

@@ -200,9 +200,10 @@
         var data_inicio;
         try {
             const response = await fetch(`${API}/${id}`);
-            if (!response.ok)
+            if (!response.ok) {
                 mostrarMensagemNaTela("resultadogeral", "Sprint não encontrada", "warnning");
-
+                return;
+            }
             const sprint = await response.json();
             data_inicio = sprint.dtiniciosprint || hoje;
             data_final = sprint.dtfinalsprint || hoje;
