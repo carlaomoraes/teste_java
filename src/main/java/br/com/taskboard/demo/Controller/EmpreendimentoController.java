@@ -93,7 +93,7 @@ public class EmpreendimentoController {
     // EQUIPES
     //==========================
 
-    @PostMapping("/{idEmpreendimento}/equipes/{idEquipe}")
+    @PostMapping("/{idEmpreendimento}/equipes/adicionar/{idEquipe}")
     public ResponseEntity<Void> adicionarEquipe(
             @PathVariable Long idEmpreendimento,
             @PathVariable Long idEquipe) {
@@ -103,7 +103,7 @@ public class EmpreendimentoController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/{idEmpreendimento}/equipes/{idEquipe}")
+    @DeleteMapping("/{idEmpreendimento}/equipes/excluir/{idEquipe}")
     public ResponseEntity<Void> removerEquipe(
             @PathVariable Long idEmpreendimento,
             @PathVariable Long idEquipe) {

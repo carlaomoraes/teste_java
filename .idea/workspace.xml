@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro empreendimento / configuração">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/barra.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/barra.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/utils/Toolbar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/utils/usuario.js" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Configuração da barra de botões">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EmpreendimentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/Controller/EmpreendimentoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -392,14 +388,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00049" summary="Cadastro de equipes e membros">
-      <option name="closed" value="true" />
-      <created>1782141378531</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1782141378531</updated>
     </task>
     <task id="LOCAL-00050" summary="Cadastro de equipes e membros">
       <option name="closed" value="true" />
@@ -785,7 +773,15 @@
       <option name="project" value="LOCAL" />
       <updated>1784170741050</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="Configuração da barra de botões">
+      <option name="closed" value="true" />
+      <created>1784210173177</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1784210173178</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -825,7 +821,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="DTO - Response/Request" />
     <MESSAGE value="Cadastro de épico" />
     <MESSAGE value="Cadastro de Empreendimento" />
     <MESSAGE value="Cadastro de Empreendimento finalizado" />
@@ -850,7 +845,8 @@
     <MESSAGE value="Cadastro de Configuracao" />
     <MESSAGE value="Cadastro sprint / empreendimento" />
     <MESSAGE value="Cadastro empreendimento / configuração" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro empreendimento / configuração" />
+    <MESSAGE value="Configuração da barra de botões" />
+    <option name="LAST_COMMIT_MESSAGE" value="Configuração da barra de botões" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -108,7 +108,7 @@
     <div id="equipe" class="conteudo-aba">
         <div class="membros-container">
             <div class="membros-coluna">
-                <h2>Usuários disponíveis</h2>
+                <h2>Equipes disponíveis</h2>
                 <div id="usuariosDisponiveis" class="membros-lista-custom"></div>
             </div>
 
@@ -122,10 +122,11 @@
             </div>
 
             <div class="membros-coluna">
-                <h2>Membros da equipe</h2>
+                <h2>Equipes associadas</h2>
                 <div id="usuariosEquipe" class="membros-lista-custom"></div>
             </div>
         </div>
+        <div id="resultadoequipe"></div>
     </div>
     <div id="configuracao" class="conteudo-aba">
 
@@ -206,6 +207,9 @@
         considerar_feriados: false
     };
 
+    let equipeDisponivelSelecionada = null;
+    let equipeSelecionada = null;
+
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_STATUS = 'http://localhost:8080/status_entidades';
@@ -280,10 +284,6 @@
             mostrarMensagemNaTela("resultado", "Erro ao carregar status: " + error.message, "error");
         }
     }
-    function converterMaiusculo(campo) {
-        campo.value = campo.value.toUpperCase();
-    }
-
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
         carregarGestor();
@@ -300,27 +300,77 @@
             containerTabela.classList.remove('tabela-travada');
         }
     });
-    async function adicionarMembro(){
-        const idEquipe = document.getElementById("idequipe").value;
+    async function adicionarMembro() {
+        const idEquipe = equipeDisponivelSelecionada;
         const idEmpreendimento = document.getElementById("idempreendimento").value;
-        if(!idEquipe || !equipeDisponivelSelecionada) {
-            mostrarMensagemNaTela("Selecione uma equipe disponível e garanta que o empreendimento possua um ID válido.");
+
+        if (!idEmpreendimento || !equipeDisponivelSelecionada) {
+            mostrarMensagemNaTela("resultadoequipe","Selecione um empreendimento.", "warning");
             return;
         }
-        await fetch(`http://localhost:8080/${idEmpreendimento}/equipes/${equipeDisponivelSelecionada}`, { method:"POST" });
-        montaEquipes(idEquipe);
-    }
 
-    async function removerMembro(){
-        const idEquipe = document.getElementById("idequipe").value;
-        const idEmpreendimento = document.getElementById("idempreendimento").value;
-        if(!idEquipe || !equipeSelecionada) {
+        if (!equipeDisponivelSelecionada) {
+            mostrarMensagemNaTela("resultadoequipe","Selecione uma equipe.", "warning");
             return;
         }
-        await fetch(`http://localhost:8080/equipes/${idEmpreendimento}/equipes/${equipeSelecionada}`, { method:"DELETE" });
-        montaEquipes(idEquipe);
-    }
 
+        try {
+            const response = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}/equipes/adicionar/${idEquipe}`,
+                {
+                    method: "POST"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Erro ao adicionar equipe ao empreendimento.");
+            }
+
+            mostrarMensagemNaTela("resultadoequipe","Equipe adicionada com sucesso.", "success");
+
+            // Atualiza as listas
+            montaEquipes(idEmpreendimento);
+
+        } catch (erro) {
+            console.error(erro);
+            mostrarMensagemNaTela("resultadoequipe","Erro ao adicionar equipe: "+error, "error");
+        }
+    }
+    async function removerMembro() {
+        const idEquipe = equipeSelecionada;
+        const idEmpreendimento = document.getElementById("idempreendimento").value;
+
+        if (!idEmpreendimento) {
+            mostrarMensagemNaTela("resultadoequipe","Selecione um empreendimento.", "error");
+            return;
+        }
+
+        if (!idEquipe) {
+            mostrarMensagemNaTela("resultadoequipe","Selecione uma equipe.", "error");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${API_EMPREENDIMENTO}/${idEmpreendimento}/equipes/excluir/${idEquipe}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Erro ao remover equipe do empreendimento.");
+            }
+
+            mostrarMensagemNaTela("resultadoequipe","Equipe removida com sucesso.", "success");
+
+            // Atualiza as listas
+            montaEquipes(idEmpreendimento);
+
+        } catch (erro) {
+            console.error(erro);
+            mostrarMensagemNaTela("resultadoequipe","Erro ao remover equipe: "+erro.value, "error");
+        }
+    }
     // Renderiza a lista customizada mapeando os eventos de clique
     function renderizarListaCustom(containerId, listaEquipes, tipo) {
         const container = document.getElementById(containerId);
@@ -508,6 +558,8 @@
         document.getElementById('codigo').value = "";
         document.getElementById('cor').value = "";
         document.getElementById('bloqueado').checked = false;
+        equipeDisponivelSelecionada = null;
+        equipeSelecionada = null;
     }
     async function carregarConfiguracao(idEmpreendimento) {
         try {
