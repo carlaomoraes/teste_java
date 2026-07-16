@@ -25,7 +25,8 @@ public class ConfiguracaoController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody Configuracao configuracao) {
-            return ResponseEntity.ok().body(service.atualizar(configuracao));
+
+        return ResponseEntity.ok().body(service.atualizar(configuracao));
     }
     // BUSCAR POR ID EMPREENDIMENTO
     @GetMapping("/buscaPorEmpreendimento/{idempreendimento}")

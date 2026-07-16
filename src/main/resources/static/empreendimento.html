@@ -193,6 +193,19 @@
     </div>
 </div>
 <script>
+    //-----------------CARREGAR CONFIGURAÇÃO
+    let configuracaoSprint = {
+        idconfiguracao: 0,
+        idempreendimento: 0,
+        duracao_min_sprint: 0,
+        duracao_max_sprint: 0,
+        horas_trabalho_dia: 0,
+        considerarFeriados: false,
+        permitir_sprint_sobreposta: false,
+        permitir_multiplas_sprint_ativas: false,
+        considerar_feriados: false
+    };
+
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_STATUS = 'http://localhost:8080/status_entidades';
@@ -403,7 +416,7 @@
             const data = await response.json();
             mostrarMensagemNaTela("Empreendimento salvo com sucesso! ","success");
             setTimeout(() => {
-                limparCampos();
+                limpaFormulario();
                 listarEmpreendimentos();
             }, 1000);
 
@@ -447,7 +460,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("Erro ao listar Empreendimentos: " + error.message,"error");
+            mostrarMensagemNaTela("resultado","Erro ao listar Empreendimentos: " + error.message,"error");
         }
     }
     async function buscarPorLinha(id) {
@@ -470,11 +483,11 @@
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
                 // Limpa mensagens e monta equipe se o usuário mudar de aba depois
                 resultado.innerHTML = '';
-                await montaEquipes(Empreendimento.idempreendimento);
-                await carregarConfiguracao(Empreendimento.idempreendimento);
+                montaEquipes(Empreendimento.idempreendimento);
+                carregarConfiguracao(Empreendimento.idempreendimento);
             }
         } catch (error) {
-            mostrarMensagemNaTela(resultado,"Erro ao carregar Empreendimento: "+error.message,"error");
+            mostrarMensagemNaTela("resultado","Erro ao carregar Empreendimento: "+error.message,"error");
         }
     }
     async function excluirEmpreendimento(idEmpreendimento) {
@@ -482,10 +495,10 @@
             const response = await fetch(`${API_EMPREENDIMENTO}/excluir/${idEmpreendimento}`, {
                 method: 'DELETE'
             });
-            mostrarMensagemNaTela(resultado,"Empreendimento excluído com sucesso", "success");
+            mostrarMensagemNaTela("resultado","Empreendimento excluído com sucesso", "success");
             limpaFormulario();
         } catch (error) {
-            mostrarMensagemNaTela(resultado,"Erro ao excluir: " + error.message, "error");
+            mostrarMensagemNaTela("resultado","Erro ao excluir: " + error.message, "error");
         }
     }
     async function limpaFormulario() {
@@ -499,37 +512,43 @@
         try {
             const response = await fetch(`${API_CONFIGURACAO}/buscaPorEmpreendimento/${idEmpreendimento}`);
             if (!response.ok) {
-                mostrarMensagemNaTela(resultado,"Configuração não encontrada","error");
+                mostrarMensagemNaTela("resultadoconfiguracao","Configuração não encontrada","error");
                 return;
             }
             const data = await response.json();
+            configuracaoSprint.idconfiguracao = data.idconfiguracao;
+            configuracaoSprint.idempreendimento = data.idempreendimento;
+            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
+            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
+            configuracaoSprint.horas_trabalho_dias = data.horas_trabalho_dias;
+            configuracaoSprint.considerar_feriados = data.considerar_feriados;
+            configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
+            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
+
             document.getElementById("idempreendimento").value = data.empreendimento.idempreendimento;
             document.getElementById("duracao_min_sprint").value = data.duracao_min_sprint;
-            document.getElementById("duracao_min_sprint").value = data.duracao_max_sprint;
+            document.getElementById("duracao_max_sprint").value = data.duracao_max_sprint;
             document.getElementById("horas_Trabalho_Dia").value = data.horas_trabalho_dia;
             document.getElementById("permitir_sprint_sobreposta").checked =  data.permitir_sprint_sobreposta;
             document.getElementById("permitir_multiplas_sprint_ativas").checked = data.permitir_multiplas_sprint_ativas;
             document.getElementById("considerar_feriados").checked = data.considerar_feriados;
         } catch (error) {
-            mostrarMensagemNaTela(resultado, "Erro ao carregar as configurações: " + error.message,"error");
+            mostrarMensagemNaTela("resultadoconfiguracao", "Erro ao carregar as configurações: " + error.message,"error");
         }
     }
     async function salvarConfiguracao(idEmpreendimento) {
         if(validaEntrada()) {
             const duracao_min_sprint = document.getElementById('duracao_min_sprint').value;
             const duracao_max_sprint = document.getElementById('duracao_max_sprint').value;
-            if(document.getElementById("permitir_sprint_sobreposta").checked)
-                permitirSprintSobreposta = 1;
-            else
-                permitirSprintSobreposta = 0;
-            if(document.getElementById("permitir_multiplas_sprint_ativas").checked)
-                permitir_multiplas_sprint_ativas = 1;
-            else
-                permitir_multiplas_sprint_ativas= 0;
+            const permitir_sprint_sobreposta = document.getElementById("permitir_sprint_sobreposta").checked;
+            const permitir_multiplas_sprint_ativas = document.getElementById("permitir_multiplas_sprint_ativas").checked;
             const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
             const considerar_Feriados = document.getElementById('considerar_feriados').value;
             const Configuracao = {
-                idEmpreendimento: Number(idEmpreendimento),
+                idconfiguracao: Configuracao.idconfiguracao,
+                empreendimento: {
+                    idempreendimento: Number(idEmpreendimento)
+                },
                 duracao_min_sprint: Number(duracao_min_sprint),
                 duracao_max_sprint: Number(duracao_max_sprint),
                 permitir_sprint_sobreposta: permitir_sprint_sobreposta,
@@ -546,12 +565,12 @@
                     body: JSON.stringify(Configuracao)
                 });
                 const data = await response.json();
-                mostrarMensagemNaTela(resultado,"Configuração salvo com sucesso! ","success");
+                mostrarMensagemNaTela("resultadoconfiguracao","Configuração salvo com sucesso! ","success");
                 setTimeout(() => {
                 }, 1000);
 
             } catch (error) {
-                mostrarMensagemNaTela(resultado,"Erro ao salvar configuração: "+error.message,"error");
+                mostrarMensagemNaTela("resultadoconfiguracao","Erro ao salvar configuração: "+error.message,"error");
             }
         }
     }
@@ -571,6 +590,7 @@
         if (percentual >= 100) {
             cor = "#198754";
         } else if (percentual >= 75) {
+            cor = "#20c997";
             cor = "#20c997";
         } else if (percentual >= 50) {
             cor = "#ffc107";
@@ -611,6 +631,7 @@
             mostrarMensagemNaTela("resultadoconfiguracao","Horas trabalhadas não devem exceder 8 h/dia!", "error");
             return false;
         }
+        return true;
     }
     function MultiploDe7(numero) {
         return numero % 7 !== 0;

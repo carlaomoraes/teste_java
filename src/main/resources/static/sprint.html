@@ -28,7 +28,7 @@
     <div id="geral" class="conteudo-aba ativo">
         <input type="number" id="idsprint" onblur="buscarPorLinha(document.getElementById('idsprint').value)" placeholder="ID da sprint (Deixe vazio para novo)">
         <label for="descsprint">Descrição da sprint:</label>
-        <input type="text" id="descsprint">
+        <input type="text" id="descsprint" oninput="converterMaiusculo(this)">
         <div class="form-grid">
             <label class="form-label">
                 Empreendimento
@@ -38,8 +38,7 @@
         <span class="input-group-text">
             <i class="bi bi-buildings"></i>
         </span>
-
-                <select class="form-select" id="comboEmpreendimento">
+                <select class="form-select" id="comboEmpreendimento" onchange="carregarConfiguracao()">
                     <option value="">Selecione...</option>
                 </select>
             </div>
@@ -59,7 +58,7 @@
         </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar</button>
-                <button type="button" class="btn btn-listar" onclick="listarSprints()">Listar Todas</button>
+                <button type="button" class="btn btn-listar" onclick="listarSprints()">Listar</button>
                 <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
             </div>
         </div>
@@ -75,6 +74,18 @@
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+
+    let configuracaoSprint = {
+        idconfiguracao: 0,
+        idempreendimento: 0,
+        duracao_min_sprint: 0,
+        duracao_max_sprint: 0,
+        horas_trabalho_dia: 0,
+        considerarFeriados: false,
+        permitir_sprint_sobreposta: false,
+        permitir_multiplas_sprint_ativas: false,
+        considerar_feriados: false
+    };
 
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
@@ -95,7 +106,30 @@
         // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
     }
-
+    async function carregarConfiguracao() {
+        const idEmpreendimento = document.getElementById("idempreendimento").value;
+        if (!idEmpreendimento) {
+            return;
+        }
+        try {
+            const response = await fetch(`${API_CONFIGURACAO}/buscaPorEmpreendimento/${idEmpreendimento}`);
+            if (!response.ok) {
+               mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
+               return;
+            }
+            const data = await response.json();
+            configuracaoSprint.idconfiguracao = data.idconfiguracao;
+            configuracaoSprint.idempreendimento = data.idempreendimento;
+            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
+            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
+            configuracaoSprint.horas_Trabalho_Dia = data.horas_trabalho_dia;
+            configuracaoSprint.permitir_sprint_sobreposta =  data.permitir_sprint_sobreposta;
+            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
+            configuracaoSprint.considerar_feriados = data.considerar_feriados;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", "Erro ao carregar as configurações: " + error.message,"error");
+        }
+    }
     async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         try {
@@ -117,37 +151,39 @@
     });
 
     async function salvarSprint() {
-        const { value: descsprint } = document.getElementById('descsprint');
-        const { value: dataInicio } = document.getElementById('dtiniciosprint');
-        const { value: dataFim } = document.getElementById('dtfinalsprint');
+        if (validaEntrada()) {
+            const { value: descsprint } = document.getElementById('descsprint');
+            const { value: dataInicio } = document.getElementById('dtiniciosprint');
+            const { value: dataFim } = document.getElementById('dtfinalsprint');
 
-        // CAPTURANDO O CHECKBOX: Retorna true se estiver marcado, ou false se estiver desmarcado
-        const visivel = document.getElementById('visivel').checked;
+            // CAPTURANDO O CHECKBOX: Retorna true se estiver marcado, ou false se estiver desmarcado
+            const visivel = document.getElementById('visivel').checked;
 
-        const sprint = {
-            descsprint: descsprint || null,
-            dataInicio: dataInicio || null,
-            dataFim: dataFim || null,
-            visivel: visivel, // Envia true/false para o atributo booleano do Spring
-            empreendimento: {
-                idEmpreendimento: document.getElementById('comboEmpreendimento').value || null
+            const sprint = {
+                descsprint: descsprint || null,
+                dataInicio: dataInicio || null,
+                dataFim: dataFim || null,
+                visivel: visivel, // Envia true/false para o atributo booleano do Spring
+                empreendimento: {
+                    idEmpreendimento: document.getElementById('comboEmpreendimento').value || null
+                }
+            };
+            try {
+                const response = await fetch(`${API}/salvar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(sprint)
+                });
+
+                if (!response.ok) throw new Error(await response.text());
+
+                const data = await response.json();
+                mostrarMensagemNaTela("resultadogeral", "Sprint gravada com sucesso", "sucesso");
+                limpaFormulario();
+                listarSprints();
+            } catch (error) {
+                mostrarMensagemNaTela("resultadigeral", "Erro ao salvar: " + error.message, "error");
             }
-        };
-        try {
-            const response = await fetch(`${API}/salvar`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(sprint)
-            });
-
-            if (!response.ok) throw new Error(await response.text());
-
-            const data = await response.json();
-            mostrarMensagemNaTela("resultadogeral", "Sprint gravada com sucesso", "sucesso");
-            limpaFormulario();
-            listarSprints();
-        } catch (error) {
-            mostrarMensagemNaTela("resultadigeral", "Erro ao salvar: " + error.message, "error");
         }
     }
 
@@ -231,15 +267,15 @@
     }
 
     async function excluirSprint(idsprint) {
-        if (!confirm("Tem certeza que deseja excluir esta Sprint?")) return;
+        if (!confirm("Tem certeza que deseja encerrar esta Sprint?")) return;
         try {
             const response = await fetch(`${API}/excluir/${idsprint}`, { method: 'DELETE' });
             const texto = await response.text();
-            mostrarMensagemNaTela("resultadigeral", "Excluída com sucesso ", "success");
+            mostrarMensagemNaTela("resultadigeral", "Encerrada com sucesso ", "success");
             limpaFormulario();
             listarSprints();
         } catch (error) {
-            mostrarMensagemNaTela("resultadogeral","Erro ao excluir sprint: " + error.message,"error");
+            mostrarMensagemNaTela("resultadogeral","Mensagem: " + error.message,"error");
         }
     }
 
@@ -327,7 +363,53 @@
         `;
             container.innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela(error.message || ". Erro ao listar ausências","error");
+            mostrarMensagemNaTela("resultadoausencias",error.message || ". Erro ao listar ausências","error");
+        }
+    }
+    function validaEntrada() {
+        if (validarDuracaoSprint() || validaParametros()) {
+
+        }
+
+    }
+    function validarDuracaoSprint() {
+        const inicio = new Date(document.getElementById("dtiniciosprint").value);
+        const fim = new Date(document.getElementById("dtfinalsprint").value);
+        if (!inicio || !fim) {
+            return true;
+        }
+        const dias = Math.ceil((fim - inicio) / (1000 * 60 * 60 * 24)) + 1;
+        if (dias < configuracaoSprint.duracaoMinima) {
+            mostrarMensagemNaTela("resultadogeral","A sprint deve ter no mínimo "+configuracaoSprint.duracaoMinima+" dias.", "warning");
+            return false;
+        }
+        if (dias > configuracaoSprint.duracaoMaxima) {
+            mostrarMensagemNaTela("resultadogeral","A sprint deve ter no máximo de "+configuracaoSprint.duracaoMaxima+" dias.","warning");
+            return false;
+        }
+    }
+    async function validaParametros() {
+        const data_inicio = document.getElementById("dtiniciosprint").value
+        const data_fim = document.getElementById("dtfinalsprint").value;
+        const idempreendimento = document.getElementById("idempreendimento").value;
+        try {
+            const response = await fetch(`${API}/verifica_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}`);
+            if (!response.ok) {
+                const msg = await response.text();
+                mostrarMensagemNaTela(resultado, msg || "Erro ao buscar sprint!", "error");
+                return false;
+            }
+            const data = await response.json();
+            // Se não houver registros
+            if (data) {
+                if(configuracaoSprint.permitir_sprint_sobreposta) {
+                    mostrarMensagemNaTela(resultado,"Já existem sprints abertas nesse período", "warning");
+                    return false;
+                }
+            }
+        } catch (error) {
+            mostrarMensagemNaTela(error.message || ". Erro ao buscar sprints", "error");
+            return false;
         }
     }
 </script>

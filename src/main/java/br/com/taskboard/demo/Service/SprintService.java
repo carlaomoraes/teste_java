@@ -5,6 +5,7 @@ import br.com.taskboard.demo.Respository.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -35,5 +36,18 @@ public class SprintService {
 
     public Sprint buscarPorId(Long idSprint) {
         return repository.findById(idSprint).orElseThrow(() -> new RuntimeException("Sprint não encontrado"));
+    }
+
+    public boolean existeSobreposicao(
+            Long idEmpreendimento,
+            Long idSprint,
+            LocalDate dataInicio,
+            LocalDate dataFim) {
+
+        return repository.buscaSprintPorIntervalo(
+                dataInicio,
+                dataFim,
+                idEmpreendimento,
+                idSprint) > 0;
     }
 }

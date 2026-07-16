@@ -5,6 +5,7 @@ import br.com.taskboard.demo.Modelo.Empreendimento;
 import br.com.taskboard.demo.Modelo.Sprint;
 import br.com.taskboard.demo.Modelo.StatusEntidades;
 import br.com.taskboard.demo.Respository.AusenciaProgramadaRepository;
+import br.com.taskboard.demo.Respository.SprintRepository;
 import br.com.taskboard.demo.Service.EmpreendimentoService;
 import br.com.taskboard.demo.Service.SprintService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class SprintController {
     @Autowired
     private AusenciaProgramadaRepository ausenciaProgramadaRepository;
 
+    @Autowired
+    private SprintRepository sprintRepository;
 
     // BUSCAR POR ID
     @GetMapping("/{idSprint}")
@@ -91,5 +94,15 @@ public class SprintController {
     public List<AusenciaProgramada> listarAusencias(@RequestParam("data_inicio") LocalDate data_inicio,
                                                     @RequestParam("data_fim") LocalDate data_fim) {
         return ausenciaProgramadaRepository.buscarAusenciasDaSprint(data_inicio, data_fim);
+    }
+    // VEJA SPRINT SOBREPOSTA
+    @GetMapping("/sprint_sobreposta")
+    public boolean verificaSobreposta(
+            @RequestParam LocalDate data_inicio,
+            @RequestParam LocalDate data_fim,
+            @RequestParam Long idempreendimento,
+            @RequestParam(required = false) Long idsprint) {
+
+        return service.existeSobreposicao(idempreendimento,idsprint,data_inicio,data_fim);
     }
 }
