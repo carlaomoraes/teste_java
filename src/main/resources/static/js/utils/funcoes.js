@@ -34,3 +34,27 @@ function formatarData(data) {
 function converterMaiusculo(campo) {
     campo.value = campo.value.toUpperCase();
 }
+function configurarToolbar(opcoes){
+
+    const botoes = [
+        "btnNovo",
+        "btnSalvar",
+        "btnCancelar",
+        "btnEditar",
+        "btnExcluir",
+        "btnPesquisar"
+    ];
+
+    botoes.forEach(id => {
+        const botao = document.getElementById(id);
+
+        if(opcoes[id] === false){
+            botao.style.display = "none";
+        }else{
+            botao.style.display = "";
+        }
+
+        botao.disabled = !!opcoes[id + "Disabled"];
+    });
+
+}

@@ -1,0 +1,12 @@
+.toolbar{
+    display:flex;
+    gap:8px;
+    padding:10px;
+    border-bottom:1px solid #ddd;
+    background:#fff;
+    margin-bottom:15px;
+}
+
+.toolbar .btn{
+    min-width:110px;
+}
