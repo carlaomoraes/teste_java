@@ -1,9 +1,0 @@
-package br.com.taskboard.demo.Respository;
-
-import br.com.taskboard.demo.Modelo.Estoria;
-import br.com.taskboard.demo.Modelo.Tarefa;;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
-    boolean existsByEstoriaAndAtivaTrue(Estoria estoria );
-}
