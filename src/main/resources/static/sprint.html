@@ -58,6 +58,7 @@
             <label for="ativa">Sprint ativa</label>
         </div>
             <div class="btn-group">
+                <button type="button" class="btn btn-add"  onclick="criarSprint()">Novo</button>
                 <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar</button>
                 <button type="button" class="btn btn-listar" onclick="listarSprints()">Listar</button>
                 <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
@@ -156,6 +157,14 @@
     document.addEventListener('DOMContentLoaded', () => {
         carregarEmpreendimento();
     });
+    async function criarSprint() {
+        document.getElementById('descsprint').value = '';
+        document.getElementById('dtiniciosprint').value = '';
+        document.getElementById('dtfinalsprint').value = '';
+        document.getElementById('visivel').checked = false;
+        document.getElementById('ativa').checked = false;
+        document.getElementById('comboEmpreendimento').value = "";
+    }
 
     async function salvarSprint() {
         if (validaEntrada()) {
@@ -165,12 +174,15 @@
 
             // CAPTURANDO O CHECKBOX: Retorna true se estiver marcado, ou false se estiver desmarcado
             const visivel = document.getElementById('visivel').checked;
+            const ativa = document.getElementById('ativa').checked;
+
 
             const sprint = {
                 descsprint: descsprint || null,
                 dataInicio: dataInicio || null,
                 dataFim: dataFim || null,
-                visivel: visivel, // Envia true/false para o atributo booleano do Spring
+                visivel: visivel || true, // Envia true/false para o atributo booleano do Spring
+                ativa: ativa || true,
                 empreendimento: {
                     idEmpreendimento: document.getElementById('comboEmpreendimento').value || null
                 }
@@ -378,7 +390,7 @@
         if (validarDuracaoSprint() || validaParametros()) {
 
         }
-
+        return true;
     }
     function validarDuracaoSprint() {
         const inicio = new Date(document.getElementById("dtiniciosprint").value);
