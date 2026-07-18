@@ -20,8 +20,6 @@ public class EstoriaMapper {
         e.setData_inicio(dto.getData_inicio());
         e.setData_fim(dto.getData_fim());
         e.setPontos(dto.getPontos());
-        e.setHoras_estimadas(dto.getHoras_estimadas());
-        e.setHoras_realizadas(dto.getHoras_realizadas());
         e.setAtiva(dto.getAtiva());
         e.setEmpreendimento_Equipe(dto.getEmpreendimento_Equipe());
         return e;
@@ -41,8 +39,6 @@ public class EstoriaMapper {
         dto.setData_inicio(e.getData_inicio());
         dto.setData_fim(e.getData_fim());
         dto.setPontos(e.getPontos());
-        dto.setHoras_estimadas(e.getHoras_estimadas());
-        dto.setHoras_realizadas(e.getHoras_realizadas());
         dto.setAtiva(e.getAtiva());
         dto.setEmpreendimento_Equipe(e.getEmpreendimento_Equipe());
         return dto;

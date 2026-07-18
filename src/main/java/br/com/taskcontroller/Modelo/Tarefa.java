@@ -27,8 +27,8 @@ public class Tarefa {
     private Usuario responsavel;
     @Column(name = "horas_estimadas")
     private Long horas_estimadas;
-    @Column(name = "horas_gastas")
-    private Long horas_gastas;
+    @Column(name = "horas_realizadas")
+    private Long horas_realizadas;
     @Column(name = "bloqueada")
     private boolean bloqueada;
     private LocalDate data_inicio;

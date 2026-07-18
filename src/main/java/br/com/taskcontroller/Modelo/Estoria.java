@@ -32,8 +32,6 @@ public class Estoria {
     private LocalDate data_inicio;
     private LocalDate data_fim;
     private Long pontos;
-    private Long horas_estimadas;
-    private Long horas_realizadas;
     private int ativa;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idempreendimento_equipe")

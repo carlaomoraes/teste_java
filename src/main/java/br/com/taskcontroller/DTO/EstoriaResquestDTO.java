@@ -20,8 +20,6 @@ public class EstoriaResquestDTO {
     private LocalDate data_inicio;
     private LocalDate data_fim;
     private Long pontos;
-    private Long horas_estimadas;
-    private Long horas_realizadas;
     private int ativa;
     private Empreendimento_Equipe empreendimento_Equipe;
 
@@ -111,22 +109,6 @@ public class EstoriaResquestDTO {
 
     public void setPontos(Long pontos) {
         this.pontos = pontos;
-    }
-
-    public Long getHoras_estimadas() {
-        return horas_estimadas;
-    }
-
-    public void setHoras_estimadas(Long horas_estimadas) {
-        this.horas_estimadas = horas_estimadas;
-    }
-
-    public Long getHoras_realizadas() {
-        return horas_realizadas;
-    }
-
-    public void setHoras_realizadas(Long horas_realizadas) {
-        this.horas_realizadas = horas_realizadas;
     }
 
     public int getAtiva() {

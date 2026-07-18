@@ -21,10 +21,12 @@ SELECT new br.com.taskcontroller.Record.EquipeCardDTO(
     ee.equipe.idequipe,
     ee.equipe.nomeequipe,
     COUNT(e),
-    COALESCE(SUM(e.horas_estimadas),0L),
-    COALESCE(SUM(e.horas_realizadas),0L)
+    COUNT(t),
+    COALESCE(SUM(t.horas_estimadas),0L),
+    COALESCE(SUM(t.horas_realizadas),0L)
 )
-FROM Estoria e
+FROM Tarefa t
+JOIN t.estoria e
 JOIN e.empreendimento_Equipe ee
 WHERE ee.empreendimento.idempreendimento = :idEmpreendimento
 GROUP BY ee.equipe.idequipe, ee.equipe.nomeequipe

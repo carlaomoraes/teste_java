@@ -32,10 +32,36 @@ h1 {
     color: #1e293b;
     margin-bottom: 20px;
 }
+    /* ==========================================================================
+       BARRA DE PROGRESSO
+       ========================================================================== */
+    .progresso-grid{
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
 
-/* ==========================================================================
-   ESTRUTURA DAS ABAS (CSS)
-   ========================================================================== */
+    .barra{
+        flex:1;
+        height:10px;
+        background:#e9ecef;
+        border-radius:8px;
+        overflow:hidden;
+    }
+
+    .preenchimento{
+        height:100%;
+        transition:width .4s ease;
+    }
+
+    .progresso-grid span{
+        width:45px;
+        text-align:right;
+        font-weight:bold;
+    }
+    /* ==========================================================================
+       ESTRUTURA DAS ABAS (CSS)
+       ========================================================================== */
 
 /* Container dos botões das abas */
 .abas-container {

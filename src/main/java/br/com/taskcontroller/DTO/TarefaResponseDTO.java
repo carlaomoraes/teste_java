@@ -14,7 +14,7 @@ public class TarefaResponseDTO {
     private Usuario criador;
     private Usuario responsavel;
     private Long horas_estimadas;
-    private Long horas_gastas;
+    private Long horas_realizadas;
     private boolean bloqueada;
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
@@ -78,12 +78,12 @@ public class TarefaResponseDTO {
         this.horas_estimadas = horas_estimadas;
     }
 
-    public Long getHoras_gastas() {
-        return horas_gastas;
+    public Long getHoras_realizadas() {
+        return horas_realizadas;
     }
 
-    public void setHoras_gastas(Long horas_gastas) {
-        this.horas_gastas = horas_gastas;
+    public void setHoras_realizadas(Long horas_realizadas) {
+        this.horas_realizadas = horas_realizadas;
     }
 
     public boolean isBloqueada() {

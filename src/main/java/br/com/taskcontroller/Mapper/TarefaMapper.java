@@ -15,7 +15,7 @@ public class TarefaMapper {
         t.setCriador(dto.getCriador());
         t.setResponsavel(dto.getResponsavel());
         t.setHoras_estimadas(dto.getHoras_estimadas());
-        t.setHoras_gastas(dto.getHoras_gastas());
+        t.setHoras_realizadas(dto.getHoras_estimadas());
         t.setIdtarefa(dto.getIdtarefa());
         t.setBloqueada(dto.isBloqueada());
         t.setData_fim_prevista(dto.getData_fim_prevista());
@@ -34,7 +34,7 @@ public class TarefaMapper {
         dto.setCriador(t.getCriador());
         dto.setResponsavel(t.getResponsavel());
         dto.setHoras_estimadas(t.getHoras_estimadas());
-        dto.setHoras_gastas(t.getHoras_gastas());
+        dto.setHoras_realizadas(t.getHoras_estimadas());
         dto.setIdtarefa(t.getIdtarefa());
         dto.setBloqueada(t.isBloqueada());
         dto.setData_fim_prevista(t.getData_fim_prevista());

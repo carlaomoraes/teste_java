@@ -152,7 +152,7 @@
         <p>Tarefas</p>
     </div>
     <div id="equipes" class="conteudo-aba">
-        <div id="resultado_equipes"></div>
+        <div id="cardsEquipes"></div>
     </div>
 
 </div>
@@ -371,7 +371,7 @@
         document.getElementById('data_inicio').value = "";
         document.getElementById('data_fim').value = "" ;
     }
-    async function salvarEstoria(idEpico) {
+    async function salvarEstoria(idEpico, idEmpreendimento) {
         const hoje = new Date();
         const descestoria = document.getElementById('descestoria').value;
         const resumo = document.getElementById('resumo').value;
@@ -466,29 +466,39 @@
         try {
             const response = await fetch(`${API_EPICO}/${idEmpreendimento}/equipes_relacionadas`);
             const equipes = await response.json();
-            let tabela = ``;
+            if(equipes.length <= 0) {
+                mostrarMensagemNaTela("resultado_epico","Equipes não encontradas!!! ","warning");
+                return;
+            }
+            const container = document.getElementById("cardsEquipes");
+            container.innerHTML = "";
+
             equipes.forEach(equipe => {
-                tabela += `
+
+                container.innerHTML += `
             <div class="col-md-4 mb-3">
                 <div class="card shadow-sm">
-
                     <div class="card-body">
-
                         <h5>${equipe.nomeEquipe}</h5>
-
                         <hr>
-
-                        <p>📖 Histórias: <strong>${equipe.historias}</strong></p>
+                        <p>📖 Nº Histórias: <strong>${equipe.historias}</strong></p>
+                        <p>📖 Nº Tarefas: <strong>${equipe.historias}</strong></p>
                         <p>⏱ Horas Estimadas: <strong>${equipe.horasEstimadas}</strong></p>
                         <p>✔ Horas Realizadas: <strong>${equipe.horasRealizadas}</strong></p>
-
-                    </div>
-
+                        <div class="mt-3">
+                                <div class="d-flex justify-content-between">
+                                    <small>Progresso</small>
+                                    <small>${equipe.horasEstimadas}/${equipe.horasRealizadas}</small>
+                                </div>
+                        </div>
+                        <div class="progress" style="height:10px">
+                            <div class="progress-bar" style="width:${equipe.horasEstimadas}%">  </div>
+                        </div>
+                   </div>
                 </div>
             </div>
         `;
             });
-            document.getElementById('cardsEquipes').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico","Erro ao listar equipes: " + error.message,"error");
         }
@@ -518,7 +528,7 @@
                     // Limpa mensagens e monta equipe se o usuário mudar de aba depois
                     mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "green");
                     listarEstoria(epico.idepico);
-                    listarEquipe(epico.idEmpreendimento);
+                    listarEquipe(epico.empreendimento.idempreendimento);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_epico","Erro ao carregar épico: " + error.message, "error");
@@ -577,7 +587,10 @@
         document.getElementById('bloqueado').checked = false;
     }
     function montarProgresso(percentual) {
+
         percentual = Number(percentual) || 0;
+
+        const largura = Math.min(percentual, 100);
 
         let cor = "#dc3545"; // vermelho
 
@@ -595,7 +608,7 @@
         <div class="progresso-grid">
             <div class="barra">
                 <div class="preenchimento"
-                     style="width:${percentual}%; background:${cor};">
+                     style="width:${largura}%; background:${cor};">
                 </div>
             </div>
             <span>${percentual}%</span>
