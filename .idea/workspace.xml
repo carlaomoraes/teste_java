@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Mensagens padronizadas">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustes no lay-out">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/pages/sprint.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/sprint.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
@@ -386,14 +385,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00058" summary="Cadastro de Empreendimento">
-      <option name="closed" value="true" />
-      <created>1782418371568</created>
-      <option name="number" value="00058" />
-      <option name="presentableId" value="LOCAL-00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1782418371569</updated>
     </task>
     <task id="LOCAL-00059" summary="Cadastro de Empreendimento finalizado">
       <option name="closed" value="true" />
@@ -779,7 +770,15 @@
       <option name="project" value="LOCAL" />
       <updated>1784423487814</updated>
     </task>
-    <option name="localTasksCounter" value="107" />
+    <task id="LOCAL-00107" summary="Ajustes no lay-out">
+      <option name="closed" value="true" />
+      <created>1784431511963</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1784431511963</updated>
+    </task>
+    <option name="localTasksCounter" value="108" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -819,7 +818,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cadastro de Empreendimento funcionando / Novo lay-out do cadastro de equipe" />
     <MESSAGE value="Cadastro de Empreendimento funcionando / Novo lay-out do cadastro de equipe / agrupando css" />
     <MESSAGE value="Cadastro de Empreendimento funcionando / home.css" />
     <MESSAGE value="Cadastro de épico - ok" />
@@ -844,7 +842,8 @@
     <MESSAGE value="ABA de equipes finalizada" />
     <MESSAGE value="Cadastro sprint sendo refatorado" />
     <MESSAGE value="Mensagens padronizadas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mensagens padronizadas" />
+    <MESSAGE value="Ajustes no lay-out" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajustes no lay-out" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

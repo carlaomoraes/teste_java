@@ -246,6 +246,7 @@
                         <th>Visivel no quadro?</th>
                         <th>Ativa?</th>
                         <th>Ações</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>`;
@@ -261,8 +262,13 @@
                         <td>${sprint.ativa ? '✅ Sim' : '❌ Não'}</td>
                         <td style="text-align:center;">
                            <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();excluirSprint(${sprint.idsprint})">
-                                        <i class="fa-solid fa-trash-can"></i> Encerrar Sprint
-                                    </button>
+                                         Encerrar Sprint
+                            </button>
+                        </td>
+                        <td>
+                              <button type="button" class="btn btn-add" onclick="event.stopPropagation();duplicarSprint(${sprint.idsprint})">
+                                        Duplicar Sprint
+                              </button>
                         </td>
                     </tr>`;
             });
@@ -273,6 +279,9 @@
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral","Erro ao listar sprint: " + error.message,"error");
         }
+    }
+    async function duplicarSprint(idsprint) {
+        return true;
     }
 
     async function excluirSprint(idsprint) {

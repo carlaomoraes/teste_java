@@ -242,7 +242,7 @@
                                 <td>${usuario.login}</td>
                                 <td>${usuario.email}</td>
                                 <td style="width: 30px">${usuario.senha ? '•'.repeat(10) : ''}</td>
-                                <td> <button type="button" class="btn" onclick="event.stopPropagation();excluirUsuario(${usuario.idusuario})">Excluir</button></td>
+                                <td> <button type="button" class="btn btn-excluir"  onclick="event.stopPropagation();excluirUsuario(${usuario.idusuario})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
