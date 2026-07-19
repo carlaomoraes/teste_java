@@ -23,29 +23,24 @@
     <h1>Cadastro de equipe - TaskController 1.0</h1>
 
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'dados-gerais')">
-            <i class="fa-solid fa-gear"></i> Dados gerais
-        </button>
-        <button class="aba-botao" onclick="alternarAba(event, 'equipe')">
-            <i class="fa-solid fa-users"></i> Membros
-        </button>
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'dados-gerais')">Dados gerais</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'equipe')"> Membros</button>
     </div>
 
     <div id="dados-gerais" class="conteudo-aba ativo">
-        <div class="form-group">
-            <input type="number" name="idequipe" id="idequipe" onblur="buscarPorLinha(document.getElementById('idequipe').value)" placeholder="ID da equipe (Deixe vazio para novo)">
-            <input type="text" id="nomeequipe" placeholder="Nome da equipe" oninput="converterMaiusculo(this)">
-            <input type="text" id="descequipe" placeholder="Descrição da equipe" oninput="converterMaiusculo(this)">
-            <label class="checkbox-group">
-                <input type="checkbox" id="ativa"> Ativa?
-            </label>
-        </div>
+        <input type="number" name="idequipe" id="idequipe" onblur="buscarPorLinha(document.getElementById('idequipe').value)" placeholder="ID da equipe (Deixe vazio para novo)">
+        <input type="text" id="nomeequipe" placeholder="Nome da equipe" oninput="converterMaiusculo(this)">
+        <input type="text" id="descequipe" placeholder="Descrição da equipe" oninput="converterMaiusculo(this)">
+        <label class="checkbox-group">
+             <input type="checkbox" id="ativa"> Ativa?
+        </label>
         <div class="btn-group">
             <button type="button" class="btn btn-add"  onclick="criarEquipes()">Novo</button>
             <button type="button" class="btn btn-salvar" onclick="salvarEquipes()">Salvar</button>
             <button type="button" class="btn btn-listar" onclick="listarEquipes()">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
+        <div id="resultado"></div>
     </div>
     <div id="equipe" class="conteudo-aba">
         <div class="membros-container">
@@ -70,8 +65,6 @@
         </div>
         <div id="resultadoequipe"></div>
     </div>
-
-    <div id="resultado"></div>
 </div>
 
 <script>
