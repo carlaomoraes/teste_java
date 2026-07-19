@@ -32,9 +32,16 @@
         <input type="text" id="login" placeholder="Login" oninput="converterMaiusculo(this)">
         <input type="text" id="email" placeholder="E-mail" oninput="converterMaiusculo(this)">
         <input type="password" id="senha" placeholder="Senha"><br>
-        <select id="comboPapel" name="comboPapel">
-            <option value="">-- Selecione o papel do usuário --</option>
-        </select>
+
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-buildings"></i>
+            </span>
+            <select class="form-select" id="comboPapel">
+                <option value="">Selecione...</option>
+            </select>
+        </div>
+
         <label class="checkbox-group">
             <input type="checkbox" id="alterasenha" value="0">Altera senha no próximo login ?
             <input type="checkbox" id="ativo" value="1"> Usuário Ativo

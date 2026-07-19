@@ -30,39 +30,28 @@
         <input type="number" id="idsprint" onblur="buscarPorLinha(document.getElementById('idsprint').value)" placeholder="ID da sprint (Deixe vazio para novo)">
         <label for="descsprint">Descrição da sprint:</label>
         <input type="text" id="descsprint" oninput="converterMaiusculo(this)">
-        <div class="form-grid">
-            <label class="form-label">
-                Empreendimento
-            </label>
-
-            <div class="input-group">
-        <span class="input-group-text">
-            <i class="bi bi-buildings"></i>
-        </span>
-                <select class="form-select" id="comboEmpreendimento" onchange="carregarConfiguracao()">
+        <label class="form-label" for="comboEmpreendimento">Empreendimento:</label>
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-buildings"></i>
+            </span>
+            <select class="form-select" id="comboEmpreendimento" onchange="carregarConfiguracao()">
                     <option value="">Selecione...</option>
-                </select>
-            </div>
+            </select>
         </div>
         <label for="dtiniciosprint">Data de Início:</label>
         <input type="date" id="dtiniciosprint">
         <label for="dtfinalsprint">Data de Término:</label>
         <input type="date" id="dtfinalsprint">
-        <div class="checkbox-container">
-            <div class="checkbox-group">
-                <input type="checkbox" id="visivel" name="visivel">
-                <label for="visivel">Sprint visível no quadro</label>
-            </div>
-            <div class="checkbox-group">
-            <input type="checkbox" id="ativa" name="ativa">
-            <label for="ativa">Sprint ativa</label>
-        </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-add"  onclick="criarSprint()">Novo</button>
-                <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar</button>
-                <button type="button" class="btn btn-listar" onclick="listarSprints()">Listar</button>
-                <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
-            </div>
+        <label class="checkbox-group">
+            <input type="checkbox" id="visivel" value="0">Sprint vísivel no quadro
+            <input type="checkbox" id="ativa" value="1"> Sprint ativa
+        </label>
+        <div class="btn-group" data-toggle="buttons-radio">
+          <button type="button" class="btn btn-add"  onclick="criarSprint()">Novo</button>
+          <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar</button>
+          <button type="button" class="btn btn-listar" onclick="listarSprints()">Listar</button>
+          <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
     </div>
     <div id="ausencias" class="conteudo-aba">
