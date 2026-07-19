@@ -19,6 +19,7 @@
 </head>
 <body>
 <script src="js/utils/funcoes.js"></script>
+<script src="js/utils/mensagens.js"></script>
 <div class="container">
     <h1>Usuários - TaskController 1.0</h1>
     <div class="abas-container">
@@ -108,7 +109,7 @@
                 combotipo.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado", "Erro ao carregar tipo de ausências","error");
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("TIPO DE AUSÊNCIA"), "error");
         }
     }
     async function carregarPapel() {
@@ -124,7 +125,7 @@
                 comboPapel.appendChild(opt1);
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado", "Erro ao carregar papel do usuário","error");
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("PAPEL"), "error");
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -164,13 +165,13 @@
                 body: JSON.stringify(usuario)
             });
             const data = await response.json();
-            mostrarMensagemNaTela("resultado","Gravado com sucesso!", "success");
+            mostrarMensagemNaTela("resultado", MSG.salvo("USUÁRIO"), "success");
             setTimeout(() => {
                 limparFormulario();
                 listarUsuarios();
             }, 1000);
         } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao gravar usuário: "+error.message, "error");
+            mostrarMensagemNaTela("resultado", MSG.erroSalvar("USUÁRIO"), "error");
         }
     }
     async function limparFormulario() {
@@ -188,7 +189,7 @@
         try {
             const response = await fetch(`${API_USUARIOS}/${id}`);
             if (!response.ok) {
-                mostrarMensagemNaTela("resultado","Usuário não encontrado","error");
+                mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
                 return;
             }
             const usuario = await response.json();
@@ -205,7 +206,7 @@
             mostrarMensagemNaTela("resultado", "Usuário selecionado: " +  usuario.nome, "success");
 
         } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao buscar usuário: "+error.message,"error");
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
         }
     }
     async function listarUsuarios() {
@@ -239,7 +240,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao listar usuários: "+ error.message,"error");
+            mostrarMensagemNaTela("resultado", MSG.errolistar("USUÁRIO"), "error");
         }
     }
     async function excluirUsuario(idusuario) {
@@ -248,9 +249,9 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela("resultado","Usuário excluído com sucesso","success");
+            mostrarMensagemNaTela("resultado", MSG.excluido("USUÁRO"), "success");
         } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao excluir usuário: "+error.message,"error");
+            mostrarMensagemNaTela("resultado", MSG.erroExcluir("USUÁRIO"), "error");
         }
     }
     async function salvarAusencias(idUsuario) {
@@ -282,12 +283,12 @@
                     body: JSON.stringify(ausencias)
                 });
                 const data = await response.json();
-                mostrarMensagemNaTela("resultadoausencia","Gravada com sucesso!", "success");
+                mostrarMensagemNaTela("resultadoausencia", MSG.salvo("AUSÊNCIA"), "success");
                 setTimeout(() => {
                     listarAusencias(idUsuario);
                 }, 1000);
             } catch (error) {
-                mostrarMensagemNaTela("resultadoausencia","Erro ao gravar ausência: "+error.message, "error");
+                mostrarMensagemNaTela("resultadoausencia", MSG.erroSalvar("AUSÊNCIA"), "error");
             }
         }
     }
@@ -365,7 +366,7 @@
         `;
         container.innerHTML = tabela;
       } catch (error) {
-             mostrarMensagemNaTela("resultadoausencia","Erro ao listar ausências: "+error.message ,"error");
+             mostrarMensagemNaTela("resultadoausencia", MSG.errolistar("AUSÊNCIA PROGRAMADA"), "error");
       }
     }
     async function excluirAusencia(idausencia) {
@@ -374,9 +375,9 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela("resultadoausencia","Ausência programada excluída com sucesso","success");
+            mostrarMensagemNaTela("resultadoausencia", MSG.excluido("AUSÊNCIA PROGRAMADA"), "success");
         } catch (error) {
-            mostrarMensagemNaTela("resultadoausencia","Erro ao excluir ausência: "+ error, "error");
+            mostrarMensagemNaTela("resultadoausencia", MSG.erroExcluir("AUSÊNCIA PROGRAMADA"), "error");
         }
     }
     async function cancelarAusencia(idUsuario) {
