@@ -16,5 +16,7 @@ const MSG = {
     erroSalvar: (nome) => `Erro ao salvar ${nome}.`,
     erroExcluir: (nome) => `Erro ao excluir ${nome}.`,
     erroCarregar: (nome) => `Erro ao carregar ${nome}.`,
-    errolistar: (nome) => `Erro ao listar ${nome}.`
+    errolistar: (nome) => `Erro ao listar ${nome}.`,
+    naoEncontrado: (nome) => `${nome} não encontrado.`,
+    naoEncontrada: (nome) => `${nome} não encontrada.`
 };

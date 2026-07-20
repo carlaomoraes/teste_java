@@ -6,5 +6,6 @@ public record EquipeCardDTO(
         Long historias,
         Long tarefa,
         Long horasEstimadas,
-        Long horasRealizadas
+        Long horasRealizadas,
+        Long custoRealizado
 ) {}

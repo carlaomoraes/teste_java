@@ -38,4 +38,6 @@ public class Configuracao {
     @Column(name = "considerar_Feriados", nullable = false)
     private Boolean considerar_Feriados = true;
 
+    @Column(name = "considerar_valorhoraes", nullable = false)
+    private Boolean considerar_valorhoraes = false;
 }

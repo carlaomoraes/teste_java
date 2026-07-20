@@ -1,5 +1,7 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.Excecoes.BusinessRuleException;
+import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
@@ -13,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sprints")
@@ -45,13 +49,36 @@ public class SprintController {
 
     // SALVAR
     @PostMapping("/salvar")
-    public ResponseEntity<Sprint> salvar(@RequestBody Sprint sprint) {
-        Empreendimento empreendimento = empreendimentoService.buscarPorId(sprint.getEmpreendimento().getIdempreendimento());
+    public ResponseEntity<?> salvar(@RequestBody Sprint sprint) {
+        // 1. Valida se o Empreendimento existe
+        Long idEmpreendimento = sprint.getEmpreendimento().getIdempreendimento();
+        Empreendimento empreendimento = empreendimentoService.buscarPorId(idEmpreendimento);
+
         if (empreendimento == null) {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Empreendimento não encontrado com ID: " + idEmpreendimento);
         }
         sprint.setEmpreendimento(empreendimento);
-        return ResponseEntity.ok().body(service.salvar(sprint));
+
+        // 2. Regra de Negócio: Trata/Valida Fim de Semana (Opcional, mas recomendado)
+        if (isWeekend(sprint.getDtiniciosprint()) || isWeekend(sprint.getDtfinalsprint())) {
+            throw new BusinessRuleException("A Sprint não pode iniciar ou terminar em um final de semana.");
+        }
+
+        // 3. Regra de Negócio: Checa Sobreposição no Banco
+        int numSprint = sprintRepository.buscaSprintPorIntervalo(
+                sprint.getDtiniciosprint(),
+                sprint.getDtfinalsprint(),
+                idEmpreendimento,
+                sprint.getIdsprint()
+        );
+
+        if (numSprint > 0) {
+            throw new BusinessRuleException("Já existe uma Sprint cadastrada para este empreendimento no período informado.");
+        }
+
+        // 4. Salva a Sprint
+        return ResponseEntity.ok(sprintRepository.save(sprint));
+
     }
 
     // ATUALIZAR
@@ -104,4 +131,12 @@ public class SprintController {
 
         return service.existeSobreposicao(idempreendimento,idsprint,data_inicio,data_fim);
     }
+
+    private boolean isWeekend(LocalDate date) {
+        if (date == null)
+            return false;
+        DayOfWeek day = date.getDayOfWeek();
+        return day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY;
+    }
+
 }

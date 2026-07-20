@@ -19,6 +19,7 @@
 </head>
 <body>
 <script src="js/utils/funcoes.js"></script>
+<script src="js/utils/mensagens.js"></script>
 
 <div class="container">
     <h1>Sprint - TaskController 1.0</h1>
@@ -65,6 +66,7 @@
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
 
     let configuracaoSprint = {
         idconfiguracao: 0,
@@ -104,7 +106,7 @@
         }
     }
     async function carregarConfiguracao() {
-        const idEmpreendimento = document.getElementById("idempreendimento").value;
+        const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
         if (!idEmpreendimento) {
             return;
         }
@@ -123,9 +125,32 @@
             configuracaoSprint.permitir_sprint_sobreposta =  data.permitir_sprint_sobreposta;
             configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
             configuracaoSprint.considerar_feriados = data.considerar_feriados;
+            montaDatasSprint();
         } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", "Erro ao carregar as configurações: " + error.message,"error");
+            //mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("CONFIGURAÇÕES"), "error");
+            mostrarMensagemNaTela("resultadogeral", error.message, "error");
         }
+    }
+    function montaDatasSprint() {
+        const dataHoje = new Date();
+
+        // Criamos uma nova data baseada na atual para evitar alterar 'dataHoje'
+        const dataFutura = new Date(dataHoje);
+
+        // Adicionamos os dias da sprint à data futura
+        // (Ajuste o fuso local ajustando com getDate() / setDate())
+        dataFutura.setDate(dataHoje.getDate() + configuracaoSprint.duracao_max_sprint);
+
+        // Função auxiliar para formatar como YYYY-MM-DD respeitando o fuso local
+        const formatarData = (data) => {
+            const ano = data.getFullYear();
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const dia = String(data.getDate()).padStart(2, '0');
+            return `${ano}-${mes}-${dia}`;
+        };
+
+        document.getElementById('dtiniciosprint').value = formatarData(dataHoje);
+        document.getElementById('dtfinalsprint').value = formatarData(dataFutura);
     }
     async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
@@ -139,7 +164,7 @@
                 comboEmpreendimento.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultadogeral","Erro ao carregar empreendimento: "+error.message,"error");
+            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("EMPREENDIMENTO"), "error");
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -157,25 +182,27 @@
 
     async function salvarSprint() {
         if (validaEntrada()) {
-            const { value: descsprint } = document.getElementById('descsprint');
-            const { value: dataInicio } = document.getElementById('dtiniciosprint');
-            const { value: dataFim } = document.getElementById('dtfinalsprint');
+            const { value: idsprint } = document.getElementById("idsprint").value;
+            const { value: descsprint } = document.getElementById('descsprint').value;
+            const { value: dataInicio } = document.getElementById('dtiniciosprint').value;
+            const { value: dataFim } = document.getElementById('dtfinalsprint').value;
 
             // CAPTURANDO O CHECKBOX: Retorna true se estiver marcado, ou false se estiver desmarcado
             const visivel = document.getElementById('visivel').checked;
             const ativa = document.getElementById('ativa').checked;
 
-
             const sprint = {
+                idsprint: idsprint || null,
                 descsprint: descsprint || null,
                 dataInicio: dataInicio || null,
                 dataFim: dataFim || null,
                 visivel: visivel || true, // Envia true/false para o atributo booleano do Spring
                 ativa: ativa || true,
                 empreendimento: {
-                    idEmpreendimento: document.getElementById('comboEmpreendimento').value || null
+                    idEmpreendimento: document.getElementById('comboEmpreendimento').value || null,
                 }
             };
+            console.log(JSON.stringify(sprint));
             try {
                 const response = await fetch(`${API}/salvar`, {
                     method: 'POST',
@@ -186,7 +213,7 @@
                 if (!response.ok) throw new Error(await response.text());
 
                 const data = await response.json();
-                mostrarMensagemNaTela("resultadogeral", "Sprint gravada com sucesso", "sucesso");
+                mostrarMensagemNaTela("resultado", MSG.salvo("SPRINT"), "success");
                 limpaFormulario();
                 listarSprints();
             } catch (error) {
@@ -202,7 +229,7 @@
         try {
             const response = await fetch(`${API}/${id}`);
             if (!response.ok) {
-                mostrarMensagemNaTela("resultadogeral", "Sprint não encontrada", "warnning");
+                mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "warnning");
                 return;
             }
             const sprint = await response.json();
@@ -223,10 +250,9 @@
                 // Limpa mensagens e monta equipe se o usuário mudar de aba depois
                 mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " + sprint.descsprint, "green");
                 await listarAusencias(data_inicio, data_final);
-
             }
         } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", "Erro ao carregar Sprint: " + error.message, "error");
+            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
         }
     }
 
@@ -261,7 +287,7 @@
                         <td>${sprint.visivel ? '✅ Sim' : '❌ Não'}</td>
                         <td>${sprint.ativa ? '✅ Sim' : '❌ Não'}</td>
                         <td style="text-align:center;">
-                           <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();excluirSprint(${sprint.idsprint})">
+                           <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();encerrarSprint(${sprint.idsprint})">
                                          Encerrar Sprint
                             </button>
                         </td>
@@ -275,25 +301,24 @@
 
             tabela += `</tbody></table>`;
             document.getElementById('resultadogeral').innerHTML = tabela;
-
         } catch (error) {
-            mostrarMensagemNaTela("resultadogeral","Erro ao listar sprint: " + error.message,"error");
+            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
+
         }
     }
     async function duplicarSprint(idsprint) {
         return true;
     }
 
-    async function excluirSprint(idsprint) {
+    async function encerrarSprint(idsprint) {
         if (!confirm("Tem certeza que deseja encerrar esta Sprint?")) return;
         try {
-            const response = await fetch(`${API}/excluir/${idsprint}`, { method: 'DELETE' });
-            const texto = await response.text();
-            mostrarMensagemNaTela("resultadogeral", "Encerrada com sucesso ", "success");
+            const response = await fetch(`${API}/encerrar/${idsprint}`, { method: 'POST' });
+            mostrarMensagemNaTela("resultadogeral", MSG.alterado("SPRINT"), "sucess");
             limpaFormulario();
             listarSprints();
         } catch (error) {
-            mostrarMensagemNaTela("resultadogeral","Mensagem: " + error.message,"error");
+            mostrarMensagemNaTela("resultadogeral",MSG.erroSalvar("SPRINT"),"error");
         }
     }
 
@@ -321,7 +346,7 @@
             const response = await fetch(`${API}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
             if (!response.ok) {
                 const msg = await response.text();
-                mostrarMensagemNaTela(msg || "Erro ao listar ausências!", 2);
+                mostrarMensagemNaTela("resultadoausencias", MSG.erroCarregar("AUSÊNCIAS"), "error");
                 return;
             }
             const data = await response.json();
@@ -381,7 +406,7 @@
         `;
             container.innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultadoausencias",error.message || ". Erro ao listar ausências","error");
+            mostrarMensagemNaTela("resultadoausencias", MSG.erroCarregar("AUSÊNCIAS"), "error");
         }
     }
     function validaEntrada() {

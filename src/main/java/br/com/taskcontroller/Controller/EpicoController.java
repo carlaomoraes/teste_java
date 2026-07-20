@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
+import br.com.taskcontroller.Projection.IndicadorEquipeProjection;
 import br.com.taskcontroller.Record.EquipeCardDTO;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;
@@ -131,10 +132,5 @@ public class EpicoController {
                                            @PathVariable Long idEstoria) {
         epicoEstoriasRepository.removerDoEpico(idEpico, idEstoria);
         return ResponseEntity.noContent().build();
-    }
-    //NA TELA DE ÉPICOS - ESSE ENDPPOINT BUSCA TODAS EQUIPES RELACIONADAS AO ÉPICO
-    @GetMapping("/{idEmpreendimento}/equipes_relacionadas")
-    public List<EquipeCardDTO> listarEquipesRelacionadas(@PathVariable Long idEmpreendimento) {
-        return service.buscarResumoEquipes(idEmpreendimento);
     }
 }

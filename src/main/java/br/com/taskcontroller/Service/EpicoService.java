@@ -57,7 +57,5 @@ public class EpicoService {
     public List<Estoria> buscarEstoriaPorEpico(@Param("idepico") Long idepico) {
         return relacionamentoRepository.buscarEstoriaPorEpico(idepico);
     }
-    public List<EquipeCardDTO> buscarResumoEquipes(@Param("idEmpreendimento") Long idEmpreendimento) {
-        return repository.buscarResumoEquipes(idEmpreendimento);
-    }
+
 }

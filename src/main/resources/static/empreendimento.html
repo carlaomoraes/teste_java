@@ -188,6 +188,17 @@
         </div>
         <hr>
 
+        <div class="form-check mb-2">
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="considerar_valorhoras">
+
+            <label class="form-check-label" for="considerar_valorhoras">
+                Mostrar total valores horas
+            </label>
+        </div>
+        <hr>
+
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn btn-salvar" onclick="salvarConfiguracao(document.getElementById('idempreendimento').value);">Salvar configuração</button>
         </div>
@@ -206,7 +217,8 @@
         considerarFeriados: false,
         permitir_sprint_sobreposta: false,
         permitir_multiplas_sprint_ativas: false,
-        considerar_feriados: false
+        considerar_feriados: false,
+        considerar_valorhoras: false
     };
 
     let equipeDisponivelSelecionada = null;
@@ -581,6 +593,7 @@
             configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
             configuracaoSprint.horas_trabalho_dias = data.horas_trabalho_dias;
             configuracaoSprint.considerar_feriados = data.considerar_feriados;
+            configuracaoSprint.considerar_valorhoras = data.considerar_valorhoras;
             configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
             configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
 
@@ -603,6 +616,7 @@
             const permitir_multiplas_sprint_ativas = document.getElementById("permitir_multiplas_sprint_ativas").checked;
             const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
             const considerar_Feriados = document.getElementById('considerar_feriados').value;
+            const considerar_valorhoras = document.getElementById('considerar_valorhoras').value;
             const Configuracao = {
                 idconfiguracao: configuracaoSprint.idconfiguracao,
                 empreendimento: {
@@ -614,6 +628,7 @@
                 permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas,
                 considerar_feriados: considerar_Feriados,
                 horas_trabalho_dia: horas_Trabalho_Dia,
+                considerar_valorhoras: considerar_valorhoras
             }
             try {
                 const response = await fetch(`${API_CONFIGURACAO}/salvar`, {
