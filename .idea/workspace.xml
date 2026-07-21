@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustes na aba equipes">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TarefaController.java" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Aba equipes concluída">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/AnexoRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/AnexoResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/AnexoMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Anexo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/TarefaMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/TarefaMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Tarefa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Tarefa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Configuracao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Configuracao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -157,11 +157,11 @@
       <recent name="br.com.taskboard.demo.DAO" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="br.com.taskcontroller.Mapper" />
+      <recent name="br.com.taskcontroller.DTO" />
+      <recent name="br.com.taskcontroller.Modelo" />
       <recent name="br.com.taskcontroller.Controller" />
       <recent name="br.com.taskcontroller.Service" />
-      <recent name="br.com.taskcontroller.Respository" />
-      <recent name="br.com.taskcontroller.Excecoes" />
-      <recent name="br.com.taskcontroller" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TaskControllerApplication">
@@ -390,14 +390,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00062" summary="Cadastro de Empreendimento funcionando">
-      <option name="closed" value="true" />
-      <created>1782586783079</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1782586783079</updated>
     </task>
     <task id="LOCAL-00063" summary="Cadastro de Empreendimento funcionando">
       <option name="closed" value="true" />
@@ -783,7 +775,15 @@
       <option name="project" value="LOCAL" />
       <updated>1784579435668</updated>
     </task>
-    <option name="localTasksCounter" value="111" />
+    <task id="LOCAL-00111" summary="Aba equipes concluída">
+      <option name="closed" value="true" />
+      <created>1784654977823</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1784654977823</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -823,7 +823,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cadastro de Empreendimento funcionando / home.css" />
     <MESSAGE value="Cadastro de épico - ok" />
     <MESSAGE value="Cadastro de épico funcionando" />
     <MESSAGE value="lay-out de empreendimento.html - ok" />
@@ -848,7 +847,8 @@
     <MESSAGE value="Mensagens padronizadas" />
     <MESSAGE value="Ajustes no lay-out" />
     <MESSAGE value="Ajustes na aba equipes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajustes na aba equipes" />
+    <MESSAGE value="Aba equipes concluída" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aba equipes concluída" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -910,6 +910,12 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Anexo.java</url>
+          <line>34</line>
+          <properties field="descricao" class="br.com.taskcontroller.Modelo.Anexo" />
+          <option name="timeStamp" value="78" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

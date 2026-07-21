@@ -213,9 +213,29 @@
     <div id="equipes" class="conteudo-aba">
         <div id="cardsEquipes"></div>
     </div>
+    <div id="anexos" class="conteudo-aba">
+        <div id="cardsAnexos">
+
+        </div>
+    </div>
+
 
 </div>
 <script>
+    //-----------------CARREGAR CONFIGURAÇÃO
+    let configuracaoSprint = {
+        idconfiguracao: 0,
+        idempreendimento: 0,
+        duracao_min_sprint: 0,
+        duracao_max_sprint: 0,
+        horas_trabalho_dia: 0,
+        considerarFeriados: false,
+        permitir_sprint_sobreposta: false,
+        permitir_multiplas_sprint_ativas: false,
+        considerar_feriados: false,
+        considerar_valorhoras: false
+    };
+
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_EPICO = 'http://localhost:8080/epicos';
@@ -224,6 +244,8 @@
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
     const API_TIPO_TAREFA = 'http://localhost:8080/tipo_tarefa';
     const API_DASHBOARD = 'http://localhost:8080/dashboard';
+    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
+
 
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
@@ -626,44 +648,56 @@
             mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ÉPICO"),"error");
         }
     }
+    async function carregarConfiguracao(idEmpreendimento) {
+        try {
+            const response = await fetch(`${API_CONFIGURACAO}/buscaPorEmpreendimento/${idEmpreendimento}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultadoconfiguracao","Configuração não encontrada","error");
+                return;
+            }
+            const data = await response.json();
+            configuracaoSprint.idconfiguracao = data.idconfiguracao;
+            configuracaoSprint.idempreendimento = data.idempreendimento;
+            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
+            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
+            configuracaoSprint.horas_trabalho_dias = data.horas_trabalho_dias;
+            configuracaoSprint.considerar_feriados = data.considerar_feriados;
+            configuracaoSprint.considerar_valorhoras = data.considerar_valorhoras;
+            configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
+            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
+
+        } catch (error) {
+            mostrarMensagemNaTela("resultadoconfiguracao", "Erro ao carregar as configurações: " + error.message,"error");
+        }
+    }
     async function listarEquipes(idEmpreendimento) {
-            try {
-                const response = await fetch(`${API_DASHBOARD}/${idEmpreendimento}/dashboard_equipes`);
-
-                if (!response.ok) {
+        try {
+            const response = await fetch(`${API_DASHBOARD}/${idEmpreendimento}/dashboard_equipes`);
+            await carregarConfiguracao(idEmpreendimento);
+            if (!response.ok) {
                     throw new Error(`Erro ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                if (data.length === 0) {
+            }
+            const data = await response.json();
+            if (data.length === 0) {
                     mostrarMensagemNaTela("resultado_epico", MSG.naoEncontrada("EQUIPE"), "warning");
                     return;
-                }
-
-                const container = document.getElementById("cardsEquipes");
-                container.innerHTML = "";
-
-                data.forEach(equipe => {
-                    const percentual = equipe.horasEstimadas > 0 ? Math.min((equipe.horasRealizadas / equipe.horasEstimadas) * 100, 100) : 0;
-                    container.innerHTML += `
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5>${equipe.nomeEquipe}</h5>
-                            <hr>
-                            <p>📖 Nº Estórias:
-                                <strong>${equipe.totalEstorias}</strong>
-                            </p>
-                            <p>📋 Nº Tarefas:
-                                <strong>${equipe.totalTarefas}</strong>
-                            </p>
-                            <p>⏱ Horas Estimadas:
-                                <strong>${equipe.horasEstimadas}</strong>
-                            </p>
-                            <p>✔ Horas Realizadas:
-                                <strong>${equipe.horasRealizadas}</strong>
-                            </p>
+            }
+            const container = document.getElementById("cardsEquipes");
+            container.innerHTML = "";
+            data.forEach(equipe => {
+               const percentual = equipe.horasEstimadas > 0 ? Math.min((equipe.horasRealizadas / equipe.horasEstimadas) * 100, 100) : 0;
+               container.innerHTML += `<div class="col-md-4 mb-3">
+                                                <div class="card shadow-sm">
+                                                <div class="card-body">
+                                                <h5>${equipe.nomeEquipe}</h5>
+                                                <hr>
+                                                <p>📖 Nº Estórias: <strong>${equipe.totalEstorias}</strong></p>
+                                                <p>📋 Nº Tarefas:  <strong>${equipe.totalTarefas}</strong> </p>
+                                                <p>⏱ Horas Estimadas: <strong>${equipe.horasEstimadas}</strong></p>
+                                                <p>✔ Horas Realizadas: <strong>${equipe.horasRealizadas}</strong> </p>
+                                                ${configuracaoSprint?.considerar_valorhoras? `
+                                                    <p>💰 Custo Estimado: <strong>${equipe.custoEstimado}</strong></p>
+                                                    <p>💰 Custo Realizado:<strong>${equipe.custoRealizado}</strong></p>`: ''}
                             <div class="mt-3">
                                 <div class="progress">
                                     <div class="progress-bar bg-success" style="width:${percentual}%"></div>
@@ -679,11 +713,9 @@
                 </div>
             `;
             });
-
         } catch (error) {
             console.error(error);
-            //  mostrarMensagemNaTela("resultado_epico", MSG.errolistar("EQUIPES"), "error");
-            mostrarMensagemNaTela("resultado_epico", error.message, "error");
+            mostrarMensagemNaTela("resultado_epico", MSG.errolistar("EQUIPES"), "error");
         }
     }
 

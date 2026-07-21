@@ -218,7 +218,8 @@
         permitir_sprint_sobreposta: false,
         permitir_multiplas_sprint_ativas: false,
         considerar_feriados: false,
-        considerar_valorhoras: false
+        considerar_valorhoras: false,
+        mostrar_valorhoras: false,
     };
 
     let equipeDisponivelSelecionada = null;
@@ -604,6 +605,7 @@
             document.getElementById("permitir_sprint_sobreposta").checked =  data.permitir_sprint_sobreposta;
             document.getElementById("permitir_multiplas_sprint_ativas").checked = data.permitir_multiplas_sprint_ativas;
             document.getElementById("considerar_feriados").checked = data.considerar_feriados;
+            document.getElementById("considerar_valorhoras").checked = data.considerar_valorhoras;
         } catch (error) {
             mostrarMensagemNaTela("resultadoconfiguracao", "Erro ao carregar as configurações: " + error.message,"error");
         }
@@ -615,8 +617,8 @@
             const permitir_sprint_sobreposta = document.getElementById("permitir_sprint_sobreposta").checked;
             const permitir_multiplas_sprint_ativas = document.getElementById("permitir_multiplas_sprint_ativas").checked;
             const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
-            const considerar_Feriados = document.getElementById('considerar_feriados').value;
-            const considerar_valorhoras = document.getElementById('considerar_valorhoras').value;
+            const considerar_Feriados = document.getElementById('considerar_feriados').checked;
+            const considerar_valorhoras = document.getElementById('considerar_valorhoras').checked;
             const Configuracao = {
                 idconfiguracao: configuracaoSprint.idconfiguracao,
                 empreendimento: {
@@ -624,11 +626,11 @@
                 },
                 duracao_min_sprint: Number(duracao_min_sprint),
                 duracao_max_sprint: Number(duracao_max_sprint),
-                permitir_sprint_sobreposta: permitir_sprint_sobreposta,
-                permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas,
-                considerar_feriados: considerar_Feriados,
-                horas_trabalho_dia: horas_Trabalho_Dia,
-                considerar_valorhoras: considerar_valorhoras
+                permitir_sprint_sobreposta: permitir_sprint_sobreposta || false,
+                permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas || false,
+                considerar_feriados: considerar_Feriados || false,
+                horas_trabalho_dia: horas_Trabalho_Dia || false,
+                considerar_valorhoras: considerar_valorhoras || false
             }
             try {
                 const response = await fetch(`${API_CONFIGURACAO}/salvar`, {
