@@ -10,7 +10,7 @@ public class TarefaMapper {
         Tarefa t = new Tarefa();
         t.setIdtarefa(dto.getIdtarefa());
         t.setEstoria(dto.getEstoria());
-        t.setStatus(dto.getStatus());
+        t.setStatus(dto.getEstoria().getStatus());
         t.setDesctarefa(dto.getDesctarefa());
         t.setCriador(dto.getCriador());
         t.setResponsavel(dto.getResponsavel());
@@ -22,6 +22,7 @@ public class TarefaMapper {
         t.setData_conlusao(dto.getData_conlusao());
         t.setData_inicio(dto.getData_inicio());
         t.setAtiva(dto.getAtiva());
+        t.setTipoTarefa(dto.getTipoTarefa());
         return t;
     }
 
@@ -41,6 +42,8 @@ public class TarefaMapper {
         dto.setData_conlusao(t.getData_conlusao());
         dto.setData_inicio(t.getData_inicio());
         dto.setAtiva(t.getAtiva());
+        dto.setTipoTarefa(t.getTipoTarefa());
+        dto.setData_conlusao(t.getData_conlusao());
         return dto;
     }
 }

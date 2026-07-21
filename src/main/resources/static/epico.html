@@ -23,7 +23,7 @@
 <div class="container">
     <h1>Épico - TaskController 1.0</h1>
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'epico')">Geral</button>
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'epico')">Épicos</button>
         <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
         <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
         <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
@@ -123,7 +123,7 @@
             </div>
             <div>
                 <label>Resumo</label>
-                <input type="text" id="resumo" oninput="converterMaiusculo(this)">
+                <input type="text" id="resumo_estoria" oninput="converterMaiusculo(this)">
             </div>
             <div>
                 <label>Pontos estimados</label>
@@ -284,6 +284,7 @@
     async function carregarStatus() {
         const comboStatusEP = document.getElementById("comboStatusEP");
         const comboStatusES = document.getElementById("comboStatusES");
+        const comboStatusTA = document.getElementById("comboStatusTA");
         try {
             const resposta = await fetch(`${API_STATUS}/listar`);
             const vetor = await resposta.json();
@@ -293,6 +294,7 @@
                 opcao.textContent = i.descstatus;
                 comboStatusEP.appendChild(opcao);
                 comboStatusES.appendChild(opcao);
+                comboStatusTA.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
@@ -338,7 +340,10 @@
         carregarTipoTarefa();
     });
     async function criarEpico() {
-        limpaFormulario();
+        limpaFormulario("EP");
+    }
+    async function criarTarefa() {
+        limpaFormulario("TA");
     }
     async function salvarEpico() {
         const hoje = new Date();
@@ -387,12 +392,57 @@
             const data = await response.json();
             mostrarMensagemNaTela("resultado_epico", MSG.salvo("ÉPICO"), "success");
             setTimeout(() => {
-                limparCampos();
+                limparFormulario("EP");
                 listarEpicos();
             }, 1000);
 
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", MSG.erroSalvar("ÉPICO"), "error");
+        }
+    }
+    async function limparFormulario(ABA) {
+        if(ABA === "EP") {
+            document.getElementById('idepico').value = "";
+            document.getElementById('nomeepico').value = "";
+            document.getElementById('codigo').value = "";
+            document.getElementById('cor').value = "#6c757d";
+            // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+            document.getElementById('bloqueado').checked = false;
+            // CARREGANDO OS COMBOS
+            document.getElementById('comboStatusEP').value  = "";
+            document.getElementById('comboEmpreendimentoEP').value = "";
+            document.getElementById('comboPrioridadeEP').value = "";
+            document.getElementById('comboCriadorEP').value = "";
+            document.getElementById('data_inicio').value = "";
+            document.getElementById('data_fim').value = "";
+       } else if(ABA === "ES") {
+            document.getElementById('idestoria').value = "";
+            document.getElementById('descestoria').value = "";
+            document.getElementById('resumo_estoria').value = "";
+            document.getElementById('bloqueada_estoria').checked = false;
+            document.getElementById('data_inicio').value = "";
+            document.getElementById('data_fim').value = "";
+            document.getElementById('comboCriadorES').value = "";
+            document.getElementById('comboResponsavelES').value = "";
+            document.getElementById('comboStatusES').value = "";
+            document.getElementById('pontos').value = 0.00;
+            document.getElementById('horas_estimadas').value = 0.00;
+        } else if(ABA === "TA") {
+            document.getElementById('idtarefa').value = "";
+            document.getElementById('desctarefa').value = "";
+            document.getElementById('resumo_tarefa').value = "";
+            document.getElementById('bloqueada_estoria').checked = false;
+            document.getElementById('data_inicio_tarefa').value = "";
+            document.getElementById('data_fim_tarefa').value = "";
+            document.getElementById('comboCriadorTA').value = "";
+            document.getElementById('comboResponsavelTA').value = "";
+            document.getElementById('comboStatusTA').value = "";
+            document.getElementById('comboTipoTarefa').value = "";
+            document.getElementById('horas_estimadas_tarefa').value = 0.00;
+            document.getElementById('horas_realizadas_tarefa').value = 0.00;
+
+        } else if(ABA === "ANEXOS") {
+
         }
     }
     async function listarEpicos() {
@@ -440,20 +490,13 @@
         }
     }
     async function criarEstoria() {
-        limparEstoria();
-    }
-    async function limparEstoria() {
-        document.getElementById('descestoria').value = "";
-        document.getElementById('resumo').value = "";
-        document.getElementById('bloqueada_estoria').checked = false;
-        document.getElementById('data_inicio').value = "";
-        document.getElementById('data_fim').value = "" ;
+        limpaFormulario("ES");
     }
     async function salvarEstoria(idEpico, idEmpreendimento) {
         const hoje = new Date();
         const descestoria = document.getElementById('descestoria').value;
-        const resumo = document.getElementById('resumo').value;
-        campoBlooqueado = document.getElementById('bloqueada_estoria').checked;
+        const resumo = document.getElementById('resumo_estoria').value;
+        const campoBlooqueado = document.getElementById('bloqueada_estoria').checked;
         const data_inicio = document.getElementById('data_inicio').value || hoje ;
         const data_fim = document.getElementById('data_fim').value || hoje ;
         const estoria = {
@@ -489,7 +532,7 @@
             const data = await response.json();
             mostrarMensagemNaTela("resultado_estoria",MSG.salvo("ESTÓRIA"),"success");
             setTimeout(() => {
-                limparCampos();
+                limparFormulario("ES");
                 listarEstoria(idEpico);
             }, 1000);
 
@@ -540,67 +583,97 @@
             mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ÉPICO"),"error");
         }
     }
-    async function listarEquipe(idEmpreendimento) {
+    async function listarTarefas(idEsorias) {
+        const cor = "6c757d";
         try {
-            const response = await fetch(`${API_DASHBOARD}/${idEmpreendimento}/dashboad_equipes/`);
-            const equipes = await response.json();
-
-            if (equipes.length <= 0) {
-                mostrarMensagemNaTela("resultado_epico", MSG.naoEncontrada("EQUIPE"), "warning");
+            const response = await fetch(`${API_EPICO}/${idEpico}/estorias`);
+            const data = await response.json();
+            if(data.length <= 0) {
+                mostrarMensagemNaTela("resultado_estoria",MSG.naoEncontrada("ESTÓRIA"),"warning");
                 return;
             }
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Descrição</th>
+                        <th class="table-header">Status</th>
+                        <th class="table-header">Criador</th>
+                        <th class="table-header">Responsável</th>
+                        <th class="table-header">Data inicial</th>
+                        <th class="table-header">Data final</th>
+                        <th class="table-header">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(estoria => {
+                tabela += `<tr onclick="buscarPorLinha(document.getElementById('idepico').value,${estoria.idestoria}, 0,'ESTORIA')" style="cursor:pointer;">
+                                <td>${estoria.idestoria}</td>
+                                <td>${estoria.descestoria?.toUpperCase() ?? ""}</td>
+                                <td>${estoria.status?.descstatus.toUpperCase() ?? ""}</td>
+                                <td>${estoria.idcriador?.nome.toUpperCase() ?? ""}</td>
+                                <td>${estoria.idresponsavel?.nome.toUpperCase() ?? ""}</td>
+                                <td>${formatarData(estoria.data_inicio)}</td>
+                                <td>${formatarData(estoria.data_fim)}</td>
+                                <td><button type="button" class="btn" onclick="excluirEstoria(${estoria.idestoria}); event.stopPropagation();">Excluir</button></td>
+                           </tr>`;
+            });
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado_estoria').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ÉPICO"),"error");
+        }
+    }
+    async function listarEquipes(idEmpreendimento) {
+            try {
+                const response = await fetch(`${API_DASHBOARD}/${idEmpreendimento}/dashboard_equipes`);
 
-            const container = document.getElementById("cardsEquipes");
-            container.innerHTML = "";
+                if (!response.ok) {
+                    throw new Error(`Erro ${response.status}`);
+                }
 
-            equipes.forEach(equipe => {
+                const data = await response.json();
 
-                container.innerHTML += `
+                if (data.length === 0) {
+                    mostrarMensagemNaTela("resultado_epico", MSG.naoEncontrada("EQUIPE"), "warning");
+                    return;
+                }
+
+                const container = document.getElementById("cardsEquipes");
+                container.innerHTML = "";
+
+                data.forEach(equipe => {
+                    const percentual = equipe.horasEstimadas > 0 ? Math.min((equipe.horasRealizadas / equipe.horasEstimadas) * 100, 100) : 0;
+                    container.innerHTML += `
                 <div class="col-md-4 mb-3">
                     <div class="card shadow-sm">
                         <div class="card-body">
-
                             <h5>${equipe.nomeEquipe}</h5>
-
                             <hr>
-
                             <p>📖 Nº Estórias:
                                 <strong>${equipe.totalEstorias}</strong>
                             </p>
-
                             <p>📋 Nº Tarefas:
                                 <strong>${equipe.totalTarefas}</strong>
                             </p>
-
                             <p>⏱ Horas Estimadas:
-                                <strong>${equipe.totalEstimadas}</strong>
+                                <strong>${equipe.horasEstimadas}</strong>
                             </p>
-
                             <p>✔ Horas Realizadas:
-                                <strong>${equipe.totalRealizadas}</strong>
+                                <strong>${equipe.horasRealizadas}</strong>
                             </p>
-                           ${equipe.considerar_valorhoras == 1 ? `
-                                <p>💰 Custo total estimado: <strong>${equipe.custoEstimado}</strong></p>
-                                <p>💰 Custo total realizado:<strong>${equipe.custoRealizado}</strong></p>
-      `
-                        : ''
-                }
-
                             <div class="mt-3">
-                                <div class="d-flex justify-content-between">
-                                    <small>Progresso</small>
-                                    <small>
-                                        ${equipe.totalRealizadas}/${equipe.totalEstimadas}
-                                    </small>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width:${percentual}%"></div>
                                 </div>
-
                                 <div class="progress" style="height:10px">
                                     <div class="progress-bar"
                                          style="width:${equipe.percentualProgresso}%">
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -609,7 +682,8 @@
 
         } catch (error) {
             console.error(error);
-            mostrarMensagemNaTela("resultado_epico", MSG.errolistar("EQUIPES"), "error");
+            //  mostrarMensagemNaTela("resultado_epico", MSG.errolistar("EQUIPES"), "error");
+            mostrarMensagemNaTela("resultado_epico", error.message, "error");
         }
     }
 
@@ -636,8 +710,8 @@
                     document.getElementById('data_fim').value = epico.data_fim_prevista;
                     // Limpa mensagens e monta equipe se o usuário mudar de aba depois
                     mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "green");
-                    listarEstoria(epico.idepico);
-                    listarEquipe(epico.empreendimento.idempreendimento);
+                    await listarEstoria(epico.idepico);
+                    await listarEquipes(epico.empreendimento.idempreendimento);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_epico",MSG.erroCarregar("ÉPICO"), "error");
@@ -655,15 +729,15 @@
                     document.getElementById('bloqueada_estoria').checked = estoria.bloqueada || 0;
                     document.getElementById('data_inicio').value = estoria.data_inicio;
                     document.getElementById('data_fim').value = estoria.data_fim;
+                    document.getElementById('resumo_estoria').value = estoria.resumo;
                     document.getElementById('pontos').value = parseFloat(estoria.pontos ?? 0);
-                    document.getElementById('resumo').value = estoria.resumo;
                     document.getElementById('horas_estimadas').value = parseFloat(estoria.horas_estimadas ?? 0);
-                    document.getElementById('horas_realizadas').value = parseFloat(estoria.horas_realizadas ?? 0);
                     // CARREGANDO OS COMBOS
                     document.getElementById('comboStatusES').value = estoria.status.idstatus;
                     document.getElementById('comboCriadorES').value = estoria.idcriador.idusuario;
                     document.getElementById('comboResponsavelES').value = estoria.idresponsavel.idusuario;
-                    mostrarMensagemNaTela("resultado_estoria","Estoria selecionada: " + estoria.descEstoria, "green");
+                    mostrarMensagemNaTela("resultado_estoria","Estoria selecionada: " + estoria.descestoria, "green");
+                    listarTarefas(estoria.idestoria);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
@@ -684,18 +758,12 @@
                 method: 'DELETE'
             });
             mostrarMensagemNaTela("resultado_epico",MSG.excluido("ÉPICO"), "success");
-            limpaFormulario();
+            limpaFormulario("EP");
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico",MSG.erroExcluir("ÉPICO"), "error");
         }
     }
-    async function limpaFormulario() {
-        document.getElementById('idepico').value = "";
-        document.getElementById('nomeepico').value = "";
-        document.getElementById('codigo').value = "";
-        document.getElementById('cor').value = "";
-        document.getElementById('bloqueado').checked = false;
-    }
+
     function montarProgresso(percentual) {
 
         percentual = Number(percentual) || 0;

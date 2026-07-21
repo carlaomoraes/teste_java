@@ -1,15 +1,17 @@
 package br.com.taskcontroller.DTO;
 
 import br.com.taskcontroller.Modelo.Estoria;
+import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.TipoTarefa;
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Service.StatusEntidadesService;
 
 import java.time.LocalDate;
 
 public class TarefaResponseDTO {
     private Long idtarefa;
     private String desctarefa;
-    private String status;
+    private StatusEntidades status;
     private Estoria estoria;
     private Usuario criador;
     private Usuario responsavel;
@@ -38,11 +40,11 @@ public class TarefaResponseDTO {
         this.desctarefa = desctarefa;
     }
 
-    public String getStatus() {
+    public StatusEntidades getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusEntidades status) {
         this.status = status;
     }
 
