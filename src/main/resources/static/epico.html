@@ -648,32 +648,9 @@
             mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ÉPICO"),"error");
         }
     }
-    async function carregarConfiguracao(idEmpreendimento) {
-        try {
-            const response = await fetch(`${API_CONFIGURACAO}/buscaPorEmpreendimento/${idEmpreendimento}`);
-            if (!response.ok) {
-                mostrarMensagemNaTela("resultadoconfiguracao","Configuração não encontrada","error");
-                return;
-            }
-            const data = await response.json();
-            configuracaoSprint.idconfiguracao = data.idconfiguracao;
-            configuracaoSprint.idempreendimento = data.idempreendimento;
-            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
-            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
-            configuracaoSprint.horas_trabalho_dias = data.horas_trabalho_dias;
-            configuracaoSprint.considerar_feriados = data.considerar_feriados;
-            configuracaoSprint.considerar_valorhoras = data.considerar_valorhoras;
-            configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
-            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
-
-        } catch (error) {
-            mostrarMensagemNaTela("resultadoconfiguracao", "Erro ao carregar as configurações: " + error.message,"error");
-        }
-    }
     async function listarEquipes(idEmpreendimento) {
         try {
             const response = await fetch(`${API_DASHBOARD}/${idEmpreendimento}/dashboard_equipes`);
-            await carregarConfiguracao(idEmpreendimento);
             if (!response.ok) {
                     throw new Error(`Erro ${response.status}`);
             }
@@ -695,9 +672,8 @@
                                                 <p>📋 Nº Tarefas:  <strong>${equipe.totalTarefas}</strong> </p>
                                                 <p>⏱ Horas Estimadas: <strong>${equipe.horasEstimadas}</strong></p>
                                                 <p>✔ Horas Realizadas: <strong>${equipe.horasRealizadas}</strong> </p>
-                                                ${configuracaoSprint?.considerar_valorhoras? `
-                                                    <p>💰 Custo Estimado: <strong>${equipe.custoEstimado}</strong></p>
-                                                    <p>💰 Custo Realizado:<strong>${equipe.custoRealizado}</strong></p>`: ''}
+                                                <p>💰 Custo Estimado: <strong>${equipe.custoEstimado}</strong></p>
+                                                <p>💰 Custo Realizado:<strong>${equipe.custoRealizado}</strong></p>
                             <div class="mt-3">
                                 <div class="progress">
                                     <div class="progress-bar bg-success" style="width:${percentual}%"></div>

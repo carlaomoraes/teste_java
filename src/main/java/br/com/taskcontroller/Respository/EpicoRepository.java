@@ -22,8 +22,8 @@ public interface EpicoRepository extends JpaRepository<Epico, Long> {
                COALESCE(SUM(tt.total_tarefas),0) AS totalTarefas,
                COALESCE(SUM(e.horas_estimadas),0) AS horasEstimadas,
                COALESCE(SUM(e.horas_realizadas),0) AS horasRealizadas,
-               ROUND(COALESCE(SUM(e.horas_estimadas * p.valorhora),0),2) AS custoEstimado,
-               ROUND(COALESCE(SUM(e.horas_realizadas * p.valorhora),0),2) AS custoRealizado
+               CASE WHEN e.considerar_valorhoras = 1 THEN ROUND(COALESCE(SUM(e.horas_estimadas * p.valorhora),0),2) ELSE 0 END AS custoEstimado,
+               CASE WHEN e.considerar_valorhoras = 1 THEN ROUND(COALESCE(SUM(e.horas_realizadas * p.valorhora),0),2) ELSE 0 END AS custoRealizado
         FROM estoria e
         JOIN empreendimento_equipe ee ON ee.idempreendimento_equipe = e.idempreendimento_equipe
         JOIN equipe eq ON eq.idequipe = ee.idequipe

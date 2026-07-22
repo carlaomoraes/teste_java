@@ -456,6 +456,14 @@
         else {
             campoBlooqueado = 1;
         }
+        const duracao_min_sprint = document.getElementById('duracao_min_sprint').value;
+        const duracao_max_sprint = document.getElementById('duracao_max_sprint').value;
+        const permitir_sprint_sobreposta = document.getElementById("permitir_sprint_sobreposta").checked;
+        const permitir_multiplas_sprint_ativas = document.getElementById("permitir_multiplas_sprint_ativas").checked;
+        const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
+        const considerar_Feriados = document.getElementById('considerar_feriados').checked;
+        const considerar_valorhoras = document.getElementById('considerar_valorhoras').checked;
+
         const Empreendimento = {
             idempreendimento: Number(idempreendimento) || null,
             descempreendimento: descempreendimento || null,
@@ -472,6 +480,13 @@
             status: {
                 idstatus: document.getElementById('comboStatus').value || null,
             },
+            duracao_min_sprint: Number(duracao_min_sprint),
+            duracao_max_sprint: Number(duracao_max_sprint),
+            permitir_sprint_sobreposta: permitir_sprint_sobreposta || false,
+            permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas || false,
+            considerar_feriados: considerar_Feriados || false,
+            horas_trabalho_dia: horas_Trabalho_Dia || false,
+            considerar_valorhoras: considerar_valorhoras || false
         };
         try {
             const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
@@ -553,7 +568,22 @@
                 // Limpa mensagens e monta equipe se o empreendimento mudar de aba depois
                 mostrarMensagemNaTela("resultado", "Empreendimento selecionado: " +  Empreendimento.descempreendimento, "green");
                 montaEquipes(Empreendimento.idempreendimento);
-                carregarConfiguracao(Empreendimento.idempreendimento);
+                configuracaoSprint.idconfiguracao = Empreendimento.idconfiguracao;
+                configuracaoSprint.idempreendimento = Empreendimento.idempreendimento;
+                configuracaoSprint.duracao_min_sprint = Empreendimento.duracao_min_sprint;
+                configuracaoSprint.duracao_max_sprint = Empreendimento.duracao_max_sprint;
+                configuracaoSprint.horas_trabalho_dias = Empreendimento.horas_trabalho_dias;
+                configuracaoSprint.considerar_feriados = Empreendimento.considerar_feriados;
+                configuracaoSprint.considerar_valorhoras = Empreendimento.considerar_valorhoras;
+                configuracaoSprint.permitir_sprint_sobreposta = Empreendimento.permitir_sprint_sobreposta;
+                configuracaoSprint.permitir_multiplas_sprint_ativas = Empreendimento.permitir_multiplas_sprint_ativas;
+                document.getElementById("duracao_min_sprint").value = Empreendimento.duracao_min_sprint;
+                document.getElementById("duracao_max_sprint").value = Empreendimento.duracao_max_sprint;
+                document.getElementById("horas_Trabalho_Dia").value = Empreendimento.horas_trabalho_dia;
+                document.getElementById("permitir_sprint_sobreposta").checked =  Empreendimento.permitir_sprint_sobreposta;
+                document.getElementById("permitir_multiplas_sprint_ativas").checked = Empreendimento.permitir_multiplas_sprint_ativas;
+                document.getElementById("considerar_feriados").checked = Empreendimento.considerar_feriados;
+                document.getElementById("considerar_valorhoras").checked = Empreendimento.considerar_valorhoras;
             }
         } catch (error) {
             mostrarMensagemNaTela("resultado","Erro ao carregar Empreendimento: "+error.message,"error");
@@ -579,75 +609,6 @@
         equipeDisponivelSelecionada = null;
         equipeSelecionada = null;
         mostrarMensagemNaTela("resultado","","success");
-    }
-    async function carregarConfiguracao(idEmpreendimento) {
-        try {
-            const response = await fetch(`${API_CONFIGURACAO}/buscaPorEmpreendimento/${idEmpreendimento}`);
-            if (!response.ok) {
-                mostrarMensagemNaTela("resultadoconfiguracao","Configuração não encontrada","error");
-                return;
-            }
-            const data = await response.json();
-            configuracaoSprint.idconfiguracao = data.idconfiguracao;
-            configuracaoSprint.idempreendimento = data.idempreendimento;
-            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
-            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
-            configuracaoSprint.horas_trabalho_dias = data.horas_trabalho_dias;
-            configuracaoSprint.considerar_feriados = data.considerar_feriados;
-            configuracaoSprint.considerar_valorhoras = data.considerar_valorhoras;
-            configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
-            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
-
-            document.getElementById("idempreendimento").value = data.empreendimento.idempreendimento;
-            document.getElementById("duracao_min_sprint").value = data.duracao_min_sprint;
-            document.getElementById("duracao_max_sprint").value = data.duracao_max_sprint;
-            document.getElementById("horas_Trabalho_Dia").value = data.horas_trabalho_dia;
-            document.getElementById("permitir_sprint_sobreposta").checked =  data.permitir_sprint_sobreposta;
-            document.getElementById("permitir_multiplas_sprint_ativas").checked = data.permitir_multiplas_sprint_ativas;
-            document.getElementById("considerar_feriados").checked = data.considerar_feriados;
-            document.getElementById("considerar_valorhoras").checked = data.considerar_valorhoras;
-        } catch (error) {
-            mostrarMensagemNaTela("resultadoconfiguracao", "Erro ao carregar as configurações: " + error.message,"error");
-        }
-    }
-    async function salvarConfiguracao(idEmpreendimento) {
-        if(validaEntrada()) {
-            const duracao_min_sprint = document.getElementById('duracao_min_sprint').value;
-            const duracao_max_sprint = document.getElementById('duracao_max_sprint').value;
-            const permitir_sprint_sobreposta = document.getElementById("permitir_sprint_sobreposta").checked;
-            const permitir_multiplas_sprint_ativas = document.getElementById("permitir_multiplas_sprint_ativas").checked;
-            const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
-            const considerar_Feriados = document.getElementById('considerar_feriados').checked;
-            const considerar_valorhoras = document.getElementById('considerar_valorhoras').checked;
-            const Configuracao = {
-                idconfiguracao: configuracaoSprint.idconfiguracao,
-                empreendimento: {
-                    idempreendimento: Number(idEmpreendimento)
-                },
-                duracao_min_sprint: Number(duracao_min_sprint),
-                duracao_max_sprint: Number(duracao_max_sprint),
-                permitir_sprint_sobreposta: permitir_sprint_sobreposta || false,
-                permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas || false,
-                considerar_feriados: considerar_Feriados || false,
-                horas_trabalho_dia: horas_Trabalho_Dia || false,
-                considerar_valorhoras: considerar_valorhoras || false
-            }
-            try {
-                const response = await fetch(`${API_CONFIGURACAO}/salvar`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(Configuracao)
-                });
-                const data = await response.json();
-                mostrarMensagemNaTela("resultadoconfiguracao","Configuração salvo com sucesso! ","success");
-                setTimeout(() => {
-                }, 1000);
-            } catch (error) {
-                mostrarMensagemNaTela("resultadoconfiguracao","Erro ao salvar configuração: "+error.message,"error");
-            }
-        }
     }
 
     function formatarData(data) {
