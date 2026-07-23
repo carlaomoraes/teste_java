@@ -15,6 +15,8 @@
 
     <!-- CSS específico da tela -->
     <link rel="stylesheet" href="css/pages/epico.css">
+    <link rel="stylesheet" href="css/pages/anexo.css">
+
     <link rel="stylesheet" href="css/pages/funcoes.css">
 </head>
 <body>
@@ -30,7 +32,7 @@
         <button class="aba-botao" onclick="alternarAba(event, 'anexos')">Anexos</button>
     </div>
     <div id="epico" class="conteudo-aba ativo">
-        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value,0,0, 'EPICOS')" name="idepico" id="idepico" placeholder="ID do épico (Deixe vazio para novo)">
+        <input type="number" id="idepico" onblur="buscarPorLinha(document.getElementById('idepico').value,0,0, 'EPICOS')" name="idepico" placeholder="ID do épico (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Nome</label>
@@ -89,7 +91,7 @@
         <div id="resultado_epico"></div>
     </div>
     <div id="estoria" class="conteudo-aba">
-        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value,document.getElementById('idestoria').value, 0, 'ESTORIAS')" id="idestoria" placeholder="ID da estoria (Deixe vazio para novo)">
+        <input type="number" id="idestoria" onblur="buscarPorLinha(document.getElementById('idepico').value,document.getElementById('idestoria').value, 0, 'ESTORIAS')" placeholder="ID da estoria (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Descrição</label>
@@ -214,8 +216,51 @@
         <div id="cardsEquipes"></div>
     </div>
     <div id="anexos" class="conteudo-aba">
-        <div id="cardsAnexos">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">📎 Anexos</h5>
+            </div>
 
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label for="arquivo" class="form-label">
+                            Arquivo
+                        </label>
+
+                        <input
+                                type="file"
+                                class="form-control"
+                                id="arquivo"
+                                name="arquivo">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="descricaoArquivo" class="form-label">
+                            Descrição
+                        </label>
+
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="descricaoArquivo"
+                                placeholder="Descrição do arquivo">
+                    </div>
+
+                </div>
+
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <button type="button" class="btn btn-add" onclick="enviarArquivo();">Enviar arquivo...</button>
+                </div>
+
+                <hr>
+
+                <h6>Arquivos anexados</h6>
+                <div id="resultado_anexos"></div>
+
+            </div>
         </div>
     </div>
 
@@ -244,7 +289,7 @@
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
     const API_TIPO_TAREFA = 'http://localhost:8080/tipo_tarefa';
     const API_DASHBOARD = 'http://localhost:8080/dashboard';
-    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
+    const API_ANEXO = 'http://localhost:8080/anexo';
 
 
     function alternarAba(event, idAbaDestino) {
@@ -467,6 +512,39 @@
 
         }
     }
+    async function listarAnexos(idEpico) {
+        try {
+            const resposta = await fetch(`${API_ANEXO}/listar/${idEpico}`);
+            const data = await resposta.json();
+            let tabela = ``;
+            if(data.length <= 0) {
+                tabela += `<table class="table table-hover table-bordered align-items-center">`;
+                tabela += `<tr><td>Não há anexos</td></tr>`;
+                tabela += `</<table>`;
+                document.getElementById('resultado_anexos').innerHTML = tabela;
+            }
+            else {
+                tabela += `<table class="table table-hover table-bordered align-middle">`;
+                tabela += `<thead class="table-light">`;
+                tabela += `<th width="40">#</th> <th>Arquivo</th><th>Descrição</th> <th width="120">Tamanho</th> <th width="150">Data</th> <th width="180">Usuário</th><th width="140">Ações</th></tr>`;
+                tabela += `</tr></thead>`;
+                tabela += `</body>`;
+                data.forEach(anexo => {
+                    tabela += `<tr> <td>${anexo.idanexo}</td>
+                                <td>${anexo.nomearquivo}</td>
+                                <td>${anexo.tamanho}</td>
+                                <td>${anexo.usuario.nomeusuario}</td>
+                                <td>${formatarData(anexo.dataupload)}</td>
+                                <td> <button type="button" class="btn btn-danger" onclick="excluirArquivo(${anexo.idanexo})">Excluir</button>
+                                <button type="button" class="btn btn-info" onclick="baixarArquivo(${anexo.idanexo})">Download</button></td>
+            </tr>`;});
+                tabela += `</tbody></table>`;
+                document.getElementById('resultado_anexos').innerHTML = tabela;
+            }
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_anexos", MSG.erroCarregar("ANEXOS"), "error");
+        }
+    }
     async function listarEpicos() {
         cor = "6c757d";
         try {
@@ -514,7 +592,7 @@
     async function criarEstoria() {
         limpaFormulario("ES");
     }
-    async function salvarEstoria(idEpico, idEmpreendimento) {
+    async function salvarEstoria(idEpico) {
         const hoje = new Date();
         const descestoria = document.getElementById('descestoria').value;
         const resumo = document.getElementById('resumo_estoria').value;
@@ -605,7 +683,7 @@
             mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ÉPICO"),"error");
         }
     }
-    async function listarTarefas(idEsorias) {
+    async function listarTarefas(idEpico) {
         const cor = "6c757d";
         try {
             const response = await fetch(`${API_EPICO}/${idEpico}/estorias`);
@@ -690,7 +768,6 @@
             `;
             });
         } catch (error) {
-            console.error(error);
             mostrarMensagemNaTela("resultado_epico", MSG.errolistar("EQUIPES"), "error");
         }
     }
@@ -717,9 +794,10 @@
                     document.getElementById('data_inicio').value = epico.data_inicio;
                     document.getElementById('data_fim').value = epico.data_fim_prevista;
                     // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-                    mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "green");
+                    mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "success");
                     await listarEstoria(epico.idepico);
                     await listarEquipes(epico.empreendimento.idempreendimento);
+                    await listarAnexos(epico.idepico);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_epico",MSG.erroCarregar("ÉPICO"), "error");
@@ -744,7 +822,7 @@
                     document.getElementById('comboStatusES').value = estoria.status.idstatus;
                     document.getElementById('comboCriadorES').value = estoria.idcriador.idusuario;
                     document.getElementById('comboResponsavelES').value = estoria.idresponsavel.idusuario;
-                    mostrarMensagemNaTela("resultado_estoria","Estoria selecionada: " + estoria.descestoria, "green");
+                    mostrarMensagemNaTela("resultado_estoria","Estoria selecionada: " + estoria.descestoria, "success");
                     listarTarefas(estoria.idestoria);
                 }
             } catch (error) {
@@ -800,6 +878,67 @@
             <span>${percentual}%</span>
         </div>
     `;
+    }
+    async function enviarArquivo(idEpico) {
+        const hoje = new Date();
+
+        const arquivo = document.getElementById("arquivo").files[0];
+        const descricao = document.getElementById("descricaoArquivo").value;
+        const nomeArquivo = arquivo.name;
+        const nomeOriginal = arquivo.name;
+        const tipoarquivo = nomeArquivo.type;
+        const Categoria = "CATEGORIA";
+        const tamanho = nomeArquivo.size;
+        const caminho = nomeArquivo.path;
+
+        if (!arquivo) {
+            alert("Selecione um arquivo.");
+            return;
+        }
+        const anexo = {
+            epico: Number(idEpico) || null,
+            usuario: {
+                idusuario: sessionStorage.getItem("idusuario") || null,
+            },
+            nomearquivo: nomeArquivo,
+            nomeoriginal: nomeOriginal,
+            descricao: descricao,
+            tipoarquivo: tipoarquivo,
+            categoria: Categoria,
+            caminho: caminho,
+            tamanho: tamanho,
+            dataupload: hoje
+        };
+        try {
+            const response = await fetch(`${API_ANEXO}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(anexo)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("resultado_anexo", MSG.salvo("ANEXO"), "success");
+            setTimeout(() => {
+                limparFormulario("AN");
+                listarAnexos(idEpico);
+            }, 1000);
+
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_anexo", MSG.erroSalvar("ANEXO"), "error");
+        }
+    }
+
+    function baixarArquivo(id){
+        console.log("Download:", id);
+    }
+
+    function excluirArquivo(id){
+
+        if(confirm("Deseja excluir este arquivo?")){
+            console.log("Excluir:", id);
+        }
+
     }
 </script>
 </body>

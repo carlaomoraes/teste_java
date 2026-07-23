@@ -28,7 +28,7 @@
         <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Ausências programadas</button>
     </div>
     <div id="geral" class="conteudo-aba ativo">
-        <input type="number" id="idsprint" onblur="buscarPorLinha(document.getElementById('idsprint').value)" placeholder="ID da sprint (Deixe vazio para novo)">
+        <input type="number" id="idsprint"  placeholder="ID da sprint (Deixe vazio para novo)" readonly>
         <label for="descsprint">Descrição da sprint:</label>
         <input type="text" id="descsprint" oninput="converterMaiusculo(this)">
         <label class="form-label" for="comboEmpreendimento">Empreendimento:</label>
@@ -36,7 +36,7 @@
             <span class="input-group-text">
                 <i class="bi bi-buildings"></i>
             </span>
-            <select class="form-select" id="comboEmpreendimento" onchange="carregarConfiguracao()">
+            <select class="form-select" id="comboEmpreendimento">
                     <option value="">Selecione...</option>
             </select>
         </div>
@@ -111,12 +111,13 @@
             return;
         }
         try {
-            const response = await fetch(`${API_CONFIGURACAO}/buscaPorEmpreendimento/${idEmpreendimento}`);
+            const response = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}`);
             if (!response.ok) {
                mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
                return;
             }
             const data = await response.json();
+            configuracaoSprint.idempreendimento = data.idempreendimento;
             configuracaoSprint.idconfiguracao = data.idconfiguracao;
             configuracaoSprint.idempreendimento = data.idempreendimento;
             configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
@@ -171,6 +172,11 @@
     document.addEventListener('DOMContentLoaded', () => {
         carregarEmpreendimento();
     });
+    document.getElementById('comboEmpreendimento').addEventListener('change', (event) => {
+        const idEmpreendimento = event.target.value;
+        carregarConfiguracao(idEmpreendimento);
+    });
+
     async function criarSprint() {
         document.getElementById('descsprint').value = '';
         document.getElementById('dtiniciosprint').value = '';
@@ -182,26 +188,25 @@
 
     async function salvarSprint() {
         if (validaEntrada()) {
-            const { value: idsprint } = document.getElementById("idsprint").value;
             const { value: descsprint } = document.getElementById('descsprint').value;
-            const { value: dataInicio } = document.getElementById('dtiniciosprint').value;
-            const { value: dataFim } = document.getElementById('dtfinalsprint').value;
+            const { value: dtiniciosprint } = document.getElementById('dtiniciosprint').value;
+            const { value: dtfinalsprint } = document.getElementById('dtfinalsprint').value;
 
             // CAPTURANDO O CHECKBOX: Retorna true se estiver marcado, ou false se estiver desmarcado
             const visivel = document.getElementById('visivel').checked;
             const ativa = document.getElementById('ativa').checked;
-
+            alert(configuracaoSprint.idempreendimento);
             const sprint = {
-                idsprint: idsprint || null,
                 descsprint: descsprint || null,
-                dataInicio: dataInicio || null,
-                dataFim: dataFim || null,
+                dtiniciosprint: dtiniciosprint,
+                dtfinalsprint: dtfinalsprint,
                 visivel: visivel || true, // Envia true/false para o atributo booleano do Spring
                 ativa: ativa || true,
                 empreendimento: {
-                    idEmpreendimento: document.getElementById('comboEmpreendimento').value || null,
+                    idEmpreendimento: configuracaoSprint.idempreendimento,
                 }
             };
+            alert(JSON.stringify(sprint));
             console.log(JSON.stringify(sprint));
             try {
                 const response = await fetch(`${API}/salvar`, {
@@ -221,41 +226,6 @@
             }
         }
     }
-
-    async function buscarPorLinha(id) {
-        const hoje = new Date().toISOString().split("T")[0];
-        var data_final;
-        var data_inicio;
-        try {
-            const response = await fetch(`${API}/${id}`);
-            if (!response.ok) {
-                mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "warnning");
-                return;
-            }
-            const sprint = await response.json();
-            data_inicio = sprint.dtiniciosprint || hoje;
-            data_final = sprint.dtfinalsprint || hoje;
-
-            document.getElementById('idsprint').value = sprint.idsprint;
-            document.getElementById('descsprint').value = sprint.descsprint || null;
-            document.getElementById('dtiniciosprint').value = data_inicio;
-            document.getElementById('dtfinalsprint').value = data_final;
-            document.getElementById('comboEmpreendimento').value = sprint.empreendimento.idempreendimento;
-
-            // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-            document.getElementById('visivel').checked = sprint.visivel || false;
-
-            // CARREGA AS AUSENCIAS PROGRAMADAS
-            if(sprint.idsprint != null) {
-                // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-                mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " + sprint.descsprint, "green");
-                await listarAusencias(data_inicio, data_final);
-            }
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
-        }
-    }
-
     async function listarSprints() {
         try {
             const response = await fetch(`${API}/listar`);
@@ -279,7 +249,7 @@
 
             data.forEach(sprint => {
                 tabela += `
-                    <tr onclick="buscarPorLinha(${sprint.idsprint})" style="cursor:pointer;">
+                    <tr>
                         <td>${sprint.idsprint}</td>
                         <td>${sprint.descsprint || ''}</td>
                         <td>${formatarDataBR(sprint.dtiniciosprint)}</td>

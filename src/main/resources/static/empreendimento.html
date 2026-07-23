@@ -66,7 +66,7 @@
                         <i class="bi bi-buildings"></i>
                     </span>
                     <select class="form-select" id="comboPrioridade">
-                        <option value="">-- Selecione status ---</option>
+                        <option value="">-- Selecione prioriedade ---</option>
                     </select>
                 </div>
             </div>
@@ -200,7 +200,7 @@
         <hr>
 
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="salvarConfiguracao(document.getElementById('idempreendimento').value);">Salvar configuração</button>
+            <button type="button" class="btn btn-salvar" onclick="onclick=salvarEmpreendimento()">Salvar configuração</button>
         </div>
         <div id="resultadoconfiguracao"></div>
 
@@ -230,7 +230,6 @@
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
-    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
 
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
@@ -270,7 +269,7 @@
         }
     }
     async function carregarPrioridade() {
-        const comboGestor = document.getElementById("comboPrioridade");
+        const comboPrrioriedade = document.getElementById("comboPrioridade");
         try {
             const resposta = await fetch(`${API_PRIORIDADE}/listar`);
             const prioridades = await resposta.json();
@@ -278,7 +277,7 @@
                 const opcao = document.createElement('option');
                 opcao.value = prioridade.idprioridade;
                 opcao.textContent = prioridade.descprioridade;
-                comboGestor.appendChild(opcao);
+                comboPrrioriedade.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado", "Erro ao carregar prioridade: "+error.message,"error");
@@ -442,13 +441,14 @@
 
     async function salvarEmpreendimento() {
         const hoje = new Date();
+        var campoBloqueado = 0;
 
         const idempreendimento = document.getElementById('idempreendimento').value;
         const descempreendimento = document.getElementById('descempreendimento').value;
         const data_inicio = document.getElementById('data_inicio').value;
         const data_fim = document.getElementById('data_fim').value;
         const siglaempreendimento = document.getElementById('descempreendimento').value;
-        const cor = corHexValida(document.getElementById(cor).value);
+        const cor = corHexValida(document.getElementById('cor').value);
         const codempreendimento = document.getElementById('codempreendimento').value;
         if(document.getElementById('bloqueado').checked) {
             campoBlooqueado = 0;
@@ -467,25 +467,30 @@
         const Empreendimento = {
             idempreendimento: Number(idempreendimento) || null,
             descempreendimento: descempreendimento || null,
-            data_inicio: data_inicio || hoje ,
-            bloqueado: campoBlooqueado,
             data_inicio: data_inicio || hoje,
             data_fim: data_fim || hoje,
+            bloqueado: campoBloqueado,
             siglaempreendimento: siglaempreendimento || null,
             cor: cor || "6c757d",
             codempreendimento: codempreendimento || null,
+
             gestor: {
-                idgestor: document.getElementById('comboGestor').value || null,
+                idgestor: Number(document.getElementById("comboGestor").value) || null
             },
+
             status: {
-                idstatus: document.getElementById('comboStatus').value || null,
+                idstatus: Number(document.getElementById("comboStatus").value) || null
             },
+            prioridade: {
+                idprioridade: Number(document.getElementById("comboPrioridade").value) || null
+            },
+
             duracao_min_sprint: Number(duracao_min_sprint),
             duracao_max_sprint: Number(duracao_max_sprint),
             permitir_sprint_sobreposta: permitir_sprint_sobreposta || false,
             permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas || false,
             considerar_feriados: considerar_Feriados || false,
-            horas_trabalho_dia: horas_Trabalho_Dia || false,
+            horas_trabalho_dia: Number(horas_Trabalho_Dia) || 8,
             considerar_valorhoras: considerar_valorhoras || false
         };
         try {
@@ -603,8 +608,8 @@
     function limpaFormulario() {
         document.getElementById('idempreendimento').value = "";
         document.getElementById('descempreendimento').value = "";
-        document.getElementById('codigo').value = "";
-        document.getElementById('cor').value = "";
+        document.getElementById('codempreendimento').value = "";
+        document.getElementById('cor').value = "#2196F3";
         document.getElementById('bloqueado').checked = false;
         equipeDisponivelSelecionada = null;
         equipeSelecionada = null;
