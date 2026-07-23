@@ -63,13 +63,17 @@ public class SprintController {
         if (isWeekend(sprint.getDtiniciosprint()) || isWeekend(sprint.getDtfinalsprint())) {
             throw new BusinessRuleException("A Sprint não pode iniciar ou terminar em um final de semana.");
         }
+        Long idSprint = 0l;
+        if(sprint.getIdsprint() != null) {
+            idSprint = sprint.getIdsprint();
+        }
 
         // 3. Regra de Negócio: Checa Sobreposição no Banco
         int numSprint = sprintRepository.buscaSprintPorIntervalo(
                 sprint.getDtiniciosprint(),
                 sprint.getDtfinalsprint(),
                 idEmpreendimento,
-                sprint.getIdsprint()
+                idSprint
         );
 
         if (numSprint > 0) {
