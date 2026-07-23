@@ -4,9 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustes na aba configuração">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustes no cadastro de sprint">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/AnexoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TarefaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TarefaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/AnexoRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/AnexoResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/AnexoMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/TarefaMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/TarefaMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Tarefa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Tarefa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/AnexoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TarefaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TarefaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/pages/anexo.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/pages/epico.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/epico.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -384,14 +398,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00066" summary="Cadastro de Empreendimento funcionando / Relacionamento equipe/empreendimento funcionando">
-      <option name="closed" value="true" />
-      <created>1782827097307</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1782827097308</updated>
     </task>
     <task id="LOCAL-00067" summary="Cadastro de Empreendimento funcionando / Novo lay-out do cadastro de equipe">
       <option name="closed" value="true" />
@@ -777,7 +783,15 @@
       <option name="project" value="LOCAL" />
       <updated>1784810066566</updated>
     </task>
-    <option name="localTasksCounter" value="115" />
+    <task id="LOCAL-00115" summary="Ajustes no cadastro de sprint">
+      <option name="closed" value="true" />
+      <created>1784811749534</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1784811749534</updated>
+    </task>
+    <option name="localTasksCounter" value="116" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -817,7 +831,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="lay-out de empreendimento.html - ok" />
     <MESSAGE value="lay-out de empreendimento.html - parcialmente" />
     <MESSAGE value="lay-out de empreendimento.html - layout - OK" />
     <MESSAGE value="Cadastro de épicos - ok&#10;Cadastro de estórias" />
@@ -842,7 +855,8 @@
     <MESSAGE value="Aba equipes concluída" />
     <MESSAGE value="Aba anexo começando" />
     <MESSAGE value="Ajustes na aba configuração" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajustes na aba configuração" />
+    <MESSAGE value="Ajustes no cadastro de sprint" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajustes no cadastro de sprint" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -886,11 +900,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java</url>
           <line>54</line>
           <option name="timeStamp" value="77" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/AnexoController.java</url>
-          <line>44</line>
-          <option name="timeStamp" value="80" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EquipeUsuarioDTO.java</url>

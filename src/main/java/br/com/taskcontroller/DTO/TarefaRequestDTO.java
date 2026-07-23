@@ -18,7 +18,7 @@ public class TarefaRequestDTO {
     private boolean bloqueada;
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
-    private LocalDate data_conlusao;
+    private LocalDate data_conclusao;
     private int ativa;
 
     public Long getIdtarefa() {
@@ -109,12 +109,12 @@ public class TarefaRequestDTO {
         this.data_fim_prevista = data_fim_prevista;
     }
 
-    public LocalDate getData_conlusao() {
-        return data_conlusao;
+    public LocalDate getData_conclusao() {
+        return data_conclusao;
     }
 
-    public void setData_conlusao(LocalDate data_conlusao) {
-        this.data_conlusao = data_conlusao;
+    public void setData_conclusao(LocalDate data_conclusao) {
+        this.data_conclusao = data_conclusao;
     }
 
     public int getAtiva() {

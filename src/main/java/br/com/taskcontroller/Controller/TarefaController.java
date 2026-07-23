@@ -2,6 +2,7 @@ package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
+import br.com.taskcontroller.Respository.TarefaRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;
 import br.com.taskcontroller.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,9 @@ public class TarefaController {
     private StatusEntidadesService statusService;
     @Autowired
     private UsuarioService usuarioService;
-    @Autowired
-    private PrioridadesService prioridadesService;
-    @Autowired
-    private EpicoEstoriasRepository epicoEstoriasRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private TarefaRepository tarefaRepository;
 
     // BUSCAR POR ID
     @GetMapping("/{idTarefa}")
@@ -75,9 +72,15 @@ public class TarefaController {
     }
 
     // EXCLUIR
-    @DeleteMapping("/excluir/{idEstoria}")
+    @DeleteMapping("/excluir/{idTarefa}")
     public ResponseEntity<String> excluir(@PathVariable Long idTarefa) {
         service.excluir(idTarefa);
         return ResponseEntity.ok().body("Tarefa excluída com sucesso!");
+    }
+
+    // LISTAR TAREFAS POR ESTORIA
+    @GetMapping("/porEstoria/{idEstoria}")
+    public List<Tarefa> listarPorEstoria(@PathVariable Long idEstoria) {
+        return service.listarPorEstoria(idEstoria);
     }
 }

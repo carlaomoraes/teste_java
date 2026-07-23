@@ -19,7 +19,7 @@ public class TarefaMapper {
         t.setIdtarefa(dto.getIdtarefa());
         t.setBloqueada(dto.isBloqueada());
         t.setData_fim_prevista(dto.getData_fim_prevista());
-        t.setData_conlusao(dto.getData_conlusao());
+        t.setData_conclusao(dto.getData_conclusao());
         t.setData_inicio(dto.getData_inicio());
         t.setAtiva(dto.getAtiva());
         t.setTipoTarefa(dto.getTipoTarefa());
@@ -39,11 +39,10 @@ public class TarefaMapper {
         dto.setIdtarefa(t.getIdtarefa());
         dto.setBloqueada(t.isBloqueada());
         dto.setData_fim_prevista(t.getData_fim_prevista());
-        dto.setData_conlusao(t.getData_conlusao());
+        dto.setData_conclusao(t.getData_conclusao());
         dto.setData_inicio(t.getData_inicio());
         dto.setAtiva(t.getAtiva());
         dto.setTipoTarefa(t.getTipoTarefa());
-        dto.setData_conlusao(t.getData_conlusao());
         return dto;
     }
 }

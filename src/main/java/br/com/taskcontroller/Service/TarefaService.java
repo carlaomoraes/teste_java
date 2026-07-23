@@ -36,4 +36,8 @@ public class TarefaService {
     public Tarefa buscarPorId(Long idTarefa) {
         return repository.findById(idTarefa).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
     }
+
+    public List<Tarefa> listarPorEstoria(Long idEstoria) {
+        return repository.findByEstoria_Idestoria(idEstoria);
+    }
 }

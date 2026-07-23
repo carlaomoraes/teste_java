@@ -4,8 +4,6 @@ import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.TipoTarefa;
 import br.com.taskcontroller.Modelo.Usuario;
-import br.com.taskcontroller.Service.StatusEntidadesService;
-
 import java.time.LocalDate;
 
 public class TarefaResponseDTO {
@@ -20,7 +18,7 @@ public class TarefaResponseDTO {
     private boolean bloqueada;
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
-    private LocalDate data_conlusao;
+    private LocalDate data_conclusao;
     private int ativa;
     private TipoTarefa tipoTarefa;
 
@@ -112,12 +110,12 @@ public class TarefaResponseDTO {
         this.data_fim_prevista = data_fim_prevista;
     }
 
-    public LocalDate getData_conlusao() {
-        return data_conlusao;
+    public LocalDate getData_conclusao() {
+        return data_conclusao;
     }
 
-    public void setData_conlusao(LocalDate data_conlusao) {
-        this.data_conlusao = data_conlusao;
+    public void setData_conclusao(LocalDate data_conclusao) {
+        this.data_conclusao = data_conclusao;
     }
 
     public int getAtiva() {
