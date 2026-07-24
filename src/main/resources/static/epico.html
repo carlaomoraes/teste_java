@@ -107,7 +107,7 @@
                 </select>
             </div>
             <div>
-                <label>Responsavel</label>
+                <label>Responsável</label>
                 <select id="comboResponsavelES">
                     <option value="">-- Selecione o responsável --</option>
                 </select>
@@ -166,7 +166,7 @@
                 </select>
             </div>
             <div>
-                <label>Responsavel</label>
+                <label>Responsável</label>
                 <select id="comboResponsavelTA">
                     <option value="">-- Selecione o responsável --</option>
                 </select>
@@ -257,6 +257,8 @@
     async function carregarGestor() {
         const comboCriadorEP = document.getElementById("comboCriadorEP");
         const comboCriadorES = document.getElementById("comboCriadorES");
+        const comboCriadorTA = document.getElementById("comboCriadorTA");
+
         const comboResponsavelES = document.getElementById("comboResponsavelES");
 
         try {
@@ -268,6 +270,7 @@
                 opcao.textContent = usuario.nome;
                 comboCriadorEP.appendChild(opcao);
                 comboCriadorES.appendChild(opcao);
+                comboCriadorTA.appendChild(opcao);
                 comboResponsavelES.appendChild(opcao)
             });
         } catch (error) {
@@ -354,8 +357,50 @@
         limpaFormulario("TA");
     }
 
-    async function salvarTarefa() {
-
+    async function salvarTarefa(idEpico, idEstoria) {
+        const hoje = new Date();
+        const bloqueada = document.getElementById("bloqueada").checked || 0;
+        const ativa = document.getElementById("ativa").checked || 0;
+        const descTarefa = document.getElementById("descTarefa").value;
+        const data_inicio = document.getElementById("data_inicio").value || hoje;
+        const data_fim_prevista = document.getElementById("data_fim_prevista").value || hoje;
+        const data_conclusao = document.getElementById("data_conclusao").value || hoje;
+        const tarefa = {
+            idestoria: Number(idEstoria) || null,
+            desctarefa: descTarefa || null,
+            obsepico: obsepico || null,
+            bloqueada: bloqueada,
+            data_inicio: data_inicio,
+            data_fim_prevista: data_fim_prevista,
+            data_conclusao: data_conclusao,
+            ativa: ativa,
+            criador: {
+                idcriador: document.getElementById('comboCriadorTA').value || null,
+            },
+            responsavel: {
+                idresponsavel: document.getElementById('comboResponsavelTA').value || null,
+            },
+            status: {
+                idstatus: document.getElementById('comboStatusTA').value || null,
+            },
+        };
+        try {
+            const response = await fetch(`${API_TAREFA}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tarefa)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("resultado_tarefa", MSG.salvo("TAREFA"), "success");
+            setTimeout(() => {
+                limparFormulario("TA");
+                listarTarefas(idEpico, idEstoria);
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_tarefa", MSG.erroSalvar("TAREFA"), "error");
+        }
     }
     async function salvarEpico() {
         const hoje = new Date();

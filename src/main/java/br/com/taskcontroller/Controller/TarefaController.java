@@ -62,6 +62,7 @@ public class TarefaController {
     @PutMapping("/atualizar/{idTarefa}")
     public Tarefa atualizar(@PathVariable Long idTarefa, @RequestBody Tarefa tarefa)  {
         tarefa.setIdtarefa(idTarefa);
+        service.alterarStatus(idTarefa, tarefa.getStatus().getIdstatus());
         return service.atualizar(tarefa);
     }
 
