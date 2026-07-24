@@ -9,7 +9,6 @@ public class SprintRequestDTO {
     private LocalDate dtfinalsprint;
     private boolean visivel;
     private boolean ativa;
-    private LocalDate dtterminosprint;
 
     public Long getIdsprint() {
         return idsprint;
@@ -59,11 +58,4 @@ public class SprintRequestDTO {
         this.ativa = ativa;
     }
 
-    public LocalDate getDtterminosprint() {
-        return dtterminosprint;
-    }
-
-    public void setDtterminosprint(LocalDate dtterminosprint) {
-        this.dtterminosprint = dtterminosprint;
-    }
 }

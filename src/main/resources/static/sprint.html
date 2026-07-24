@@ -66,7 +66,6 @@
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
-    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
 
     let configuracaoSprint = {
         idconfiguracao: 0,
@@ -98,12 +97,6 @@
 
         // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
-        if (idAbaDestino === "ausencias" ) {
-            const sprint = document.getElementById("idsprint").value;
-            if(!sprint) {
-                mostrarMensagemNaTela("resultadoausencia", "Sprint não selecionada!", "error");
-            }
-        }
     }
     async function carregarConfiguracao() {
         const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
@@ -127,6 +120,7 @@
             configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
             configuracaoSprint.considerar_feriados = data.considerar_feriados;
             montaDatasSprint();
+            await listarAusencias(document.getElementById('dtiniciosprint').value, document.getElementById('dtfinalsprint').value);
         } catch (error) {
             //mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("CONFIGURAÇÕES"), "error");
             mostrarMensagemNaTela("resultadogeral", error.message, "error");
@@ -152,6 +146,7 @@
 
         document.getElementById('dtiniciosprint').value = formatarData(dataHoje);
         document.getElementById('dtfinalsprint').value = formatarData(dataFutura);
+
     }
     async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
@@ -188,18 +183,17 @@
 
     async function salvarSprint() {
         if (validaEntrada()) {
-            const { value: descsprint } = document.getElementById('descsprint').value;
-            const { value: dtiniciosprint } = document.getElementById('dtiniciosprint').value;
-            const { value: dtfinalsprint } = document.getElementById('dtfinalsprint').value;
+            const descricao = document.getElementById('descsprint').value;
+            const datainicio = document.getElementById('dtiniciosprint').value;
+            const datafinal  = document.getElementById('dtfinalsprint').value;
 
             // CAPTURANDO O CHECKBOX: Retorna true se estiver marcado, ou false se estiver desmarcado
             const visivel = document.getElementById('visivel').checked;
             const ativa = document.getElementById('ativa').checked;
-            alert(configuracaoSprint.idempreendimento);
             const sprint = {
-                descsprint: descsprint || null,
-                dtiniciosprint: dtiniciosprint,
-                dtfinalsprint: dtfinalsprint,
+                descsprint: descricao,
+                dtiniciosprint: datainicio,
+                dtfinalsprint: datafinal,
                 visivel: visivel || true, // Envia true/false para o atributo booleano do Spring
                 ativa: ativa || true,
                 empreendimento: {
@@ -380,10 +374,7 @@
         }
     }
     function validaEntrada() {
-        if (validarDuracaoSprint() || validaParametros()) {
-
-        }
-        return true;
+        return validarDuracaoSprint() && validaParametros();
     }
     function validarDuracaoSprint() {
         const inicio = new Date(document.getElementById("dtiniciosprint").value);
@@ -392,11 +383,11 @@
             return true;
         }
         const dias = Math.ceil((fim - inicio) / (1000 * 60 * 60 * 24)) + 1;
-        if (dias < configuracaoSprint.duracaoMinima) {
+        if (dias < configuracaoSprint.duracao_min_sprint) {
             mostrarMensagemNaTela("resultadogeral","A sprint deve ter no mínimo "+configuracaoSprint.duracaoMinima+" dias.", "warning");
             return false;
         }
-        if (dias > configuracaoSprint.duracaoMaxima) {
+        if (dias > configuracaoSprint.duracao_max_sprint) {
             mostrarMensagemNaTela("resultadogeral","A sprint deve ter no máximo de "+configuracaoSprint.duracaoMaxima+" dias.","warning");
             return false;
         }
@@ -404,9 +395,10 @@
     async function validaParametros() {
         const data_inicio = document.getElementById("dtiniciosprint").value
         const data_fim = document.getElementById("dtfinalsprint").value;
-        const idempreendimento = document.getElementById("idempreendimento").value;
+        const idempreendimento = configuracaoSprint.idempreendimento;
         try {
-            const response = await fetch(`${API}/verifica_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}`);
+            const url = `${API}/sprint_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}`;
+            const response = await fetch(url);
             if (!response.ok) {
                 const msg = await response.text();
                 mostrarMensagemNaTela(resultado, msg || "Erro ao buscar sprint!", "error");

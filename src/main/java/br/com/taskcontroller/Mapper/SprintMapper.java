@@ -12,20 +12,20 @@ public class SprintMapper {
         s.setIdsprint(dto.getIdsprint());
         s.setDescsprint(dto.getDescsprint());
         s.setDtiniciosprint(dto.getDtiniciosprint());
-        s.setDtterminosprint(dto.getDtterminosprint());
         s.setDtfinalsprint(dto.getDtfinalsprint());
         s.setVisivel(dto.isVisivel());
         s.setAtiva(dto.isAtiva());
-        s.setDtterminosprint(dto.getDtterminosprint());
         return s;
     }
 
-    public static SprintResponseDTO toDTO(Sprint e) {
+    public static SprintResponseDTO toDTO(Sprint s) {
         SprintResponseDTO dto = new SprintResponseDTO();
-        dto.setIdsprint(e.getIdsprint());
-        dto.setDescsprint(e.getDescsprint());
-        dto.setDtiniciosprint(e.getDtiniciosprint());
-        dto.setDtterminosprint(e.getDtterminosprint());
+        dto.setIdsprint(s.getIdsprint());
+        dto.setDescsprint(s.getDescsprint());
+        dto.setDtiniciosprint(s.getDtiniciosprint());
+        dto.setDtfinalsprint(s.getDtfinalsprint());
+        dto.setVisivel(s.isVisivel());
+        dto.setAtiva(s.isAtiva());
         return dto;
     }
 }

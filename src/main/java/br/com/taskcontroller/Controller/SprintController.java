@@ -63,17 +63,13 @@ public class SprintController {
         if (isWeekend(sprint.getDtiniciosprint()) || isWeekend(sprint.getDtfinalsprint())) {
             throw new BusinessRuleException("A Sprint não pode iniciar ou terminar em um final de semana.");
         }
-        Long idSprint = 0l;
-        if(sprint.getIdsprint() != null) {
-            idSprint = sprint.getIdsprint();
-        }
 
         // 3. Regra de Negócio: Checa Sobreposição no Banco
         int numSprint = sprintRepository.buscaSprintPorIntervalo(
                 sprint.getDtiniciosprint(),
                 sprint.getDtfinalsprint(),
                 idEmpreendimento,
-                idSprint
+                sprint.getIdsprint()
         );
 
         if (numSprint > 0) {
@@ -125,6 +121,7 @@ public class SprintController {
                                                     @RequestParam("data_fim") LocalDate data_fim) {
         return ausenciaProgramadaRepository.buscarAusenciasDaSprint(data_inicio, data_fim);
     }
+
     // VEJA SPRINT SOBREPOSTA
     @GetMapping("/sprint_sobreposta")
     public boolean verificaSobreposta(
@@ -135,7 +132,6 @@ public class SprintController {
 
         return service.existeSobreposicao(idempreendimento,idsprint,data_inicio,data_fim);
     }
-
     private boolean isWeekend(LocalDate date) {
         if (date == null)
             return false;
