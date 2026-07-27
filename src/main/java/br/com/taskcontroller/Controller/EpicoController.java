@@ -1,13 +1,10 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
-import br.com.taskcontroller.Projection.IndicadorEquipeProjection;
-import br.com.taskcontroller.Record.EquipeCardDTO;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;
 import br.com.taskcontroller.Service.EpicoService;
 import br.com.taskcontroller.Service.PrioridadesService;
-import br.com.taskcontroller.Service.StatusEntidadesService;
 import br.com.taskcontroller.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +19,7 @@ public class EpicoController {
 
     @Autowired
     private EpicoService service;
-    @Autowired
-    private StatusEntidadesService statusService;
+
     @Autowired
     private UsuarioService usuarioService;
     @Autowired
@@ -47,11 +43,11 @@ public class EpicoController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<Epico> salvar(@RequestBody Epico epico) {
-        StatusEntidades statusEntidades = statusService.buscarPorId(epico.getStatus().getIdstatus());
-        if (statusEntidades == null) {
-            return ResponseEntity.notFound().build();
-        }
-        epico.setStatus(statusEntidades);
+//        StatusEntidades statusEntidades = statusService.buscarPorId(epico.getStatus().getIdstatus());
+//        if (statusEntidades == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        epico.setStatus(statusEntidades);
         Usuario usuario = usuarioService.buscarPorId(epico.getResponsavel().getIdusuario());
         if (usuario == null) {
             return ResponseEntity.notFound().build();

@@ -40,15 +40,15 @@
                 <input type="text" id="codigo" oninput="converterMaiusculo(this)" maxlength="10">
             </div>
             <div>
-                <label>Status</label>
-                <select id="comboStatusEP">
-                    <option value="">-- Selecione o status --</option>
-                </select>
-            </div>
-            <div>
                 <label>Empreendimento</label>
                 <select id="comboEmpreendimentoEP">
                     <option value="">-- Selecione o empreendimento --</option>
+                </select>
+            </div>
+            <div>
+                <label>Status</label>
+                <select id="comboStatusEP">
+                    <option value="">-- Selecione o status --</option>
                 </select>
             </div>
             <div>
@@ -220,8 +220,22 @@
     let configuracao = {
         idepico: 0,
         idestoria: 0,
-        idtarefa: 0};
-
+        idtarefa: 0
+    };
+    let configuracaoSprint = {
+        idconfiguracao: 0,
+        idempreendimento: 0,
+        duracao_min_sprint: 0,
+        duracao_max_sprint: 0,
+        horas_trabalho_dia: 0,
+        considerarFeriados: false,
+        permitir_sprint_sobreposta: false,
+        permitir_multiplas_sprint_ativas: false,
+        considerar_feriados: false
+    };
+    let statusAtualEpico = 1;
+    let statusAtualEstoria = 1;
+    let statusAtualTarefa = 1;
 
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
@@ -258,7 +272,6 @@
         const comboCriadorEP = document.getElementById("comboCriadorEP");
         const comboCriadorES = document.getElementById("comboCriadorES");
         const comboCriadorTA = document.getElementById("comboCriadorTA");
-
         const comboResponsavelES = document.getElementById("comboResponsavelES");
 
         try {
@@ -268,10 +281,10 @@
                 const opcao = document.createElement('option');
                 opcao.value = usuario.idusuario;
                 opcao.textContent = usuario.nome;
-                comboCriadorEP.appendChild(opcao);
-                comboCriadorES.appendChild(opcao);
-                comboCriadorTA.appendChild(opcao);
-                comboResponsavelES.appendChild(opcao)
+                comboCriadorEP.add(opcao)
+                comboCriadorES.add(opcao.cloneNode(true));
+                comboCriadorTA.add(opcao.cloneNode(true));
+                comboResponsavelES.add(opcao.cloneNode(true));
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", "Erro ao carregar gestor: "+error.message,"error");
@@ -292,25 +305,57 @@
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("PRIORIDADES"), "error");
         }
     }
-    async function carregarStatus() {
+    async function carregarStatusEpico(idStatusAtual) {
         const comboStatusEP = document.getElementById("comboStatusEP");
-        const comboStatusES = document.getElementById("comboStatusES");
-        const comboStatusTA = document.getElementById("comboStatusTA");
+        comboStatusEP.innerHTML = "";
         try {
-            const resposta = await fetch(`${API_STATUS}/listar`);
+            const resposta = await fetch(`${API_STATUS}/${idStatusAtual}/proximo`);
             const vetor = await resposta.json();
             vetor.forEach(i => {
                 const opcao = document.createElement('option');
                 opcao.value = i.idstatus;
                 opcao.textContent = i.descstatus;
-                comboStatusEP.appendChild(opcao);
-                comboStatusES.appendChild(opcao);
-                comboStatusTA.appendChild(opcao);
+                comboStatusEP.add(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
         }
     }
+
+    async function carregarStatusEstoria(idStatusAtual) {
+        const comboStatusES = document.getElementById("comboStatusES");
+        comboStatusES.innerHTML = "";
+        try {
+            const resposta = await fetch(`${API_STATUS}/${idStatusAtual}/proximo`);
+            const vetor = await resposta.json();
+            vetor.forEach(i => {
+                const opcao = document.createElement('option');
+                opcao.value = i.idstatus;
+                opcao.textContent = i.descstatus;
+                comboStatusES.add(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
+        }
+    }
+
+    async function carregarStatusTarefa(idStatusAtual) {
+        const comboStatusTA = document.getElementById("comboStatusTA");
+        comboStatusTA.innerHTML = "";
+        try {
+            const resposta = await fetch(`${API_STATUS}/${idStatusAtual}/proximo`);
+            const vetor = await resposta.json();
+            vetor.forEach(i => {
+                const opcao = document.createElement('option');
+                opcao.value = i.idstatus;
+                opcao.textContent = i.descstatus;
+                comboStatusTA.add(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
+        }
+    }
+
     async function carregarEmpreendimento() {
         const comboEmpreendimentoEP = document.getElementById("comboEmpreendimentoEP");
         try {
@@ -323,7 +368,8 @@
                 comboEmpreendimentoEP.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("EMPREENDIMENTO"), "error");
+          //  mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("EMPREENDIMENTO"), "error");
+            mostrarMensagemNaTela("resultado_epico", error.message, "error");
         }
     }
     async function carregarTipoTarefa() {
@@ -346,10 +392,41 @@
     document.addEventListener('DOMContentLoaded', () => {
         carregarEmpreendimento();
         carregarGestor();
-        carregarStatus();
         carregarPrioridade();
         carregarTipoTarefa();
+        carregarStatusEpico(statusAtualEpico);
+        carregarStatusEstoria(statusAtualEstoria);
+        carregarStatusTarefa(statusAtualTarefa);
     });
+    document.getElementById('comboEmpreendimentoEP').addEventListener('change', (event) => {
+        carregarConfiguracao(event.target.value);
+    });
+
+    async function carregarConfiguracao(idEmpreendimento) {
+        if (!idEmpreendimento) {
+            return;
+        }
+        try {
+            const response = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
+                return;
+            }
+            const data = await response.json();
+            configuracaoSprint.idempreendimento = data.idempreendimento;
+            configuracaoSprint.idconfiguracao = data.idconfiguracao;
+            configuracaoSprint.idempreendimento = data.idempreendimento;
+            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
+            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
+            configuracaoSprint.horas_Trabalho_Dia = data.horas_trabalho_dia;
+            configuracaoSprint.permitir_sprint_sobreposta =  data.permitir_sprint_sobreposta;
+            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
+            configuracaoSprint.considerar_feriados = data.considerar_feriados;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("CONFIGURAÇÕES"), "error");
+        }
+    }
+
     async function criarEpico() {
         limpaFormulario("EP");
     }
@@ -597,7 +674,8 @@
     async function listarEstoria(idEpico) {
         const cor = "6c757d";
         if(idEpico == null) {
-            idEpico = configuracao.idepico;
+           mostrarMensagemNaTela("resultado_estoria", "Selecione um épico", "warning");
+           return;
         }
         try {
             const response = await fetch(`${API_EPICO}/${idEpico}/estorias`);
@@ -643,8 +721,8 @@
     async function listarTarefas(idEpico, idEstoria) {
         const cor = "6c757d";
         if((idEpico === null) || (idEstoria === null)) {
-            idEpico = configuracao.idepico;
-            idEstoria = configuracao.idestoria;
+            mostrarMensagemNaTela("resultado_tarefa", "Selecione uma estória", "warning");
+            return;
         }
         try {
             const response = await fetch(`${API_TAREFA}/porEstoria/${idEstoria}`);
@@ -769,6 +847,9 @@
                     mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "success");
                     await listarEstoria(epico.idepico);
                     await listarEquipes(epico.empreendimento.idempreendimento);
+                    // MONTA O COMBO PARA PROXIMO STATUS
+                    statusAtualEpico = epico.status.idstatus;
+                    carregarStatusEpico(statusAtualEpico);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_epico",MSG.erroCarregar("ÉPICO"), "error");
@@ -795,6 +876,9 @@
                     document.getElementById('comboResponsavelES').value = estoria.idresponsavel.idusuario;
                     mostrarMensagemNaTela("resultado_estoria","Estória selecionada: " + estoria.descestoria, "success");
                     await listarTarefas(idEpico, estoria.idestoria);
+                    // MONTA O COMBO PARA PROXIMO STATUS
+                    statusAtualEstoria = estoria.status.idstatus;
+                    carregarStatusEstoria(statusAtualEstoria);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
@@ -822,6 +906,9 @@
                     document.getElementById('horas_estimadas').readOnly = true;
                     document.getElementById('horas_realizadas').value = tarefa.horas_realizadas;
                     document.getElementById('horas_estimadas').value = tarefa.horas_estimadas;
+                    // MONTA O COMBO PARA PROXIMO STATUS
+                    statusAtualTarefa = tarefa.status.idstatus;
+                    carregarStatusTarefa(statusAtualEstoria);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");

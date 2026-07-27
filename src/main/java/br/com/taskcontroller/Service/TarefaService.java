@@ -1,10 +1,8 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Tarefa;
-import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +15,6 @@ public class TarefaService {
 
     @Autowired
     private TarefaRepository repository;
-
-    @Autowired
-    private StatusEntidadesService statusEntidadesService;
-
-    @Autowired
-    private StatusEntidadesRepository statusRepository;
 
     public Tarefa salvar(Tarefa tarefa) {
 
@@ -58,11 +50,11 @@ public class TarefaService {
         Tarefa tarefa = repository.findById(idTarefa)
                 .orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada"));
 
-        StatusEntidades novoStatus = statusRepository.findById(idStatus)
-                .orElseThrow(() -> new ResourceNotFoundException("Status não encontrado"));
-
-        statusEntidadesService.validarTransicao(tarefa.getStatus(), novoStatus);
-        tarefa.setStatus(novoStatus);
+//        StatusEntidades novoStatus = statusRepository.findById(idStatus)
+//                .orElseThrow(() -> new ResourceNotFoundException("Status não encontrado"));
+//
+//        statusEntidadesService.validarTransicao(tarefa.getStatus(), novoStatus);
+//        tarefa.setStatus(novoStatus);
         repository.save(tarefa);
     }
 

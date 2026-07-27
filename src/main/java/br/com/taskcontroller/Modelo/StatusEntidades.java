@@ -14,7 +14,7 @@ public class StatusEntidades {
     private String descstatus;
     private int ordem;
     private String cor;
-    private int incial;
+    private int inicial;
     private int finalizado;
     private int cancelado;
     private int ativo;
@@ -54,12 +54,12 @@ public class StatusEntidades {
         this.cor = cor;
     }
 
-    public int getIncial() {
-        return incial;
+    public int getInicial() {
+        return inicial;
     }
 
-    public void setIncial(int incial) {
-        this.incial = incial;
+    public void setInicial(int inicial) {
+        this.inicial = inicial;
     }
 
     public int getFinalizado() {

@@ -5,7 +5,6 @@ import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Service.EmpreendimentoService;
-import br.com.taskcontroller.Service.StatusEntidadesService;
 import br.com.taskcontroller.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +20,6 @@ public class EmpreendimentoController {
     @Autowired
     private EmpreendimentoService service;
 
-    @Autowired
-    private StatusEntidadesService statusService;
     @Autowired
     private UsuarioService usuarioService;
 
@@ -47,11 +44,11 @@ public class EmpreendimentoController {
     @PostMapping("/salvar")
     public ResponseEntity<Empreendimento> salvar(
             @RequestBody Empreendimento empreendimento) {
-        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
-        if (statusEntidades == null) {
-            return ResponseEntity.notFound().build();
-        }
-        empreendimento.setStatus(statusEntidades);
+//        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
+//        if (statusEntidades == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        empreendimento.setStatus(statusEntidades);
         Usuario usuario = usuarioService.buscarPorId(empreendimento.getIdgestor().getIdusuario());
         if (usuario == null) {
             return ResponseEntity.notFound().build();
@@ -73,11 +70,11 @@ public class EmpreendimentoController {
             return ResponseEntity.notFound().build();
         }
         novoEmpreendimento.setIdgestor(usuario);
-        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
-        if (statusEntidades == null) {
-            return ResponseEntity.notFound().build();
-        }
-        novoEmpreendimento.setStatus(statusEntidades);
+//        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
+//        if (statusEntidades == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        novoEmpreendimento.setStatus(statusEntidades);
         return ResponseEntity.ok(service.atualizar(novoEmpreendimento));
     }
 

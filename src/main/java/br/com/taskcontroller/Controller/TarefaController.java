@@ -19,8 +19,6 @@ public class TarefaController {
     @Autowired
     private TarefaService service;
     @Autowired
-    private StatusEntidadesService statusService;
-    @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
@@ -40,11 +38,11 @@ public class TarefaController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<Tarefa> salvar(@RequestBody Tarefa tarefa) {
-        StatusEntidades statusEntidades = statusService.buscarPorId(tarefa.getStatus().getIdstatus());
-        if (statusEntidades == null) {
-            return ResponseEntity.notFound().build();
-        }
-        tarefa.setStatus(statusEntidades);
+//        StatusEntidades statusEntidades = statusService.buscarPorId(tarefa.getStatus().getIdstatus());
+//        if (statusEntidades == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        tarefa.setStatus(statusEntidades);
         Usuario criador = usuarioService.buscarPorId(tarefa.getCriador().getIdusuario());
         if (criador == null) {
             return ResponseEntity.notFound().build();

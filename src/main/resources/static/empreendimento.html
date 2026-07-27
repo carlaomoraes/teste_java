@@ -210,7 +210,7 @@
     //-----------------CARREGAR CONFIGURAÇÃO
     let configuracaoSprint = {
         idconfiguracao: 0,
-        idempreendimento: 0,
+        idempreendimento: 1,
         duracao_min_sprint: 0,
         duracao_max_sprint: 0,
         horas_trabalho_dia: 0,
@@ -224,6 +224,8 @@
 
     let equipeDisponivelSelecionada = null;
     let equipeSelecionada = null;
+
+    let statusAtual = 1;
 
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
@@ -283,25 +285,46 @@
             mostrarMensagemNaTela("resultado", "Erro ao carregar prioridade: "+error.message,"error");
         }
     }
-    async function carregarStatus() {
+    async function carregarStatus(idStatusAtual) {
         const comboStatus = document.getElementById("comboStatus");
+
         try {
-            const resposta = await fetch(`${API_STATUS}/listar`);
+            comboStatus.innerHTML = "";
+
+            const resposta = await fetch(
+                `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo`
+            );
+
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
+
             const vetor = await resposta.json();
-            vetor.forEach(i => {
-                const opcao = document.createElement('option');
-                opcao.value = i.idstatus;
-                opcao.textContent = i.descstatus;
+
+            const opcaoPadrao = document.createElement("option");
+            opcaoPadrao.value = "";
+            opcaoPadrao.textContent = "Selecione...";
+            comboStatus.appendChild(opcaoPadrao);
+
+            vetor.forEach(status => {
+                const opcao = document.createElement("option");
+                opcao.value = status.idstatus;
+                opcao.textContent = status.descstatus;
                 comboStatus.appendChild(opcao);
             });
+
         } catch (error) {
-            mostrarMensagemNaTela("resultado", "Erro ao carregar status: " + error.message, "error");
+            mostrarMensagemNaTela(
+                "resultado",
+                "Erro ao carregar status: " + error.message,
+                "error"
+            );
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
         carregarGestor();
-        carregarStatus();
+        carregarStatus(statusAtual);
         carregarPrioridade();
     });
     document.addEventListener('visibilitychange', () => {
@@ -589,6 +612,8 @@
                 document.getElementById("permitir_multiplas_sprint_ativas").checked = Empreendimento.permitir_multiplas_sprint_ativas;
                 document.getElementById("considerar_feriados").checked = Empreendimento.considerar_feriados;
                 document.getElementById("considerar_valorhoras").checked = Empreendimento.considerar_valorhoras;
+                statusAtual = Empreendimento.status.idstatus;
+                await carregarStatus(statusAtual);
             }
         } catch (error) {
             mostrarMensagemNaTela("resultado","Erro ao carregar Empreendimento: "+error.message,"error");
