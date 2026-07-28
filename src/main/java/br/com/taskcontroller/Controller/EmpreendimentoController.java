@@ -4,6 +4,7 @@ import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Record.EmpreendimentoDTO;
 import br.com.taskcontroller.Service.EmpreendimentoService;
 import br.com.taskcontroller.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,7 @@ public class EmpreendimentoController {
     }
 
     @GetMapping("/listar")
-    public List<Empreendimento> listar() {
-
+    public List<EmpreendimentoDTO> listar() {
         return service.listar();
     }
 
