@@ -121,7 +121,6 @@ public class SprintController {
                                                     @RequestParam("data_fim") LocalDate data_fim) {
         return ausenciaProgramadaRepository.buscarAusenciasDaSprint(data_inicio, data_fim);
     }
-
     // VEJA SPRINT SOBREPOSTA
     @GetMapping("/sprint_sobreposta")
     public boolean verificaSobreposta(
@@ -132,11 +131,22 @@ public class SprintController {
 
         return service.existeSobreposicao(idempreendimento,idsprint,data_inicio,data_fim);
     }
+
     private boolean isWeekend(LocalDate date) {
         if (date == null)
             return false;
         DayOfWeek day = date.getDayOfWeek();
         return day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY;
     }
+    // Todas as funções da sprint atual
+    // BUSCAR POR EMPREENDIMENTO
+    @GetMapping("/monta_cabecalho")
+    public ResponseEntity<?> montaCabecalho(@RequestParam LocalDate data_inicio,
+                                          @RequestParam LocalDate data_fim,
+                                          @RequestParam Long idempreendimento) {
+
+        return ResponseEntity.ok(montaCabecalho(data_inicio,data_fim,idempreendimento));
+    }
+
 
 }

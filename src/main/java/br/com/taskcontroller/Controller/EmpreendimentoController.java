@@ -2,9 +2,8 @@ package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Equipe;
-import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Usuario;
-import br.com.taskcontroller.Record.EmpreendimentoDTO;
+import br.com.taskcontroller.Projection.GridEmpreendimentoProjection;
 import br.com.taskcontroller.Service.EmpreendimentoService;
 import br.com.taskcontroller.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +32,12 @@ public class EmpreendimentoController {
     @GetMapping("/{idEmpreendimento}")
     public ResponseEntity<Empreendimento> buscarPorId(
             @PathVariable Long idEmpreendimento) {
+
         return ResponseEntity.ok(service.buscarPorId(idEmpreendimento));
     }
 
     @GetMapping("/listar")
-    public List<EmpreendimentoDTO> listar() {
+    public List<GridEmpreendimentoProjection> listar() {
         return service.listar();
     }
 
@@ -124,5 +124,4 @@ public class EmpreendimentoController {
 
         return service.listarEquipesDisponiveis(idEmpreendimento);
     }
-
 }

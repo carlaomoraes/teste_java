@@ -4,6 +4,7 @@ import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
+import br.com.taskcontroller.Projection.CabecalhoProjection;
 import br.com.taskcontroller.Respository.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,9 @@ public class SprintService {
 
     public boolean existeSobreposicao(Long idEmpreendimento,Long idSprint,LocalDate dataInicio,LocalDate dataFim) {
         return sprintRepository.buscaSprintPorIntervalo(dataInicio,dataFim,idEmpreendimento,idSprint) > 0;
+    }
+
+    public CabecalhoProjection montaCabecalho(Long idEmpreendimento,Long idSprint,LocalDate dataInicio,LocalDate dataFim) {
+        return sprintRepository.montaCabecalho(idEmpreendimento,idSprint,dataInicio,dataFim);
     }
 }

@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/pages/funcoes.css">
 </head>
 <body>
+<script src="js/utils/funcoes.js"></script>
+<script src="js/utils/mensagens.js"></script>
 <div class="container">
     <h1>
         <i class="bi bi-gear-fill"></i>
@@ -45,216 +47,151 @@
         </button>
 
     </div>
-
     <!-- GERAL -->
-
     <div id="geral" class="conteudo-aba ativo">
-
         <div class="card">
-
             <div class="card-body">
-
                 <h3>Informações do Sistema</h3>
-
                 <table class="table">
-
                     <tr>
                         <th>Nome</th>
                         <td>TaskController</td>
                     </tr>
-
                     <tr>
                         <th>Versão</th>
                         <td>1.0</td>
                     </tr>
-
                     <tr>
                         <th>Framework</th>
                         <td>Spring Boot</td>
                     </tr>
-
                     <tr>
                         <th>Banco</th>
                         <td>MySQL</td>
                     </tr>
-
                     <tr>
                         <th>Frontend</th>
                         <td>HTML • Bootstrap • JavaScript</td>
                     </tr>
-
                 </table>
-
             </div>
-
         </div>
-
     </div>
-
     <!-- PARAMETROS -->
-
     <div id="parametros" class="conteudo-aba">
-
         <div class="card">
-
             <div class="card-body">
                 <h3>Parâmetros da Sprint</h3>
                 <div class="row">
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-buildings"></i>
+                        </span>
+                        <select class="form-select" id="comboEmpreendimento">
+                            <option value="">Selecione...</option>
+                        </select>
+                    </div>
                     <div class="col-md-3">
                         <label>Duração mínima</label>
-                        <input type="number" class="form-control" value="7">
+                        <input type="number" class="form-control" value="7" id="duracao_minima_sprint">
                     </div>
                     <div class="col-md-3">
                         <label>Duração máxima</label>
-                        <input type="number" class="form-control" value="28">
+                        <input type="number" class="form-control" value="28" id="duracao_maxima_sprint">
                     </div>
                     <div class="col-md-3">
                         <label>Horas por dia</label>
-                        <input type="number" class="form-control" value="8">
+                        <input type="number" class="form-control" value="8" id="horas_trabalho_dia">
                     </div>
                 </div>
                 <hr>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" checked>
-                    <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" checked id="permitir_sprint_sobreposta">
+                    <label class="form-check-label" >
                         Não permitir Sprint sobreposta
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" checked>
+                    <input class="form-check-input" type="checkbox" checked id="permitir_multiplas_sprint_ativas">
                     <label class="form-check-label">
                         Não permitir duas Sprints ativas
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" checked>
+                    <input class="form-check-input" type="checkbox" checked id="considerar_feriados">
                     <label class="form-check-label">
                         Considerar ausências no planejamento
                     </label>
                 </div>
-
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked id="considerar_valorhoras">
+                    <label class="form-check-label">
+                        Mostrar valores horas
+                    </label>
+                </div>
                 <br>
-
-                <button class="btn btn-success">
-
-                    Salvar Configurações
-
-                </button>
-
+                <button class="btn btn-success" onclick="salvarConfiguracao()">Salvar Configurações </button>
             </div>
-
         </div>
-
     </div>
-
     <!-- CADASTROS -->
-
     <div id="cadastros" class="conteudo-aba">
-
         <div class="row">
-
             <div class="col-md-4">
-
                 <div class="card">
-
                     <div class="card-body text-center">
-
                         <i class="bi bi-list-task fs-1"></i>
-
                         <h5>Tipos de Tarefa</h5>
-
                         <button class="btn btn-primary">
                             Gerenciar
                         </button>
-
                     </div>
-
                 </div>
-
             </div>
-
             <div class="col-md-4">
-
                 <div class="card">
-
                     <div class="card-body text-center">
-
                         <i class="bi bi-exclamation-circle fs-1"></i>
-
                         <h5>Tipos de Ausência</h5>
-
                         <button class="btn btn-primary">
                             Gerenciar
                         </button>
-
                     </div>
-
                 </div>
-
             </div>
-
             <div class="col-md-4">
-
                 <div class="card">
-
                     <div class="card-body text-center">
-
                         <i class="bi bi-kanban fs-1"></i>
-
                         <h5>Tipos de Sistema</h5>
-
                         <button class="btn btn-primary">
                             Gerenciar
-                        </button>
-
+                       </button>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
     <!-- EQUIPE -->
-
     <div id="equipe" class="conteudo-aba">
-
         <div class="card">
-
             <div class="card-body">
-
                 <h3>Equipe de Desenvolvimento</h3>
-
                 <table class="table">
-
                     <tr>
-
                         <th>Nome</th>
-
                         <th>Função</th>
-
                         <th>E-mail</th>
-
                     </tr>
-
                     <tr>
-
                         <td>Carlos Eduardo Barboza Moraes</td>
-
                         <td>Desenvolvedor</td>
-
                         <td>carlaomoraes@hotmail.com</td>
-
                     </tr>
-
                 </table>
-
             </div>
-
         </div>
-
     </div>
 
     <!-- SOBRE -->
@@ -294,10 +231,78 @@
         Voltar
 
     </button>
-
+    <div id="resultado"></div>
 </div>
 
 <script>
+    //-----------------CARREGAR CONFIGURAÇÃO
+    let configuracaoSprint = {
+        idconfiguracao: 0,
+        idempreendimento: 1,
+        duracao_min_sprint: 0,
+        duracao_max_sprint: 0,
+        horas_trabalho_dia: 0,
+        considerarFeriados: false,
+        permitir_sprint_sobreposta: false,
+        permitir_multiplas_sprint_ativas: false,
+        considerar_feriados: false,
+        considerar_valorhoras: false,
+        mostrar_valorhoras: false,
+    };
+    const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
+
+    async function carregarEmpreendimento() {
+        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const empreendimentos = await resposta.json();
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idempreendimento;
+                opcao.textContent = e.descempreendimento;
+                comboEmpreendimento.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_epico", error.message, "error");
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarEmpreendimento();
+        carregarConfiguracao();
+    });
+
+    async function carregarConfiguracao() {
+        const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
+        if (!idEmpreendimento) {
+            return;
+        }
+        try {
+            const response = await fetch(`${API_CONFIGURACAO}/empreendimnto/${idEmpreendimento}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
+                return;
+            }
+            const data = await response.json();
+            configuracaoSprint.idempreendimento = data.idempreendimento;
+            configuracaoSprint.idconfiguracao = data.idconfiguracao;
+            configuracaoSprint.idempreendimento = data.idempreendimento;
+            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
+            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
+            configuracaoSprint.horas_Trabalho_Dia = data.horas_trabalho_dia;
+            configuracaoSprint.permitir_sprint_sobreposta =  data.permitir_sprint_sobreposta;
+            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
+            configuracaoSprint.considerar_feriados = data.considerar_feriados;
+            // CARREGAR A TELA
+
+
+
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("CONFIGURAÇÕES"), "error");
+        }
+    }
+
     function alternarAba(event,id){
         document.querySelectorAll(".conteudo-aba")
             .forEach(c=>c.classList.remove("ativo"));
@@ -307,11 +312,42 @@
         event.currentTarget.classList.add("ativa");
     }
 
-    async function buscarConfiguracao(idConfiguracao) {
+    async function salvarConfiguracao() {
+        const duracao_minima_sprint = document.getElementById('duracao_minima_sprint').value;
+        const duracao_maxima_sprint = document.getElementById('duracao_maxima_sprint').value;
+        const permitir_multiplas_sprint_ativas = document.getElementById('permitir_multiplas_sprint_ativas').checked;
+        const permitir_sprint_sobreposta = document.getElementById('permitir_sprint_sobreposta').checked;
+        const horas_trabalho_dia = document.getElementById('horas_trabalho_dia').value;
+        const considerar_feriados = document.getElementById('considerar_feriados').checked;
+        const considerar_valorhoras = document.getElementById('considerar_valorhoras').checked;
+        const configuracao = {
+            duracao_minima_sprint: duracao_minima_sprint || 0,
+            duracao_maxima_sprint: duracao_maxima_sprint || 0,
+            permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas || true,
+            permitir_sprint_sobreposta: permitir_sprint_sobreposta || true,
+            horas_trabalho_dia: horas_trabalho_dia || 0,
+            considerar_feriados: considerar_feriados || true,
+            considerar_valorhoras: considerar_valorhoras || true,
+            empreendimento: {
+                idempreendimento: document.getElementById('comboEmpreendimento').value || null,
+            }
+        };
+        try {
+            const response = await fetch(`${API_CONFIGURACAO}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(configuracao)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("resultado", MSG.salvo("CONFIGURAÇÃO"), "success");
+            setTimeout(() => {
 
-    }
-    async function salvarConfiguracao(idConfiguracao) {
-
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroSalvar("CONFIGURAÇÃO"), "error");
+        }
     }
 </script>
 

@@ -31,6 +31,14 @@ public class Usuario {
 
     @Column(name = "alterasenha")
     private boolean alterasenha;
+
+    @Column(name = "ativo")
+    private boolean ativo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idempreendimento")
+    private Empreendimento empreendimento;
+
     // Getters e Setters
 
     public Usuario() {

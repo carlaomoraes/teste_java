@@ -548,6 +548,7 @@
                         <th class="table-header">ID</th>
                         <th class="table-header">Descrição</th>
                         <th class="table-header">Status</th>
+                        <th class="table-header">Prioridade</th>
                         <th class="table-header">Data inicial</th>
                         <th class="table-header">Data final</th>
                         <th class="table-header">Excluir</th>
@@ -563,7 +564,8 @@
                            <td style="border-left:8px solid ${cor};">
                               ${emp.idempreendimento}</td>
                                 <td>${emp.descempreendimento}</td>
-                                <td>${emp.status}</td>
+                                <td>${emp.descstatus}</td>
+                                <td>${emp.descprioridade}</td>
                                 <td>${formatarData(emp.data_inicio)}</td>
                                 <td>${formatarData(emp.data_fim)}</td>
                                 <td> <button type="button" class="btn" onclick="excluirEmpreendimento(${emp.idempreendimento})">Excluir</button></td>

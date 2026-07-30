@@ -1,0 +1,247 @@
+:root{
+
+    --altura-linha:42px;
+    --largura-coluna:60px;
+
+    --cinza:#f8f9fa;
+    --grid:#dee2e6;
+
+    --verde:#198754;
+    --amarelo:#ffc107;
+    --vermelho:#dc3545;
+    --azul:#0d6efd;
+
+}
+
+.roadmap{
+
+    overflow:auto;
+    border:1px solid var(--grid);
+    border-radius:8px;
+    background:white;
+
+}
+
+/* Cabeçalho */
+
+.roadmap-header{
+
+    display:grid;
+    grid-template-columns:250px repeat(15,var(--largura-coluna));
+    background:#f1f3f5;
+    font-weight:bold;
+    position:sticky;
+    top:0;
+    z-index:20;
+
+}
+
+.roadmap-header div{
+
+    padding:10px;
+    border-right:1px solid var(--grid);
+    text-align:center;
+
+}
+
+/* Linha */
+
+.roadmap-row{
+
+    display:grid;
+    grid-template-columns:250px repeat(15,var(--largura-coluna));
+    min-height:var(--altura-linha);
+    position:relative;
+
+}
+
+.roadmap-row div{
+
+    border-right:1px solid var(--grid);
+    border-bottom:1px solid var(--grid);
+
+}
+
+/* Nome */
+
+.nome{
+
+    padding:10px;
+    background:#fafafa;
+    font-weight:600;
+
+}
+
+/* Barra */
+
+.barra{
+
+    height:24px;
+    margin-top:8px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+    font-size:12px;
+    font-weight:bold;
+
+}
+
+/* Situações */
+
+.concluida{
+
+    background:var(--verde);
+
+}
+
+.andamento{
+
+    background:var(--azul);
+
+}
+
+.atrasada{
+
+    background:var(--vermelho);
+
+}
+
+.ausencia{
+
+    background:var(--amarelo);
+    color:black;
+
+}
+
+/* Hoje */
+
+.hoje{
+
+    position:absolute;
+
+    top:0;
+    bottom:0;
+
+    width:3px;
+
+    background:red;
+
+    z-index:100;
+
+}
+
+/* Final de semana */
+
+.fim-semana{
+
+    background:#f5f5f5;
+
+}
+
+/* Hover */
+
+.roadmap-row:hover{
+
+    background:#f8fbff;
+
+}
+
+/* Cards */
+
+.indicadores{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+.indicador{
+
+    border-radius:10px;
+
+    padding:15px;
+
+    color:white;
+
+}
+
+.indicador h2{
+
+    margin:0;
+
+}
+
+.indicador small{
+
+    opacity:.8;
+
+}
+
+.verde{
+
+    background:#198754;
+
+}
+
+.azul{
+
+    background:#0d6efd;
+
+}
+
+.vermelho{
+
+    background:#dc3545;
+
+}
+
+.cinza{
+
+    background:#6c757d;
+
+}
+.tipo {
+
+    width:6px;
+    border-radius:4px 0 0 4px;
+
+}
+
+.tipo-tarefa{
+
+    background:#0d6efd;
+
+}
+
+.tipo-ausencia{
+
+    background:#ffc107;
+
+}
+
+.tipo-marco{
+
+    background:#dc3545;
+
+}
+.fim-semana {
+    background: #f1f3f5;
+}
+
+.feriado {
+    background: #ffe5e5;
+}
+
+.hoje {
+    background: #fff3cd;
+}

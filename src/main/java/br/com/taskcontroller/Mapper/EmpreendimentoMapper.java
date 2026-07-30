@@ -22,13 +22,6 @@ public class EmpreendimentoMapper {
         e.setCodempreendimento(dto.getCodempreendimento());
         e.setPrioridade(dto.getPrioridade());
         e.setAtivo(dto.getAtivo());
-        e.setDuracao_max_sprint(dto.getDuracao_max_sprint());
-        e.setDuracao_min_sprint(dto.getDuracao_min_sprint());
-        e.setPermitir_multiplas_sprint_ativas(dto.getPermitir_multiplas_sprint_ativas());
-        e.setPermitir_sprint_sobreposta(dto.getPermitir_sprint_sobreposta());
-        e.setHoras_trabalho_dia(dto.getHoras_trabalho_dia());
-        e.setConsiderar_Feriados(dto.getConsiderar_Feriados());
-        e.setConsiderar_valorhoras(dto.getConsiderar_valorhoras());
         return e;
     }
 
@@ -48,13 +41,6 @@ public class EmpreendimentoMapper {
         dto.setCodempreendimento(e.getCodempreendimento());
         dto.setPrioridade(e.getPrioridade());
         dto.setAtivo(e.getAtivo());
-        dto.setDuracao_max_sprint(e.getDuracao_max_sprint());
-        dto.setDuracao_min_sprint(e.getDuracao_min_sprint());
-        dto.setPermitir_multiplas_sprint_ativas(e.getPermitir_multiplas_sprint_ativas());
-        dto.setPermitir_sprint_sobreposta(e.getPermitir_sprint_sobreposta());
-        dto.setHoras_trabalho_dia(e.getHoras_trabalho_dia());
-        dto.setConsiderar_Feriados(e.getConsiderar_Feriados());
-        dto.setConsiderar_valorhoras(e.getConsiderar_valorhoras());
         return dto;
     }
 }

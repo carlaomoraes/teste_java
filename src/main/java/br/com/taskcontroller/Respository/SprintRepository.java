@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Sprint;
+import br.com.taskcontroller.Projection.CabecalhoProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,18 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
                                 @Param("data_fim") LocalDate data_fim,
                                 @Param("idempreendimento") Long idempreendimento,
                                 @Param("idsprint") Long idsprint);
-
+    @Query("""
+    select s.idsprint, s.empreendimento.idempreendimento, s.dtiniciosprint, s.dtfinalsprint
+    from Sprint s
+    where s.dtiniciosprint <= :data_fim
+      and s.dtfinalsprint >= :data_inicio
+      and s.empreendimento.idempreendimento = :idempreendimento
+      and s.ativa = true
+      and s.visivel = true
+""")
+    CabecalhoProjection montaCabecalho(@Param("idempreendimento") Long idempreendimento,
+                                       @Param("idsprint") Long idsprint,
+                                       @Param("data_inicio") LocalDate data_inicio,
+                                       @Param("data_fim") LocalDate data_fim);
 
 }

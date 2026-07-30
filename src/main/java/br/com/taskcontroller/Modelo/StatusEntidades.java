@@ -92,5 +92,4 @@ public class StatusEntidades {
 
     public void setEmpreendimento(Empreendimento empreendimento) {
         this.empreendimento = empreendimento;
-    }
-}
+    }}

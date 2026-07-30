@@ -777,7 +777,7 @@
         try {
             const response = await fetch(`${API_DASHBOARD}/${idEmpreendimento}/dashboard_equipes`);
             if (!response.ok) {
-                    throw new Error(`Erro ${response.status}`);
+                mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("EQUIPE"), "error");
             }
             const data = await response.json();
             if (data.length === 0) {

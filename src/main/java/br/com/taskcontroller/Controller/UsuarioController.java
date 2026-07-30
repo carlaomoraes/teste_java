@@ -1,7 +1,9 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Papel;
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Service.EmpreendimentoService;
 import br.com.taskcontroller.Service.PapelService;
 import br.com.taskcontroller.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,10 @@ public class UsuarioController {
     @Autowired
     private PapelService papelService;
 
+    @Autowired
+    private EmpreendimentoService empreendimentoService;
+
+
     // BUSCAR POR ID
     @GetMapping("/{idusuario}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long idusuario) {
@@ -37,6 +43,11 @@ public class UsuarioController {
         Papel papel = papelService.buscarPorId(novoUsuario.getPapel().getIdpapel());
         if (papel == null) {
             return ResponseEntity.badRequest().body("Erro: O papel do usuário deve ser informado.");
+        }
+        // 2. Busca empreendimento
+        Empreendimento  empreendimento = empreendimentoService.buscarPorId(novoUsuario.getEmpreendimento().getIdempreendimento());
+        if (empreendimento == null) {
+            return ResponseEntity.badRequest().body("Erro: O empreendimento padrão deve ser informado.");
         }
         if (novoUsuario.getIdusuario() == null) {
             // CRIAÇÃO: Cria um novo objeto Usuario gerenciado corretamente
@@ -53,6 +64,9 @@ public class UsuarioController {
             // Associa o papel persistido do banco
             usuarioParaSalvar.setPapel(papel);
 
+            // Associa o empreendimento padrão
+            usuarioParaSalvar.setEmpreendimento(empreendimento);
+
             return ResponseEntity.ok().body(service.salvar(usuarioParaSalvar));
 
         } else {
@@ -68,6 +82,7 @@ public class UsuarioController {
             usuarioExistente.setLogin(novoUsuario.getLogin());
             usuarioExistente.setAlterasenha(novoUsuario.isAlterasenha());
             usuarioExistente.setPapel(papel); // Associa o papel persistido do banco
+            usuarioExistente.setEmpreendimento(empreendimento);
 
             // Regra para senha na atualização (Criptografa apenas se ela mudou)
             if (novoUsuario.getSenha() != null && !novoUsuario.getSenha().isEmpty()) {
@@ -87,6 +102,11 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Erro: O papel do usuário deve ser informado.");
         }
         usuario.setPapel(papel);
+        Empreendimento  empreendimento = empreendimentoService.buscarPorId(usuario.getEmpreendimento().getIdempreendimento());
+        if (empreendimento == null) {
+            return ResponseEntity.badRequest().body("Erro: O empreendimento padrão deve ser informado.");
+        }
+        usuario.setEmpreendimento(empreendimento);
         return ResponseEntity.ok().body(service.atualizar(usuario));
     }
 

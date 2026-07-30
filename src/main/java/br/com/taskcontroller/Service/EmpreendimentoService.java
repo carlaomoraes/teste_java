@@ -3,7 +3,7 @@ package br.com.taskcontroller.Service;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Empreendimento_Equipe;
 import br.com.taskcontroller.Modelo.Equipe;
-import br.com.taskcontroller.Record.EmpreendimentoDTO;
+import br.com.taskcontroller.Projection.GridEmpreendimentoProjection;
 import br.com.taskcontroller.Respository.EmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EquipeEmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EquipeRepository;
@@ -46,7 +46,7 @@ public class EmpreendimentoService {
         empreendimentoRepository.save(empreendimento);
     }
 
-    public List<EmpreendimentoDTO> listar() {
+    public List<GridEmpreendimentoProjection> listar() {
         return empreendimentoRepository.findByAtivoTrue();
     }
 
