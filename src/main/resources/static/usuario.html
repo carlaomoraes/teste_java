@@ -190,7 +190,7 @@
             ativo: ativo,
             papel: {
                 idpapel: document.getElementById('comboPapel').value || null,
-            }
+            },
             empreendimento: {
                 idempreendimento: document.getElementById('comboEmpreendimento').value || null,
             }
@@ -241,13 +241,13 @@
             document.getElementById('senha').value = usuario.senha;
             document.getElementById('alterasenha').checked = usuario.alterasenha;
             document.getElementById('ativo').checked = usuario.ativo;
-            document.getElementById('comboPapel').value = usuario.papel.idpapel;
-            document.getElementById('comboEmpreendimento').value = usuario.empreendimento.idempreendimento
-            listarAusencias(usuario.idusuario);
+            document.getElementById('comboPapel').value = usuario.idpapel;
+            document.getElementById('comboEmpreendimento').value = usuario.idempreendimento
+            await listarAusencias(usuario.idusuario);
             mostrarMensagemNaTela("resultado", "Usuário selecionado: " +  usuario.nome, "success");
-
         } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
+            //mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
+            mostrarMensagemNaTela("resultado", error.message, "error");
         }
     }
     async function listarUsuarios() {

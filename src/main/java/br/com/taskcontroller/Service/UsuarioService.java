@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.Record.UsuarioListagemDTO;
 import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Respository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class UsuarioService {
         return repository.save(usuario);
     }
 
-    public List<Usuario> listar() {
-        return repository.findAll();
+    public List<UsuarioListagemDTO> listar() {
+        return repository.listar();
     }
 
     public Usuario atualizar(Usuario usuario) {
