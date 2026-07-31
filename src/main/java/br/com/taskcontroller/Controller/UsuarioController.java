@@ -37,6 +37,13 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuario);
     }
 
+    // BUSCAR POR ID E RETORNA UM DTO PARA TELA
+    @GetMapping("/DTO/{idusuario}")
+    public ResponseEntity<?> buscarLinha(@PathVariable Long idusuario) {
+        UsuarioListagemDTO usuario = service.buscarPorLinha(idusuario);
+        return ResponseEntity.ok().body(usuario);
+    }
+
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody Usuario novoUsuario) {

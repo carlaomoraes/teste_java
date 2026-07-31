@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Empreendimento padrão na tela de usuário">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/UsuarioListagemDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/UsuarioController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/UsuarioRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/UsuarioService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -389,14 +387,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00074" summary="Cadastro de épico funcionando">
-      <option name="closed" value="true" />
-      <created>1783195009778</created>
-      <option name="number" value="00074" />
-      <option name="presentableId" value="LOCAL-00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1783195009778</updated>
     </task>
     <task id="LOCAL-00075" summary="Cadastro de épico funcionando">
       <option name="closed" value="true" />
@@ -782,7 +772,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785447721496</updated>
     </task>
-    <option name="localTasksCounter" value="123" />
+    <task id="LOCAL-00123" summary="Empreendimento padrão na tela de usuário">
+      <option name="closed" value="true" />
+      <created>1785517141925</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1785517141925</updated>
+    </task>
+    <option name="localTasksCounter" value="124" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -228,7 +228,7 @@
     }
     async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API_USUARIOS}/${id}`);
+            const response = await fetch(`${API_USUARIOS}/DTO/${id}`);
             if (!response.ok) {
                 mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
                 return;

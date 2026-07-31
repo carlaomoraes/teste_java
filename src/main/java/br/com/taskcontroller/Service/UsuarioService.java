@@ -36,5 +36,9 @@ public class UsuarioService {
 
     public Usuario buscarPorId(Long idusuario) {
         return repository.findById(idusuario).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+    }
+    public UsuarioListagemDTO buscarPorLinha(Long idusuaro) {
+        return repository.buscarPorLinha(idusuaro);
     }
 }
