@@ -24,8 +24,6 @@ public class AusenciaProgramada {
     private LocalDate data_fim;
     @Column(name="observacao")
     private String observacao;
-    @Column(name="status")
-    private String status;
     @Column(name = "data_cadastro") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
     private LocalDate data_cadastro;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -75,14 +73,6 @@ public class AusenciaProgramada {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public LocalDate getData_cadastro() {

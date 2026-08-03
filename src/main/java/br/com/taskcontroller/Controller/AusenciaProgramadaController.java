@@ -4,6 +4,7 @@ import br.com.taskcontroller.DTO.AusenciaProgramadaRequestDTO;
 import br.com.taskcontroller.DTO.AusenciaProgramadaResponseDTO;
 import br.com.taskcontroller.Mapper.AusenciaProgramadaMapper;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
+import br.com.taskcontroller.Record.AusenciaListagemDTO;
 import br.com.taskcontroller.Service.AusenciaProgramadaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +52,8 @@ public class AusenciaProgramadaController {
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<AusenciaProgramada>> listarPorUsuario(@PathVariable Long idUsuario) {
-        List<AusenciaProgramada> lista = service.listarPorUsuario(idUsuario);
+    public ResponseEntity<List<AusenciaListagemDTO>> listarPorUsuario(@PathVariable Long idUsuario) {
+        List<AusenciaListagemDTO> lista = service.listarPorUsuario(idUsuario);
         return ResponseEntity.ok(lista);
     }
 }

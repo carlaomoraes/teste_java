@@ -195,6 +195,7 @@
                 idempreendimento: document.getElementById('comboEmpreendimento').value || null,
             }
         };
+        alert(usuario);
         try {
             const response = await fetch(`${API_USUARIOS}/salvar`, {
                 method: 'POST',
@@ -210,7 +211,8 @@
                 listarUsuarios();
             }, 1000);
         } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.erroSalvar("USUÁRIO"), "error");
+            //mostrarMensagemNaTela("resultado", MSG.erroSalvar("USUÁRIO"), "error");
+            mostrarMensagemNaTela("resultado", error.message,  "error");
         }
     }
     async function limparFormulario() {
@@ -388,7 +390,7 @@
                     <td>${a.idausencia}</td>
                     <td>${formatarData(a.data_inicio)}</td>
                     <td>${formatarData(a.data_fim)}</td>
-                    <td>${a.tipoausencia?.desc_tipo_ausencia ?? ''}</td>
+                    <td>${a.tipoausencia ?? ''}</td>
                     <td>${a.observacao ?? ''}</td>
                     <td>
                         <button type="button"
@@ -407,7 +409,7 @@
         `;
         container.innerHTML = tabela;
       } catch (error) {
-             mostrarMensagemNaTela("resultadoausencia", MSG.errolistar("AUSÊNCIA PROGRAMADA"), "error");
+          mostrarMensagemNaTela("resultado", MSG.errolistar("AUSÊNCIA PROGRAMADA"), "error");
       }
     }
     async function excluirAusencia(idausencia) {

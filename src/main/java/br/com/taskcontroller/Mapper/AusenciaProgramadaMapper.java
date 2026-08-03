@@ -13,7 +13,6 @@ public class AusenciaProgramadaMapper {
         a.setData_inicio(dto.getData_inicio());
         a.setData_fim(dto.getData_fim());
         a.setObservacao(dto.getObservacao());
-        a.setStatus(dto.getStatus());
         a.setData_cadastro(dto.getData_cadastro());
         a.setTipoausencia(dto.getTipoausencia());
 
@@ -28,7 +27,6 @@ public class AusenciaProgramadaMapper {
         dto.setData_fim(a.getData_fim());
         dto.setObservacao(a.getObservacao());
         dto.setTipoausencia(a.getTipoausencia());
-        dto.setStatus(a.getStatus());
         dto.setData_cadastro(a.getData_cadastro());
         dto.setData_inicio(a.getData_inicio());
         dto.setData_fim(a.getData_fim());

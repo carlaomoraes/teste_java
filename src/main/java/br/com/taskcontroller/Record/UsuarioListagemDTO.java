@@ -4,6 +4,7 @@ public record UsuarioListagemDTO(
         Long idusuario,
         String nome,
         String login,
+        String senha,
         String email,
         Boolean ativo,
         Boolean alterasenha,

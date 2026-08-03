@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
+import br.com.taskcontroller.Record.AusenciaListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,6 @@ public class AusenciaProgramadaService {
         ausenciaProgramada.setData_inicio(novaAusenciaProgramada.getData_inicio());
         ausenciaProgramada.setData_fim(novaAusenciaProgramada.getData_fim());
         ausenciaProgramada.setObservacao(novaAusenciaProgramada.getObservacao());
-        ausenciaProgramada.setStatus(novaAusenciaProgramada.getStatus());
         ausenciaProgramada.setData_cadastro(novaAusenciaProgramada.getData_cadastro());
         ausenciaProgramada.setTipoausencia(novaAusenciaProgramada.getTipoausencia());
         return repository.save(ausenciaProgramada);
@@ -42,7 +42,7 @@ public class AusenciaProgramadaService {
         return repository.findById(idAusencia).orElseThrow(() -> new RuntimeException("Ausência não encontrada"));
     }
 
-    public List<AusenciaProgramada> listarPorUsuario(Long idUsuario) {
+    public List<AusenciaListagemDTO> listarPorUsuario(Long idUsuario) {
         return repository.findByIdusuario_Idusuario(idUsuario);
     }
 }

@@ -4,6 +4,7 @@ import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Projection.GridEmpreendimentoProjection;
+import br.com.taskcontroller.Record.EmpreendimentoDTO;
 import br.com.taskcontroller.Service.EmpreendimentoService;
 import br.com.taskcontroller.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,5 +124,10 @@ public class EmpreendimentoController {
             @PathVariable Long idEmpreendimento) {
 
         return service.listarEquipesDisponiveis(idEmpreendimento);
+    }
+
+    @GetMapping("/carregaCombo")
+    public List<EmpreendimentoDTO> carregaComboEmpreendimento() {
+        return service.carrgecaComboEmpreendimento();
     }
 }

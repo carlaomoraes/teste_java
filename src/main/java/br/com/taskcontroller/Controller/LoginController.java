@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Record.UsuarioLoginDTO;
 import br.com.taskcontroller.Respository.UsuarioRepository;
 import br.com.taskcontroller.Service.LoginService;
 import br.com.taskcontroller.Service.UsuarioService;
@@ -38,7 +39,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> efetuarLogin(@RequestBody Usuario dadosLogin) {
         // Procura no banco de dados um usuário com o mesmo login E senha passados
-        Optional<Usuario> usuarioOp = loginService.autenticar(dadosLogin.getLogin(), dadosLogin.getSenha());
+        Optional<UsuarioLoginDTO> usuarioOp = loginService.autenticar(dadosLogin.getLogin(), dadosLogin.getSenha());
 
         if (usuarioOp.isPresent()) {
             // Se achou, retorna o objeto do usuário com o status 200 OK

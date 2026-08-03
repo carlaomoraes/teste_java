@@ -2,10 +2,10 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Projection.GridEmpreendimentoProjection;
+import br.com.taskcontroller.Record.EmpreendimentoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, Long> {
@@ -29,4 +29,15 @@ public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, 
      ORDER BY ee.prioridade.idprioridade desc
        """)
     List<GridEmpreendimentoProjection> findByAtivoTrue();
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.EmpreendimentoDTO(
+        e.idempreendimento,
+        e.descempreendimento
+    )
+    FROM Empreendimento e
+    WHERE e.ativo = 1
+    ORDER BY e.prioridade.idprioridade
+""")
+    List<EmpreendimentoDTO> carregaComboEmpreendimento();
 }
