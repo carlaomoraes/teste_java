@@ -13,24 +13,21 @@ import java.util.Optional;
 public interface LoginRepository extends JpaRepository<Usuario, Long> {
     // O Spring Data gera essa consulta automaticamente baseada no nome do metodo!
     @Query("""
-    SELECT new br.com.taskcontroller.Record.UsuarioListagemDTO(
-        u.idusuario,
-        u.nome,
-        u.login,
-        u.senha,
-        u.email,
-        u.ativo,
-        u.alterasenha,
-        p.idpapel,
-        p.descpapel,
-        e.idempreendimento,
-        e.descempreendimento
-    )
-    FROM Usuario u
-    JOIN u.papel p
-    JOIN u.empreendimento e
-   WHERE u.login = :login
-    """)
-
-    UsuarioListagemDTO findByLogin(String login);
+SELECT new br.com.taskcontroller.Record.UsuarioListagemDTO(
+    u.idusuario,
+    u.nome,
+    u.login,
+    u.senha,
+    u.email,
+    u.ativo,
+    u.alterasenha,
+    u.papel.idpapel,
+    u.papel.descpapel,
+    u.empreendimento.idempreendimento,
+    u.empreendimento.descempreendimento
+)
+FROM Usuario u
+WHERE u.login = :login
+""")
+    UsuarioListagemDTO findByLogin(@Param("login") String login);
 }

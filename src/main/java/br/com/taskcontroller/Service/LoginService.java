@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.util.Optional;
 
 @Service
@@ -21,7 +22,6 @@ public class LoginService {
         UsuarioListagemDTO usuario = repository.findByLogin(login);
 
         if (usuario != null && encoder.matches(senha, usuario.senha())) {
-
             UsuarioLoginDTO dto = new UsuarioLoginDTO(
                     usuario.idusuario(),
                     usuario.nome(),
@@ -33,4 +33,5 @@ public class LoginService {
         }
 
         return Optional.empty();
-    }}
+    }
+}

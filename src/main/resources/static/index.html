@@ -108,8 +108,8 @@
         const dadosLogin = {
             idusuario: 0,
             nome: "",
-            login: "",
-            senha: "",
+            login: login,
+            senha: senha,
             idempreendimento: 0
         };
 
@@ -127,10 +127,12 @@
 
                 const usuario = await response.json();
 
+                console.log(usuario);
+
                 sessionStorage.setItem("usuarioNome", usuario.nome);
                 sessionStorage.setItem("usuarioIdUsuario", usuario.idUsuario);
                 sessionStorage.setItem("usuarioLogin", usuario.login);
-                sessionStorage.getItem("idempreendimento",usuario.idempreendimento);
+                sessionStorage.setItem("idEmpreendimento",usuario.idEmpreendimento);
 
                 // Não grave a senha no navegador
                 // sessionStorage.setItem("usuarioSenha", usuario.senha);
@@ -147,7 +149,7 @@
                 }else{
 
                     mensagem.className = "text-success mt-3";
-                    mensagem.innerHTML = `Bem-vindo, ${usuario.nome}!`;
+                    mensagem.innerHTML = `Bem-vindo, ${usuario.nome}! `;
 
                     setTimeout(()=>{
                         window.location.href="home.html";
