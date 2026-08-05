@@ -2,6 +2,7 @@ package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Modelo.Estoria;
+import br.com.taskcontroller.Record.EpicoListagemDTO;
 import br.com.taskcontroller.Record.EquipeCardDTO;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.EpicoRepository;
@@ -32,9 +33,9 @@ public class EpicoService {
          return repository.save(Epico);
     }
 
-    public List<Epico> listar() {
+    public List<EpicoListagemDTO> listar() {
 
-        return repository.findByAtivoTrue();
+        return repository.listar();
     }
 
     public Epico atualizar(Epico Epico) {

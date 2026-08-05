@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Estoria;
+import br.com.taskcontroller.Record.EstoriaListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +15,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
             SELECT e
             FROM Estoria e
            WHERE e.idestoria = :idestoria
-             and e.idepico.idepico = :idepico
+             and e.epico.idepico = :idepico
           """)
     Estoria buscarPorId(@Param("idestoria") Long idestoria,
                         @Param("idepico") Long idepico);
@@ -22,7 +23,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
        @Query("""                                                         
          SELECT e
            FROM Estoria e
-          WHERE e.idepico.idepico = :idepico
+          WHERE e.epico.idepico = :idepico
        ORDER BY e.descestoria
        """)
      List<Estoria> buscarEstoriaPorEpico(@Param("idepico") Long idepico);
@@ -31,7 +32,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
         SELECT e
           FROM Estoria e
-         WHERE e.idepico.idepico IS NULL
+         WHERE e.epico.idepico IS NULL
          ORDER BY e.descestoria
     """)
     List<Estoria> buscarEstoriasDisponiveis();
@@ -41,7 +42,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
         DELETE
           FROM Estoria e
-         WHERE e.idepico.idepico = :idepico
+         WHERE e.epico.idepico = :idepico
            AND e.idestoria = :idEstoria
     """)
     void removerDoEpico(
@@ -51,9 +52,17 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
        SELECT COUNT(e)
        FROM Estoria e
-       WHERE e.idepico.idepico = :idepico
+       WHERE e.epico.idepico = :idepico
     """)
     long contarRelacionamentos(@Param("idEpico") Long idEpico);
 
-    List<Estoria> findByIdepico_IdepicoOrderByDescestoria(Long idepico);
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.EstoriaListagemDTO(
+        e.idestoria,
+        e.descestoria
+    )
+    FROM Estoria e
+    WHERE e.epico.idepico = :idepico
+""")
+    List<EstoriaListagemDTO> listaEstoriasPorEpico(@Param("idepico") Long idepico);
 }

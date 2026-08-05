@@ -11,17 +11,17 @@ public class EstoriaMapper {
         Estoria e = new Estoria();
         e.setIdestoria(dto.getIdestoria());
         e.setDescestoria(dto.getDescestoria());
-        e.setIdepico(dto.getIdepico());
-        e.setIdcriador(dto.getIdcriador());
-        e.setIdresponsavel(dto.getIdresponsavel());
+        e.setEpico(dto.getEpico());
+        e.setCriador(dto.getCriador());
+        e.setResponsavel(dto.getResponsavel());
         e.setBloqueada(dto.getBloqueada());
         e.setStatus(dto.getStatus());
         e.setResumo(dto.getResumo());
-        e.setData_inicio(dto.getData_inicio());
-        e.setData_fim(dto.getData_fim());
+        e.setDataInicio(dto.getData_inicio());
+        e.setDataFim(dto.getData_fim());
         e.setPontos(dto.getPontos());
         e.setAtiva(dto.getAtiva());
-        e.setEmpreendimento_Equipe(dto.getEmpreendimento_Equipe());
+        e.setEmpreendimentoEquipe(dto.getEmpreendimentoEquipe());
         return e;
     }
 
@@ -29,18 +29,18 @@ public class EstoriaMapper {
         EstoriaResponseDTO dto = new EstoriaResponseDTO();
         dto.setIdestoria(e.getIdestoria());
         dto.setDescestoria(e.getDescestoria());
-        dto.setIdepico(e.getIdepico());
-        dto.setIdcriador(e.getIdcriador());
-        dto.setIdresponsavel(e.getIdresponsavel());
+        dto.setEpico(e.getEpico());
+        dto.setCriador(e.getCriador());
+        dto.setResponsavel(e.getResponsavel());
         dto.setBloqueada(e.getBloqueada());
         dto.setIdestoria(e.getIdestoria());
         dto.setStatus(e.getStatus());
         dto.setResumo(e.getResumo());
-        dto.setData_inicio(e.getData_inicio());
-        dto.setData_fim(e.getData_fim());
+        dto.setData_inicio(e.getDataInicio());
+        dto.setData_fim(e.getDataFim());
         dto.setPontos(e.getPontos());
         dto.setAtiva(e.getAtiva());
-        dto.setEmpreendimento_Equipe(e.getEmpreendimento_Equipe());
+        dto.setEmpreendimentoEquipe(e.getEmpreendimentoEquipe());
         return dto;
     }
 }

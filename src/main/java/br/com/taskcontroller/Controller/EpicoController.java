@@ -1,6 +1,8 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
+import br.com.taskcontroller.Record.EpicoListagemDTO;
+import br.com.taskcontroller.Record.EstoriaListagemDTO;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;
 import br.com.taskcontroller.Service.EpicoService;
@@ -71,7 +73,7 @@ public class EpicoController {
 
     // LISTAR
     @GetMapping("/listar")
-    public List<Epico> listar() {
+    public List<EpicoListagemDTO> listar() {
         return service.listar();
     }
 
@@ -100,8 +102,8 @@ public class EpicoController {
     }
     // LISTAR TODAS ESTÓRIAS POR ÉPICO
     @GetMapping("/{idEpico}/estorias")
-    public List<Estoria> listarEstoriaPorEpico(@PathVariable Long idEpico) {
-        return epicoEstoriasRepository.findByIdepico_IdepicoOrderByDescestoria(idEpico);
+    public List<EstoriaListagemDTO> listarEstoriaPorEpico(@PathVariable Long idEpico) {
+        return epicoEstoriasRepository.listaEstoriasPorEpico(idEpico);
     }
 
     @PostMapping("/{idEpico}/adicionarEstoria")
@@ -109,13 +111,13 @@ public class EpicoController {
             @PathVariable Long idEpico,
             @RequestBody Estoria estoria) {
         Epico epico = service.buscarPorId(idEpico);
-        Usuario criador = usuarioRepository.findById(estoria.getIdcriador().getIdusuario())
+        Usuario criador = usuarioRepository.findById(estoria.getCriador().getIdusuario())
                 .orElseThrow(() -> new RuntimeException("Usuário criador não encontrado"));
-        Usuario responsavel = usuarioRepository.findById(estoria.getIdresponsavel().getIdusuario())
+        Usuario responsavel = usuarioRepository.findById(estoria.getResponsavel().getIdusuario())
                 .orElseThrow(() -> new RuntimeException("Usuário responsavel não encontrado"));
-        estoria.setIdepico(epico);
-        estoria.setIdcriador(criador);
-        estoria.setIdresponsavel(responsavel);
+        estoria.setEpico(epico);
+        estoria.setCriador(criador);
+        estoria.setResponsavel(responsavel);
         epicoEstoriasRepository.save(estoria);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

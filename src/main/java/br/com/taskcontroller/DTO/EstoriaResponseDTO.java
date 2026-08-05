@@ -11,17 +11,17 @@ import java.time.LocalDate;
 public class EstoriaResponseDTO {
     private Long idestoria;
     private String descestoria;
-    private Usuario idcriador;
-    private Usuario idresponsavel;
-    private Epico idepico;
+    private Usuario criador;
+    private Usuario responsavel;
+    private Epico epico;
     private Boolean bloqueada;
     private StatusEntidades status;
-    private Blob resumo;
+    private String resumo;
     private LocalDate data_inicio;
     private LocalDate data_fim;
     private Long pontos;
-    private int ativa;
-    private Empreendimento_Equipe empreendimento_Equipe;
+    private boolean ativa;
+    private Empreendimento_Equipe empreendimentoEquipe;
 
     public Long getIdestoria() {
         return idestoria;
@@ -39,28 +39,28 @@ public class EstoriaResponseDTO {
         this.descestoria = descestoria;
     }
 
-    public Usuario getIdcriador() {
-        return idcriador;
+    public Usuario getCriador() {
+        return criador;
     }
 
-    public void setIdcriador(Usuario idcriador) {
-        this.idcriador = idcriador;
+    public void setCriador(Usuario criador) {
+        this.criador = criador;
     }
 
-    public Usuario getIdresponsavel() {
-        return idresponsavel;
+    public Usuario getResponsavel() {
+        return responsavel;
     }
 
-    public void setIdresponsavel(Usuario idresponsavel) {
-        this.idresponsavel = idresponsavel;
+    public void setResponsavel(Usuario responsavel) {
+        this.responsavel = responsavel;
     }
 
-    public Epico getIdepico() {
-        return idepico;
+    public Epico getEpico() {
+        return epico;
     }
 
-    public void setIdepico(Epico idepico) {
-        this.idepico = idepico;
+    public void setEpico(Epico epico) {
+        this.epico = epico;
     }
 
     public Boolean getBloqueada() {
@@ -79,11 +79,11 @@ public class EstoriaResponseDTO {
         this.status = status;
     }
 
-    public Blob getResumo() {
+    public String getResumo() {
         return resumo;
     }
 
-    public void setResumo(Blob resumo) {
+    public void setResumo(String resumo) {
         this.resumo = resumo;
     }
 
@@ -111,19 +111,19 @@ public class EstoriaResponseDTO {
         this.pontos = pontos;
     }
 
-    public int getAtiva() {
+    public boolean getAtiva() {
         return ativa;
     }
 
-    public void setAtiva(int ativa) {
+    public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
 
-    public Empreendimento_Equipe getEmpreendimento_Equipe() {
-        return empreendimento_Equipe;
+    public Empreendimento_Equipe getEmpreendimentoEquipe() {
+        return empreendimentoEquipe;
     }
 
-    public void setEmpreendimento_Equipe(Empreendimento_Equipe empreendimento_Equipe) {
-        this.empreendimento_Equipe = empreendimento_Equipe;
+    public void setEmpreendimentoEquipe(Empreendimento_Equipe empreendimentoEquipe) {
+        this.empreendimentoEquipe = empreendimentoEquipe;
     }
 }

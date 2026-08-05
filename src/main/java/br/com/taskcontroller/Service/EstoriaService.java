@@ -25,8 +25,8 @@ public class EstoriaService {
 
     public Estoria salvar(Estoria estoria) {
         Epico epico = new Epico();
-        epico = epicoService.buscarPorId(estoria.getIdepico().getIdepico());
-        estoria.setIdepico(epico);
+        epico = epicoService.buscarPorId(estoria.getEpico().getIdepico());
+        estoria.setEpico(epico);
         return estoriaRepository.save(estoria);
     }
 
@@ -49,7 +49,7 @@ public class EstoriaService {
                     "Não é possível inativar a estória porque existem tarefas ativas.");
         }
 
-        estoria.setAtiva(0);
+        estoria.setAtiva(false);
 
         estoriaRepository.save(estoria);
     }
