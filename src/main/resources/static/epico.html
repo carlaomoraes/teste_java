@@ -65,11 +65,11 @@
             </div>
             <div>
                 <label>Data inicial</label>
-                <input type="date" id="data_inicio">
+                <input type="date" id="data_inicioEP">
             </div>
             <div>
                 <label>Data final prevista</label>
-                <input type="date" id="data_fim">
+                <input type="date" id="data_fim_previstaEP">
             </div>
             <div>
                 <label for="cor">Cor de identificação do épico</label>
@@ -114,24 +114,29 @@
             </div>
             <div>
                 <label>Data inicial</label>
-                <input type="date" id="data_inicio_estoria">
+                <input type="date" id="data_inicioES">
             </div>
             <div>
                 <label>Data final prevista</label>
-                <input type="date" id="data_fim_estoria">
+                <input type="date" id="data_fimES">
             </div>
             <div>
                 <label>Resumo</label>
                 <input type="text" id="resumo_estoria" oninput="converterMaiusculo(this)">
             </div>
             <div>
-                <label>Pontos estimados</label>
-                <input type="number" id="pontos" class="form-control text-end" disabled>
+                <label>Horas estimadas</label>
+                <input type="number" id="horas_estimadas" class="form-control text-end" disabled>
             </div>
             <div>
-                <label>Horas estimadas</label>
-                <input type="number"  id="horas_estimadas" class="form-control text-end" disabled>
+                <label>Horas realizadas</label>
+                <input type="number"  id="horas_realizadas" class="form-control text-end" disabled>
             </div>
+            <div>
+                <label>Pontos</label>
+                <input type="number"  id="pontos" class="form-control text-end" disabled>
+            </div>
+
             <label class="checkbox-group">
                 <input type="checkbox" id="bloqueada_estoria" value="0"> Estória bloqueada
             </label>
@@ -173,11 +178,11 @@
             </div>
             <div>
                 <label>Data inicial</label>
-                <input type="date" id="data_inicio_tarefa">
+                <input type="date" id="data_inicioTA">
             </div>
             <div>
                 <label>Data final prevista</label>
-                <input type="date" id="data_fim_tarefa">
+                <input type="date" id="data_fimTA">
             </div>
             <div>
                 <label>Resumo</label>
@@ -703,10 +708,10 @@
             data.forEach(estoria => {
                 tabela += `<tr onclick="buscarPorLinha(document.getElementById('idepico').value,${estoria.idestoria}, 0,'ESTORIA')" style="cursor:pointer;">
                                 <td>${estoria.idestoria}</td>
-                                <td>${estoria.descestoria?.toUpperCase() ?? ""}</td>
-                                <td>${estoria.status?.descstatus.toUpperCase() ?? ""}</td>
-                                <td>${estoria.idcriador?.nome.toUpperCase() ?? ""}</td>
-                                <td>${estoria.idresponsavel?.nome.toUpperCase() ?? ""}</td>
+                                <td>${estoria.descestoria}</td>
+                                <td>${estoria.descstatus}</td>
+                                <td>${estoria.nomecriador}</td>
+                                <td>${estoria.nomeresponsavel}</td>
                                 <td>${formatarData(estoria.data_inicio)}</td>
                                 <td>${formatarData(estoria.data_fim)}</td>
                                 <td><button type="button" class="btn" onclick="excluirEstoria(${estoria.idestoria}); event.stopPropagation();">Excluir</button></td>
@@ -715,7 +720,8 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado_estoria').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ÉPICO"),"error");
+           // mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ESTÓRIA"),"error");
+            mostrarMensagemNaTela("resultado_epico",error.message,"error");
         }
     }
     async function listarTarefas(idEpico, idEstoria) {
@@ -753,8 +759,8 @@
         <tr onclick="buscarPorLinha(${idEpico}, ${idEstoria}, ${tarefa.idtarefa}, 'TAREFA')" style="cursor:pointer;">
             <td>${obterIconeTipo(tarefa.tipotarefa)}</td>
             <td>${tarefa.idtarefa}</td>
-            <td>${tarefa.desctarefa?.toUpperCase() ?? ""}</td>
-            <td>${tarefa.status?.descstatus?.toUpperCase() ?? ""}</td>
+            <td>${tarefa.desctarefa}</td>
+            <td>${tarefa.status.descstatus}</td>
             <td>${formatarData(tarefa.data_inicio)}</td>
             <td>${formatarData(tarefa.data_conclusao)}</td>
             <td>${tarefa.horas_estimadas ?? 0}</td>
@@ -770,7 +776,8 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado_tarefa').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
+            //mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
+            mostrarMensagemNaTela("resultado_tarefa",error.message,"error");
         }
     }
     async function listarEquipes(idEmpreendimento) {
@@ -837,22 +844,24 @@
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                     document.getElementById('bloqueado').checked = epico.bloqueado || 0;
                     // CARREGANDO OS COMBOS
-                    document.getElementById('comboStatusEP').value = epico.status.idstatus;
-                    document.getElementById('comboEmpreendimentoEP').value = epico.empreendimento.idempreendimento;
-                    document.getElementById('comboPrioridadeEP').value = epico.prioridade.idprioridade;
-                    document.getElementById('comboCriadorEP').value = epico.responsavel.idusuario;
-                    document.getElementById('data_inicio').value = epico.data_inicio;
-                    document.getElementById('data_fim').value = epico.data_fim_prevista;
+                     document.getElementById('comboStatusEP').value = epico.idstatus;
+                     document.getElementById('comboEmpreendimentoEP').value = epico.idempreendimento;
+                     document.getElementById('comboPrioridadeEP').value = epico.idprioridade;
+                     document.getElementById('comboCriadorEP').value = epico.idcriador;
+
+                     document.getElementById('data_inicioEP').value = formatarData(epico.data_inicio);
+                     document.getElementById('data_fim_previstaEP').value = formatarData(epico.data_fim_prevista);
                     // Limpa mensagens e monta equipe se o usuário mudar de aba depois
                     mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "success");
                     await listarEstoria(epico.idepico);
-                    await listarEquipes(epico.empreendimento.idempreendimento);
+                    await listarEquipes(epico.idempreendimento);
                     // MONTA O COMBO PARA PROXIMO STATUS
-                    statusAtualEpico = epico.status.idstatus;
-                    carregarStatusEpico(statusAtualEpico);
+                    statusAtualEpico = epico.idstatus;
+                    await carregarStatusEpico(statusAtualEpico);
                 }
             } catch (error) {
-                mostrarMensagemNaTela("resultado_epico",MSG.erroCarregar("ÉPICO"), "error");
+              //  mostrarMensagemNaTela("resultado_epico",MSG.erroCarregar("ÉPICO"), "error");
+                mostrarMensagemNaTela("resultado", error.message, "error");
             }
         } else if (ABA === "ESTORIA") {
             try {
@@ -861,27 +870,30 @@
                 if (!response.ok) {
                     mostrarMensagemNaTela("resultado_estoria",estoria.mensagem, "error");
                 } else {
+                    console.log(estoria);
                     document.getElementById('idestoria').value = estoria.idestoria;
                     document.getElementById('descestoria').value = estoria.descestoria;
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-                    document.getElementById('bloqueada_estoria').checked = estoria.bloqueada || 0;
-                    document.getElementById('data_inicio').value = estoria.data_inicio;
-                    document.getElementById('data_fim').value = estoria.data_fim;
-                    document.getElementById('resumo_estoria').value = estoria.resumo;
-                    document.getElementById('pontos').value = parseFloat(estoria.pontos ?? 0);
-                    document.getElementById('horas_estimadas').value = parseFloat(estoria.horas_estimadas ?? 0);
-                    // CARREGANDO OS COMBOS
-                    document.getElementById('comboStatusES').value = estoria.status.idstatus;
-                    document.getElementById('comboCriadorES').value = estoria.idcriador.idusuario;
-                    document.getElementById('comboResponsavelES').value = estoria.idresponsavel.idusuario;
-                    mostrarMensagemNaTela("resultado_estoria","Estória selecionada: " + estoria.descestoria, "success");
-                    await listarTarefas(idEpico, estoria.idestoria);
-                    // MONTA O COMBO PARA PROXIMO STATUS
-                    statusAtualEstoria = estoria.status.idstatus;
-                    carregarStatusEstoria(statusAtualEstoria);
+                     document.getElementById('bloqueada_estoria').checked = estoria.bloqueada || 0;
+                     document.getElementById('data_inicioES').value = estoria.data_inicio;
+                     document.getElementById('data_fimES').value = estoria.data_fim;
+                     document.getElementById('resumo_estoria').value = estoria.resumo;
+                     document.getElementById('pontos').value = estoria.pontos;
+                     document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
+                     document.getElementById('horas_realizadas').value = estoria.horas_realizadas;
+                     //CARREGANDO OS COMBOS
+                     document.getElementById('comboStatusES').value = estoria.idstatus;
+                     document.getElementById('comboCriadorES').value = estoria.idcriador;
+                     document.getElementById('comboResponsavelES').value = estoria.idresponsavel;
+                     mostrarMensagemNaTela("resultado_estoria","Estória selecionada: " + estoria.descestoria, "success");
+                     await listarTarefas(idEpico, estoria.idestoria);
+                     // MONTA O COMBO PARA PROXIMO STATUS
+                     statusAtualEstoria = estoria.idstatus;
+                     carregarStatusEstoria(statusAtualEstoria);
                 }
             } catch (error) {
-                mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
+             //   mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
+                mostrarMensagemNaTela("resultado_estoria",error.message, "error");
             }
         } else if (ABA === "TAREFAS") {
             try {
@@ -894,8 +906,8 @@
                     document.getElementById('desctarefa').value = tarefa.desctarefa;
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                     document.getElementById('bloqueada_tarefa').checked = tarefa.bloqueada || 0;
-                    document.getElementById('data_inicio').value = tarefa.data_inicio;
-                    document.getElementById('data_conclusao').value = tarefa.data_conclusao;
+                    document.getElementById('data_inicio_TA').value = tarefa.data_inicio;
+                    document.getElementById('data_fim_TA').value = tarefa.data_conclusao;
                     document.getElementById('data_fim_prevista').value = tarefa.data_fim_prevista;
                     // CARREGANDO OS COMBOS
                     document.getElementById('comboStatusTA').value = tarefa.status.idstatus;

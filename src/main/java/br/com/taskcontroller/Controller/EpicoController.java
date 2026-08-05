@@ -1,10 +1,11 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
+import br.com.taskcontroller.Record.EpicoConsultaDTO;
 import br.com.taskcontroller.Record.EpicoListagemDTO;
+import br.com.taskcontroller.Record.EstoriaConsultaDTO;
 import br.com.taskcontroller.Record.EstoriaListagemDTO;
-import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
-import br.com.taskcontroller.Respository.UsuarioRepository;
+import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EpicoService;
 import br.com.taskcontroller.Service.PrioridadesService;
 import br.com.taskcontroller.Service.UsuarioService;
@@ -30,15 +31,19 @@ public class EpicoController {
     private EpicoEstoriasRepository epicoEstoriasRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private EpicoRepository epicoRepository;
+    @Autowired
+    private PrioridadesRepository prioridadesRepository;
 
     // BUSCAR POR ID
     @GetMapping("/{idepico}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Long idepico) {
+    public ResponseEntity<EpicoConsultaDTO> buscarPorId(@PathVariable Long idepico) {
         try {
-            Epico epico = service.buscarPorId(idepico);
+            EpicoConsultaDTO epico = epicoRepository.buscaPorID(idepico);
             return ResponseEntity.ok().body(epico);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Épico não encontrado");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }
 
@@ -94,7 +99,7 @@ public class EpicoController {
         if (epico == null) {
             ResponseEntity.status(HttpStatus.CONFLICT).body("Épico não encontrado");
         }
-        Estoria estoria = epicoEstoriasRepository.buscarPorId(idepico, idestoria);
+        EstoriaConsultaDTO estoria = epicoEstoriasRepository.buscarPorId(idepico, idestoria);
         if (estoria == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Estória não encontrada");
         }

@@ -43,14 +43,18 @@ public class Estoria {
     private String resumo;
 
     @Column(name = "data_inicio")
-    private LocalDate dataInicio;
+    private LocalDate data_inicio;
 
     @Column(name = "data_fim")
-    private LocalDate dataFim;
+    private LocalDate data_fim;
 
     private Long pontos;
 
     private boolean ativa;
+
+    private Long horas_estimadas;
+
+    private Long horas_realizadas;
 
     public Long getIdestoria() {
         return idestoria;
@@ -108,7 +112,7 @@ public class Estoria {
         this.empreendimentoEquipe = empreendimentoEquipe;
     }
 
-    public boolean getBloqueada() {
+    public boolean isBloqueada() {
         return bloqueada;
     }
 
@@ -124,20 +128,20 @@ public class Estoria {
         this.resumo = resumo;
     }
 
-    public LocalDate getDataInicio() {
-        return dataInicio;
+    public LocalDate getData_inicio() {
+        return data_inicio;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
-        this.dataInicio = dataInicio;
+    public void setData_inicio(LocalDate data_inicio) {
+        this.data_inicio = data_inicio;
     }
 
-    public LocalDate getDataFim() {
-        return dataFim;
+    public LocalDate getData_fim() {
+        return data_fim;
     }
 
-    public void setDataFim(LocalDate dataFim) {
-        this.dataFim = dataFim;
+    public void setData_fim(LocalDate data_fim) {
+        this.data_fim = data_fim;
     }
 
     public Long getPontos() {
@@ -148,11 +152,27 @@ public class Estoria {
         this.pontos = pontos;
     }
 
-    public boolean getAtiva() {
+    public boolean isAtiva() {
         return ativa;
     }
 
     public void setAtiva(boolean ativa) {
         this.ativa = ativa;
+    }
+
+    public Long getHoras_estimadas() {
+        return horas_estimadas;
+    }
+
+    public void setHoras_estimadas(Long horas_estimadas) {
+        this.horas_estimadas = horas_estimadas;
+    }
+
+    public Long getHoras_realizadas() {
+        return horas_realizadas;
+    }
+
+    public void setHoras_realizadas(Long horas_realizadas) {
+        this.horas_realizadas = horas_realizadas;
     }
 }

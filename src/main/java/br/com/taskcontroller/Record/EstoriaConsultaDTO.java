@@ -2,7 +2,7 @@ package br.com.taskcontroller.Record;
 
 import java.time.LocalDate;
 
-public record EstoriaListagemDTO(
+public record EstoriaConsultaDTO(
         Long idestoria,
         String descestoria,
         Long idstatus,

@@ -14,7 +14,7 @@ public class EstoriaResponseDTO {
     private Usuario criador;
     private Usuario responsavel;
     private Epico epico;
-    private Boolean bloqueada;
+    private boolean bloqueada;
     private StatusEntidades status;
     private String resumo;
     private LocalDate data_inicio;

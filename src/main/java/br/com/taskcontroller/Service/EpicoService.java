@@ -4,6 +4,8 @@ import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Record.EpicoListagemDTO;
 import br.com.taskcontroller.Record.EquipeCardDTO;
+import br.com.taskcontroller.Record.EstoriaConsultaDTO;
+import br.com.taskcontroller.Record.EstoriaListagemDTO;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.EpicoRepository;
 import br.com.taskcontroller.Respository.EquipeEmpreendimentoRepository;
@@ -55,8 +57,8 @@ public class EpicoService {
     public Epico buscarPorId(Long idEpico) {
         return repository.findById(idEpico).orElseThrow(() -> new RuntimeException("Épico não encontrado"));
     }
-    public List<Estoria> buscarEstoriaPorEpico(@Param("idepico") Long idepico) {
-        return relacionamentoRepository.buscarEstoriaPorEpico(idepico);
+    public List<EstoriaListagemDTO> buscarEstoriaPorEpico(@Param("idepico") Long idepico) {
+        return relacionamentoRepository.listaEstoriasPorEpico(idepico);
     }
 
 }

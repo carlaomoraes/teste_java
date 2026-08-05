@@ -17,8 +17,8 @@ public class EstoriaMapper {
         e.setBloqueada(dto.getBloqueada());
         e.setStatus(dto.getStatus());
         e.setResumo(dto.getResumo());
-        e.setDataInicio(dto.getData_inicio());
-        e.setDataFim(dto.getData_fim());
+        e.setData_inicio(dto.getData_inicio());
+        e.setData_fim(dto.getData_fim());
         e.setPontos(dto.getPontos());
         e.setAtiva(dto.getAtiva());
         e.setEmpreendimentoEquipe(dto.getEmpreendimentoEquipe());
@@ -32,14 +32,14 @@ public class EstoriaMapper {
         dto.setEpico(e.getEpico());
         dto.setCriador(e.getCriador());
         dto.setResponsavel(e.getResponsavel());
-        dto.setBloqueada(e.getBloqueada());
+        dto.setBloqueada(e.isBloqueada());
         dto.setIdestoria(e.getIdestoria());
         dto.setStatus(e.getStatus());
         dto.setResumo(e.getResumo());
-        dto.setData_inicio(e.getDataInicio());
-        dto.setData_fim(e.getDataFim());
+        dto.setData_inicio(e.getData_inicio());
+        dto.setData_fim(e.getData_fim());
         dto.setPontos(e.getPontos());
-        dto.setAtiva(e.getAtiva());
+        dto.setAtiva(e.isAtiva());
         dto.setEmpreendimentoEquipe(e.getEmpreendimentoEquipe());
         return dto;
     }

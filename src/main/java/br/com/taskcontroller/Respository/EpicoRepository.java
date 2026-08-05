@@ -2,6 +2,7 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Projection.IndicadorEquipeProjection;
+import br.com.taskcontroller.Record.EpicoConsultaDTO;
 import br.com.taskcontroller.Record.EpicoListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -54,4 +55,31 @@ public interface EpicoRepository extends JpaRepository<Epico, Long> {
     eq.nomeequipe
 """, nativeQuery = true)
     List<IndicadorEquipeProjection> buscarIndicadoresEquipe(Long id_empreendiemto);
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.EpicoConsultaDTO(
+        e.percentual,
+        e.idepico,
+        e.codepico,
+        e.nome,
+        ep.idempreendimento,
+        ep.descempreendimento,
+        e.status.idstatus,
+        s.descstatus,
+        e.prioridade.idprioridade,
+        p.descprioridade,
+        e.data_inicio,
+        e.data_fim_prevista,
+        e.cor,
+        u.idusuario,
+        u.nome
+    )
+    FROM Epico e
+    JOIN e.empreendimento ep
+    JOIN e.status s
+    JOIN e.prioridade p
+    join e.responsavel u
+    WHERE e.idepico = :id_epico
+""")
+    EpicoConsultaDTO buscaPorID(Long id_epico);
 }
