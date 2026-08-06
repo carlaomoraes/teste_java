@@ -44,10 +44,10 @@ public class EstoriaService {
         Estoria estoria = estoriaRepository.findById(idEstoria)
                 .orElseThrow(() -> new RuntimeException("Estória não encontrada"));
 
-        if (tarefaRepository.existsByEstoriaAndAtivaTrue(estoria)) {
-            throw new RuntimeException(
-                    "Não é possível inativar a estória porque existem tarefas ativas.");
-        }
+//        if (tarefaRepository.existsByEstoriaAndAtivaTrue(estoria)) {
+//            throw new RuntimeException(
+//                    "Não é possível inativar a estória porque existem tarefas ativas.");
+//        }
 
         estoria.setAtiva(false);
 

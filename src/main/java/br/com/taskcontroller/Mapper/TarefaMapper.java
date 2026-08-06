@@ -22,7 +22,7 @@ public class TarefaMapper {
         t.setData_conclusao(dto.getData_conclusao());
         t.setData_inicio(dto.getData_inicio());
         t.setAtiva(dto.getAtiva());
-        t.setTipoTarefa(dto.getTipoTarefa());
+        t.setTipotarefa(dto.getTipotarefa());
         return t;
     }
 
@@ -42,7 +42,7 @@ public class TarefaMapper {
         dto.setData_conclusao(t.getData_conclusao());
         dto.setData_inicio(t.getData_inicio());
         dto.setAtiva(t.getAtiva());
-        dto.setTipoTarefa(t.getTipoTarefa());
+        dto.setTipoTarefa(t.getTipotarefa());
         return dto;
     }
 }

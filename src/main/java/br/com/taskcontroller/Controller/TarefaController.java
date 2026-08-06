@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
+import br.com.taskcontroller.Record.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;
@@ -64,11 +65,6 @@ public class TarefaController {
         return service.atualizar(tarefa);
     }
 
-    // LISTAR
-    @GetMapping("/listar")
-    public List<Tarefa> listar() {
-        return service.listar();
-    }
 
     // EXCLUIR
     @DeleteMapping("/excluir/{idTarefa}")
@@ -76,10 +72,9 @@ public class TarefaController {
         service.excluir(idTarefa);
         return ResponseEntity.ok().body("Tarefa excluída com sucesso!");
     }
-
     // LISTAR TAREFAS POR ESTORIA
-    @GetMapping("/porEstoria/{idEstoria}")
-    public List<Tarefa> listarPorEstoria(@PathVariable Long idEstoria) {
+    @GetMapping("/{idEstoria}/tarefas")
+    public List<TarefaConsultaDTO> listarPorEstoria(@PathVariable Long idEstoria) {
         return service.listarPorEstoria(idEstoria);
     }
 }

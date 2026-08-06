@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class TarefaRequestDTO {
     private Long idtarefa;
     private String desctarefa;
-    private TipoTarefa tipoTarefa;
+    private TipoTarefa tipotarefa;
     private Estoria estoria;
     private Usuario criador;
     private Usuario responsavel;
@@ -19,7 +19,7 @@ public class TarefaRequestDTO {
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
     private LocalDate data_conclusao;
-    private int ativa;
+    private boolean ativa;
 
     public Long getIdtarefa() {
         return idtarefa;
@@ -37,12 +37,12 @@ public class TarefaRequestDTO {
         this.desctarefa = desctarefa;
     }
 
-    public TipoTarefa getTipoTarefa() {
-        return tipoTarefa;
+    public TipoTarefa getTipotarefa() {
+        return tipotarefa;
     }
 
-    public void setTipoTarefa(TipoTarefa tipoTarefa) {
-        this.tipoTarefa = tipoTarefa;
+    public void setTipotarefa(TipoTarefa tipotarefa) {
+        this.tipotarefa = tipotarefa;
     }
 
     public Estoria getEstoria() {
@@ -117,11 +117,11 @@ public class TarefaRequestDTO {
         this.data_conclusao = data_conclusao;
     }
 
-    public int getAtiva() {
+    public boolean getAtiva() {
         return ativa;
     }
 
-    public void setAtiva(int ativa) {
+    public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
 }

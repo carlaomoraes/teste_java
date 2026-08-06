@@ -19,7 +19,7 @@ public class TarefaResponseDTO {
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
     private LocalDate data_conclusao;
-    private int ativa;
+    private boolean ativa;
     private TipoTarefa tipoTarefa;
 
     public Long getIdtarefa() {
@@ -118,11 +118,11 @@ public class TarefaResponseDTO {
         this.data_conclusao = data_conclusao;
     }
 
-    public int getAtiva() {
+    public boolean getAtiva() {
         return ativa;
     }
 
-    public void setAtiva(int ativa) {
+    public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
 

@@ -14,11 +14,12 @@ public record TarefaConsultaDTO(
         String nomeresponsavel,
         Long horas_estimadas,
         Long horas_realizadas,
-        Long idtipo_tarefa,
-        Boolean bloqueada,
+        Long idtipotarefa,
+        String desctipotarefa,
+        boolean bloqueada,
         LocalDate data_fim_prevista,
         LocalDate data_conclusao,
         LocalDate data_inicio,
-        Boolean ativa
-        ) {
+        boolean ativa
+) {
 }

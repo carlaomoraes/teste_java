@@ -3,6 +3,7 @@ package br.com.taskcontroller.Service;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Tarefa;
+import br.com.taskcontroller.Record.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,9 @@ public class TarefaService {
         return repository.save(tarefa);
     }
 
-    public List<Tarefa> listar() {
+    public List<TarefaConsultaDTO> listar(Long idEstoria) {
 
-        return repository.findAll();
+        return repository.buscarTarefaPorEstoria(idEstoria);
     }
 
     public Tarefa atualizar(Tarefa Tarefa) {
@@ -40,8 +41,8 @@ public class TarefaService {
         return repository.findById(idTarefa).orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
     }
 
-    public List<Tarefa> listarPorEstoria(Long idEstoria) {
-        return repository.findByEstoria_Idestoria(idEstoria);
+    public List<TarefaConsultaDTO> listarPorEstoria(Long idEstoria) {
+        return repository.buscarTarefaPorEstoria(idEstoria);
     }
 
     @Transactional
@@ -49,7 +50,7 @@ public class TarefaService {
 
         Tarefa tarefa = repository.findById(idTarefa)
                 .orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada"));
-
+//
 //        StatusEntidades novoStatus = statusRepository.findById(idStatus)
 //                .orElseThrow(() -> new ResourceNotFoundException("Status não encontrado"));
 //
