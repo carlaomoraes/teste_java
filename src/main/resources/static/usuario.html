@@ -195,7 +195,6 @@
                 idempreendimento: document.getElementById('comboEmpreendimento').value || null,
             }
         };
-        alert(usuario);
         try {
             const response = await fetch(`${API_USUARIOS}/salvar`, {
                 method: 'POST',
