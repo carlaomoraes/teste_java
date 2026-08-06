@@ -34,7 +34,7 @@
         <label class="checkbox-group">
              <input type="checkbox" id="ativa"> Ativa?
         </label>
-        <div class="btn-group">
+        <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn btn-add"  onclick="criarEquipes()">Novo</button>
             <button type="button" class="btn btn-salvar" onclick="salvarEquipes()">Salvar</button>
             <button type="button" class="btn btn-listar" onclick="listarEquipes()">Listar</button>
@@ -329,7 +329,8 @@
             document.getElementById('ativa').checked = !!equipe.ativa;
 
             // Limpa mensagens e monta equipe se o usuário mudar de aba depois
-            resultado.innerHTML = '';
+            mostrarMensagemNaTela("resultado","Equipe selecionada: " + equipe.nomeequipe, "success");
+
             montaEquipes(equipe.idequipe);
         } catch (error) {
             mostrarMensagemNaTela("resultado", "Erro ao carregar: " + error.message, "error");

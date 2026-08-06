@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajuste no cadastro usuario/ausencias (DTO)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EquipeUsuarioDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajuste no cadastro de equipes (DTO)">
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/equipe.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -389,14 +384,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00082" summary="lay-out de empreendimento.html - layout - OK">
-      <option name="closed" value="true" />
-      <created>1783308658646</created>
-      <option name="number" value="00082" />
-      <option name="presentableId" value="LOCAL-00082" />
-      <option name="project" value="LOCAL" />
-      <updated>1783308658646</updated>
     </task>
     <task id="LOCAL-00083" summary="Cadastro de épicos - ok&#10;Cadastro de estórias">
       <option name="closed" value="true" />
@@ -782,7 +769,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786043102981</updated>
     </task>
-    <option name="localTasksCounter" value="131" />
+    <task id="LOCAL-00131" summary="Ajuste no cadastro de equipes (DTO)">
+      <option name="closed" value="true" />
+      <created>1786050775907</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1786050775907</updated>
+    </task>
+    <option name="localTasksCounter" value="132" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -822,7 +817,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cadastro sprint / empreendimento" />
     <MESSAGE value="Cadastro empreendimento / configuração" />
     <MESSAGE value="Configuração da barra de botões" />
     <MESSAGE value="Resolvido problema de associação equipes e empreendimento.html" />
@@ -847,7 +841,8 @@
     <MESSAGE value="Cadastro de épicos/estórias com DTO" />
     <MESSAGE value="Ajuste no cadastro épico/estórias/tarefas (DTO)" />
     <MESSAGE value="Ajuste no cadastro usuario/ausencias (DTO)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajuste no cadastro usuario/ausencias (DTO)" />
+    <MESSAGE value="Ajuste no cadastro de equipes (DTO)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajuste no cadastro de equipes (DTO)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
