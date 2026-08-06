@@ -74,10 +74,57 @@
 
     const API_EQUIPES = 'http://localhost:8080/equipes';
 
-    function converterMaiusculo(campo) {
-        campo.value = campo.value.toUpperCase();
+    async function getJson(url) {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(await response.text());
+        }
+
+        return response.json();
     }
 
+    async function postJson(url, body) {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            throw new Error(await response.text());
+        }
+
+        return response.json();
+    }
+
+    async function putJson(url, body) {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            throw new Error(await response.text());
+        }
+
+        return response.json();
+    }
+
+    async function deleteRequest(url) {
+        const response = await fetch(url, {
+            method: "DELETE"
+        });
+
+        if (!response.ok) {
+            throw new Error(await response.text());
+        }
+    }
     document.addEventListener('visibilitychange', () => {
         const containerTabela = document.getElementById('resultado');
         if (!containerTabela) return;
@@ -138,19 +185,21 @@
             container.appendChild(item);
         });
     }
-
     async function montaEquipes(idEquipe) {
         try {
-            const disponiveis = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios/disponiveis`).then(r => r.json());
-            const membros = await fetch(`${API_EQUIPES}/${idEquipe}/usuarios`).then(r => r.json());
+            const [disponiveis, membros] = await Promise.all([
+                getJson(`${API_EQUIPES}/${idEquipe}/usuarios/disponiveis`),
+                getJson(`${API_EQUIPES}/${idEquipe}/usuarios`)
+            ]);
 
-            renderizarListaCustom("usuariosDisponiveis", disponiveis, 'disponivel');
-            renderizarListaCustom("usuariosEquipe", membros, 'equipe');
+            renderizarListaCustom("usuariosDisponiveis", disponiveis, "disponivel");
+            renderizarListaCustom("usuariosEquipe", membros, "equipe");
 
             usuarioDisponivelSelecionado = null;
             usuarioEquipeSelecionado = null;
-        } catch(e) {
-            mostrarMensagemNaTela("resultadoequipe", "Erro ao montar colunas de membros: " + e.message);
+
+        } catch (e) {
+            mostrarMensagemNaTela("resultadoequipe", e.message, "error");
         }
     }
 
@@ -161,7 +210,7 @@
             return;
         }
         await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioDisponivelSelecionado}`, { method:"POST" });
-        montaEquipes(idEquipe);
+        await montaEquipes(idEquipe);
     }
 
     async function removerMembro(){
@@ -170,7 +219,7 @@
             return;
         }
         await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioEquipeSelecionado}`, { method:"DELETE" });
-        montaEquipes(idEquipe);
+        await montaEquipes(idEquipe);
     }
 
     function alternarAba(event, idAbaDestino) {

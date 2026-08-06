@@ -3,6 +3,7 @@ package br.com.taskcontroller.Controller;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.EquipeUsuario;
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Record.EquipeUsuarioDTO;
 import br.com.taskcontroller.Respository.EquipeRepository;
 import br.com.taskcontroller.Respository.EquipeUsuarioRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;
@@ -109,19 +110,19 @@ public class EquipeController {
 
     // LISTAR MEMBROS (ENTIDADE RELACIONAL)
     @GetMapping("/{idEquipe}/membros")
-    public List<EquipeUsuario> listarMembros(@PathVariable Long idEquipe) {
+    public List<EquipeUsuarioDTO> listarMembros(@PathVariable Long idEquipe) {
         return equipeUsuarioRepository.listarMembros(idEquipe);
     }
 
     // LISTAR USUÁRIOS DA EQUIPE
     @GetMapping("/{idEquipe}/usuarios")
-    public List<Usuario> listarUsuariosEquipe(@PathVariable Long idEquipe) {
+    public List<EquipeUsuarioDTO> listarUsuariosEquipe(@PathVariable Long idEquipe) {
         return equipeUsuarioRepository.buscarUsuariosPorEquipe(idEquipe);
     }
 
     // USUÁRIOS DISPONÍVEIS
     @GetMapping("/{idEquipe}/usuarios/disponiveis")
-    public List<Usuario> listarUsuariosDisponiveis(@PathVariable Long idEquipe) {
+    public List<EquipeUsuarioDTO> listarUsuariosDisponiveis(@PathVariable Long idEquipe) {
         return equipeUsuarioRepository.buscarUsuariosDisponiveis(idEquipe);
     }
 

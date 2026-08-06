@@ -2,6 +2,7 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.EquipeUsuario;
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Record.EquipeUsuarioDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,11 +13,14 @@ import java.util.List;
 
 public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Long> {
     @Query("""
-       select distinct eu
+       select distinct new br.com.taskcontroller.Record.EquipeUsuarioDTO(
+              eu.usuario.idusuario,
+              eu.usuario.nome
+       )
        from EquipeUsuario eu
        where eu.equipe.idequipe = :idequipe
        """)
-    List<EquipeUsuario> listarMembros(Long idequipe);
+    List<EquipeUsuarioDTO> listarMembros(Long idequipe);
     @Modifying
     @Transactional
     @Query("""
@@ -25,24 +29,29 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
        where eu.equipe.idequipe = :idEquipe
        and eu.usuario.idusuario = :idUsuario
        """)
-    void removerMembro(
-                    @Param("idEquipe") Long idEquipe,
+    void removerMembro(@Param("idEquipe") Long idEquipe,
                     @Param("idUsuario") Long idUsuario);
 
     @Query("""
-    SELECT DISTINCT eu.usuario
-    FROM EquipeUsuario eu
-    WHERE eu.equipe.idequipe = :idequipe
+        select distinct new br.com.taskcontroller.Record.EquipeUsuarioDTO(
+              eu.usuario.idusuario,
+              eu.usuario.nome
+       )
+       from EquipeUsuario eu
+     WHERE eu.equipe.idequipe = :idequipe
     ORDER BY eu.usuario.nome
 """)
-    List<Usuario> buscarUsuariosPorEquipe(@Param("idequipe") Long idequipe);
+    List<EquipeUsuarioDTO> buscarUsuariosPorEquipe(@Param("idequipe") Long idequipe);
 
     @Query("""
-    SELECT DISTINCT u
+    SELECT DISTINCT new br.com.taskcontroller.Record.EquipeUsuarioDTO(
+        u.idusuario,
+        u.nome
+       )
       FROM Usuario u
      WHERE u.idusuario NOT IN (SELECT eu.usuario.idusuario
                                  FROM EquipeUsuario eu
                                 WHERE eu.equipe.idequipe = :idequipe)
   ORDER BY u.nome""")
-    List<Usuario> buscarUsuariosDisponiveis(@Param("idequipe") Long idequipe);
+    List<EquipeUsuarioDTO> buscarUsuariosDisponiveis(@Param("idequipe") Long idequipe);
 }
