@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Record.AusenciaListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
@@ -44,5 +45,9 @@ public class AusenciaProgramadaService {
 
     public List<AusenciaListagemDTO> listarPorUsuario(Long idUsuario) {
         return repository.findByIdusuario_Idusuario(idUsuario);
+    }
+
+    public List<AusenciaComboDTO> montaComboAusencia() {
+        return repository.montaComboAusencia();
     }
 }

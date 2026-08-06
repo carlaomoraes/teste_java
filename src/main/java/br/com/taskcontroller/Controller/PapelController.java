@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.COMBO.PapelComboDTO;
 import br.com.taskcontroller.Modelo.Papel;
 import br.com.taskcontroller.Respository.PapelRepository;
 import br.com.taskcontroller.Service.PapelService;
@@ -58,5 +59,12 @@ public class PapelController {
         service.excluir(idPapel);
         return ResponseEntity.ok().body("Papel excluído com sucesso");
     }
+
+    // LISTAR
+    @GetMapping("/montacomboPapel")
+    public List<PapelComboDTO> mostrarComboPapel() {
+        return service.montaComboPapel();
+    }
+
 }
 

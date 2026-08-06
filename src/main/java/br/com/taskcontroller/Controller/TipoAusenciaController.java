@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.Modelo.TipoAusencia;
+import br.com.taskcontroller.Modelo.Tipo_Ausencia;
 import br.com.taskcontroller.Respository.TipoAusenciaRepository;
 import br.com.taskcontroller.Service.TipoAusenciaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class TipoAusenciaController {
 
     // LISTAR
     @GetMapping("/listar")
-    public List<TipoAusencia> listar() {
+    public List<Tipo_Ausencia> listar() {
         return service.listar();
     }
 

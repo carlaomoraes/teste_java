@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.DTO.COMBO.PapelComboDTO;
 import br.com.taskcontroller.Modelo.Papel;
 import br.com.taskcontroller.Respository.PapelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,9 @@ public class PapelService {
     public Papel buscarPorId(Long idPapel) {
         return repository.findById(idPapel).orElseThrow(() -> new RuntimeException("Papel não encontrado"));
     }
+
+    public List<PapelComboDTO> montaComboPapel() {
+        return repository.montaComboPapel();
+    }
+
 }

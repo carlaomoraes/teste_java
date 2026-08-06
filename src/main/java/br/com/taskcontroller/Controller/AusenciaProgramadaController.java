@@ -2,6 +2,8 @@ package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.DTO.AusenciaProgramadaRequestDTO;
 import br.com.taskcontroller.DTO.AusenciaProgramadaResponseDTO;
+import br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO;
+import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Mapper.AusenciaProgramadaMapper;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Record.AusenciaListagemDTO;
@@ -56,4 +58,12 @@ public class AusenciaProgramadaController {
         List<AusenciaListagemDTO> lista = service.listarPorUsuario(idUsuario);
         return ResponseEntity.ok(lista);
     }
+
+    //MONTA COMBO TIPO DE AUSENCIA
+    @GetMapping("/montaCombo")
+    public List<AusenciaComboDTO> montaComboAusenciaCombo() {
+        return service.montaComboAusencia();
+    }
+
+
 }

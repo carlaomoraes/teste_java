@@ -1,5 +1,7 @@
 package br.com.taskcontroller.Respository;
 
+import br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO;
+import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Record.AusenciaListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,4 +44,14 @@ ORDER BY u.nome, a.data_inicio
     List<AusenciaProgramada> buscarAusenciasDaSprint(
             @Param("data_inicio") LocalDate data_inicio,
             @Param("data_fim") LocalDate data_fim);
+
+    @Query("""
+    SELECT new br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO(
+        a.id_tipo_ausencia,
+        a.desc_tipo_ausencia
+    )
+    FROM Tipo_Ausencia a
+    ORDER BY a.id_tipo_ausencia
+""")
+    List<AusenciaComboDTO> montaComboAusencia();
 }

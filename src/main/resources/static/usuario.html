@@ -87,11 +87,11 @@
 </div>
 
 <script>
+    let idusuario = 0;
     //--------------------- MANIPULAÇÃO DOS DADOS USUARIOS
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_AUSENCIAS = 'http://localhost:8080/ausencias';
     const API_PAPEL = 'http://localhost:8080/papel';
-    const API_TIPO_AUSENCIAS = 'http://localhost:8080/tipo_ausencia';
 
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
@@ -120,7 +120,7 @@
     async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         try {
-            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/montaCombo`);
             const empreendimentos = await resposta.json();
             empreendimentos.forEach(e => {
                 const opcao = document.createElement('option');
@@ -135,12 +135,13 @@
     async function carregarTipoAusencia() {
         const combotipo = document.getElementById("combotipo");
         try {
-            const resposta = await fetch(`${API_TIPO_AUSENCIAS}/listar`);
+            const resposta = await fetch(`${API_AUSENCIAS}/montaCombo`);
+            console.log(resposta);
             const ausencias = await resposta.json();
             ausencias.forEach(ausencia => {
                 const opcao = document.createElement('option');
-                opcao.value = ausencia.id_tipo_ausencia;
-                opcao.textContent = ausencia.desc_tipo_ausencia;
+                opcao.value = ausencia.idtipoausencia;
+                opcao.textContent = ausencia.descausencia;
                 combotipo.appendChild(opcao);
             });
         } catch (error) {
@@ -150,7 +151,7 @@
     async function carregarPapel() {
         const comboPapel = document.getElementById("comboPapel");
         try {
-            const resposta = await fetch(`${API_PAPEL}/listar`);
+            const resposta = await fetch(`${API_PAPEL}/montacomboPapel`);
             const papel = await resposta.json();
             papel.forEach(u => {
                 // Cria opção para o combo papel
@@ -243,12 +244,11 @@
             document.getElementById('alterasenha').checked = usuario.alterasenha;
             document.getElementById('ativo').checked = usuario.ativo;
             document.getElementById('comboPapel').value = usuario.idpapel;
-            document.getElementById('comboEmpreendimento').value = usuario.idempreendimento
-            await listarAusencias(usuario.idusuario);
+            document.getElementById('comboEmpreendimento').value = usuario.idempreendimento;
             mostrarMensagemNaTela("resultado", "Usuário selecionado: " +  usuario.nome, "success");
+            listarAusencias();
         } catch (error) {
-            //mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
-            mostrarMensagemNaTela("resultado", error.message, "error");
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
         }
     }
     async function listarUsuarios() {
@@ -334,15 +334,10 @@
             }
         }
     }
-    async function listarAusencias(idUsuario) {
+    async function listarAusencias() {
          const container = document.getElementById("resultadoAusencias");
          try {
-             const response = await fetch(`${API_AUSENCIAS}/usuario/${idUsuario}`);
-              if (!response.ok) {
-                  const msg = await response.text();
-                  mostrarMensagemNaTela(msg || "Erro ao listar ausências!", 2);
-                  return;
-              }
+             const response = await fetch(`${API_AUSENCIAS}/usuario/${document.getElementById('idusuario').value}`);
               const data = await response.json();
                 // Se não houver registros
                 if (!data || data.length === 0) {
@@ -422,13 +417,13 @@
             mostrarMensagemNaTela("resultadoausencia", MSG.erroExcluir("AUSÊNCIA PROGRAMADA"), "error");
         }
     }
-    async function cancelarAusencia(idUsuario) {
-        listarAusencias(idUsuario);
+    async function cancelarAusencia() {
         document.getElementById('combotipo').value = "";
         document.getElementById('datainicial').value = "";
         document.getElementById('datafinal').value = "";
         document.getElementById('observacao').value = "";
         document.getElementById('status').checked = true;
+        listarAusencias();
     }
     async function validaEntrada(aba) {
         if (aba === 1) {

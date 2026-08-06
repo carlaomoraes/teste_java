@@ -28,7 +28,7 @@ public class AusenciaProgramada {
     private LocalDate data_cadastro;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_ausencia")
-    private TipoAusencia tipoausencia;
+    private Tipo_Ausencia tipoausencia;
 
     @PrePersist
     public void prePersist() {
@@ -83,11 +83,11 @@ public class AusenciaProgramada {
         this.data_cadastro = data_cadastro;
     }
 
-    public TipoAusencia getTipoausencia() {
+    public Tipo_Ausencia getTipoausencia() {
         return tipoausencia;
     }
 
-    public void setTipoausencia(TipoAusencia tipoausencia) {
+    public void setTipoausencia(Tipo_Ausencia tipoausencia) {
         this.tipoausencia = tipoausencia;
     }
 }

@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Empreendimento_Equipe;
 import br.com.taskcontroller.Modelo.Equipe;
@@ -87,8 +88,8 @@ public class EmpreendimentoService {
     }
 
     //CARREGA COMBO
-    public List<EmpreendimentoDTO> carrgecaComboEmpreendimento() {
-        return empreendimentoRepository.carregaComboEmpreendimento();
+    public List<EmpreendimentoComboDTO> montaComboEmpreendimento() {
+        return empreendimentoRepository.montaComboEmpreendimento();
     }
 
 }

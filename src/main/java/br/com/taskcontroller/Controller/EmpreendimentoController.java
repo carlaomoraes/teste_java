@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.Usuario;
@@ -126,8 +127,8 @@ public class EmpreendimentoController {
         return service.listarEquipesDisponiveis(idEmpreendimento);
     }
 
-    @GetMapping("/carregaCombo")
-    public List<EmpreendimentoDTO> carregaComboEmpreendimento() {
-        return service.carrgecaComboEmpreendimento();
+    @GetMapping("/montaCombo")
+    public List<EmpreendimentoComboDTO> montaComboEmpreendimento() {
+        return service.montaComboEmpreendimento();
     }
 }

@@ -1,11 +1,6 @@
 package br.com.taskcontroller.DTO;
 
 import br.com.taskcontroller.Modelo.Empreendimento;
-import br.com.taskcontroller.Modelo.TipoAusencia;
-import br.com.taskcontroller.Modelo.Usuario;
-import jakarta.persistence.*;
-
-import java.time.LocalDate;
 
 public class ConfiguracaoRequestDTO {
     private Long idconfiguracao;
