@@ -330,7 +330,6 @@
 
             // Limpa mensagens e monta equipe se o usuário mudar de aba depois
             mostrarMensagemNaTela("resultado","Equipe selecionada: " + equipe.nomeequipe, "success");
-
             montaEquipes(equipe.idequipe);
         } catch (error) {
             mostrarMensagemNaTela("resultado", "Erro ao carregar: " + error.message, "error");

@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Record.UsuarioAutenticacaoDTO;
 import br.com.taskcontroller.Record.UsuarioListagemDTO;
 import br.com.taskcontroller.Record.UsuarioLoginDTO;
 import br.com.taskcontroller.Respository.LoginRepository;
@@ -19,8 +20,14 @@ public class LoginService {
     private LoginRepository repository;
 
     public Optional<UsuarioLoginDTO> autenticar(String login, String senha) {
-        UsuarioListagemDTO usuario = repository.findByLogin(login);
-
+        UsuarioAutenticacaoDTO usuario = repository.findByLogin(login);
+/*
+        07/08/2026 - Se der problema na senha
+        System.out.println(usuario);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hash = encoder.encode("admin");
+        System.out.println(hash);
+*/
         if (usuario != null && encoder.matches(senha, usuario.senha())) {
             UsuarioLoginDTO dto = new UsuarioLoginDTO(
                     usuario.idusuario(),

@@ -6,7 +6,6 @@
     <title>TaskController 1.0</title>
 
     <style>
-        /* Reset básico */
         * {
             margin: 0;
             padding: 0;
@@ -18,20 +17,22 @@
             background-color: #f4f6f9;
         }
 
-        /* Estilização da Barra de Menu Principal */
+        /* ============================================================
+           BARRA PRINCIPAL
+           ============================================================ */
+
         .navbar {
-            background-color: #1e293b; /* Azul escuro idêntico ao nosso padrão */
+            background-color: #1e293b;
             padding: 0 20px;
         }
 
         .menu-principal {
             list-style: none;
-            display: flex; /* Alinha os itens principais lado a lado */
+            display: flex;
         }
 
-        /* Estilo dos itens principais do menu */
         .item-menu {
-            position: relative; /* CRUCIAL: Mantém o menu suspenso alinhado logo abaixo deste item */
+            position: relative;
         }
 
         .item-menu > a {
@@ -44,28 +45,30 @@
             transition: background 0.2s;
         }
 
-        /* Efeito de passar o mouse no item principal */
         .item-menu:hover > a {
             background-color: #334155;
         }
 
-        /* ==========================================================================
-           O SEGREDO DO MENU SUSPENSO (DROPDOWN)
-           ========================================================================== */
+        /* ============================================================
+           MENU SUSPENSO
+           ============================================================ */
+
         .menu-suspenso {
             list-style: none;
-            position: absolute; /* Faz o menu flutuar sobre o resto da página */
-            top: 100%;          /* Posiciona exatamente abaixo do botão pai */
+            position: absolute;
+            top: 100%;
             left: 0;
+
             background-color: #ffffff;
-            min-width: 200px;
+            min-width: 220px;
+
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
             border-radius: 0 0 8px 8px;
             overflow: hidden;
 
-            /* Esconde o menu por padrão */
             display: none;
-            z-index: 1000; /* Garante que ele vai ficar por cima de tabelas e inputs */
+            z-index: 1000;
         }
 
         .menu-suspenso li a {
@@ -77,82 +80,264 @@
             transition: background 0.2s;
         }
 
-        /* Efeito de passar o mouse nos sub-itens */
         .menu-suspenso li a:hover {
             background-color: #f1f5f9;
-            color: #2563eb; /* Destaca com o azul padrão do sistema */
+            color: #2563eb;
         }
 
-        /* 🌟 O PULO DO GATO: Quando passar o mouse no item pai, exibe o menu suspenso */
         .item-menu:hover .menu-suspenso {
             display: block;
         }
 
-        /* Indicador de que existe um sub-menu (Seta para baixo) */
         .com-filho > a::after {
             content: ' ▼';
             font-size: 10px;
             color: #94a3b8;
         }
-        .topo-sistema{
-            text-align:center;
-            padding:20px;
-            border-bottom:1px solid #e2e8f0;
-            margin-bottom:30px;
+
+        /* ============================================================
+           TOPO DO SISTEMA
+           ============================================================ */
+
+        .topo-sistema {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 30px;
         }
-        .logo-principal{
-            max-width:864px;
+
+        .logo-principal {
+            max-width: 864px;
             max-height: 768px;
-            height:auto;
+            height: auto;
         }
     </style>
 </head>
+
 <body>
+
 <nav class="navbar">
+
     <ul class="menu-principal">
-        <li class="item-menu"><a href="index.html">Home</a></li>
 
-        <li class="item-menu com-filho">
-            <a href="#">Cadastros</a>
-            <ul class="menu-suspenso">
-                <li><a href="usuario.html">👤 Usuários</a></li>
-                <li><a href="equipe.html">👤 Equipes</a></li>
-                <li><a href="empreendimento.html">🎯 Empreendimento</a></li>
-                <li><a href="epico.html">🎯 Épicos</a></li>
-                <li><a href="sprint.html">🎯 Sprints</a></li>
-            </ul>
+        <!-- ========================================================
+             HOME
+             ======================================================== -->
+
+        <li class="item-menu">
+            <a href="index.html">🏠 Home</a>
         </li>
 
-        <li class="item-menu com-filho">
-            <a href="#">Movimentações</a>
-            <ul class="menu-suspenso">
-                <li><a href="sprintatual.html">🎯 Sprint atual</a></li>
-                <li><a href="backlog.html">🎯 Backlog</a></li>
-                <li><a href="#">⏱️ Apontar Horas</a></li>
-                <li><a href="#">📊 Relatórios</a></li>
-            </ul>
-        </li>
+
+        <!-- ========================================================
+             PLANEJAMENTO
+             ======================================================== -->
 
         <li class="item-menu com-filho">
-            <a href="#">Configurações</a>
+
+            <a href="#">📋 Planejamento</a>
+
             <ul class="menu-suspenso">
-                <li><a href="configuracao.html">📊 Configuração</a></li>
+
+                <li>
+                    <a href="roadmap.html">
+                        🗺️ Roadmap
+                    </a>
+                </li>
+
+                <li>
+                    <a href="backlog.html">
+                        📋 Backlog
+                    </a>
+                </li>
+
+                <li>
+                    <a href="sprint.html">
+                        🔄 Sprints
+                    </a>
+                </li>
+
             </ul>
+
         </li>
-        <li class="item-menu"><a href="index.html">Sair</a></li>
+
+
+        <!-- ========================================================
+             PRODUTO
+             ======================================================== -->
+
+        <li class="item-menu com-filho">
+
+            <a href="#">📖 Produto</a>
+
+            <ul class="menu-suspenso">
+
+                <li>
+                    <a href="epico.html">
+                        🎯 Épicos
+                    </a>
+                </li>
+
+                <li>
+                    <a href="estoria.html">
+                        📖 Estórias
+                    </a>
+                </li>
+
+                <li>
+                    <a href="tarefa.html">
+                        ✅ Tarefas
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
+
+
+        <!-- ========================================================
+             EXECUÇÃO
+             ======================================================== -->
+
+        <li class="item-menu com-filho">
+
+            <a href="#">🔄 Execução</a>
+
+            <ul class="menu-suspenso">
+
+                <li>
+                    <a href="sprintatual.html">
+                        🎯 Sprint Atual
+                    </a>
+                </li>
+
+                <li>
+                    <a href="kanban.html">
+                        📌 Kanban
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        ⏱️ Apontar Horas
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
+
+
+        <!-- ========================================================
+             RELATÓRIOS
+             ======================================================== -->
+
+        <li class="item-menu com-filho">
+
+            <a href="#">📊 Relatórios</a>
+
+            <ul class="menu-suspenso">
+
+                <li>
+                    <a href="#">
+                        📊 Sprints
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        📖 Estórias
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        ✅ Tarefas
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        👥 Desempenho
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
+
+
+        <!-- ========================================================
+             ADMINISTRAÇÃO
+             ======================================================== -->
+
+        <li class="item-menu com-filho">
+
+            <a href="#">⚙️ Administração</a>
+
+            <ul class="menu-suspenso">
+
+                <li>
+                    <a href="empreendimento.html">
+                        🎯 Empreendimentos
+                    </a>
+                </li>
+
+                <li>
+                    <a href="usuario.html">
+                        👤 Usuários
+                    </a>
+                </li>
+
+                <li>
+                    <a href="equipe.html">
+                        👥 Equipes
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        🔄 Status
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        🎨 Prioridades
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        🏖️ Tipos de Ausência
+                    </a>
+                </li>
+
+                <li>
+                    <a href="configuracao.html">
+                        ⚙️ Configurações
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
+
+
+        <!-- ========================================================
+             SAIR
+             ======================================================== -->
+
+        <li class="item-menu">
+            <a href="index.html">🚪 Sair</a>
+        </li>
+
     </ul>
+
 </nav>
-
-<div style="padding: 40px;">
-    <h2>Conteúdo da Página</h2>
-    <p>Passe o mouse sobre os menus <b>Cadastros</b> ou <b>Movimentações</b> ali no topo para ver o efeito suspenso acontecer.</p>
-</div>
 <div class="topo-sistema">
-    <img src="imagens/logo_taskmanager.jpg"
-         alt="TaskController"
-         class="logo-principal">
+    <img src="imagens/logo_taskmanager.jpg" alt="TaskController" class="logo-principal">
 </div>
-
-
+<div style="padding: 40px;"> <h2>TaskController 1.0</h2> <p> Sistema de gerenciamento ágil de produtos, sprints, estórias e tarefas. </p> </div>
 </body>
 </html>

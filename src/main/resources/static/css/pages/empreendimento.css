@@ -167,9 +167,7 @@ h1 {
 .btn-group .btn:nth-child(4):hover { background-color: #cbd5e1; }
 
 .btn:active { transform: scale(0.98); }
-    /* ==========================================================================
-       COMPONENTE DE MEMBROS (LISTAS ESPELHADAS)
-       ========================================================================== */
+
     .membros-container {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
