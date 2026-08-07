@@ -565,7 +565,7 @@
                               ${emp.idempreendimento}</td>
                                 <td>${emp.descempreendimento}</td>
                                 <td>${emp.descstatus}</td>
-                                <td>${emp.descprioridade}</td>
+                                <td> <span class="badge" style="background-color:${emp.corprioridade}; color:white;">${emp.descprioridade}</span></td>
                                 <td>${formatarData(emp.data_inicio)}</td>
                                 <td>${formatarData(emp.data_fim)}</td>
                                 <td> <button type="button" class="btn" onclick="excluirEmpreendimento(${emp.idempreendimento})">Excluir</button></td>
@@ -578,7 +578,7 @@
     }
     async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API_EMPREENDIMENTO}/${id}`);
+            const response = await fetch(`${API_EMPREENDIMENTO}/DTO/${id}`);
             const Empreendimento = await response.json();
             if(!response.ok) {
                 mostrarMensagemNaTela(Empreendimento.mensagem,"error");
@@ -590,8 +590,8 @@
                 // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                 document.getElementById('bloqueado').checked = Empreendimento.bloqueado || 0;
                 // CARREGANDO OS COMBOS
-                document.getElementById('comboStatus').value = Empreendimento.status.idstatus || 0;
-                document.getElementById('comboPrioridade').value = Empreendimento.prioridade.idprioridade || 0;
+                document.getElementById('comboStatus').value = Empreendimento.idstatus || 0;
+                document.getElementById('comboPrioridade').value = Empreendimento.idprioridade || 0;
                 document.getElementById('comboGestor').value = Empreendimento.idgestor || 0;
                 document.getElementById('data_inicio').value = Empreendimento.data_inicio;
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
@@ -614,7 +614,7 @@
                 document.getElementById("permitir_multiplas_sprint_ativas").checked = Empreendimento.permitir_multiplas_sprint_ativas;
                 document.getElementById("considerar_feriados").checked = Empreendimento.considerar_feriados;
                 document.getElementById("considerar_valorhoras").checked = Empreendimento.considerar_valorhoras;
-                statusAtual = Empreendimento.status.idstatus;
+                statusAtual = Empreendimento.idstatus;
                 await carregarStatus(statusAtual);
             }
         } catch (error) {

@@ -10,26 +10,37 @@ import java.util.List;
 
 public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, Long> {
     @Query("""
-      SELECT new br.com.taskcontroller.Record.EmpreendimentoDTO(
+    SELECT new br.com.taskcontroller.Record.EmpreendimentoDTO(
         ee.idempreendimento,
         ee.descempreendimento,
-        ee.siglaempreendimento,
-        ee.codempreendimento,
-        ee.data_cadastro,
         ee.data_inicio,
         ee.data_fim,
+        ee.data_cadastro,
+        ee.siglaempreendimento,
+        ee.ativo,
+        ee.status.idstatus,
+        ee.status.descstatus,
+        p.idprioridade,
+        p.descprioridade,
+        p.corprioridade,
+        ee.cor,
+        ee.percentual,
         u.idusuario,
         u.nome,
-        ee.cor,
-        ee.percentual
+        ee.duracao_min_sprint,
+        ee.duracao_max_sprint,
+        ee.permitir_sprint_sobreposta,
+        ee.permitir_multiplas_sprint_ativas,
+        ee.horas_trabalho_dia,
+        ee.considerar_feriados
         )
-        FROM Empreendimento ee
-         JOIN Prioridades p on p.idprioridade = ee.prioridade.idprioridade
-         JOIN StatusEntidades s on s.idstatus = ee.status.idstatus
-         JOIN Usuario u on u.idusuario = ee.idgestor.idusuario
-        WHERE ee.ativo = 1
-     ORDER BY ee.prioridade.idprioridade desc
-     """)
+    FROM Empreendimento ee
+    JOIN StatusEntidades se on ee.status.idstatus = se.idstatus
+    JOIN Prioridades p on ee.prioridade.idprioridade = p.idprioridade
+    JOIN Usuario u on ee.gestor.idusuario = u.idusuario
+    WHERE ee.ativo = 1
+    ORDER BY ee.prioridade.idprioridade DESC
+""")
     List<EmpreendimentoDTO> findByAtivoTrue();
 
     @Query("""
@@ -42,4 +53,38 @@ public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, 
     ORDER BY e.prioridade.idprioridade
 """)
     List<EmpreendimentoComboDTO> montaComboEmpreendimento();
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.EmpreendimentoDTO(
+        ee.idempreendimento,
+        ee.descempreendimento,
+        ee.data_inicio,
+        ee.data_fim,
+        ee.data_cadastro,
+        ee.siglaempreendimento,
+        ee.ativo,
+        ee.status.idstatus,
+        ee.status.descstatus,
+        p.idprioridade,
+        p.descprioridade,
+        p.corprioridade,
+        ee.cor,
+        ee.percentual,
+        u.idusuario,
+        u.nome,
+        ee.duracao_min_sprint,
+        ee.duracao_max_sprint,
+        ee.permitir_sprint_sobreposta,
+        ee.permitir_multiplas_sprint_ativas,
+        ee.horas_trabalho_dia,
+        ee.considerar_feriados
+    )
+    FROM Empreendimento ee
+    JOIN StatusEntidades se on ee.status.idstatus = se.idstatus
+    JOIN Prioridades p on ee.prioridade.idprioridade = p.idprioridade
+    JOIN Usuario u on ee.gestor.idusuario = u.idusuario
+    WHERE ee.idempreendimento = :idempreendimento
+""")
+    EmpreendimentoDTO buscaPorIdDTO(Long idempreendimento);
+
+
 }

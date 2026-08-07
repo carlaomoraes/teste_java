@@ -6,14 +6,26 @@ import java.time.LocalDate;
 public record EmpreendimentoDTO(
         Long idempreendimento,
         String descempreendimento,
-        String siglaempreendimento,
-        String codempreendimento,
-        LocalDate data_cadastro,
         LocalDate data_inicio,
         LocalDate data_fim,
-        Long idgestor,
-        String nomegestor,
+        LocalDate data_cadastro,
+        String siglaempreendimento,
+        int ativo,
+        Long idstatus,
+        String descstatus,
+        Long idprioridade,
+        String descprioridade,
+        String corprioridade,
         String cor,
-        BigDecimal percentual
+        Long percentual,
+        Long idusuario,
+        String nomme,
+        int duracao_min_sprint,
+        int duracao_max_sprint,
+        int permitir_sprint_sobreposta,
+        int permitir_multiplas_sprint_ativas,
+        int horas_trabalho_dia,
+        int considerar_feriados
+
 ) {
 }

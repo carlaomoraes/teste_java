@@ -4,7 +4,6 @@ import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.Usuario;
-import br.com.taskcontroller.Projection.GridEmpreendimentoProjection;
 import br.com.taskcontroller.Record.EmpreendimentoDTO;
 import br.com.taskcontroller.Service.EmpreendimentoService;
 import br.com.taskcontroller.Service.UsuarioService;
@@ -24,8 +23,6 @@ public class EmpreendimentoController {
 
     @Autowired
     private UsuarioService usuarioService;
-
-
 
     //==========================
     // CRUD
@@ -51,11 +48,11 @@ public class EmpreendimentoController {
 //            return ResponseEntity.notFound().build();
 //        }
 //        empreendimento.setStatus(statusEntidades);
-        Usuario usuario = usuarioService.buscarPorId(empreendimento.getIdgestor().getIdusuario());
+        Usuario usuario = usuarioService.buscarPorId(empreendimento.getGestor().getIdusuario());
         if (usuario == null) {
             return ResponseEntity.notFound().build();
         }
-        empreendimento.setIdgestor(usuario);
+        empreendimento.setGestor(usuario);
         return ResponseEntity.ok(service.salvar(empreendimento));
     }
 
@@ -63,7 +60,7 @@ public class EmpreendimentoController {
     public ResponseEntity<Empreendimento> atualizar(
             @PathVariable Long idEmpreendimento,
             @RequestBody Empreendimento empreendimento) {
-        Usuario usuario = usuarioService.buscarPorId(empreendimento.getIdgestor().getIdusuario());
+        Usuario usuario = usuarioService.buscarPorId(empreendimento.getGestor().getIdusuario());
         Empreendimento novoEmpreendimento = service.buscarPorId(idEmpreendimento);
         if (usuario == null) {
             return ResponseEntity.notFound().build();
@@ -71,7 +68,7 @@ public class EmpreendimentoController {
         if (novoEmpreendimento == null) {
             return ResponseEntity.notFound().build();
         }
-        novoEmpreendimento.setIdgestor(usuario);
+        novoEmpreendimento.setGestor(usuario);
 //        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
 //        if (statusEntidades == null) {
 //            return ResponseEntity.notFound().build();
@@ -125,6 +122,16 @@ public class EmpreendimentoController {
             @PathVariable Long idEmpreendimento) {
 
         return service.listarEquipesDisponiveis(idEmpreendimento);
+    }
+    //==========================
+    // DTO
+    //==========================
+
+    @GetMapping("/DTO/{idEmpreendimento}")
+    public EmpreendimentoDTO buscarPorIdDTO(
+            @PathVariable Long idEmpreendimento) {
+
+        return service.buscarPorIdDTO(idEmpreendimento);
     }
 
     @GetMapping("/montaCombo")

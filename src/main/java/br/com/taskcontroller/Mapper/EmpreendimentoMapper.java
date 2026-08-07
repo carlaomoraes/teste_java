@@ -15,13 +15,16 @@ public class EmpreendimentoMapper {
         e.setSiglaempreendimento(dto.getSiglaempreendimento());
         e.setData_cadastro(dto.getData_cadastro());
         e.setStatus(dto.getStatus());
-        e.setIdgestor(dto.getIdgestor());
+        e.setGestor(dto.getGestor());
         e.setCor(dto.getCor());
         e.setPercentual(dto.getPercentual());
         e.setBloqueado(dto.isBloqueado());
         e.setCodempreendimento(dto.getCodempreendimento());
         e.setPrioridade(dto.getPrioridade());
         e.setAtivo(dto.getAtivo());
+        e.setDuracao_max_sprint(dto.getDuracao_max_sprint());
+        e.setDuracao_min_sprint(dto.getDuracao_min_sprint());
+        e.setPermitir_sprint_sobreposta(dto.getPermitir_sprint_sobreposta());
         return e;
     }
 
@@ -34,7 +37,7 @@ public class EmpreendimentoMapper {
         dto.setSiglaempreendimento(e.getSiglaempreendimento());
         dto.setData_cadastro(e.getData_cadastro());
         dto.setStatus(e.getStatus());
-        dto.setIdgestor(e.getIdgestor());
+        dto.setIdgestor(e.getGestor());
         dto.setCor(e.getCor());
         dto.setPercentual(e.getPercentual());
         dto.setBloqueado(e.isBloqueado());

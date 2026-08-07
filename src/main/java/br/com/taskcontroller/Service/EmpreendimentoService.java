@@ -36,10 +36,13 @@ public class EmpreendimentoService {
     }
 
     public Empreendimento buscarPorId(Long id) {
-        return empreendimentoRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Empreendimento não encontrado."));
+        return empreendimentoRepository.findById(id).orElse(null);
     }
+
+    public EmpreendimentoDTO buscarPorIdDTO(Long id) {
+        return empreendimentoRepository.buscaPorIdDTO(id);
+    }
+
 
     public void excluir(Long id) {
         Empreendimento empreendimento = empreendimentoRepository.findById(id)

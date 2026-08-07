@@ -16,5 +16,5 @@ public class Prioridades {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idprioridade;
     private String descprioridade;
-
+    private String corprioridade;
 }

@@ -29,7 +29,7 @@ public class Empreendimento {
     private String siglaempreendimento;
     @ManyToOne
     @JoinColumn(name = "idgestor")
-    private Usuario idgestor;
+    private Usuario gestor;
     private String cor;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idprioridade")
@@ -38,6 +38,15 @@ public class Empreendimento {
     private boolean bloqueado;
     private String codempreendimento;
     private int ativo;
+    private int duracao_min_sprint;
+    private int duracao_max_sprint;
+    private int permitir_sprint_sobreposta;
+    private int permitir_multiplas_sprint_ativas;
+    private int horas_trabalho_dia;
+
+    private int considerar_feriados;
+
+
     public Long getIdempreendimento() {
         return idempreendimento;
     }
@@ -94,12 +103,12 @@ public class Empreendimento {
         this.siglaempreendimento = siglaempreendimento;
     }
 
-    public Usuario getIdgestor() {
-        return idgestor;
+    public Usuario getGestor() {
+        return gestor;
     }
 
-    public void setIdgestor(Usuario idgestor) {
-        this.idgestor = idgestor;
+    public void setGestor(Usuario gestor) {
+        this.gestor = gestor;
     }
 
     public String getCor() {
@@ -150,5 +159,51 @@ public class Empreendimento {
         this.ativo = ativo;
     }
 
+    public int getDuracao_min_sprint() {
+        return duracao_min_sprint;
+    }
 
+    public void setDuracao_min_sprint(int duracao_min_sprint) {
+        this.duracao_min_sprint = duracao_min_sprint;
+    }
+
+    public int getDuracao_max_sprint() {
+        return duracao_max_sprint;
+    }
+
+    public void setDuracao_max_sprint(int duracao_max_sprint) {
+        this.duracao_max_sprint = duracao_max_sprint;
+    }
+
+    public int getPermitir_sprint_sobreposta() {
+        return permitir_sprint_sobreposta;
+    }
+
+    public void setPermitir_sprint_sobreposta(int permitir_sprint_sobreposta) {
+        this.permitir_sprint_sobreposta = permitir_sprint_sobreposta;
+    }
+
+    public int getPermitir_multiplas_sprint_ativas() {
+        return permitir_multiplas_sprint_ativas;
+    }
+
+    public void setPermitir_multiplas_sprint_ativas(int permitir_multiplas_sprint_ativas) {
+        this.permitir_multiplas_sprint_ativas = permitir_multiplas_sprint_ativas;
+    }
+
+    public int getConsiderar_feriados() {
+        return considerar_feriados;
+    }
+
+    public void setConsiderar_feriados(int considerar_feriados) {
+        this.considerar_feriados = considerar_feriados;
+    }
+
+    public int getHoras_trabalho_dia() {
+        return horas_trabalho_dia;
+    }
+
+    public void setHoras_trabalho_dia(int horas_trabalho_dia) {
+        this.horas_trabalho_dia = horas_trabalho_dia;
+    }
 }
