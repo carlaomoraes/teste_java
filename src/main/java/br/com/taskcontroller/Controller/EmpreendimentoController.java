@@ -39,7 +39,7 @@ public class EmpreendimentoController {
     }
 
     @GetMapping("/listar")
-    public List<GridEmpreendimentoProjection> listar() {
+    public List<EmpreendimentoDTO> listar() {
         return service.listar();
     }
 

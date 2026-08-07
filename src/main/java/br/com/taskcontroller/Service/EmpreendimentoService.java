@@ -48,7 +48,7 @@ public class EmpreendimentoService {
         empreendimentoRepository.save(empreendimento);
     }
 
-    public List<GridEmpreendimentoProjection> listar() {
+    public List<EmpreendimentoDTO> listar() {
         return empreendimentoRepository.findByAtivoTrue();
     }
 
