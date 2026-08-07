@@ -28,251 +28,32 @@
         <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Ausências programadas</button>
     </div>
     <div id="geral" class="conteudo-aba ativo">
-
-        <!-- Cabeçalho da seção -->
-        <div class="form-header">
-            <div>
-                <h2>Configuração da Sprint</h2>
-                <p>Defina o empreendimento, período e status da sprint.</p>
-            </div>
-
-            <div class="sprint-id">
-                <span>ID</span>
-                <strong id="idsprint">—</strong>
-            </div>
-        </div>
-
-        <!-- Empreendimento -->
-        <div class="form-section">
-
-            <div class="form-section-title">
-                <i class="bi bi-building"></i>
-                <span>Empreendimento</span>
-            </div>
-
-            <label class="form-label" for="comboEmpreendimento">
-                Empreendimento
-            </label>
-
-            <div class="input-group">
+        <input type="number" id="idsprint"  placeholder="ID da sprint (Deixe vazio para novo)" readonly>
+        <label for="descsprint">Descrição da sprint:</label>
+        <input type="text" id="descsprint" oninput="converterMaiusculo(this)">
+        <label class="form-label" for="comboEmpreendimento">Empreendimento:</label>
+        <div class="input-group">
             <span class="input-group-text">
                 <i class="bi bi-buildings"></i>
             </span>
-
-                <select class="form-select" id="comboEmpreendimento">
-                    <option value="">Selecione o empreendimento...</option>
-                </select>
-            </div>
-
+            <select class="form-select" id="comboEmpreendimento">
+                    <option value="">Selecione...</option>
+            </select>
         </div>
-
-
-        <!-- Identificação -->
-        <div class="form-section">
-
-            <div class="form-section-title">
-                <i class="bi bi-card-text"></i>
-                <span>Identificação</span>
-            </div>
-
-            <label class="form-label" for="descsprint">
-                Descrição da sprint
-            </label>
-
-            <input
-                    type="text"
-                    class="form-control"
-                    id="descsprint"
-                    maxlength="100"
-                    placeholder="Ex.: Sprint 01 - Desenvolvimento"
-                    oninput="converterMaiusculo(this)"
-            >
-
+        <label for="dtiniciosprint">Data de Início:</label>
+        <input type="date" id="dtiniciosprint">
+        <label for="dtfinalsprint">Data de Término:</label>
+        <input type="date" id="dtfinalsprint">
+        <label class="checkbox-group">
+            <input type="checkbox" id="visivel" value="0">Sprint vísivel no quadro
+            <input type="checkbox" id="ativa" value="1"> Sprint ativa
+        </label>
+        <div class="btn-group" data-toggle="buttons-radio">
+          <button type="button" class="btn btn-add"  onclick="criarSprint()">Novo</button>
+          <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar</button>
+          <button type="button" class="btn btn-listar" onclick="listarSprints()">Listar</button>
+          <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
-
-
-        <!-- Período -->
-        <div class="form-section">
-
-            <div class="form-section-title">
-                <i class="bi bi-calendar3"></i>
-                <span>Período</span>
-            </div>
-
-            <div class="row g-3">
-
-                <div class="col-md-6">
-
-                    <label class="form-label" for="dtiniciosprint">
-                        Data de início
-                    </label>
-
-                    <div class="input-group">
-
-                    <span class="input-group-text">
-                        <i class="bi bi-calendar-event"></i>
-                    </span>
-
-                        <input
-                                type="date"
-                                class="form-control"
-                                id="dtiniciosprint"
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <div class="col-md-6">
-
-                    <label class="form-label" for="dtfinalsprint">
-                        Data de término
-                    </label>
-
-                    <div class="input-group">
-
-                    <span class="input-group-text">
-                        <i class="bi bi-calendar-check"></i>
-                    </span>
-
-                        <input
-                                type="date"
-                                class="form-control"
-                                id="dtfinalsprint"
-                        >
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Informação da duração -->
-            <div class="sprint-info">
-
-                <i class="bi bi-info-circle"></i>
-
-                <span>
-                Duração permitida:
-                <strong id="duracaoSprintInfo">—</strong>
-                dias
-            </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- Status -->
-        <div class="form-section">
-
-            <div class="form-section-title">
-                <i class="bi bi-toggles"></i>
-                <span>Status da Sprint</span>
-            </div>
-
-
-            <div class="status-options">
-
-                <label class="status-option">
-
-                    <input
-                            type="checkbox"
-                            id="visivel"
-                    >
-
-                    <span class="status-option-content">
-
-                    <span class="status-icon">
-                        <i class="bi bi-kanban"></i>
-                    </span>
-
-                    <span>
-                        <strong>Visível no quadro</strong>
-                        <small>
-                            Permite visualizar esta sprint no quadro.
-                        </small>
-                    </span>
-
-                </span>
-
-                </label>
-
-
-                <label class="status-option">
-
-                    <input
-                            type="checkbox"
-                            id="ativa"
-                    >
-
-                    <span class="status-option-content">
-
-                    <span class="status-icon">
-                        <i class="bi bi-play-circle"></i>
-                    </span>
-
-                    <span>
-                        <strong>Sprint ativa</strong>
-                        <small>
-                            Indica que esta é uma sprint em execução.
-                        </small>
-                    </span>
-
-                </span>
-
-                </label>
-
-            </div>
-
-        </div>
-
-
-        <!-- Ações -->
-        <div class="form-actions">
-
-            <button
-                    type="button"
-                    class="btn btn-add"
-                    onclick="criarSprint()"
-            >
-                <i class="bi bi-plus-lg"></i>
-                Novo
-            </button>
-
-
-            <button
-                    type="button"
-                    class="btn btn-salvar"
-                    onclick="salvarSprint()"
-            >
-                <i class="bi bi-check-lg"></i>
-                Salvar
-            </button>
-
-
-            <button
-                    type="button"
-                    class="btn btn-listar"
-                    onclick="listarSprints()"
-            >
-                <i class="bi bi-list-ul"></i>
-                Listar
-            </button>
-
-
-            <button
-                    type="button"
-                    class="btn btn-voltar"
-                    onclick="history.back()"
-            >
-                <i class="bi bi-arrow-left"></i>
-                Voltar
-            </button>
-
-        </div>
-
     </div>
     <div id="ausencias" class="conteudo-aba">
         <div id="resultadoausencia"></div>
@@ -285,6 +66,7 @@
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
 
     let configuracaoSprint = {
         idconfiguracao: 0,
@@ -292,70 +74,61 @@
         duracao_min_sprint: 0,
         duracao_max_sprint: 0,
         horas_trabalho_dia: 0,
-        considerarFeriados: false,
+        considerar_feriados: false,
         permitir_sprint_sobreposta: false,
-        permitir_multiplas_sprint_ativas: false,
-        considerar_feriados: false
+        permitir_multiplas_sprint_ativas: false
     };
 
     function alternarAba(event, idAbaDestino) {
-        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
         const conteudos = document.querySelectorAll('.conteudo-aba');
-        conteudos.forEach(conteudo => {
-            conteudo.classList.remove('ativo');
-        });
+        conteudos.forEach(conteudo => conteudo.classList.remove('ativo'));
 
-        // 2. Pega todos os botões e remove a classe 'ativa'
         const botoes = document.querySelectorAll('.aba-botao');
-        botoes.forEach(botao => {
-            botao.classList.remove('ativa');
-        });
+        botoes.forEach(botao => botao.classList.remove('ativa'));
 
-        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
         document.getElementById(idAbaDestino).classList.add('ativo');
-
-        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
+
+        if (idAbaDestino === "ausencias") {
+            const sprint = document.getElementById("idsprint").value;
+            if (!sprint) {
+                mostrarMensagemNaTela("resultadoausencia", "Sprint não selecionada!", "error");
+            }
+        }
     }
+
     async function carregarConfiguracao() {
         const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
-        if (!idEmpreendimento) {
-            return;
-        }
+        if (!idEmpreendimento) return;
+
         try {
             const response = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}`);
             if (!response.ok) {
-               mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
-               return;
+                mostrarMensagemNaTela("resultadogeral", "Configuração não encontrada", "error");
+                return;
             }
             const data = await response.json();
-            configuracaoSprint.idempreendimento = data.idempreendimento;
             configuracaoSprint.idconfiguracao = data.idconfiguracao;
             configuracaoSprint.idempreendimento = data.idempreendimento;
-            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
-            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
-            configuracaoSprint.horas_Trabalho_Dia = data.horas_trabalho_dia;
-            configuracaoSprint.permitir_sprint_sobreposta =  data.permitir_sprint_sobreposta;
+            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint || 0;
+            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint || 0;
+            configuracaoSprint.horas_trabalho_dia = data.horas_trabalho_dia || 0;
+            configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
             configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
             configuracaoSprint.considerar_feriados = data.considerar_feriados;
+
             montaDatasSprint();
-            await listarAusencias(document.getElementById('dtiniciosprint').value, document.getElementById('dtfinalsprint').value);
         } catch (error) {
-            //mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("CONFIGURAÇÕES"), "error");
             mostrarMensagemNaTela("resultadogeral", error.message, "error");
         }
     }
+
     function montaDatasSprint() {
         const dataHoje = new Date();
-
-        // Criamos uma nova data baseada na atual para evitar alterar 'dataHoje'
         const dataFutura = new Date(dataHoje);
 
-        // Adicionamos os dias da sprint à data futura
-        // (Ajuste o fuso local ajustando com getDate() / setDate())
         dataFutura.setDate(dataHoje.getDate() + configuracaoSprint.duracao_max_sprint);
 
-        // Função auxiliar para formatar como YYYY-MM-DD respeitando o fuso local
         const formatarData = (data) => {
             const ano = data.getFullYear();
             const mes = String(data.getMonth() + 1).padStart(2, '0');
@@ -365,13 +138,17 @@
 
         document.getElementById('dtiniciosprint').value = formatarData(dataHoje);
         document.getElementById('dtfinalsprint').value = formatarData(dataFutura);
-
     }
+
     async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         try {
             const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
             const empreendimentos = await resposta.json();
+
+            // Limpa as opções anteriores mantendo a opção default
+            comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
+
             empreendimentos.forEach(e => {
                 const opcao = document.createElement('option');
                 opcao.value = e.idempreendimento;
@@ -382,63 +159,58 @@
             mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("EMPREENDIMENTO"), "error");
         }
     }
-    // Inicializa os seletores assim que o HTML carregar completamente
+
     document.addEventListener('DOMContentLoaded', () => {
         carregarEmpreendimento();
     });
+
     document.getElementById('comboEmpreendimento').addEventListener('change', (event) => {
-        const idEmpreendimento = event.target.value;
-        carregarConfiguracao(idEmpreendimento);
+        carregarConfiguracao();
     });
 
-    async function criarSprint() {
-        document.getElementById('descsprint').value = '';
-        document.getElementById('dtiniciosprint').value = '';
-        document.getElementById('dtfinalsprint').value = '';
-        document.getElementById('visivel').checked = false;
-        document.getElementById('ativa').checked = false;
-        document.getElementById('comboEmpreendimento').value = "";
+    function criarSprint() {
+        limpaFormulario();
     }
 
     async function salvarSprint() {
-        if (validaEntrada()) {
-            const descricao = document.getElementById('descsprint').value;
-            const datainicio = document.getElementById('dtiniciosprint').value;
-            const datafinal  = document.getElementById('dtfinalsprint').value;
+        const eValido = await validaEntrada();
+        if (!eValido) return;
 
-            // CAPTURANDO O CHECKBOX: Retorna true se estiver marcado, ou false se estiver desmarcado
-            const visivel = document.getElementById('visivel').checked;
-            const ativa = document.getElementById('ativa').checked;
-            const sprint = {
-                descsprint: descricao,
-                dtiniciosprint: datainicio,
-                dtfinalsprint: datafinal,
-                visivel: visivel || true, // Envia true/false para o atributo booleano do Spring
-                ativa: ativa || true,
-                empreendimento: {
-                    idEmpreendimento: configuracaoSprint.idempreendimento,
-                }
-            };
-            alert(JSON.stringify(sprint));
-            console.log(JSON.stringify(sprint));
-            try {
-                const response = await fetch(`${API}/salvar`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(sprint)
-                });
+        // Leitura correta dos campos
+        const descsprint = document.getElementById('descsprint').value;
+        const dtiniciosprint = document.getElementById('dtiniciosprint').value;
+        const dtfinalsprint = document.getElementById('dtfinalsprint').value;
+        const visivel = document.getElementById('visivel').checked;
+        const ativa = document.getElementById('ativa').checked;
 
-                if (!response.ok) throw new Error(await response.text());
-
-                const data = await response.json();
-                mostrarMensagemNaTela("resultado", MSG.salvo("SPRINT"), "success");
-                limpaFormulario();
-                listarSprints();
-            } catch (error) {
-                mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message, "error");
+        const sprint = {
+            descsprint: descsprint || null,
+            dtiniciosprint: dtiniciosprint,
+            dtfinalsprint: dtfinalsprint,
+            visivel: visivel,
+            ativa: ativa,
+            empreendimento: {
+                idEmpreendimento: configuracaoSprint.idempreendimento,
             }
+        };
+
+        try {
+            const response = await fetch(`${API}/salvar`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sprint)
+            });
+
+            if (!response.ok) throw new Error(await response.text());
+
+            mostrarMensagemNaTela("resultadogeral", MSG.salvo("SPRINT"), "success");
+            limpaFormulario();
+            listarSprints();
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message, "error");
         }
     }
+
     async function listarSprints() {
         try {
             const response = await fetch(`${API}/listar`);
@@ -486,9 +258,9 @@
             document.getElementById('resultadogeral').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
-
         }
     }
+
     async function duplicarSprint(idsprint) {
         return true;
     }
@@ -497,11 +269,11 @@
         if (!confirm("Tem certeza que deseja encerrar esta Sprint?")) return;
         try {
             const response = await fetch(`${API}/encerrar/${idsprint}`, { method: 'POST' });
-            mostrarMensagemNaTela("resultadogeral", MSG.alterado("SPRINT"), "sucess");
+            mostrarMensagemNaTela("resultadogeral", MSG.alterado("SPRINT"), "success");
             limpaFormulario();
             listarSprints();
         } catch (error) {
-            mostrarMensagemNaTela("resultadogeral",MSG.erroSalvar("SPRINT"),"error");
+            mostrarMensagemNaTela("resultadogeral", MSG.erroSalvar("SPRINT"), "error");
         }
     }
 
@@ -510,30 +282,28 @@
         document.getElementById('descsprint').value = "";
         document.getElementById('dtiniciosprint').value = "";
         document.getElementById('dtfinalsprint').value = "";
-        document.getElementById('visivel').checked = false; // Reseta o checkbox desmarcado
+        document.getElementById('visivel').checked = false;
+        document.getElementById('ativa').checked = false;
+        document.getElementById('comboEmpreendimento').value = "";
     }
 
     function formatarDataBR(dataString) {
         if (!dataString) return '';
-
-        // O input do HTML retorna "AAAA-MM-DD"
         const partes = dataString.split('-');
         if (partes.length !== 3) return dataString;
-
-        // Remonta no formato "DD/MM/AAAA"
         return `${partes[2]}/${partes[1]}/${partes[0]}`;
     }
+
     async function listarAusencias(data_inicio, data_fim) {
         const container = document.getElementById("resultadoausencia");
         try {
             const response = await fetch(`${API}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
             if (!response.ok) {
-                const msg = await response.text();
-                mostrarMensagemNaTela("resultadoausencias", MSG.erroCarregar("AUSÊNCIAS"), "error");
+                mostrarMensagemNaTela("resultadoausencia", MSG.erroCarregar("AUSÊNCIAS"), "error");
                 return;
             }
             const data = await response.json();
-            // Se não houver registros
+
             if (!data || data.length === 0) {
                 container.innerHTML = `<table class="table">
                     <thead>
@@ -551,12 +321,10 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
-            `;
+                </table>`;
                 return;
             }
 
-            // Monta tabela com dados
             let tabela = `
             <table class="table">
                 <thead>
@@ -568,71 +336,89 @@
                         <th>Observação</th>
                     </tr>
                 </thead>
-                <tbody>
-        `;
+                <tbody>`;
 
             data.forEach(a => {
                 tabela += `
                 <tr style="cursor:pointer;">
-                    <td>${a.idusuario.nome}</td>
+                    <td>${a.idusuario?.nome || 'N/A'}</td>
                     <td>${formatarDataBR(a.data_inicio)}</td>
                     <td>${formatarDataBR(a.data_fim)}</td>
                     <td>${a.tipoausencia?.desc_tipo_ausencia ?? ''}</td>
                     <td>${a.observacao ?? ''}</td>
-                </tr>
-            `;
+                </tr>`;
             });
 
-            tabela += `
-                </tbody>
-            </table>
-        `;
+            tabela += `</tbody></table>`;
             container.innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultadoausencias", MSG.erroCarregar("AUSÊNCIAS"), "error");
+            mostrarMensagemNaTela("resultadoausencia", MSG.erroCarregar("AUSÊNCIAS"), "error");
         }
     }
-    function validaEntrada() {
-        return validarDuracaoSprint() && validaParametros();
+
+    async function validaEntrada() {
+        if (!validarDuracaoSprint()) {
+            return false;
+        }
+        const parametrosValidos = await validaParametros();
+        if (!parametrosValidos) {
+            return false;
+        }
+        return true;
     }
+
     function validarDuracaoSprint() {
-        const inicio = new Date(document.getElementById("dtiniciosprint").value);
-        const fim = new Date(document.getElementById("dtfinalsprint").value);
-        if (!inicio || !fim) {
-            return true;
+        const dtInicio = document.getElementById("dtiniciosprint").value;
+        const dtFim = document.getElementById("dtfinalsprint").value;
+
+        if (!dtInicio || !dtFim) {
+            mostrarMensagemNaTela("resultadogeral", "Informe as datas de início e término.", "warning");
+            return false;
         }
+
+        const inicio = new Date(dtInicio);
+        const fim = new Date(dtFim);
+
         const dias = Math.ceil((fim - inicio) / (1000 * 60 * 60 * 24)) + 1;
+
         if (dias < configuracaoSprint.duracao_min_sprint) {
-            mostrarMensagemNaTela("resultadogeral","A sprint deve ter no mínimo "+configuracaoSprint.duracaoMinima+" dias.", "warning");
+            mostrarMensagemNaTela("resultadogeral", `A sprint deve ter no mínimo ${configuracaoSprint.duracao_min_sprint} dias.`, "warning");
             return false;
         }
         if (dias > configuracaoSprint.duracao_max_sprint) {
-            mostrarMensagemNaTela("resultadogeral","A sprint deve ter no máximo de "+configuracaoSprint.duracaoMaxima+" dias.","warning");
+            mostrarMensagemNaTela("resultadogeral", `A sprint deve ter no máximo ${configuracaoSprint.duracao_max_sprint} dias.`, "warning");
             return false;
         }
+
+        return true;
     }
+
     async function validaParametros() {
-        const data_inicio = document.getElementById("dtiniciosprint").value
+        const data_inicio = document.getElementById("dtiniciosprint").value;
         const data_fim = document.getElementById("dtfinalsprint").value;
-        const idempreendimento = configuracaoSprint.idempreendimento;
+        const idempreendimento = document.getElementById("comboEmpreendimento").value;
+
+        if (!idempreendimento) {
+            mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
+            return false;
+        }
+
         try {
-            const url = `${API}/sprint_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}`;
-            const response = await fetch(url);
+            const response = await fetch(`${API}/verifica_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}`);
             if (!response.ok) {
                 const msg = await response.text();
-                mostrarMensagemNaTela(resultado, msg || "Erro ao buscar sprint!", "error");
+                mostrarMensagemNaTela("resultadogeral", msg || "Erro ao buscar sprint!", "error");
                 return false;
             }
-            const data = await response.json();
-            // Se não houver registros
-            if (data) {
-                if(configuracaoSprint.permitir_sprint_sobreposta) {
-                    mostrarMensagemNaTela("resultadogeral","Já existem sprints abertas nesse período", "warning");
-                    return false;
-                }
+            const existeSobreposicao = await response.json();
+
+            if (existeSobreposicao && !configuracaoSprint.permitir_sprint_sobreposta) {
+                mostrarMensagemNaTela("resultadogeral", "Já existem sprints abertas nesse período!", "warning");
+                return false;
             }
+            return true;
         } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", "Erro ao buscar sprints", "error");
+            mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao buscar sprints", "error");
             return false;
         }
     }
