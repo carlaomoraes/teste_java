@@ -28,10 +28,6 @@
         <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Ausências programadas</button>
     </div>
     <div id="geral" class="conteudo-aba ativo">
-        <input type="number" id="idsprint"  placeholder="ID da sprint (Deixe vazio para novo)" readonly>
-        <label for="descsprint">Descrição da sprint:</label>
-        <input type="text" id="descsprint" oninput="converterMaiusculo(this)">
-        <label class="form-label" for="comboEmpreendimento">Empreendimento:</label>
         <div class="input-group">
             <span class="input-group-text">
                 <i class="bi bi-buildings"></i>
@@ -40,19 +36,8 @@
                     <option value="">Selecione...</option>
             </select>
         </div>
-        <label for="dtiniciosprint">Data de Início:</label>
-        <input type="date" id="dtiniciosprint">
-        <label for="dtfinalsprint">Data de Término:</label>
-        <input type="date" id="dtfinalsprint">
-        <label class="checkbox-group">
-            <input type="checkbox" id="visivel" value="0">Sprint vísivel no quadro
-            <input type="checkbox" id="ativa" value="1"> Sprint ativa
-        </label>
         <div class="btn-group" data-toggle="buttons-radio">
-          <button type="button" class="btn btn-add"  onclick="criarSprint()">Novo</button>
-          <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar</button>
-          <button type="button" class="btn btn-listar" onclick="listarSprints()">Listar</button>
-          <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+            <button type="button" class="btn btn-add" onclick="criarSprint();">Nova</button>
         </div>
     </div>
     <div id="ausencias" class="conteudo-aba">
@@ -60,13 +45,16 @@
     </div>
 
     <div id="resultadogeral"></div>
+    <div class="btn-group" data-toggle="buttons-radio">
+        <button type="button" class="btn btn-salvar" onclick="salvarSprint();">Salvar</button>
+        <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+    </div>
 </div>
 
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
-    const API_CONFIGURACAO = 'http://localhost:8080/configuracao';
 
     let configuracaoSprint = {
         idconfiguracao: 0,
@@ -102,7 +90,7 @@
         if (!idEmpreendimento) return;
 
         try {
-            const response = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}`);
+            const response = await fetch(`${API_EMPREENDIMENTO}/DTO/${idEmpreendimento}`);
             if (!response.ok) {
                 mostrarMensagemNaTela("resultadogeral", "Configuração não encontrada", "error");
                 return;
@@ -116,8 +104,6 @@
             configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
             configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
             configuracaoSprint.considerar_feriados = data.considerar_feriados;
-
-            montaDatasSprint();
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", error.message, "error");
         }
@@ -165,8 +151,13 @@
     });
 
     document.getElementById('comboEmpreendimento').addEventListener('change', (event) => {
+        listarSprints(document.getElementById('comboEmpreendimento').value);
         carregarConfiguracao();
+        montaDatasSprint();
+        listarAusencias(document.getElementById('dtiniciosprint').value,
+                        document.getElementById('dtfinalsprint').value);
     });
+
 
     function criarSprint() {
         limpaFormulario();
@@ -211,9 +202,9 @@
         }
     }
 
-    async function listarSprints() {
+    async function listarSprints(idEmpreendimento) {
         try {
-            const response = await fetch(`${API}/listar`);
+            const response = await fetch(`${API}/listar/${idEmpreendimento}`);
             const data = await response.json();
 
             let tabela = `
@@ -233,8 +224,8 @@
                 <tbody>`;
 
             data.forEach(sprint => {
-                tabela += `
-                    <tr>
+                tabela += `<tr onclick="buscarPorLinha(${sprint.idsprint})"
+                                style="cursor:pointer;">
                         <td>${sprint.idsprint}</td>
                         <td>${sprint.descsprint || ''}</td>
                         <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
@@ -271,7 +262,7 @@
             const response = await fetch(`${API}/encerrar/${idsprint}`, { method: 'POST' });
             mostrarMensagemNaTela("resultadogeral", MSG.alterado("SPRINT"), "success");
             limpaFormulario();
-            listarSprints();
+            listarSprints(document.getElementById('comboEmpreendimento').value);
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", MSG.erroSalvar("SPRINT"), "error");
         }
@@ -420,6 +411,21 @@
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao buscar sprints", "error");
             return false;
+        }
+    }
+    async function buscarPorLinha(id) {
+        try {
+            const response = await fetch(`${API}/DTO/${id}`);
+            const Sprint = await response.json();
+            if(!response.ok) {
+                mostrarMensagemNaTela("resultadogeral", response.statusText, "error");
+            } else {
+                listarAusencias(Sprint.dtiniciosprint, Sprint.dtiniciosprint);
+                // Limpa mensagens e monta equipe se o empreendimento mudar de aba depois
+                mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " +  Sprint.idsprint, "green");
+            }
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral","Erro ao carregar Sprint: "+error.message,"error");
         }
     }
 </script>

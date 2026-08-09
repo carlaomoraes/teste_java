@@ -2,11 +2,13 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
+import br.com.taskcontroller.Record.SprintListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
@@ -36,4 +38,18 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
                                        @Param("data_inicio") LocalDate data_inicio,
                                        @Param("data_fim") LocalDate data_fim);
 
+    @Query("""
+    select new br.com.taskcontroller.Record.SprintListagemDTO(
+            s.empreendimento.idempreendimento,
+            s.idsprint,
+            s.descsprint,
+            s.dtiniciosprint,
+            s.dtfinalsprint,
+            s.ativa,
+            s.visivel
+            )
+    from Sprint s
+   where s.empreendimento.idempreendimento = :idempreendimento
+""")
+    List<SprintListagemDTO> listar(@Param("idempreendimento") Long idempreendimento);
 }

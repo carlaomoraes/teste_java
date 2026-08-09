@@ -1,6 +1,5 @@
 package br.com.taskcontroller.Record;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record EmpreendimentoDTO(

@@ -5,6 +5,7 @@ import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
+import br.com.taskcontroller.Record.SprintListagemDTO;
 import br.com.taskcontroller.Respository.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,8 @@ public class SprintService {
     }
 
 
-    public List<Sprint> listar() {
-        return sprintRepository.findAll();
+    public List<SprintListagemDTO> listar(Long idempreendimento) {
+       return sprintRepository.listar(idempreendimento);
     }
 
     public Sprint atualizar(Sprint Sprint) {

@@ -5,6 +5,7 @@ import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
+import br.com.taskcontroller.Record.SprintListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
 import br.com.taskcontroller.Service.EmpreendimentoService;
@@ -97,9 +98,9 @@ public class SprintController {
     }
 
     // LISTAR
-    @GetMapping("/listar")
-    public List<Sprint> listar() {
-        return service.listar();
+    @GetMapping("/listar/{idEmpreendimento}")
+    public List<SprintListagemDTO> listar(@PathVariable Long idEmpreendimento) {
+        return service.listar(idEmpreendimento);
     }
 
     // EXCLUIR

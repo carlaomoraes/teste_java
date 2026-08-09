@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajuste cadastro Empreendimento (DTO)">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de sprint">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/SprintListagemDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EmpreendimentoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EmpreendimentoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -385,14 +390,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00089" summary="Cadastro de épicos - ok&#10;Cadastro de estórias - ok &#10;Cadastro de tarefas - ok&#10;Exclusão lógica desses itens">
-      <option name="closed" value="true" />
-      <created>1783697229096</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1783697229096</updated>
     </task>
     <task id="LOCAL-00090" summary="Cadastro de épicos - ok&#10;Cadastro de estórias - ok &#10;Cadastro de tarefas - ok&#10;Exclusão lógica desses itens">
       <option name="closed" value="true" />
@@ -778,7 +775,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786136727503</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <task id="LOCAL-00138" summary="Cadastro de sprint">
+      <option name="closed" value="true" />
+      <created>1786144313219</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1786144313220</updated>
+    </task>
+    <option name="localTasksCounter" value="139" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -818,7 +823,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Configuração da barra de botões" />
     <MESSAGE value="Resolvido problema de associação equipes e empreendimento.html" />
     <MESSAGE value="Preparação para refatoração do leiaute" />
     <MESSAGE value="Ajusts nos diretorios" />
@@ -843,7 +847,8 @@
     <MESSAGE value="Ajuste no cadastro usuario/ausencias (DTO)" />
     <MESSAGE value="Ajuste no cadastro de equipes (DTO)" />
     <MESSAGE value="Ajuste cadastro Empreendimento (DTO)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajuste cadastro Empreendimento (DTO)" />
+    <MESSAGE value="Cadastro de sprint" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de sprint" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -855,7 +860,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java</url>
-          <line>109</line>
+          <line>110</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
