@@ -31,9 +31,7 @@ public class EmpreendimentoRequestDTO {
     private boolean bloqueado;
     private String codempreendimento;
     private int ativo;
-    private Integer duracao_min_sprint;
-
-    private Integer duracao_max_sprint;
+    private Integer duracao_sprint;
 
     private int permitir_sprint_sobreposta = 0;
 
@@ -157,22 +155,6 @@ public class EmpreendimentoRequestDTO {
         this.ativo = ativo;
     }
 
-    public Integer getDuracao_min_sprint() {
-        return duracao_min_sprint;
-    }
-
-    public void setDuracao_min_sprint(Integer duracao_min_sprint) {
-        this.duracao_min_sprint = duracao_min_sprint;
-    }
-
-    public Integer getDuracao_max_sprint() {
-        return duracao_max_sprint;
-    }
-
-    public void setDuracao_max_sprint(Integer duracao_max_sprint) {
-        this.duracao_max_sprint = duracao_max_sprint;
-    }
-
     public int getPermitir_sprint_sobreposta() {
         return permitir_sprint_sobreposta;
     }
@@ -211,5 +193,13 @@ public class EmpreendimentoRequestDTO {
 
     public void setConsiderar_valorhoras(int considerar_valorhoras) {
         this.considerar_valorhoras = considerar_valorhoras;
+    }
+
+    public Integer getDuracao_sprint() {
+        return duracao_sprint;
+    }
+
+    public void setDuracao_sprint(Integer duracao_sprint) {
+        this.duracao_sprint = duracao_sprint;
     }
 }

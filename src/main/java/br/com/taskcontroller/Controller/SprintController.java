@@ -2,9 +2,10 @@ package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
-import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
+import br.com.taskcontroller.Record.AusenciaListagemDTO;
+import br.com.taskcontroller.Record.SprintDataDTO;
 import br.com.taskcontroller.Record.SprintListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/sprints")
@@ -98,7 +99,7 @@ public class SprintController {
     }
 
     // LISTAR
-    @GetMapping("/listar/{idEmpreendimento}")
+    @GetMapping("/listar/DTO/{idEmpreendimento}")
     public List<SprintListagemDTO> listar(@PathVariable Long idEmpreendimento) {
         return service.listar(idEmpreendimento);
     }
@@ -118,8 +119,8 @@ public class SprintController {
     }
     // LISTAR AUSENCIA
     @GetMapping("/listar_ausencias")
-    public List<AusenciaProgramada> listarAusencias(@RequestParam("data_inicio") LocalDate data_inicio,
-                                                    @RequestParam("data_fim") LocalDate data_fim) {
+    public List<AusenciaListagemDTO> listarAusencias(@RequestParam("data_inicio") LocalDate data_inicio,
+                                                     @RequestParam("data_fim") LocalDate data_fim) {
         return ausenciaProgramadaRepository.buscarAusenciasDaSprint(data_inicio, data_fim);
     }
     // VEJA SPRINT SOBREPOSTA
@@ -131,6 +132,12 @@ public class SprintController {
             @RequestParam(required = false) Long idsprint) {
 
         return service.existeSobreposicao(idempreendimento,idsprint,data_inicio,data_fim);
+    }
+    // CARREGAR ULTIMA SPRINT DO EMPREENDIMENTO
+    @GetMapping("/ultima/{idempreendimento}")
+    public Optional<SprintDataDTO> carregarUltima(@PathVariable Long idempreendimento) {
+        Optional<SprintDataDTO> ultimaSprint = service.carregaUltima(idempreendimento);
+        return ultimaSprint;
     }
 
     private boolean isWeekend(LocalDate date) {
@@ -148,6 +155,4 @@ public class SprintController {
 
         return ResponseEntity.ok(montaCabecalho(data_inicio,data_fim,idempreendimento));
     }
-
-
 }

@@ -137,15 +137,18 @@
         <div class="row g-3">
 
             <div class="col-md-3">
-                <label class="form-label">Duração mínima (dias)</label>
-                <input type="number" class="form-control"
-                       id="duracao_min_sprint" min="1">
-            </div>
-
-            <div class="col-md-3">
                 <label class="form-label">Duração máxima (dias)</label>
-                <input type="number" class="form-control"
-                       id="duracao_max_sprint" min="1">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-buildings"></i>
+                    </span>
+                    <select class="form-select" id="comboDuracao">
+                        <option value="7">1 semana</option>
+                        <option value="14">2 semanas</option>
+                        <option value="21">3 semanas</option>
+                        <option value="28">4 semanas</option>
+                    </select>
+                </div>
             </div>
 
             <div class="col-md-3">
@@ -211,8 +214,7 @@
     let configuracaoSprint = {
         idconfiguracao: 0,
         idempreendimento: 1,
-        duracao_min_sprint: 0,
-        duracao_max_sprint: 0,
+        duracao_sprint: 0,
         horas_trabalho_dia: 0,
         considerarFeriados: false,
         permitir_sprint_sobreposta: false,
@@ -465,74 +467,73 @@
     async function salvarEmpreendimento() {
         const hoje = new Date();
         var campoBloqueado = 0;
+        if(validaEntrada()) {
+            const idempreendimento = document.getElementById('idempreendimento').value;
+            const descempreendimento = document.getElementById('descempreendimento').value;
+            const data_inicio = document.getElementById('data_inicio').value;
+            const data_fim = document.getElementById('data_fim').value;
+            const siglaempreendimento = document.getElementById('descempreendimento').value;
+            const cor = corHexValida(document.getElementById('cor').value);
+            const codempreendimento = document.getElementById('codempreendimento').value;
+            if(document.getElementById('bloqueado').checked) {
+                campoBlooqueado = 0;
+            }
+            else {
+                campoBlooqueado = 1;
+            }
+            const duracao_sprint = document.getElementById('duracao_sprint').value;
+            const permitir_sprint_sobreposta = document.getElementById("permitir_sprint_sobreposta").checked;
+            const permitir_multiplas_sprint_ativas = document.getElementById("permitir_multiplas_sprint_ativas").checked;
+            const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
+            const considerar_Feriados = document.getElementById('considerar_feriados').checked;
+            const considerar_valorhoras = document.getElementById('considerar_valorhoras').checked;
 
-        const idempreendimento = document.getElementById('idempreendimento').value;
-        const descempreendimento = document.getElementById('descempreendimento').value;
-        const data_inicio = document.getElementById('data_inicio').value;
-        const data_fim = document.getElementById('data_fim').value;
-        const siglaempreendimento = document.getElementById('descempreendimento').value;
-        const cor = corHexValida(document.getElementById('cor').value);
-        const codempreendimento = document.getElementById('codempreendimento').value;
-        if(document.getElementById('bloqueado').checked) {
-            campoBlooqueado = 0;
-        }
-        else {
-            campoBlooqueado = 1;
-        }
-        const duracao_min_sprint = document.getElementById('duracao_min_sprint').value;
-        const duracao_max_sprint = document.getElementById('duracao_max_sprint').value;
-        const permitir_sprint_sobreposta = document.getElementById("permitir_sprint_sobreposta").checked;
-        const permitir_multiplas_sprint_ativas = document.getElementById("permitir_multiplas_sprint_ativas").checked;
-        const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;
-        const considerar_Feriados = document.getElementById('considerar_feriados').checked;
-        const considerar_valorhoras = document.getElementById('considerar_valorhoras').checked;
+            const Empreendimento = {
+                idempreendimento: Number(idempreendimento) || null,
+                descempreendimento: descempreendimento || null,
+                data_inicio: data_inicio || hoje,
+                data_fim: data_fim || hoje,
+                bloqueado: campoBloqueado,
+                siglaempreendimento: siglaempreendimento || null,
+                cor: cor || "6c757d",
+                codempreendimento: codempreendimento || null,
 
-        const Empreendimento = {
-            idempreendimento: Number(idempreendimento) || null,
-            descempreendimento: descempreendimento || null,
-            data_inicio: data_inicio || hoje,
-            data_fim: data_fim || hoje,
-            bloqueado: campoBloqueado,
-            siglaempreendimento: siglaempreendimento || null,
-            cor: cor || "6c757d",
-            codempreendimento: codempreendimento || null,
-
-            gestor: {
-                idgestor: Number(document.getElementById("comboGestor").value) || null
-            },
-
-            status: {
-                idstatus: Number(document.getElementById("comboStatus").value) || null
-            },
-            prioridade: {
-                idprioridade: Number(document.getElementById("comboPrioridade").value) || null
-            },
-
-            duracao_min_sprint: Number(duracao_min_sprint),
-            duracao_max_sprint: Number(duracao_max_sprint),
-            permitir_sprint_sobreposta: permitir_sprint_sobreposta || false,
-            permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas || false,
-            considerar_feriados: considerar_Feriados || false,
-            horas_trabalho_dia: Number(horas_Trabalho_Dia) || 8,
-            considerar_valorhoras: considerar_valorhoras || false
-        };
-        try {
-            const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+                gestor: {
+                    idgestor: Number(document.getElementById("comboGestor").value) || null
                 },
-                body: JSON.stringify(Empreendimento)
-            });
-            const data = await response.json();
-            mostrarMensagemNaTela("resultado","Empreendimento salvo com sucesso! ","success");
-            setTimeout(() => {
-                limpaFormulario();
-                listarEmpreendimentos();
-            }, 1000);
 
-        } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao salvar Empreendimento: "+error.message,"error");
+                status: {
+                    idstatus: Number(document.getElementById("comboStatus").value) || null
+                },
+                prioridade: {
+                    idprioridade: Number(document.getElementById("comboPrioridade").value) || null
+                },
+
+                duracao_sprint: Number(duracao_sprint),
+                permitir_sprint_sobreposta: permitir_sprint_sobreposta || false,
+                permitir_multiplas_sprint_ativas: permitir_multiplas_sprint_ativas || false,
+                considerar_feriados: considerar_Feriados || false,
+                horas_trabalho_dia: Number(horas_Trabalho_Dia) || 8,
+                considerar_valorhoras: considerar_valorhoras || false
+            };
+            try {
+                const response = await fetch(`${API_EMPREENDIMENTO}/salvar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(Empreendimento)
+                });
+                const data = await response.json();
+                mostrarMensagemNaTela("resultado","Empreendimento salvo com sucesso! ","success");
+                setTimeout(() => {
+                    limpaFormulario();
+                    listarEmpreendimentos();
+                }, 1000);
+
+            } catch (error) {
+                mostrarMensagemNaTela("resultado","Erro ao salvar Empreendimento: "+error.message,"error");
+            }
         }
     }
     async function listarEmpreendimentos() {
@@ -600,15 +601,13 @@
                 montaEquipes(Empreendimento.idempreendimento);
                 configuracaoSprint.idconfiguracao = Empreendimento.idconfiguracao;
                 configuracaoSprint.idempreendimento = Empreendimento.idempreendimento;
-                configuracaoSprint.duracao_min_sprint = Empreendimento.duracao_min_sprint;
-                configuracaoSprint.duracao_max_sprint = Empreendimento.duracao_max_sprint;
+                configuracaoSprint.duracao_sprint = Empreendimento.duracao_sprint;
                 configuracaoSprint.horas_trabalho_dias = Empreendimento.horas_trabalho_dias;
                 configuracaoSprint.considerar_feriados = Empreendimento.considerar_feriados;
                 configuracaoSprint.considerar_valorhoras = Empreendimento.considerar_valorhoras;
                 configuracaoSprint.permitir_sprint_sobreposta = Empreendimento.permitir_sprint_sobreposta;
                 configuracaoSprint.permitir_multiplas_sprint_ativas = Empreendimento.permitir_multiplas_sprint_ativas;
-                document.getElementById("duracao_min_sprint").value = Empreendimento.duracao_min_sprint;
-                document.getElementById("duracao_max_sprint").value = Empreendimento.duracao_max_sprint;
+                document.getElementById("comboDuracao").value = Empreendimento.duracao_sprint;
                 document.getElementById("horas_Trabalho_Dia").value = Empreendimento.horas_trabalho_dia;
                 document.getElementById("permitir_sprint_sobreposta").checked =  Empreendimento.permitir_sprint_sobreposta;
                 document.getElementById("permitir_multiplas_sprint_ativas").checked = Empreendimento.permitir_multiplas_sprint_ativas;
@@ -680,31 +679,11 @@
     `;
     }
     function validaEntrada() {
-        if((MultiploDe7(document.getElementById('duracao_min_sprint').value) &&
-           MultiploDe7(document.getElementById('duracao_max_sprint').value))) {
-            mostrarMensagemNaTela("resultadoconfiguracao","Duração mínima e duração máximo devem ser múltiplo de semana!", "error");
-            return false;
-        }
-        if(Number(document.getElementById('duracao_min_sprint').value) < 7) {
-            mostrarMensagemNaTela("resultadoconfiguracao","A sprint deve ter o mínimo de 7 dias!", "error");
-            return false;
-        }
-        if(Number(document.getElementById('duracao_max_sprint').value) > 30) {
-            mostrarMensagemNaTela("resultadoconfiguracao","A sprint deve ter o máximo de 30 dias!", "error");
-            return false;
-        }
-        if(Number(document.getElementById('duracao_min_sprint').value) >= Number(document.getElementById('duracao_max_sprint').value)) {
-            mostrarMensagemNaTela("resultadoconfiguracao","A duração mínima deve ser menor que a duração máxima!", "error");
-            return false;
-        }
         if(Number(document.getElementById('horas_Trabalho_Dia').value) > 8) {
             mostrarMensagemNaTela("resultadoconfiguracao","Horas trabalhadas não devem exceder 8 h/dia!", "error");
             return false;
         }
         return true;
-    }
-    function MultiploDe7(numero) {
-        return numero % 7 !== 0;
     }
 </script>
 </body>

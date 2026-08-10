@@ -38,8 +38,7 @@ public class Empreendimento {
     private boolean bloqueado;
     private String codempreendimento;
     private int ativo;
-    private int duracao_min_sprint;
-    private int duracao_max_sprint;
+    private int duracao_sprint;
     private int permitir_sprint_sobreposta;
     private int permitir_multiplas_sprint_ativas;
     private int horas_trabalho_dia;
@@ -159,22 +158,6 @@ public class Empreendimento {
         this.ativo = ativo;
     }
 
-    public int getDuracao_min_sprint() {
-        return duracao_min_sprint;
-    }
-
-    public void setDuracao_min_sprint(int duracao_min_sprint) {
-        this.duracao_min_sprint = duracao_min_sprint;
-    }
-
-    public int getDuracao_max_sprint() {
-        return duracao_max_sprint;
-    }
-
-    public void setDuracao_max_sprint(int duracao_max_sprint) {
-        this.duracao_max_sprint = duracao_max_sprint;
-    }
-
     public int getPermitir_sprint_sobreposta() {
         return permitir_sprint_sobreposta;
     }
@@ -205,5 +188,13 @@ public class Empreendimento {
 
     public void setHoras_trabalho_dia(int horas_trabalho_dia) {
         this.horas_trabalho_dia = horas_trabalho_dia;
+    }
+
+    public int getDuracao_sprint() {
+        return duracao_sprint;
+    }
+
+    public void setDuracao_sprint(int duracao_sprint) {
+        this.duracao_sprint = duracao_sprint;
     }
 }

@@ -1,21 +1,22 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO;
-import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Record.AusenciaListagemDTO;
+import br.com.taskcontroller.Record.SprintDataDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaProgramada, Long> {
     @Query("""
 SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
     a.idausencia,
-    u.idusuario,
+    a.usuario.idusuario,
     a.data_cadastro,
     a.data_inicio,
     a.data_fim,
@@ -24,26 +25,33 @@ SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
     a.tipoausencia.desc_tipo_ausencia
 )
 FROM AusenciaProgramada a
-JOIN a.idusuario u
-JOIN a.tipoausencia ta
-WHERE u.idusuario = :idUsuario
-ORDER BY u.nome, a.data_inicio
+JOIN Usuario u
+JOIN Tipo_Ausencia ta
+WHERE a.usuario.idusuario = :idUsuario
+ORDER BY a.data_inicio
 """)
     List<AusenciaListagemDTO> findByIdusuario_Idusuario(Long idUsuario);
 
-
     @Query("""
-    select a
-    from AusenciaProgramada a
-    join fetch a.idusuario
-    join fetch a.tipoausencia
-    where a.data_inicio <= :data_fim
-      and a.data_fim >= :data_inicio
-    order by a.idusuario.nome, a.data_inicio
+    SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
+        a.idausencia,
+        a.usuario.idusuario,
+        a.data_cadastro,
+        a.data_inicio,
+        a.data_fim,
+        a.observacao,
+        a.usuario.empreendimento.idempreendimento,
+        a.tipoausencia.desc_tipo_ausencia
+    )
+    FROM AusenciaProgramada a
+    WHERE a.data_inicio <= :data_fim
+      AND a.data_fim >= :data_inicio
+    ORDER BY a.data_inicio
 """)
-    List<AusenciaProgramada> buscarAusenciasDaSprint(
+    List<AusenciaListagemDTO> buscarAusenciasDaSprint(
             @Param("data_inicio") LocalDate data_inicio,
-            @Param("data_fim") LocalDate data_fim);
+            @Param("data_fim") LocalDate data_fim
+    );
 
     @Query("""
     SELECT new br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO(
@@ -54,4 +62,5 @@ ORDER BY u.nome, a.data_inicio
     ORDER BY a.id_tipo_ausencia
 """)
     List<AusenciaComboDTO> montaComboAusencia();
-}
+
+ }

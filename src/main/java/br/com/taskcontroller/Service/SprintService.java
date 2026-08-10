@@ -5,14 +5,18 @@ import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
+import br.com.taskcontroller.Record.SprintDataDTO;
 import br.com.taskcontroller.Record.SprintListagemDTO;
 import br.com.taskcontroller.Respository.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SprintService {
@@ -51,5 +55,40 @@ public class SprintService {
 
     public CabecalhoProjection montaCabecalho(Long idEmpreendimento,Long idSprint,LocalDate dataInicio,LocalDate dataFim) {
         return sprintRepository.montaCabecalho(idEmpreendimento,idSprint,dataInicio,dataFim);
+    }
+
+    public Optional<SprintDataDTO> carregaUltima(Long idEmpreendimento) {
+        Optional<SprintDataDTO> ultimaSprint = sprintRepository.carregaUltima(idEmpreendimento);
+        if (ultimaSprint.isEmpty()) {
+            return Optional.empty();
+        }
+        Empreendimento empreendimento = empreendimentoService.buscarPorId(idEmpreendimento);
+
+        // A nova Sprint começa no dia seguinte ao término da anterior
+        LocalDate dataInicio = ultimaSprint.get().data_fim().plusDays(1);
+
+        // Duração configurada para a Sprint
+        int duracao = empreendimento.getDuracao_sprint();
+
+        LocalDate dataFim = calcularDataFim(dataInicio, duracao);
+        return Optional.of(new SprintDataDTO(idEmpreendimento,dataInicio,dataFim, duracao));
+    }
+    private LocalDate calcularDataFim(LocalDate inicio, int duracao) {
+        LocalDate data = inicio;
+        int dias = 0;
+        while (dias < duracao) {
+            if (!ehFimDeSemana(data)) {
+                dias++;
+            }
+            if (dias < duracao) {
+                data = data.plusDays(1);
+            }
+        }
+        return data;
+    }
+
+    private boolean ehFimDeSemana(LocalDate data) {
+        DayOfWeek dia = data.getDayOfWeek();
+        return dia == DayOfWeek.SATURDAY || dia == DayOfWeek.SUNDAY;
     }
 }

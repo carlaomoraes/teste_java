@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class AusenciaProgramadaRequestDTO {
     private Long idausencia;
-    private Usuario idusuario;
+    private Usuario usuario;
     private LocalDate data_inicio;
     private LocalDate data_fim;
     private String observacao;
@@ -23,12 +23,12 @@ public class AusenciaProgramadaRequestDTO {
         this.idausencia = idausencia;
     }
 
-    public Usuario getIdusuario() {
-        return idusuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdusuario(Usuario idusuario) {
-        this.idusuario = idusuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public LocalDate getData_inicio() {

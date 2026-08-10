@@ -17,7 +17,7 @@ public class AusenciaProgramada {
     private Long idausencia;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idusuario")
-    private Usuario idusuario;
+    private Usuario usuario;
     @Column(name = "data_inicio") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
     private LocalDate data_inicio;
     @Column(name = "data_fim") // Mapeia para o nome físico do banco caso esteja com o erro de digitação
@@ -43,12 +43,12 @@ public class AusenciaProgramada {
         this.idausencia = idausencia;
     }
 
-    public Usuario getIdusuario() {
-        return idusuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdusuario(Usuario idusuario) {
-        this.idusuario = idusuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public LocalDate getData_inicio() {

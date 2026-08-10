@@ -136,6 +136,7 @@ public class EmpreendimentoController {
 
     @GetMapping("/montaCombo")
     public List<EmpreendimentoComboDTO> montaComboEmpreendimento() {
+
         return service.montaComboEmpreendimento();
     }
 }

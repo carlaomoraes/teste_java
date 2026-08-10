@@ -14,7 +14,7 @@ public interface AusenciaProgramadaUsuarioRepository
         select a
         from AusenciaProgramada a
         join fetch a.tipoausencia
-        where a.idusuario.idusuario = :idusuario
+        where a.usuario.idusuario = :idusuario
         """)
     List<AusenciaProgramada> buscarPorUsuario(
             @Param("idusuario") Long idusuario);

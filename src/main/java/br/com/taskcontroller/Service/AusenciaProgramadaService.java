@@ -27,7 +27,7 @@ public class AusenciaProgramadaService {
     public AusenciaProgramada atualizar(Long id, AusenciaProgramada novaAusenciaProgramada) {
         AusenciaProgramada ausenciaProgramada = buscarPorId(id);
         ausenciaProgramada.setIdausencia(novaAusenciaProgramada.getIdausencia());
-        ausenciaProgramada.setIdusuario(novaAusenciaProgramada.getIdusuario());
+        ausenciaProgramada.setUsuario(novaAusenciaProgramada.getUsuario());
         ausenciaProgramada.setData_inicio(novaAusenciaProgramada.getData_inicio());
         ausenciaProgramada.setData_fim(novaAusenciaProgramada.getData_fim());
         ausenciaProgramada.setObservacao(novaAusenciaProgramada.getObservacao());

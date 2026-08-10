@@ -9,7 +9,7 @@ public class AusenciaProgramadaMapper {
     public static AusenciaProgramada toEntity(AusenciaProgramadaRequestDTO dto) {
         AusenciaProgramada a = new AusenciaProgramada();
         a.setIdausencia(dto.getIdausencia());
-        a.setIdusuario(dto.getIdusuario());
+        a.setUsuario(dto.getUsuario());
         a.setData_inicio(dto.getData_inicio());
         a.setData_fim(dto.getData_fim());
         a.setObservacao(dto.getObservacao());
@@ -22,7 +22,7 @@ public class AusenciaProgramadaMapper {
     public static AusenciaProgramadaResponseDTO toDTO(AusenciaProgramada a) {
         AusenciaProgramadaResponseDTO dto = new AusenciaProgramadaResponseDTO();
         dto.setIdausencia(a.getIdausencia());
-        dto.setIdusuario(a.getIdusuario());
+        dto.setIdusuario(a.getUsuario());
         dto.setData_inicio(a.getData_inicio());
         dto.setData_fim(a.getData_fim());
         dto.setObservacao(a.getObservacao());

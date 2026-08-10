@@ -22,8 +22,7 @@ public class EmpreendimentoMapper {
         e.setCodempreendimento(dto.getCodempreendimento());
         e.setPrioridade(dto.getPrioridade());
         e.setAtivo(dto.getAtivo());
-        e.setDuracao_max_sprint(dto.getDuracao_max_sprint());
-        e.setDuracao_min_sprint(dto.getDuracao_min_sprint());
+        e.setDuracao_sprint(dto.getDuracao_sprint());
         e.setPermitir_sprint_sobreposta(dto.getPermitir_sprint_sobreposta());
         return e;
     }

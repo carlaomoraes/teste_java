@@ -2,6 +2,7 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
+import br.com.taskcontroller.Record.SprintDataDTO;
 import br.com.taskcontroller.Record.SprintListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
@@ -52,4 +54,22 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
    where s.empreendimento.idempreendimento = :idempreendimento
 """)
     List<SprintListagemDTO> listar(@Param("idempreendimento") Long idempreendimento);
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.SprintDataDTO(
+        s.empreendimento.idempreendimento,
+        s.dtiniciosprint,
+        s.dtfinalsprint,
+        0
+    )
+    FROM Sprint s
+    WHERE s.empreendimento.idempreendimento = :idEmpreendimento
+      AND s.dtfinalsprint = (
+          SELECT MAX(s2.dtfinalsprint)
+          FROM Sprint s2
+          WHERE s2.empreendimento.idempreendimento = :idEmpreendimento
+      )
+""")
+    Optional<SprintDataDTO> carregaUltima(@Param("idEmpreendimento") Long idEmpreendimento);
+
 }
