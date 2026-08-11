@@ -64,9 +64,6 @@
             <option value="">-- Selecione um tipo de ausência --</option>
         </select>
         <label for="observacao">Observação:</label> <input type="text" id="observacao">
-        <label class="checkbox-group">
-            <input type="checkbox" id="status" value="0">Ativa ?
-        </label>
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn"  onclick="salvarAusencias(sessionStorage.getItem('idusuario'));">Salvar</button>
             <button type="button" class="btn" onclick="cancelarAusencia(sessionStorage.getItem('idusuario'));">Cancelar</button>
@@ -211,8 +208,8 @@
                 listarUsuarios();
             }, 1000);
         } catch (error) {
-            //mostrarMensagemNaTela("resultado", MSG.erroSalvar("USUÁRIO"), "error");
-            mostrarMensagemNaTela("resultado", error.message,  "error");
+            mostrarMensagemNaTela("resultado", MSG.erroSalvar("USUÁRIO"), "error");
+            //mostrarMensagemNaTela("resultado", error.message,  "error");
         }
     }
     async function limparFormulario() {
@@ -296,25 +293,19 @@
             mostrarMensagemNaTela("resultado", MSG.erroExcluir("USUÁRIO"), "error");
         }
     }
-    async function salvarAusencias(idUsuario) {
+    async function salvarAusencias() {
         const dataAtual = new Date();
         if(await validaEntrada(2)) {
-            const idtipoausencia = parseInt(document.getElementById("combotipo").value);
+            const id_tipo_ausencia = parseInt(document.getElementById("combotipo").value);
             const datainicial = document.getElementById('datainicial').value;
             const datafinal = document.getElementById('datafinal').value;
             const observacao = document.getElementById('observacao').value;
-            const status = document.getElementById('status').checked;
             const ausencias = {
                 data_inicio: datainicial || dataAtual.toISOString().split("T")[0],
                 data_fim: datafinal || dataAtual.toISOString().split("T")[0],
                 observacao: observacao || "N/A",
-                status: status || "",
-                idusuario: {
-                    idusuario: idUsuario,
-                },
-                tipoausencia: {
-                    id_tipo_ausencia: idtipoausencia,
-                },
+                idusuario: parseInt(document.getElementById('idusuario').value),
+                id_tipo_ausencia: id_tipo_ausencia
             };
             try {
                 const response = await fetch(`${API_AUSENCIAS}/salvar`, {
@@ -327,10 +318,11 @@
                 const data = await response.json();
                 mostrarMensagemNaTela("resultadoausencia", MSG.salvo("AUSÊNCIA"), "success");
                 setTimeout(() => {
-                    listarAusencias(idUsuario);
+                    listarAusencias(document.getElementById('idusuario').value);
                 }, 1000);
             } catch (error) {
-                mostrarMensagemNaTela("resultadoausencia", MSG.erroSalvar("AUSÊNCIA"), "error");
+                //mostrarMensagemNaTela("resultadoausencia", MSG.erroSalvar("AUSÊNCIA"), "error");
+                mostrarMensagemNaTela("resultadoausencia", error.value, "error");
             }
         }
     }
@@ -422,7 +414,6 @@
         document.getElementById('datainicial').value = "";
         document.getElementById('datafinal').value = "";
         document.getElementById('observacao').value = "";
-        document.getElementById('status').checked = true;
         listarAusencias();
     }
     async function validaEntrada(aba) {
@@ -446,8 +437,7 @@
                 const invalido =
                     document.getElementById('combotipo').value === "" ||
                     document.getElementById('datainicial').value === "" ||
-                    document.getElementById('datafinal').value === "" ||
-                    !document.getElementById('status').checked;
+                    document.getElementById('datafinal').value === "";
                 if (invalido) {
                     mostrarMensagemNaTela("resultado","Todos os campos devem estar preenchidos", "warning");
                     return false;

@@ -7,13 +7,13 @@ import java.time.LocalDate;
 
 public class AusenciaProgramadaResponseDTO {
     private Long idausencia;
-    private Usuario idusuario;
+    private Long idusuario;
     private LocalDate data_inicio;
     private LocalDate data_fim;
     private String observacao;
     private String status;
     private LocalDate data_cadastro;
-    private Tipo_Ausencia tipoausencia;
+    private Tipo_Ausencia tipo_ausencia;
 
     public Long getIdausencia() {
         return idausencia;
@@ -23,11 +23,11 @@ public class AusenciaProgramadaResponseDTO {
         this.idausencia = idausencia;
     }
 
-    public Usuario getIdusuario() {
+    public Long getIdusuario() {
         return idusuario;
     }
 
-    public void setIdusuario(Usuario idusuario) {
+    public void setIdusuario(Long idusuario) {
         this.idusuario = idusuario;
     }
 
@@ -71,11 +71,11 @@ public class AusenciaProgramadaResponseDTO {
         this.data_cadastro = data_cadastro;
     }
 
-    public Tipo_Ausencia getTipoausencia() {
-        return tipoausencia;
+    public Tipo_Ausencia getTipo_ausencia() {
+        return tipo_ausencia;
     }
 
-    public void setTipoausencia(Tipo_Ausencia tipoausencia) {
-        this.tipoausencia = tipoausencia;
+    public void setTipo_ausencia(Tipo_Ausencia tipo_ausencia) {
+        this.tipo_ausencia = tipo_ausencia;
     }
 }

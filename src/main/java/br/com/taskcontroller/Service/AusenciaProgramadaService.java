@@ -2,7 +2,7 @@ package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
-import br.com.taskcontroller.Record.AusenciaListagemDTO;
+import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

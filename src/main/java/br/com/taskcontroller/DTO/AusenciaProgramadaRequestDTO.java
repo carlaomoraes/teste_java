@@ -1,19 +1,16 @@
 package br.com.taskcontroller.DTO;
 
-import br.com.taskcontroller.Modelo.Tipo_Ausencia;
-import br.com.taskcontroller.Modelo.Usuario;
-
 import java.time.LocalDate;
 
 public class AusenciaProgramadaRequestDTO {
     private Long idausencia;
-    private Usuario usuario;
+    private Long idusuario;
     private LocalDate data_inicio;
     private LocalDate data_fim;
     private String observacao;
     private String status;
     private LocalDate data_cadastro;
-    private Tipo_Ausencia tipoausencia;
+    private Long id_tipo_ausencia;
 
     public Long getIdausencia() {
         return idausencia;
@@ -23,12 +20,12 @@ public class AusenciaProgramadaRequestDTO {
         this.idausencia = idausencia;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Long getIdusuario() {
+        return idusuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdusuario(Long idusuario) {
+        this.idusuario = idusuario;
     }
 
     public LocalDate getData_inicio() {
@@ -71,11 +68,11 @@ public class AusenciaProgramadaRequestDTO {
         this.data_cadastro = data_cadastro;
     }
 
-    public Tipo_Ausencia getTipoausencia() {
-        return tipoausencia;
+    public Long getId_tipo_ausencia() {
+        return id_tipo_ausencia;
     }
 
-    public void setTipoausencia(Tipo_Ausencia tipoausencia) {
-        this.tipoausencia = tipoausencia;
+    public void setId_tipo_ausencia(Long id_tipo_ausencia) {
+        this.id_tipo_ausencia = id_tipo_ausencia;
     }
 }

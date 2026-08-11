@@ -4,7 +4,7 @@ import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
-import br.com.taskcontroller.Record.AusenciaListagemDTO;
+import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.SprintDataDTO;
 import br.com.taskcontroller.Record.SprintListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;

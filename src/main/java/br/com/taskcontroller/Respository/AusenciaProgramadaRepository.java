@@ -2,38 +2,35 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
-import br.com.taskcontroller.Record.AusenciaListagemDTO;
-import br.com.taskcontroller.Record.SprintDataDTO;
+import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaProgramada, Long> {
     @Query("""
-SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
-    a.idausencia,
-    a.usuario.idusuario,
-    a.data_cadastro,
-    a.data_inicio,
-    a.data_fim,
-    a.observacao,
-    u.empreendimento.idempreendimento,
-    a.tipoausencia.desc_tipo_ausencia
-)
-FROM AusenciaProgramada a
-JOIN Usuario u
-JOIN Tipo_Ausencia ta
-WHERE a.usuario.idusuario = :idUsuario
-ORDER BY a.data_inicio
+    SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
+        a.idausencia,
+        a.usuario.idusuario,
+        a.data_cadastro,
+        a.data_inicio,
+        a.data_fim,
+        a.observacao,
+        a.usuario.empreendimento.idempreendimento,
+        ta.desc_tipo_ausencia
+    )
+    FROM AusenciaProgramada a
+    JOIN a.tipoausencia ta
+    WHERE a.usuario.idusuario = :idUsuario
+    ORDER BY a.data_inicio
 """)
     List<AusenciaListagemDTO> findByIdusuario_Idusuario(Long idUsuario);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
+    SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
         a.idausencia,
         a.usuario.idusuario,
         a.data_cadastro,

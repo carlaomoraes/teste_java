@@ -1,4 +1,4 @@
-package br.com.taskcontroller.Record;
+package br.com.taskcontroller.Record.Ausencia;
 
 import java.time.LocalDate;
 
