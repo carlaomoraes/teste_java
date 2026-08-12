@@ -49,62 +49,11 @@ public class UsuarioController {
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody UsuarioRequestDTO  dto) {
         Usuario usuario = UsuarioMapper.toEntity(dto);
+        // Criptografa a senha
+        String senhaCriptografada = encoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaCriptografada);
         return ResponseEntity.ok().body(service.salvar(usuario));
-
     }
-
-
-
-    // SALVAR
-    /*@PostMapping("/salvar")
-    public ResponseEntity<?> salvar(@RequestBody Usuario novoUsuario) {
-        // 1. Busca o papel do banco de dados primeiro
-        Papel papel = papelService.buscarPorId(novoUsuario.getPapel().getIdpapel());
-        if (papel == null) {
-            return ResponseEntity.badRequest().body("Erro: O papel do usuário deve ser informado.");
-        }
-        if (novoUsuario.getIdusuario() == null) {
-            // CRIAÇÃO: Cria um novo objeto Usuario gerenciado corretamente
-            Usuario usuarioParaSalvar = new Usuario();
-            usuarioParaSalvar.setNome(novoUsuario.getNome());
-            usuarioParaSalvar.setEmail(novoUsuario.getEmail());
-            usuarioParaSalvar.setLogin(novoUsuario.getLogin());
-            usuarioParaSalvar.setAlterasenha(novoUsuario.isAlterasenha());
-
-            // Criptografa a senha
-            String senhaCriptografada = encoder.encode(novoUsuario.getSenha());
-            usuarioParaSalvar.setSenha(senhaCriptografada);
-
-            // Associa o papel persistido do banco
-            usuarioParaSalvar.setPapel(papel);
-
-            return ResponseEntity.ok().body(service.salvar(usuarioParaSalvar));
-
-        } else {
-            // ATUALIZAÇÃO: Busca o usuário existente no banco
-            Usuario usuarioExistente = service.buscarPorId(novoUsuario.getIdusuario());
-
-            if (usuarioExistente == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
-            }
-
-            usuarioExistente.setNome(novoUsuario.getNome());
-            usuarioExistente.setEmail(novoUsuario.getEmail());
-            usuarioExistente.setLogin(novoUsuario.getLogin());
-            usuarioExistente.setAlterasenha(novoUsuario.isAlterasenha());
-            usuarioExistente.setPapel(papel);
-
-            // Regra para senha na atualização (Criptografa apenas se ela mudou)
-            if (novoUsuario.getSenha() != null && !novoUsuario.getSenha().isEmpty()) {
-                String novaSenhaCriptografada = encoder.encode(novoUsuario.getSenha());
-                usuarioExistente.setSenha(novaSenhaCriptografada);
-            }
-
-            return ResponseEntity.ok().body(service.salvar(usuarioExistente));
-        }
-    }
-
-     */
     // ATUALIZAR
     @PutMapping("/atualizar/{idusuario}")
     public ResponseEntity<?> atualizar(@PathVariable Long idusuario,
