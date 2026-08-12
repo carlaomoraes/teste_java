@@ -9,7 +9,6 @@ public record AusenciaListagemDTO(
         LocalDate data_inicio,
         LocalDate data_fim,
         String observacao,
-        Long idempreendimento,
         String tipoausencia
         )
 {

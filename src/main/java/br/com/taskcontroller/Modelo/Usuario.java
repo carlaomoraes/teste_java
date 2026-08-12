@@ -34,11 +34,6 @@ public class Usuario {
 
     @Column(name = "ativo")
     private boolean ativo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idempreendimento")
-    private Empreendimento empreendimento;
-
     // Getters e Setters
 
     public Usuario() {
@@ -107,13 +102,5 @@ public class Usuario {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
-    }
-
-    public Empreendimento getEmpreendimento() {
-        return empreendimento;
-    }
-
-    public void setEmpreendimento(Empreendimento empreendimento) {
-        this.empreendimento = empreendimento;
     }
 }

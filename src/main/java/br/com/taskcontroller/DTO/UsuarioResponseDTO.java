@@ -1,18 +1,14 @@
 package br.com.taskcontroller.DTO;
 
-import br.com.taskcontroller.Modelo.Empreendimento;
-import br.com.taskcontroller.Modelo.Papel;
-
 public class UsuarioResponseDTO {
     private Long idusuario;
     private String nome;
     private String login;
     private String email;
     private String senha;
-    private Papel papel;
+    private Long idpapel;
     private boolean alterasenha;
     private boolean ativo;
-    private Empreendimento empreendimento;
 
     public Long getIdusuario() {
         return idusuario;
@@ -54,12 +50,12 @@ public class UsuarioResponseDTO {
         this.senha = senha;
     }
 
-    public Papel getPapel() {
-        return papel;
+    public Long getIdpapel() {
+        return idpapel;
     }
 
-    public void setPapel(Papel papel) {
-        this.papel = papel;
+    public void setIdpapel(Long idpapel) {
+        this.idpapel = idpapel;
     }
 
     public boolean isAlterasenha() {
@@ -76,13 +72,5 @@ public class UsuarioResponseDTO {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
-    }
-
-    public Empreendimento getEmpreendimento() {
-        return empreendimento;
-    }
-
-    public void setEmpreendimento(Empreendimento empreendimento) {
-        this.empreendimento = empreendimento;
     }
 }

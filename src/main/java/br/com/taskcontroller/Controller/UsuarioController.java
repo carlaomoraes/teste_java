@@ -1,5 +1,7 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.UsuarioRequestDTO;
+import br.com.taskcontroller.Mapper.UsuarioMapper;
 import br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Papel;
@@ -43,19 +45,23 @@ public class UsuarioController {
         UsuarioListagemDTO usuario = service.buscarPorLinha(idusuario);
         return ResponseEntity.ok().body(usuario);
     }
-
     // SALVAR
     @PostMapping("/salvar")
+    public ResponseEntity<?> salvar(@RequestBody UsuarioRequestDTO  dto) {
+        Usuario usuario = UsuarioMapper.toEntity(dto);
+        return ResponseEntity.ok().body(service.salvar(usuario));
+
+    }
+
+
+
+    // SALVAR
+    /*@PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody Usuario novoUsuario) {
         // 1. Busca o papel do banco de dados primeiro
         Papel papel = papelService.buscarPorId(novoUsuario.getPapel().getIdpapel());
         if (papel == null) {
             return ResponseEntity.badRequest().body("Erro: O papel do usuário deve ser informado.");
-        }
-        // 2. Busca empreendimento
-        Empreendimento  empreendimento = empreendimentoService.buscarPorId(novoUsuario.getEmpreendimento().getIdempreendimento());
-        if (empreendimento == null) {
-            return ResponseEntity.badRequest().body("Erro: O empreendimento padrão deve ser informado.");
         }
         if (novoUsuario.getIdusuario() == null) {
             // CRIAÇÃO: Cria um novo objeto Usuario gerenciado corretamente
@@ -72,9 +78,6 @@ public class UsuarioController {
             // Associa o papel persistido do banco
             usuarioParaSalvar.setPapel(papel);
 
-            // Associa o empreendimento padrão
-            usuarioParaSalvar.setEmpreendimento(empreendimento);
-
             return ResponseEntity.ok().body(service.salvar(usuarioParaSalvar));
 
         } else {
@@ -89,8 +92,7 @@ public class UsuarioController {
             usuarioExistente.setEmail(novoUsuario.getEmail());
             usuarioExistente.setLogin(novoUsuario.getLogin());
             usuarioExistente.setAlterasenha(novoUsuario.isAlterasenha());
-            usuarioExistente.setPapel(papel); // Associa o papel persistido do banco
-            usuarioExistente.setEmpreendimento(empreendimento);
+            usuarioExistente.setPapel(papel);
 
             // Regra para senha na atualização (Criptografa apenas se ela mudou)
             if (novoUsuario.getSenha() != null && !novoUsuario.getSenha().isEmpty()) {
@@ -101,6 +103,8 @@ public class UsuarioController {
             return ResponseEntity.ok().body(service.salvar(usuarioExistente));
         }
     }
+
+     */
     // ATUALIZAR
     @PutMapping("/atualizar/{idusuario}")
     public ResponseEntity<?> atualizar(@PathVariable Long idusuario,
@@ -110,11 +114,6 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Erro: O papel do usuário deve ser informado.");
         }
         usuario.setPapel(papel);
-        Empreendimento  empreendimento = empreendimentoService.buscarPorId(usuario.getEmpreendimento().getIdempreendimento());
-        if (empreendimento == null) {
-            return ResponseEntity.badRequest().body("Erro: O empreendimento padrão deve ser informado.");
-        }
-        usuario.setEmpreendimento(empreendimento);
         return ResponseEntity.ok().body(service.atualizar(usuario));
     }
 

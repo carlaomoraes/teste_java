@@ -19,7 +19,6 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
         a.data_inicio,
         a.data_fim,
         a.observacao,
-        a.usuario.empreendimento.idempreendimento,
         ta.desc_tipo_ausencia
     )
     FROM AusenciaProgramada a
@@ -37,7 +36,6 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
         a.data_inicio,
         a.data_fim,
         a.observacao,
-        a.usuario.empreendimento.idempreendimento,
         a.tipoausencia.desc_tipo_ausencia
     )
     FROM AusenciaProgramada a

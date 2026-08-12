@@ -25,7 +25,6 @@
     <div class="abas-container">
         <button class="aba-botao ativa" onclick="alternarAba(event, 'usuarios')">Usuários</button>
         <button class="aba-botao" onclick="alternarAba(event, 'ausencias')">Ausências programadas</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'configuracoes')">Configurações</button>
     </div>
     <div id="usuarios" class="conteudo-aba ativo">
         <input type="number" onblur="buscarPorLinha(document.getElementById('idusuario').value)" name="idusuario" id="idusuario" placeholder="ID do usuário (Deixe vazio para novo)">
@@ -70,17 +69,6 @@
         </div>
         <div id="resultadoAusencias"></div>
     </div>
-    <div id="configuracoes" class="conteudo-aba">
-        <div class="input-group">
-            <span class="input-group-text">
-                <i class="bi bi-buildings"></i>
-            </span>
-            <select class="form-select" id="comboEmpreendimento">
-                <option value="">Selecione o empreendimento padrão...</option>
-            </select>
-        </div>
-
-    </div>
 </div>
 
 <script>
@@ -112,23 +100,6 @@
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     // FUNÇÕES DA ABA AUSENCIAS
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
-    const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
-
-    async function carregarEmpreendimento() {
-        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
-        try {
-            const resposta = await fetch(`${API_EMPREENDIMENTO}/montaCombo`);
-            const empreendimentos = await resposta.json();
-            empreendimentos.forEach(e => {
-                const opcao = document.createElement('option');
-                opcao.value = e.idempreendimento;
-                opcao.textContent = e.descempreendimento;
-                comboEmpreendimento.appendChild(opcao);
-            });
-        } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.erroCarregar("EMPREENDIMENTO"), "error");
-        }
-    }
     async function carregarTipoAusencia() {
         const combotipo = document.getElementById("combotipo");
         try {
@@ -165,7 +136,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         carregarTipoAusencia();
         carregarPapel();
-        carregarEmpreendimento();
     });
     async function criarUsuario() {
         await limparFormulario();
@@ -186,12 +156,7 @@
             email: email || null,
             alterasenha: alterasenha,
             ativo: ativo,
-            papel: {
-                idpapel: document.getElementById('comboPapel').value || null,
-            },
-            empreendimento: {
-                idempreendimento: document.getElementById('comboEmpreendimento').value || null,
-            }
+            idpapel: document.getElementById('comboPapel').value || null
         };
         try {
             const response = await fetch(`${API_USUARIOS}/salvar`, {
@@ -221,8 +186,6 @@
         document.getElementById('alterasenha').checked = false;
         document.getElementById('ativo').checked = false;
         document.getElementById('comboPapel').value = "";
-        document.getElementById('comboEmpreendimento').value = "";
-
         mostrarMensagemNaTela("resultado", "", "error");
     }
     async function buscarPorLinha(id) {
@@ -241,9 +204,8 @@
             document.getElementById('alterasenha').checked = usuario.alterasenha;
             document.getElementById('ativo').checked = usuario.ativo;
             document.getElementById('comboPapel').value = usuario.idpapel;
-            document.getElementById('comboEmpreendimento').value = usuario.idempreendimento;
             mostrarMensagemNaTela("resultado", "Usuário selecionado: " +  usuario.nome, "success");
-            listarAusencias();
+            await listarAusencias();
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
         }

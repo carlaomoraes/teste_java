@@ -19,13 +19,10 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Long> {
         u.ativo,
         u.alterasenha,
         p.idpapel,
-        p.descpapel,
-        e.idempreendimento,
-        e.descempreendimento
+        p.descpapel
     )
     FROM Usuario u
     JOIN u.papel p
-    JOIN u.empreendimento e
     ORDER BY u.nome
     """)
     List<UsuarioListagemDTO> listar();
@@ -40,17 +37,12 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Long> {
         u.ativo,
         u.alterasenha,
         p.idpapel,
-        p.descpapel,
-        e.idempreendimento,
-        e.descempreendimento
+        p.descpapel
     )
     FROM Usuario u
     JOIN u.papel p
-    JOIN u.empreendimento e
    WHERE u.idusuario = :idusuario
     ORDER BY u.nome
     """)
     UsuarioListagemDTO buscarPorLinha(@Param("idusuario") Long idusuario);
-
-
 }

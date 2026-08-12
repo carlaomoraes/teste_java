@@ -16,8 +16,7 @@ SELECT new br.com.taskcontroller.Record.Usuario.UsuarioAutenticacaoDTO(
       u.nome,
       u.login,
       u.senha,
-      u.papel.idpapel,
-      u.empreendimento.idempreendimento
+      u.papel.idpapel
 )
 FROM Usuario u
 WHERE u.login = :login

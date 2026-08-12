@@ -30,8 +30,7 @@ public class LoginService {
                     usuario.idusuario(),
                     usuario.nome(),
                     usuario.login(),
-                    usuario.idPapel(),
-                    usuario.idEmpreendimento()
+                    usuario.idPapel()
             );
             return Optional.of(dto);
         }

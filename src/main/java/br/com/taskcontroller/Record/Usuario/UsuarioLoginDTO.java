@@ -4,6 +4,5 @@ public record UsuarioLoginDTO(
         Long idusuario,
         String nome,
         String login,
-        Long idpapel,
-        Long idEmpreendimento
+        Long idpapel
 ) {}

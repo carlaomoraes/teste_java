@@ -9,8 +9,6 @@ public record UsuarioListagemDTO(
         Boolean ativo,
         Boolean alterasenha,
         Long idPapel,
-        String nomePapel,
-        Long idEmpreendimento,
-        String nomeEmpreendimento
+        String nomePapel
 ) {
 }

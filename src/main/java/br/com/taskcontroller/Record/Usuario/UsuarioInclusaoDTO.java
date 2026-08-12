@@ -1,10 +1,11 @@
 package br.com.taskcontroller.Record.Usuario;
 
-public record UsuarioAutenticacaoDTO(
-        Long idusuario,
+public record UsuarioInclusaoDTO(
         String nome,
         String login,
         String senha,
-        Long idPapel
-)
-{}
+        String email,
+        Long idpapel,
+        int ativo
+) {
+}
