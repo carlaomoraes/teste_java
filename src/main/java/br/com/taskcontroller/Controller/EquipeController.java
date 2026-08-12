@@ -5,7 +5,7 @@ import br.com.taskcontroller.Mapper.EquipeMapper;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.EquipeUsuario;
 import br.com.taskcontroller.Modelo.Usuario;
-import br.com.taskcontroller.Record.EquipeUsuarioDTO;
+import br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO;
 import br.com.taskcontroller.Respository.EquipeRepository;
 import br.com.taskcontroller.Respository.EquipeUsuarioRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;

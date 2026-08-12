@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de usuario com DTO - senha cript">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Equipe/EquipeListagemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de equipe com DTO">
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EquipeCardDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Equipe/EquipeCardDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeEmpreendimentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeEmpreendimentoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EpicoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EpicoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EquipeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EquipeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EquipeUsuarioDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Equipe/EquipeUsuarioDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,9 +145,9 @@
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="br.com.taskcontroller.Record.Equipe" />
+      <recent name="br.com.taskcontroller.Record" />
       <recent name="br.com.taskcontroller.Record.Usuario" />
       <recent name="br.com.taskcontroller.Record.Ausencia" />
-      <recent name="br.com.taskcontroller.Record" />
       <recent name="br.com.taskboard.demo.Controller" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
@@ -393,14 +388,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00096" summary="Cadastro sprint / empreendimento">
-      <option name="closed" value="true" />
-      <created>1784163270201</created>
-      <option name="number" value="00096" />
-      <option name="presentableId" value="LOCAL-00096" />
-      <option name="project" value="LOCAL" />
-      <updated>1784163270201</updated>
     </task>
     <task id="LOCAL-00097" summary="Cadastro empreendimento / configuração">
       <option name="closed" value="true" />
@@ -786,7 +773,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786558634880</updated>
     </task>
-    <option name="localTasksCounter" value="145" />
+    <task id="LOCAL-00145" summary="Cadastro de equipe com DTO">
+      <option name="closed" value="true" />
+      <created>1786562479172</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1786562479172</updated>
+    </task>
+    <option name="localTasksCounter" value="146" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -832,7 +827,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ABA de equipes finalizada" />
     <MESSAGE value="Cadastro sprint sendo refatorado" />
     <MESSAGE value="Mensagens padronizadas" />
     <MESSAGE value="Ajustes no lay-out" />
@@ -857,7 +851,8 @@
     <MESSAGE value="Cadastro de ausencias com DTO" />
     <MESSAGE value="Cadastro de usuario com DTO" />
     <MESSAGE value="Cadastro de usuario com DTO - senha cript" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de usuario com DTO - senha cript" />
+    <MESSAGE value="Cadastro de equipe com DTO" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de equipe com DTO" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

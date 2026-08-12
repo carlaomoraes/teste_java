@@ -1,8 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.EquipeUsuario;
-import br.com.taskcontroller.Modelo.Usuario;
-import br.com.taskcontroller.Record.EquipeUsuarioDTO;
+import br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Long> {
     @Query("""
-       select distinct new br.com.taskcontroller.Record.EquipeUsuarioDTO(
+       select distinct new br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO(
               eu.usuario.idusuario,
               eu.usuario.nome
        )
@@ -33,7 +32,7 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
                     @Param("idUsuario") Long idUsuario);
 
     @Query("""
-        select distinct new br.com.taskcontroller.Record.EquipeUsuarioDTO(
+        select distinct new br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO(
               eu.usuario.idusuario,
               eu.usuario.nome
        )
@@ -44,7 +43,7 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
     List<EquipeUsuarioDTO> buscarUsuariosPorEquipe(@Param("idequipe") Long idequipe);
 
     @Query("""
-    SELECT DISTINCT new br.com.taskcontroller.Record.EquipeUsuarioDTO(
+    SELECT DISTINCT new br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO(
         u.idusuario,
         u.nome
        )
