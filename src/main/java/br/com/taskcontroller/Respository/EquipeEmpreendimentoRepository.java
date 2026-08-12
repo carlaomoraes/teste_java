@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface EquipeEmpreendimentoRepository extends JpaRepository<Empreendimento_Equipe, Long> {
+    // O Spring Data gera essa consulta automaticamente baseada no nome do metodo!
+
     @Query("""
     SELECT ee
       FROM Empreendimento_Equipe ee

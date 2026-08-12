@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.Equipe;
+import br.com.taskcontroller.Respository.EquipeEmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EquipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +14,10 @@ public class EquipeService {
 
     @Autowired
     private EquipeRepository repository;
+
+    @Autowired
+    private EquipeEmpreendimentoRepository equipeEmpreendimentoRepository;
+
 
     public Equipe salvar(Equipe equipe) {
         String Messagem = String.format("ID %s deve ser único.", equipe.getIdequipe());

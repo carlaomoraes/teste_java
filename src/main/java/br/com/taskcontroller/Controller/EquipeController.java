@@ -1,5 +1,7 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.EquipeRequestDTO;
+import br.com.taskcontroller.Mapper.EquipeMapper;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.EquipeUsuario;
 import br.com.taskcontroller.Modelo.Usuario;
@@ -45,20 +47,8 @@ public class EquipeController {
 
     // SALVAR
     @PostMapping("/salvar")
-    public ResponseEntity<Equipe> salvar(@RequestBody Equipe equipe) {
-
-        if (equipe.getIdequipe() == null) {
-            return ResponseEntity.ok(service.salvar(equipe));
-        }
-
-        Equipe equipeExistente = service.buscarPorId(equipe.getIdequipe());
-
-        if (equipeExistente != null) {
-            equipeExistente.setDescequipe(equipe.getDescequipe());
-            equipeExistente.setNomeequipe(equipe.getNomeequipe());
-            return ResponseEntity.ok(service.salvar(equipeExistente));
-        }
-
+    public ResponseEntity<Equipe> salvar(@RequestBody EquipeRequestDTO dto) {
+        Equipe equipe = EquipeMapper.toEntity(dto);
         return ResponseEntity.ok(service.salvar(equipe));
     }
 
@@ -75,6 +65,7 @@ public class EquipeController {
     // LISTAR
     @GetMapping("/listar")
     public List<Equipe> listar() {
+
         return service.listar();
     }
 

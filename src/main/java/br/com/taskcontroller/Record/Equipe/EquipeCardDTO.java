@@ -1,4 +1,4 @@
-package br.com.taskcontroller.Record;
+package br.com.taskcontroller.Record.Equipe;
 
 public record EquipeCardDTO(
         Long idEquipe,
