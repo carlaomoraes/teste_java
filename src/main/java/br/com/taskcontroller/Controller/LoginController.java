@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.Usuario;
-import br.com.taskcontroller.Record.UsuarioLoginDTO;
+import br.com.taskcontroller.Record.Usuario.UsuarioLoginDTO;
 import br.com.taskcontroller.Respository.UsuarioRepository;
 import br.com.taskcontroller.Service.LoginService;
 import br.com.taskcontroller.Service.UsuarioService;

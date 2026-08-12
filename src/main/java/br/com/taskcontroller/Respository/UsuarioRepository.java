@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Respository;
 
-import br.com.taskcontroller.Record.UsuarioListagemDTO;
+import br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO;
 import br.com.taskcontroller.Modelo.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UsuarioRepository  extends JpaRepository<Usuario, Long> {
     @Query("""
-    SELECT new br.com.taskcontroller.Record.UsuarioListagemDTO(
+    SELECT new br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO(
         u.idusuario,
         u.nome,
         u.login,
@@ -31,7 +31,7 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Long> {
     List<UsuarioListagemDTO> listar();
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.UsuarioListagemDTO(
+    SELECT new br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO(
         u.idusuario,
         u.nome,
         u.login,

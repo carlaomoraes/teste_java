@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.Record.UsuarioListagemDTO;
+import br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Papel;
 import br.com.taskcontroller.Modelo.Usuario;

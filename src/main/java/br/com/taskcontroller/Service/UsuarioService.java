@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.Record.UsuarioListagemDTO;
+import br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO;
 import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Respository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

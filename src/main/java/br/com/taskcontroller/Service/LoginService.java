@@ -1,15 +1,12 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.Modelo.Usuario;
-import br.com.taskcontroller.Record.UsuarioAutenticacaoDTO;
-import br.com.taskcontroller.Record.UsuarioListagemDTO;
-import br.com.taskcontroller.Record.UsuarioLoginDTO;
+import br.com.taskcontroller.Record.Usuario.UsuarioAutenticacaoDTO;
+import br.com.taskcontroller.Record.Usuario.UsuarioLoginDTO;
 import br.com.taskcontroller.Respository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.Console;
 import java.util.Optional;
 
 @Service

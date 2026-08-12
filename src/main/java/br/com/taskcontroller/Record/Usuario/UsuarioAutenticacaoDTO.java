@@ -1,4 +1,4 @@
-package br.com.taskcontroller.Record;
+package br.com.taskcontroller.Record.Usuario;
 
 public record UsuarioAutenticacaoDTO(
         Long idusuario,

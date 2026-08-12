@@ -317,12 +317,12 @@
                 });
                 const data = await response.json();
                 mostrarMensagemNaTela("resultadoausencia", MSG.salvo("AUSÊNCIA"), "success");
+                await cancelarAusencia();
                 setTimeout(() => {
                     listarAusencias(document.getElementById('idusuario').value);
                 }, 1000);
             } catch (error) {
-                //mostrarMensagemNaTela("resultadoausencia", MSG.erroSalvar("AUSÊNCIA"), "error");
-                mostrarMensagemNaTela("resultadoausencia", error.value, "error");
+                mostrarMensagemNaTela("resultadoausencia", MSG.erroSalvar("AUSÊNCIA"), "error");
             }
         }
     }
@@ -353,7 +353,6 @@
             `;
                     return;
                 }
-
                 // Monta tabela com dados
                 let tabela = `
             <table class="table">
@@ -369,7 +368,6 @@
                 </thead>
                 <tbody>
         `;
-
                 data.forEach(a => {
                     tabela += `
                 <tr style="cursor:pointer;">
@@ -388,14 +386,10 @@
                 </tr>
             `;
                 });
-
-                tabela += `
-                </tbody>
-            </table>
-        `;
+                tabela += `</tbody> </table>`;
         container.innerHTML = tabela;
       } catch (error) {
-          mostrarMensagemNaTela("resultado", MSG.errolistar("AUSÊNCIA PROGRAMADA"), "error");
+          mostrarMensagemNaTela("resultadoausencia", MSG.errolistar("AUSÊNCIA PROGRAMADA"), "error");
       }
     }
     async function excluirAusencia(idausencia) {
@@ -405,6 +399,7 @@
             });
             const texto = await response.text();
             mostrarMensagemNaTela("resultadoausencia", MSG.excluido("AUSÊNCIA PROGRAMADA"), "success");
+            listarAusencias();
         } catch (error) {
             mostrarMensagemNaTela("resultadoausencia", MSG.erroExcluir("AUSÊNCIA PROGRAMADA"), "error");
         }
@@ -414,7 +409,7 @@
         document.getElementById('datainicial').value = "";
         document.getElementById('datafinal').value = "";
         document.getElementById('observacao').value = "";
-        listarAusencias();
+        await listarAusencias();
     }
     async function validaEntrada(aba) {
         if (aba === 1) {
