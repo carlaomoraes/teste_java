@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de epico com DTO na consulta - ok">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoInclusaoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/EpicoRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/EpicoRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/EpicoResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/EpicoResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/EpicoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/EpicoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Epico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Epico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoConsultaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoConsultaDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoListagemDTO.java" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de epico com DTO na inclusão - ok">
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -396,14 +386,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00100" summary="Preparação para refatoração do leiaute">
-      <option name="closed" value="true" />
-      <created>1784225430090</created>
-      <option name="number" value="00100" />
-      <option name="presentableId" value="LOCAL-00100" />
-      <option name="project" value="LOCAL" />
-      <updated>1784225430090</updated>
     </task>
     <task id="LOCAL-00101" summary="Preparação para refatoração do leiaute">
       <option name="closed" value="true" />
@@ -789,7 +771,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786626086331</updated>
     </task>
-    <option name="localTasksCounter" value="149" />
+    <task id="LOCAL-00149" summary="Cadastro de epico com DTO na inclusão - ok">
+      <option name="closed" value="true" />
+      <created>1786648107422</created>
+      <option name="number" value="00149" />
+      <option name="presentableId" value="LOCAL-00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1786648107423</updated>
+    </task>
+    <option name="localTasksCounter" value="150" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -829,7 +819,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Mensagens padronizadas" />
     <MESSAGE value="Ajustes no lay-out" />
     <MESSAGE value="Ajustes na aba equipes" />
     <MESSAGE value="Aba equipes concluída" />
@@ -854,7 +843,8 @@
     <MESSAGE value="Cadastro de usuario com DTO - senha cript" />
     <MESSAGE value="Cadastro de equipe com DTO" />
     <MESSAGE value="Cadastro de epico com DTO na consulta - ok" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de epico com DTO na consulta - ok" />
+    <MESSAGE value="Cadastro de epico com DTO na inclusão - ok" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de epico com DTO na inclusão - ok" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
