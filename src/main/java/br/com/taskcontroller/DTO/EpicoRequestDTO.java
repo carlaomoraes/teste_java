@@ -9,11 +9,11 @@ import java.time.LocalDate;
 
 public class EpicoRequestDTO {
     private Long idepico;
-    private Empreendimento empreendimento;
-    private Usuario responsavel;
-    private StatusEntidades status;
-    private Prioridades prioridade;
-    private Boolean bloqueado = false;
+    private Long idempreendimento;
+    private Long idresponsavel;
+    private Long idstatus;
+    private Long idprioridade;
+    private int bloqueado;
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
     private LocalDate data_cadastro;
@@ -31,43 +31,43 @@ public class EpicoRequestDTO {
         this.idepico = idepico;
     }
 
-    public Empreendimento getEmpreendimento() {
-        return empreendimento;
+    public Long getIdempreendimento() {
+        return idempreendimento;
     }
 
-    public void setEmpreendimento(Empreendimento empreendimento) {
-        this.empreendimento = empreendimento;
+    public void setIdempreendimento(Long idempreendimento) {
+        this.idempreendimento = idempreendimento;
     }
 
-    public Usuario getResponsavel() {
-        return responsavel;
+    public Long getIdresponsavel() {
+        return idresponsavel;
     }
 
-    public void setResponsavel(Usuario responsavel) {
-        this.responsavel = responsavel;
+    public void setIdresponsavel(Long idresponsavel) {
+        this.idresponsavel = idresponsavel;
     }
 
-    public StatusEntidades getStatus() {
-        return status;
+    public Long getIdstatus() {
+        return idstatus;
     }
 
-    public void setStatus(StatusEntidades status) {
-        this.status = status;
+    public void setIdstatus(Long idstatus) {
+        this.idstatus = idstatus;
     }
 
-    public Prioridades getPrioridade() {
-        return prioridade;
+    public Long getIdprioridade() {
+        return idprioridade;
     }
 
-    public void setPrioridade(Prioridades prioridade) {
-        this.prioridade = prioridade;
+    public void setIdprioridade(Long idprioridade) {
+        this.idprioridade = idprioridade;
     }
 
-    public Boolean getBloqueado() {
+    public int getBloqueado() {
         return bloqueado;
     }
 
-    public void setBloqueado(Boolean bloqueado) {
+    public void setBloqueado(int bloqueado) {
         this.bloqueado = bloqueado;
     }
 

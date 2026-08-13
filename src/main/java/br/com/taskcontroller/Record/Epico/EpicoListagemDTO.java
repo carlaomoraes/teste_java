@@ -1,8 +1,9 @@
 package br.com.taskcontroller.Record.Epico;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 public record EpicoListagemDTO(
-        Double percentual,
+        Long percentual,
         Long idepico,
         String codepico,
         String nome,

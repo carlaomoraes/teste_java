@@ -2,21 +2,19 @@ package br.com.taskcontroller.Record.Epico;
 
 import java.time.LocalDate;
 
-public record EpicoConsultaDTO(
-        Long percentual,
-        Long idepico,
-        String codepico,
+public record EpicoInclusaoDTO(
         String nome,
         Long idempreendimento,
-        String descempreendimento,
+        Long idresponsavel,
         Long idstatus,
-        String descstatus,
         Long idprioridade,
-        String descprioridade,
+        int bloqueado,
         LocalDate data_inicialEP,
         LocalDate data_fim_previstaEP,
+        String codepico,
         String cor,
-        Long idcriador,
-        String nomecriador
+        Long percentual,
+        int ativo
 ) {
+
 }

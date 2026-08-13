@@ -5,6 +5,7 @@ import br.com.taskcontroller.Modelo.Prioridades;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Usuario;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class EpicoResponseDTO {
@@ -13,14 +14,14 @@ public class EpicoResponseDTO {
     private Usuario responsavel;
     private StatusEntidades status;
     private Prioridades prioridade;
-    private Boolean bloqueado = false;
+    private int bloqueado = 0;
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
     private LocalDate data_cadastro;
     private String codepico;
     private String nome;
     private String cor = "#2196F3";
-    private Double percentual = 0.0;
+    private Long percentual;
     private int ativo;
 
     public Long getIdepico() {
@@ -63,11 +64,11 @@ public class EpicoResponseDTO {
         this.prioridade = prioridade;
     }
 
-    public Boolean getBloqueado() {
+    public int getBloqueado() {
         return bloqueado;
     }
 
-    public void setBloqueado(Boolean bloqueado) {
+    public void setBloqueado(int bloqueado) {
         this.bloqueado = bloqueado;
     }
 
@@ -119,11 +120,11 @@ public class EpicoResponseDTO {
         this.cor = cor;
     }
 
-    public Double getPercentual() {
+    public Long getPercentual() {
         return percentual;
     }
 
-    public void setPercentual(Double percentual) {
+    public void setPercentual(Long percentual) {
         this.percentual = percentual;
     }
 

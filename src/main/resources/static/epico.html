@@ -37,7 +37,7 @@
             </div>
             <div>
                 <label>Código</label>
-                <input type="text" id="codigo" oninput="converterMaiusculo(this)" maxlength="10">
+                <input type="text" id="codepico" oninput="converterMaiusculo(this)" maxlength="10">
             </div>
             <div>
                 <label>Empreendimento</label>
@@ -114,11 +114,11 @@
             </div>
             <div>
                 <label>Data inicial</label>
-                <input type="date" id="data_inicioES">
+                <input type="date" id="data_inicialES">
             </div>
             <div>
                 <label>Data final prevista</label>
-                <input type="date" id="data_fimES">
+                <input type="date" id="data_fim_previstaES">
             </div>
             <div>
                 <label>Resumo</label>
@@ -227,17 +227,6 @@
         idestoria: 0,
         idtarefa: 0
     };
-    let configuracaoSprint = {
-        idconfiguracao: 0,
-        idempreendimento: 0,
-        duracao_min_sprint: 0,
-        duracao_max_sprint: 0,
-        horas_trabalho_dia: 0,
-        considerarFeriados: false,
-        permitir_sprint_sobreposta: false,
-        permitir_multiplas_sprint_ativas: false,
-        considerar_feriados: false
-    };
     let statusAtualEpico = 1;
     let statusAtualEstoria = 1;
     let statusAtualTarefa = 1;
@@ -318,9 +307,9 @@
             const vetor = await resposta.json();
             vetor.forEach(i => {
                 const opcao = document.createElement('option');
-                opcao.value = i.idstatus;
+                opcao.value = i.idStatus;
                 opcao.textContent = i.descstatus;
-                comboStatusEP.add(opcao);
+                comboStatusEP.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
@@ -335,9 +324,9 @@
             const vetor = await resposta.json();
             vetor.forEach(i => {
                 const opcao = document.createElement('option');
-                opcao.value = i.idstatus;
+                opcao.value = i.idStatus;
                 opcao.textContent = i.descstatus;
-                comboStatusES.add(opcao);
+                comboStatusES.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
@@ -352,9 +341,10 @@
             const vetor = await resposta.json();
             vetor.forEach(i => {
                 const opcao = document.createElement('option');
-                opcao.value = i.idstatus;
+                opcao.value = i.idStatus;
                 opcao.textContent = i.descstatus;
-                comboStatusTA.add(opcao);
+                console.log(opcao);
+                comboStatusTA.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
@@ -403,40 +393,12 @@
         carregarStatusEstoria(statusAtualEstoria);
         carregarStatusTarefa(statusAtualTarefa);
     });
-    document.getElementById('comboEmpreendimentoEP').addEventListener('change', (event) => {
-        carregarConfiguracao(event.target.value);
-    });
-
-    async function carregarConfiguracao(idEmpreendimento) {
-        if (!idEmpreendimento) {
-            return;
-        }
-        try {
-            const response = await fetch(`${API_EMPREENDIMENTO}/${idEmpreendimento}`);
-            if (!response.ok) {
-                mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
-                return;
-            }
-            const data = await response.json();
-            configuracaoSprint.idempreendimento = data.idempreendimento;
-            configuracaoSprint.idconfiguracao = data.idconfiguracao;
-            configuracaoSprint.idempreendimento = data.idempreendimento;
-            configuracaoSprint.duracao_min_sprint = data.duracao_min_sprint;
-            configuracaoSprint.duracao_max_sprint = data.duracao_max_sprint;
-            configuracaoSprint.horas_Trabalho_Dia = data.horas_trabalho_dia;
-            configuracaoSprint.permitir_sprint_sobreposta =  data.permitir_sprint_sobreposta;
-            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
-            configuracaoSprint.considerar_feriados = data.considerar_feriados;
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("CONFIGURAÇÕES"), "error");
-        }
-    }
 
     async function criarEpico() {
-        limpaFormulario("EP");
+        limparFormulario("EP");
     }
     async function criarTarefa() {
-        limpaFormulario("TA");
+        limparFormulario("TA");
     }
 
     async function salvarTarefa(idEpico, idEstoria) {
@@ -486,39 +448,27 @@
     }
     async function salvarEpico() {
         const hoje = new Date();
-        const descepico = document.getElementById('descepico').value;
-        const obsepico = document.getElementById('obsepico').value;
+        const nomeepico = document.getElementById('nomeepico').value;
         const codepico = document.getElementById('codepico').value;
-        const cor = corHexValida(document.getElementById(cor).value);
-        if(document.getElementById('bloqueado').checked) {
-            campoBlooqueado = 0;
-        }
-        else {
-            campoBlooqueado = 1;
-        }
-        const data_inicio = document.getElementById('data_inicio').value || hoje ;
-        const data_fim = document.getElementById('data_fim').value || hoje ;
+        if(document.getElementById('bloqueado').checked)
+            bloqueado = 0;
+        else
+            bloqueado = 1;
+        const data_inicialEP = document.getElementById('data_inicialEP').value || hoje ;
+        const data_fim_previstaEP = document.getElementById('data_fim_previstaEP').value || hoje ;
         const epico = {
-            idepico: Number(idepico) || null,
-            descepico: descepico || null,
-            obsepico: obsepico || null,
-            bloqueado: campoBlooqueado,
-            data_inicio: data_inicio,
-            data_fim: data_fim,
+            nome: nomeepico,
+            idempreendimento: document.getElementById('comboEmpreendimentoEP').value,
+            idresponsavel: document.getElementById('comboCriadorEP').value || null,
+            idstatus: document.getElementById('comboStatusEP').value || null,
+            idprioridade: document.getElementById('comboPrioridadeEP').value || null,
+            bloqueado: bloqueado,
+            data_inicialEP: data_inicialEP || hoje,
+            data_fim_previstaEP: data_fim_previstaEP || hoje,
             codepico: codepico,
-            cor: cor || "6c757d",
-            criador: {
-                idCriador: document.getElementById('comboCriadorEP').value || null,
-            },
-            responsavel: {
-                idresponsavel: document.getElementById('comboResponsavelEP').value || null,
-            },
-            status: {
-                idstatus: document.getElementById('comboStatusEP').value || null,
-            },
-            empempreendimento: {
-                idEmpreendimento: document.getElementById('comboEmpreendimentoEP').value || null,
-            }
+            cor: corHexValida(document.getElementById('cor').value) ? document.getElementById('cor').value : "#6c757d",
+            percentual: 0,
+            ativo: 1
         };
         try {
             const response = await fetch(`${API_EPICO}/salvar`, {
@@ -529,7 +479,7 @@
                 body: JSON.stringify(epico)
             });
             const data = await response.json();
-            mostrarMensagemNaTela("resultado_epico", MSG.salvo("ÉPICO"), "error");
+            mostrarMensagemNaTela("resultado_epico", MSG.salvo("ÉPICO"), "success");
             setTimeout(() => {
                 limparFormulario("EP");
                 listarEpicos();
@@ -543,7 +493,7 @@
         if(ABA === "EP") {
             document.getElementById('idepico').value = "";
             document.getElementById('nomeepico').value = "";
-            document.getElementById('codigo').value = "";
+            document.getElementById('codepico').value = "";
             document.getElementById('cor').value = "#6c757d";
             // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
             document.getElementById('bloqueado').checked = false;
@@ -552,15 +502,15 @@
             document.getElementById('comboEmpreendimentoEP').value = "";
             document.getElementById('comboPrioridadeEP').value = "";
             document.getElementById('comboCriadorEP').value = "";
-            document.getElementById('data_inicio').value = "";
-            document.getElementById('data_fim').value = "";
+            document.getElementById('data_inicialEP').value = "";
+            document.getElementById('data_fim_previstaEP').value = "";
        } else if(ABA === "ES") {
             document.getElementById('idestoria').value = "";
             document.getElementById('descestoria').value = "";
             document.getElementById('resumo_estoria').value = "";
             document.getElementById('bloqueada_estoria').checked = false;
-            document.getElementById('data_inicio').value = "";
-            document.getElementById('data_fim').value = "";
+            document.getElementById('data_inicialES').value = "";
+            document.getElementById('data_fim_previstaES').value = "";
             document.getElementById('comboCriadorES').value = "";
             document.getElementById('comboResponsavelES').value = "";
             document.getElementById('comboStatusES').value = "";
@@ -628,15 +578,15 @@
         }
     }
     async function criarEstoria() {
-        limpaFormulario("ES");
+        limparFormulario("ES");
     }
     async function salvarEstoria(idEpico) {
         const hoje = new Date();
         const descestoria = document.getElementById('descestoria').value;
         const resumo = document.getElementById('resumo_estoria').value;
         const campoBlooqueado = document.getElementById('bloqueada_estoria').checked;
-        const data_inicio = document.getElementById('data_inicio').value || hoje ;
-        const data_fim = document.getElementById('data_fim').value || hoje ;
+        const data_inicio = document.getElementById('data_inicialES').value || hoje ;
+        const data_fim = document.getElementById('data_fim_previstaES').value || hoje ;
         const estoria = {
             idepico: Number(idEpico) || null,
             descEstoria: descestoria || null,
@@ -935,7 +885,7 @@
                 method: 'DELETE'
             });
             mostrarMensagemNaTela("resultado_epico",MSG.excluido("ÉPICO"), "success");
-            limpaFormulario("EP");
+            limparFormulario("EP");
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico",MSG.erroExcluir("ÉPICO"), "error");
         }

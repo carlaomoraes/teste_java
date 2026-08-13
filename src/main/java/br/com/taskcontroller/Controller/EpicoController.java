@@ -1,7 +1,10 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.EpicoRequestDTO;
+import br.com.taskcontroller.Mapper.EpicoMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Epico.EpicoConsultaDTO;
+import br.com.taskcontroller.Record.Epico.EpicoInclusaoDTO;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import br.com.taskcontroller.Record.EstoriaConsultaDTO;
 import br.com.taskcontroller.Record.EstoriaListagemDTO;
@@ -14,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.util.List;
 
 @RestController
@@ -41,7 +45,6 @@ public class EpicoController {
     public ResponseEntity<EpicoConsultaDTO> buscarPorId(@PathVariable Long idepico) {
         try {
             EpicoConsultaDTO epico = epicoRepository.buscaPorID(idepico);
-            System.out.println(epico);
             return ResponseEntity.ok().body(epico);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -50,22 +53,8 @@ public class EpicoController {
 
     // SALVAR
     @PostMapping("/salvar")
-    public ResponseEntity<Epico> salvar(@RequestBody Epico epico) {
-//        StatusEntidades statusEntidades = statusService.buscarPorId(epico.getStatus().getIdstatus());
-//        if (statusEntidades == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        epico.setStatus(statusEntidades);
-        Usuario usuario = usuarioService.buscarPorId(epico.getResponsavel().getIdusuario());
-        if (usuario == null) {
-            return ResponseEntity.notFound().build();
-        }
-        epico.setResponsavel(usuario);
-        Prioridades prioridades = prioridadesService.buscarPorId(epico.getPrioridade().getIdprioridade());
-        if (prioridades == null) {
-            return ResponseEntity.notFound().build();
-        }
-        epico.setPrioridade(prioridades);
+    public ResponseEntity<Epico> salvar(@RequestBody EpicoInclusaoDTO dto) {
+        Epico epico = EpicoMapper.toEntity(dto);
         return ResponseEntity.ok(service.salvar(epico));
     }
 

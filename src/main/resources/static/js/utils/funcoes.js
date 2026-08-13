@@ -23,7 +23,8 @@ function mostrarMensagemNaTela(resultado, mensagem, tipoMensagem = "error") {
 
 //Verifica se a cor é válida
 function corHexValida(cor) {
-    return /^#([0-9A-F]{3}|[0-9A-F]{6})$/i.test(cor);
+    return typeof cor === "string" &&
+        /^#([0-9A-F]{3}){1,2}$/i.test(cor);
 }
 
 function formatarData(data) {
