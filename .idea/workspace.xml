@@ -5,9 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de equipe com DTO">
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EquipeUsuarioDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Equipe/EquipeUsuarioDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EmpreendimentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EmpreendimentoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EmpreendimentoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Empreendimento/EmpreendimentoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EpicoConsultaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoConsultaDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/EpicoListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoListagemDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EmpreendimentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EmpreendimentoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EmpreendimentoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EmpreendimentoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EpicoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EpicoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/pages/epico.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/epico.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,11 +154,11 @@
       <recent name="" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="br.com.taskcontroller.Record.Empreendimento" />
       <recent name="br.com.taskcontroller.Record.Equipe" />
       <recent name="br.com.taskcontroller.Record" />
       <recent name="br.com.taskcontroller.Record.Usuario" />
       <recent name="br.com.taskcontroller.Record.Ausencia" />
-      <recent name="br.com.taskboard.demo.Controller" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="br.com.taskboard.demo.Controller" />
@@ -388,14 +398,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00097" summary="Cadastro empreendimento / configuração">
-      <option name="closed" value="true" />
-      <created>1784170741049</created>
-      <option name="number" value="00097" />
-      <option name="presentableId" value="LOCAL-00097" />
-      <option name="project" value="LOCAL" />
-      <updated>1784170741050</updated>
     </task>
     <task id="LOCAL-00098" summary="Configuração da barra de botões">
       <option name="closed" value="true" />
@@ -781,7 +783,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786562479172</updated>
     </task>
-    <option name="localTasksCounter" value="146" />
+    <task id="LOCAL-00146" summary="Cadastro de equipe com DTO">
+      <option name="closed" value="true" />
+      <created>1786563939510</created>
+      <option name="number" value="00146" />
+      <option name="presentableId" value="LOCAL-00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1786563939510</updated>
+    </task>
+    <option name="localTasksCounter" value="147" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -791,7 +801,6 @@
     <option name="OPEN_GENERIC_TABS">
       <map>
         <entry key="b91cb342-1242-4fdc-ba03-a6a7410a3d32" value="TOOL_WINDOW" />
-        <entry key="d5ba1ae1-e12a-4f01-a19d-a9e70debde27" value="TOOL_WINDOW" />
       </map>
     </option>
     <option name="TAB_STATES">
@@ -814,11 +823,6 @@
           </value>
         </entry>
         <entry key="b91cb342-1242-4fdc-ba03-a6a7410a3d32">
-          <value>
-            <State />
-          </value>
-        </entry>
-        <entry key="d5ba1ae1-e12a-4f01-a19d-a9e70debde27">
           <value>
             <State />
           </value>

@@ -289,20 +289,15 @@
     }
     async function carregarStatus(idStatusAtual) {
         const comboStatus = document.getElementById("comboStatus");
-
         try {
             comboStatus.innerHTML = "";
-
             const resposta = await fetch(
                 `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo`
             );
-
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
             }
-
             const vetor = await resposta.json();
-
             const opcaoPadrao = document.createElement("option");
             opcaoPadrao.value = "";
             opcaoPadrao.textContent = "Selecione...";
@@ -314,13 +309,8 @@
                 opcao.textContent = status.descstatus;
                 comboStatus.appendChild(opcao);
             });
-
         } catch (error) {
-            mostrarMensagemNaTela(
-                "resultado",
-                "Erro ao carregar status: " + error.message,
-                "error"
-            );
+            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -587,6 +577,7 @@
                 document.getElementById('idempreendimento').value = Empreendimento.idempreendimento;
                 document.getElementById('descempreendimento').value = Empreendimento.descempreendimento;
                 document.getElementById('siglaempreendimento').value = Empreendimento.siglaempreendimento;
+                document.getElementById("codempreendimento").value = Empreendimento.codempreendimento;
                 document.getElementById('cor').value = corHexValida(Empreendimento.cor) ? Empreendimento.cor : "#6c757d";
                 // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                 document.getElementById('bloqueado').checked = Empreendimento.bloqueado || 0;

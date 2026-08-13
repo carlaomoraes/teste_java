@@ -338,3 +338,10 @@ select:focus {
     display:flex;
     flex-direction:column;
 }
+    .badge-prioridade {
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+    }

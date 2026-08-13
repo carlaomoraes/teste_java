@@ -1,8 +1,8 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
-import br.com.taskcontroller.Record.EpicoConsultaDTO;
-import br.com.taskcontroller.Record.EpicoListagemDTO;
+import br.com.taskcontroller.Record.Epico.EpicoConsultaDTO;
+import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import br.com.taskcontroller.Record.EstoriaConsultaDTO;
 import br.com.taskcontroller.Record.EstoriaListagemDTO;
 import br.com.taskcontroller.Respository.*;

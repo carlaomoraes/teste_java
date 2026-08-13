@@ -599,6 +599,7 @@
                         <th class="table-header">Nome</th>
                         <th class="table-header">Código</th>
                         <th class="table-header">Status</th>
+                        <th class="table-header">Prioridade</th>
                         <th class="table-header">Data inicial</th>
                         <th class="table-header">Data final</th>
                         <th class="table-header">Excluir</th>
@@ -615,6 +616,7 @@
                                 <td>${epico.nome}</td>
                                 <td>${epico.codepico}</td>
                                 <td>${epico.descstatus}</td>
+                                <td> <span class="badge" style="background-color:${epico.corprioridade}; color:white;">${epico.descprioridade}</span></td>
                                 <td>${formatarData(epico.data_inicio)}</td>
                                 <td>${formatarData(epico.data_fim_prevista)}</td>
                                 <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>

@@ -2,7 +2,7 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
-import br.com.taskcontroller.Record.EmpreendimentoDTO;
+import br.com.taskcontroller.Record.Empreendimento.EmpreendimentoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,9 +10,10 @@ import java.util.List;
 
 public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, Long> {
     @Query("""
-    SELECT new br.com.taskcontroller.Record.EmpreendimentoDTO(
+    SELECT new br.com.taskcontroller.Record.Empreendimento.EmpreendimentoDTO(
         ee.idempreendimento,
         ee.descempreendimento,
+        ee.codempreendimento,
         ee.data_inicio,
         ee.data_fim,
         ee.data_cadastro,
@@ -53,9 +54,10 @@ public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, 
 """)
     List<EmpreendimentoComboDTO> montaComboEmpreendimento();
     @Query("""
-    SELECT new br.com.taskcontroller.Record.EmpreendimentoDTO(
+    SELECT new br.com.taskcontroller.Record.Empreendimento.EmpreendimentoDTO(
         ee.idempreendimento,
         ee.descempreendimento,
+        ee.codempreendimento,
         ee.data_inicio,
         ee.data_fim,
         ee.data_cadastro,
@@ -83,6 +85,4 @@ public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, 
     WHERE ee.idempreendimento = :idempreendimento
 """)
     EmpreendimentoDTO buscaPorIdDTO(Long idempreendimento);
-
-
 }

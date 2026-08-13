@@ -2,8 +2,8 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Projection.IndicadorEquipeProjection;
-import br.com.taskcontroller.Record.EpicoConsultaDTO;
-import br.com.taskcontroller.Record.EpicoListagemDTO;
+import br.com.taskcontroller.Record.Epico.EpicoConsultaDTO;
+import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface EpicoRepository extends JpaRepository<Epico, Long> {
     @Query("""
-    SELECT new br.com.taskcontroller.Record.EpicoListagemDTO(
+    SELECT new br.com.taskcontroller.Record.Epico.EpicoListagemDTO(
         e.percentual,
         e.idepico,
         e.codepico,
@@ -20,6 +20,7 @@ public interface EpicoRepository extends JpaRepository<Epico, Long> {
         ep.descempreendimento,
         s.descstatus,
         p.descprioridade,
+        p.corprioridade,
         e.data_inicio,
         e.data_fim_prevista,
         e.cor
@@ -57,7 +58,7 @@ public interface EpicoRepository extends JpaRepository<Epico, Long> {
     List<IndicadorEquipeProjection> buscarIndicadoresEquipe(Long id_empreendiemto);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.EpicoConsultaDTO(
+    SELECT new br.com.taskcontroller.Record.Epico.EpicoConsultaDTO(
         e.percentual,
         e.idepico,
         e.codepico,

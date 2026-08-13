@@ -1,10 +1,11 @@
-package br.com.taskcontroller.Record;
+package br.com.taskcontroller.Record.Empreendimento;
 
 import java.time.LocalDate;
 
 public record EmpreendimentoDTO(
         Long idempreendimento,
         String descempreendimento,
+        String codempreendimento,
         LocalDate data_inicio,
         LocalDate data_fim,
         LocalDate data_cadastro,
