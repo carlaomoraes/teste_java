@@ -65,7 +65,7 @@
             </div>
             <div>
                 <label>Data inicial</label>
-                <input type="date" id="data_inicioEP">
+                <input type="date" id="data_inicialEP">
             </div>
             <div>
                 <label>Data final prevista</label>
@@ -834,7 +834,7 @@
         configuracao.idtarefa = idEpico;
         if(ABA === "EPICO") {
             try {
-                const response = await fetch(`${API_EPICO}/${idEpico}`);
+                const response = await fetch(`${API_EPICO}/DTO/${idEpico}`);
                 const epico = await response.json();
                 if (!response.ok) {
                     mostrarMensagemNaTela("resultado_epico",epico.mensagem, "error");
@@ -851,8 +851,8 @@
                      document.getElementById('comboPrioridadeEP').value = epico.idprioridade;
                      document.getElementById('comboCriadorEP').value = epico.idcriador;
 
-                     document.getElementById('data_inicioEP').value = formatarData(epico.data_inicio);
-                     document.getElementById('data_fim_previstaEP').value = formatarData(epico.data_fim_prevista);
+                     document.getElementById('data_inicialEP').value = epico.data_inicialEP;
+                     document.getElementById('data_fim_previstaEP').value = epico.data_fim_prevista;
                     // Limpa mensagens e monta equipe se o usuário mudar de aba depois
                     mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "success");
                     await listarEstoria(epico.idepico);

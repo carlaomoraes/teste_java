@@ -13,8 +13,8 @@ public record EpicoConsultaDTO(
         String descstatus,
         Long idprioridade,
         String descprioridade,
-        LocalDate data_inicio,
-        LocalDate data_fim_prevista,
+        LocalDate data_inicialEP,
+        LocalDate data_fim_previstaEP,
         String cor,
         Long idcriador,
         String nomecriador

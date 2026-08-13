@@ -36,11 +36,12 @@ public class EpicoController {
     @Autowired
     private PrioridadesRepository prioridadesRepository;
 
-    // BUSCAR POR ID
-    @GetMapping("/{idepico}")
+    // BUSCAR POR ID - DTO
+    @GetMapping("/DTO/{idepico}")
     public ResponseEntity<EpicoConsultaDTO> buscarPorId(@PathVariable Long idepico) {
         try {
             EpicoConsultaDTO epico = epicoRepository.buscaPorID(idepico);
+            System.out.println(epico);
             return ResponseEntity.ok().body(epico);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
