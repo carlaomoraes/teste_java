@@ -1,8 +1,8 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Estoria;
-import br.com.taskcontroller.Record.EstoriaConsultaDTO;
-import br.com.taskcontroller.Record.EstoriaListagemDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
-            SELECT new br.com.taskcontroller.Record.EstoriaConsultaDTO(
+            SELECT new br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO(
         e.idestoria,
         e.descestoria,
         e.status.idstatus,
@@ -67,7 +67,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     long contarRelacionamentos(@Param("idEpico") Long idEpico);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.EstoriaListagemDTO(
+    SELECT new br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO(
         e.idestoria,
         e.descestoria,
         e.status.idstatus,

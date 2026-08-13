@@ -2,7 +2,7 @@ package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
-import br.com.taskcontroller.Record.EstoriaListagemDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.EpicoRepository;
 import br.com.taskcontroller.Respository.EquipeEmpreendimentoRepository;

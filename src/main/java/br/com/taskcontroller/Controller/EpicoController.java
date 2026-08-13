@@ -1,13 +1,12 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.EpicoRequestDTO;
 import br.com.taskcontroller.Mapper.EpicoMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Epico.EpicoConsultaDTO;
 import br.com.taskcontroller.Record.Epico.EpicoInclusaoDTO;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
-import br.com.taskcontroller.Record.EstoriaConsultaDTO;
-import br.com.taskcontroller.Record.EstoriaListagemDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EpicoService;
 import br.com.taskcontroller.Service.PrioridadesService;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.List;
 
 @RestController
