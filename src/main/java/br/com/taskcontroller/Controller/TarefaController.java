@@ -1,10 +1,8 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
-import br.com.taskcontroller.Record.TarefaConsultaDTO;
-import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
+import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.TarefaRepository;
-import br.com.taskcontroller.Respository.UsuarioRepository;
 import br.com.taskcontroller.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +32,11 @@ public class TarefaController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Tarefa não encontrada");
         }
+    }
+    // BUSCAR POR ID - DTO
+    @GetMapping("/DTO/{idTarefa}")
+    public TarefaConsultaDTO buscarPorIDDTO(@PathVariable Long idTarefa) {
+        return service.buscaPorIDDTO(idTarefa);
     }
 
     // SALVAR

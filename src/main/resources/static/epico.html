@@ -29,7 +29,7 @@
         <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
     </div>
     <div id="epico" class="conteudo-aba ativo">
-        <input type="number" id="idepico" onblur="buscarPorLinha(document.getElementById('idepico').value,0,0, 'EPICOS')" name="idepico" placeholder="ID do épico (Deixe vazio para novo)">
+        <input type="number" id="idepico" onblur="buscarPorLinha(document.getElementById('idepico').value,0,0, 'EPICO')" name="idepico" placeholder="ID do épico (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Nome</label>
@@ -88,7 +88,7 @@
         <div id="resultado_epico"></div>
     </div>
     <div id="estoria" class="conteudo-aba">
-        <input type="number" id="idestoria" onblur="buscarPorLinha(document.getElementById('idepico').value,document.getElementById('idestoria').value, 0, 'ESTORIAS')" placeholder="ID da estoria (Deixe vazio para novo)">
+        <input type="number" id="idestoria" onblur="buscarPorLinha(document.getElementById('idepico').value,document.getElementById('idestoria').value, 0, 'ESTORIA')" placeholder="ID da estoria (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Descrição</label>
@@ -152,7 +152,7 @@
     <div id="tarefa" class="conteudo-aba">
         <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value,
                                                     document.getElementById('idestoria').value,
-                                                    document.getElementById('idtarefa').value, 'TAREFAS')" name="idtarefa" id="idetarefa" placeholder="ID da estoria (Deixe vazio para novo)">
+                                                    document.getElementById('idtarefa').value, 'TAREFA')" id="idtarefa" placeholder="ID da estoria (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Descrição</label>
@@ -178,11 +178,11 @@
             </div>
             <div>
                 <label>Data inicial</label>
-                <input type="date" id="data_inicioTA">
+                <input type="date" id="data_inicio_TA">
             </div>
             <div>
                 <label>Data final prevista</label>
-                <input type="date" id="data_fimTA">
+                <input type="date" id="data_fim_TA">
             </div>
             <div>
                 <label>Resumo</label>
@@ -404,11 +404,9 @@
     async function salvarTarefa(idEpico, idEstoria) {
         const hoje = new Date();
         const bloqueada = document.getElementById("bloqueada").checked || 0;
-        const ativa = document.getElementById("ativa").checked || 0;
         const descTarefa = document.getElementById("descTarefa").value;
-        const data_inicio = document.getElementById("data_inicio").value || hoje;
-        const data_fim_prevista = document.getElementById("data_fim_prevista").value || hoje;
-        const data_conclusao = document.getElementById("data_conclusao").value || hoje;
+        const data_inicio = document.getElementById("data_inicio_TA").value || hoje;
+        const data_fim_prevista = document.getElementById("data_fim_TA").value || hoje;
         const tarefa = {
             idestoria: Number(idEstoria) || null,
             desctarefa: descTarefa || null,
@@ -416,8 +414,6 @@
             bloqueada: bloqueada,
             data_inicio: data_inicio,
             data_fim_prevista: data_fim_prevista,
-            data_conclusao: data_conclusao,
-            ativa: ativa,
             criador: {
                 idcriador: document.getElementById('comboCriadorTA').value || null,
             },
@@ -521,8 +517,8 @@
             document.getElementById('desctarefa').value = "";
             document.getElementById('resumo_tarefa').value = "";
             document.getElementById('bloqueada_estoria').checked = false;
-            document.getElementById('data_inicio_tarefa').value = "";
-            document.getElementById('data_fim_tarefa').value = "";
+            document.getElementById('data_inicio_TA').value = "";
+            document.getElementById('data_fim_TA').value = "";
             document.getElementById('comboCriadorTA').value = "";
             document.getElementById('comboResponsavelTA').value = "";
             document.getElementById('comboStatusTA').value = "";
@@ -567,8 +563,8 @@
                                 <td>${epico.codepico}</td>
                                 <td>${epico.descstatus}</td>
                                 <td> <span class="badge" style="background-color:${epico.corprioridade}; color:white;">${epico.descprioridade}</span></td>
-                                <td>${formatarData(epico.data_inicio)}</td>
-                                <td>${formatarData(epico.data_fim_prevista)}</td>
+                                <td>${formatarData(epico.data_inicialEP)}</td>
+                                <td>${formatarData(epico.data_fim_previstaEP)}</td>
                                 <td> <button type="button" class="btn" onclick="excluirEpico(${epico.idepico})">Excluir</button></td>
             </tr>`;});
             tabela += `</tbody></table>`;
@@ -628,14 +624,14 @@
             mostrarMensagemNaTela("resultado_estoria",MSG.erroSalvar("ESTÓRIA"),"error");
         }
     }
-    async function listarEstoria(idEpico) {
+    async function listarEstoria() {
         const cor = "6c757d";
-        if(idEpico == null) {
+        if(configuracao.idepico == null) {
            mostrarMensagemNaTela("resultado_estoria", "Selecione um épico", "warning");
            return;
         }
         try {
-            const response = await fetch(`${API_EPICO}/${idEpico}/estorias`);
+            const response = await fetch(`${API_EPICO}/${configuracao.idepico}/estorias`);
             const data = await response.json();
             if(data.length <= 0) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.naoEncontrada("ESTÓRIA"),"warning");
@@ -658,7 +654,7 @@
                 <tbody>
         `;
             data.forEach(estoria => {
-                tabela += `<tr onclick="buscarPorLinha(document.getElementById('idepico').value,${estoria.idestoria}, 0,'ESTORIA')" style="cursor:pointer;">
+                tabela += `<tr onclick="buscarPorLinha(configuracao.idepico,${estoria.idestoria}, 0,'ESTORIA')" style="cursor:pointer;">
                                 <td>${estoria.idestoria}</td>
                                 <td>${estoria.descestoria}</td>
                                 <td>${estoria.descstatus}</td>
@@ -676,14 +672,14 @@
             mostrarMensagemNaTela("resultado_epico",error.message,"error");
         }
     }
-    async function listarTarefas(idEpico, idEstoria) {
+    async function listarTarefas() {
         const cor = "6c757d";
-        if((idEpico === null) || (idEstoria === null)) {
+        if((configuracao.idepico === null) || (configuracao.idestoria === null)) {
             mostrarMensagemNaTela("resultado_tarefa", "Selecione uma estória", "warning");
             return;
         }
         try {
-            const response = await fetch(`${API_TAREFA}/porEstoria/${idEstoria}`);
+            const response = await fetch(`${API_TAREFA}/${configuracao.idestoria}/tarefas`);
             const data = await response.json();
             if(data.length <= 0) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.naoEncontrada("TAREFA"),"warning");
@@ -708,11 +704,11 @@
         `;
             data.forEach(tarefa => {
                 tabela += `
-        <tr onclick="buscarPorLinha(${idEpico}, ${idEstoria}, ${tarefa.idtarefa}, 'TAREFA')" style="cursor:pointer;">
+        <tr onclick="buscarPorLinha(${configuracao.idepico}, ${configuracao.idestoria}, ${tarefa.idtarefa}, 'TAREFA')" style="cursor:pointer;">
             <td>${obterIconeTipo(tarefa.tipotarefa)}</td>
             <td>${tarefa.idtarefa}</td>
             <td>${tarefa.desctarefa}</td>
-            <td>${tarefa.status.descstatus}</td>
+            <td>${tarefa.descstatus}</td>
             <td>${formatarData(tarefa.data_inicio)}</td>
             <td>${formatarData(tarefa.data_conclusao)}</td>
             <td>${tarefa.horas_estimadas ?? 0}</td>
@@ -779,10 +775,8 @@
     }
 
     async function buscarPorLinha(idEpico, idEstoria, idTarefa, ABA) {
-        configuracao.idepico = idEpico;
-        configuracao.idestoria = idEpico;
-        configuracao.idtarefa = idEpico;
         if(ABA === "EPICO") {
+            configuracao.idepico = idEpico;
             try {
                 const response = await fetch(`${API_EPICO}/DTO/${idEpico}`);
                 const epico = await response.json();
@@ -801,11 +795,11 @@
                      document.getElementById('comboPrioridadeEP').value = epico.idprioridade;
                      document.getElementById('comboCriadorEP').value = epico.idcriador;
 
-                     document.getElementById('data_inicialEP').value = epico.data_inicialEP;
-                     document.getElementById('data_fim_previstaEP').value = epico.data_fim_prevista;
+                     document.getElementById('data_inicialEP').value = formatarData(epico.data_inicialEP);
+                     document.getElementById('data_fim_previstaEP').value = formatarData(epico.data_fim_previstaEP);
                     // Limpa mensagens e monta equipe se o usuário mudar de aba depois
                     mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "success");
-                    await listarEstoria(epico.idepico);
+                    await listarEstoria();
                     await listarEquipes(epico.idempreendimento);
                     // MONTA O COMBO PARA PROXIMO STATUS
                     statusAtualEpico = epico.idstatus;
@@ -816,6 +810,7 @@
                 mostrarMensagemNaTela("resultado", error.message, "error");
             }
         } else if (ABA === "ESTORIA") {
+            configuracao.idestoria = idEstoria;
             try {
                 const response = await fetch(`${API_EPICO}/${idEpico}/estorias/${idEstoria}`);
                 const estoria = await response.json();
@@ -827,8 +822,8 @@
                     document.getElementById('descestoria').value = estoria.descestoria;
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                      document.getElementById('bloqueada_estoria').checked = estoria.bloqueada || 0;
-                     document.getElementById('data_inicialES').value = estoria.data_inicio;
-                     document.getElementById('data_fim_previstaES').value = estoria.data_fim;
+                     document.getElementById('data_inicialES').value = formatarData(estoria.data_inicio);
+                     document.getElementById('data_fim_previstaES').value = formatarData(estoria.data_fim);
                      document.getElementById('resumo_estoria').value = estoria.resumo;
                      document.getElementById('pontos').value = estoria.pontos;
                      document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
@@ -847,9 +842,12 @@
              //   mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
                 mostrarMensagemNaTela("resultado_estoria",error.message, "error");
             }
-        } else if (ABA === "TAREFAS") {
+        } else if (ABA === "TAREFA") {
+            configuracao.idtarefa = idTarefa;
             try {
-                const response = await fetch(`${API_TAREFA}/${idTarefa}`);
+                const linha = `${API_TAREFA}/DTO/${idTarefa}`;
+                console.log(linha);
+                const response = await fetch(linha);
                 const tarefa = await response.json();
                 if (!response.ok) {
                     mostrarMensagemNaTela("resultado_tarefa",MSG.naoEncontrada("TAREFA"), "error");
@@ -858,21 +856,18 @@
                     document.getElementById('desctarefa').value = tarefa.desctarefa;
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                     document.getElementById('bloqueada_tarefa').checked = tarefa.bloqueada || 0;
-                    document.getElementById('data_inicio_TA').value = tarefa.data_inicio;
-                    document.getElementById('data_fim_TA').value = tarefa.data_conclusao;
-                    document.getElementById('data_fim_prevista').value = tarefa.data_fim_prevista;
+                    document.getElementById('data_inicio_TA').value = formatarData(tarefa.data_inicio);
+                    document.getElementById('data_fim_TA').value = formatarData(tarefa.data_conclusao);
                     // CARREGANDO OS COMBOS
-                    document.getElementById('comboStatusTA').value = tarefa.status.idstatus;
-                    document.getElementById('comboCriadorTA').value = tarefa.idcriador.idusuario;
-                    document.getElementById('comboResponsavelTA').value = tarefa.idresponsavel.idusuario;
+                    document.getElementById('comboStatusTA').value = tarefa.idstatus;
+                    document.getElementById('comboCriadorTA').value = tarefa.idcriador;
+                    document.getElementById('comboResponsavelTA').value = tarefa.idresponsavel;
                     // HORAS
-                    document.getElementById('horas_realizadas').readOnly = true;
-                    document.getElementById('horas_estimadas').readOnly = true;
                     document.getElementById('horas_realizadas').value = tarefa.horas_realizadas;
                     document.getElementById('horas_estimadas').value = tarefa.horas_estimadas;
                     // MONTA O COMBO PARA PROXIMO STATUS
-                    statusAtualTarefa = tarefa.status.idstatus;
-                    carregarStatusTarefa(statusAtualEstoria);
+                    statusAtualTarefa = tarefa.idstatus;
+                    carregarStatusTarefa(statusAtualTarefa);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");

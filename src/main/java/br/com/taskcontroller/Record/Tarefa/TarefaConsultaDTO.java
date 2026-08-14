@@ -1,4 +1,4 @@
-package br.com.taskcontroller.Record;
+package br.com.taskcontroller.Record.Tarefa;
 
 import java.time.LocalDate;
 
@@ -19,7 +19,6 @@ public record TarefaConsultaDTO(
         boolean bloqueada,
         LocalDate data_fim_prevista,
         LocalDate data_conclusao,
-        LocalDate data_inicio,
-        boolean ativa
+        LocalDate data_inicio
 ) {
 }

@@ -38,7 +38,6 @@ public class Tarefa {
     private LocalDate data_fim_prevista;
     @Column(name = "data_conclusao")
     private LocalDate data_conclusao;
-    private boolean ativa;
     @ManyToOne
     @JoinColumn(name="idtipo_tarefa")
     private TipoTarefa tipotarefa;
@@ -137,14 +136,6 @@ public class Tarefa {
 
     public void setData_conclusao(LocalDate data_conclusao) {
         this.data_conclusao = data_conclusao;
-    }
-
-    public boolean getAtiva() {
-        return ativa;
-    }
-
-    public void setAtiva(boolean ativa) {
-        this.ativa = ativa;
     }
 
     public TipoTarefa getTipotarefa() {

@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Tarefa;
-import br.com.taskcontroller.Record.TarefaConsultaDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     @Query("""
-            SELECT new br.com.taskcontroller.Record.TarefaConsultaDTO(
+            SELECT new br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO(
                 t.idtarefa,
                 t.estoria.idestoria,
                 t.status.idstatus,
@@ -27,8 +27,7 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
                 t.bloqueada,
                 t.data_fim_prevista,
                 t.data_conclusao,
-                t.data_inicio,
-                t.ativa
+                t.data_inicio
             )
             FROM Tarefa t
             JOIN t.status s
@@ -37,10 +36,10 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
             join t.tipotarefa tt
            WHERE t.idtarefa = :idtarefa
     """)
-    TarefaConsultaDTO buscarPorId(@Param("idetarefa") Long idtarefa);
+    TarefaConsultaDTO buscarPorId(@Param("idtarefa") Long idtarefa);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.TarefaConsultaDTO(
+    SELECT new br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO(
         t.idtarefa,
         t.estoria.idestoria,
         t.status.idstatus,
@@ -57,8 +56,7 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
         t.bloqueada,
         t.data_fim_prevista,
         t.data_conclusao,
-        t.data_inicio,
-        t.ativa
+        t.data_inicio
     )
     FROM Tarefa t
     JOIN t.status s

@@ -1,7 +1,6 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.Estoria;
-import br.com.taskcontroller.Record.TarefaConsultaDTO;
 import br.com.taskcontroller.Service.EstoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

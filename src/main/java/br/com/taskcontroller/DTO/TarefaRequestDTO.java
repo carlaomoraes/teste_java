@@ -19,7 +19,6 @@ public class TarefaRequestDTO {
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
     private LocalDate data_conclusao;
-    private boolean ativa;
 
     public Long getIdtarefa() {
         return idtarefa;
@@ -117,11 +116,4 @@ public class TarefaRequestDTO {
         this.data_conclusao = data_conclusao;
     }
 
-    public boolean getAtiva() {
-        return ativa;
-    }
-
-    public void setAtiva(boolean ativa) {
-        this.ativa = ativa;
-    }
 }
