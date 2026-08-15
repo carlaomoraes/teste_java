@@ -197,29 +197,45 @@
 
             usuarioDisponivelSelecionado = null;
             usuarioEquipeSelecionado = null;
-
         } catch (e) {
             mostrarMensagemNaTela("resultadoequipe", e.message, "error");
         }
     }
 
-    async function adicionarMembro(){
-        const idEquipe = document.getElementById("idequipe").value;
-        if(!idEquipe || !usuarioDisponivelSelecionado) {
-            mostrarMensagemNaTela("resultadoequipe", "Selecione um usuário disponível e garanta que a equipe possua um ID válido.");
-            return;
+    async function adicionarMembro() {
+        try {
+            const idEquipe = document.getElementById("idequipe").value;
+            if (!idEquipe || !usuarioDisponivelSelecionado) {
+                mostrarMensagemNaTela("resultadoequipe", "Selecione um usuário disponível e garanta que a equipe possua um ID válido.");
+                return;
+            }
+            await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioDisponivelSelecionado}`, {method: "POST"});
+            mostrarMensagemNaTela("resultadoequipe", "Usuário adicionado com sucesso!", "success");
+            setTimeout(() => {
+                montaEquipes(idEquipe)
+                document.getElementById("resultadoequipe").innerHTML = "";
+            }, 1000);
+        } catch (e) {
+            mostrarMensagemNaTela("resultadoequipe", e.message, "error");
         }
-        await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioDisponivelSelecionado}`, { method:"POST" });
-        await montaEquipes(idEquipe);
     }
 
     async function removerMembro(){
-        const idEquipe = document.getElementById("idequipe").value;
-        if(!idEquipe || !usuarioEquipeSelecionado) {
-            return;
+        try {
+            const idEquipe = document.getElementById("idequipe").value;
+            if(!idEquipe || !usuarioEquipeSelecionado) {
+                return;
+            }
+            await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioEquipeSelecionado}`, { method:"DELETE" });
+            mostrarMensagemNaTela("resultadoequipe", "Usuário retirado com sucesso!", "success");
+            setTimeout(() => {
+                montaEquipes(idEquipe)
+                document.getElementById("resultadoequipe").innerHTML = "";
+            }, 1000);
+
+        } catch (e) {
+            mostrarMensagemNaTela("resultadoequipe", e.message, "error");
         }
-        await fetch(`http://localhost:8080/equipes/${idEquipe}/membros/${usuarioEquipeSelecionado}`, { method:"DELETE" });
-        await montaEquipes(idEquipe);
     }
 
     function alternarAba(event, idAbaDestino) {

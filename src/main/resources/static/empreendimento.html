@@ -589,7 +589,7 @@
                 document.getElementById('data_fim').value = Empreendimento.data_fim;
                 // Limpa mensagens e monta equipe se o empreendimento mudar de aba depois
                 mostrarMensagemNaTela("resultado", "Empreendimento selecionado: " +  Empreendimento.descempreendimento, "green");
-                montaEquipes(Empreendimento.idempreendimento);
+                await montaEquipes(Empreendimento.idempreendimento);
                 configuracaoSprint.idconfiguracao = Empreendimento.idconfiguracao;
                 configuracaoSprint.idempreendimento = Empreendimento.idempreendimento;
                 configuracaoSprint.duracao_sprint = Empreendimento.duracao_sprint;
