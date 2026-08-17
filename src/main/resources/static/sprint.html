@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskController 1.0</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+          rel="stylesheet">
+
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS específico da tela -->
+    <link rel="stylesheet" href="css/pages/sprint.css">
+    <link rel="stylesheet" href="css/pages/funcoes.css">
+</head>
+
+<body>
+
+<script src="js/utils/funcoes.js"></script>
+<script src="js/utils/mensagens.js"></script>
+
+
+<div class="container">
+
+    <h1>Sprint - TaskController 1.0</h1>
+
+
+    <!-- ============================================================
+         ABAS
+         ============================================================ -->
+
+    <div class="abas-container">
+
+        <button
+                class="aba-botao ativa"
+                onclick="alternarAba(event, 'geral')">
+
+            Geral
+
+        </button>
+
+        <button
+                class="aba-botao"
+                onclick="alternarAba(event, 'ausencias')">
+
+            Ausências programadas
+
+        </button>
+
+    </div>
+
+
+    <!-- ============================================================
+         ABA GERAL
+         ============================================================ -->
+
+    <div id="geral" class="conteudo-aba ativo">
+
+        <!-- EMPREENDIMENTO -->
+
+        <label class="form-label" for="comboEmpreendimento">
+            Empreendimento:
+        </label>
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-buildings"></i>
+            </span>
+            <select class="form-select" id="comboEmpreendimento">
+                <option value=""> Selecione...
+                </option>
+            </select>
+        </div> <br>
+        <!-- ID DA SPRINT -->
+        <input
+                type="number"
+                id="idsprint"
+                placeholder="ID da sprint (Deixe vazio para novo)"
+                readonly>
+
+
+        <!-- DESCRIÇÃO -->
+
+        <label for="descsprint">
+            Descrição da sprint:
+        </label>
+
+        <input
+                type="text"
+                id="descsprint"
+                oninput="converterMaiusculo(this)">
+
+
+
+        <!-- ========================================================
+             INFORMAÇÕES DA SPRINT
+             ======================================================== -->
+
+        <div class="row mt-3">
+
+            <!-- DATA INÍCIO -->
+
+            <div class="col-md-4">
+
+                <label for="dtiniciosprint">
+                    Data de Início:
+                </label>
+
+                <input
+                        type="date"
+                        id="dtiniciosprint"
+                        class="form-control"
+                        readonly>
+
+            </div>
+
+
+            <!-- DATA FIM -->
+
+            <div class="col-md-4">
+
+                <label for="dtfinalsprint">
+                    Data de Término:
+                </label>
+
+                <input
+                        type="date"
+                        id="dtfinalsprint"
+                        class="form-control"
+                        readonly>
+
+            </div>
+
+
+            <!-- DURAÇÃO -->
+
+            <div class="col-md-4">
+
+                <label>
+                    Duração:
+                </label>
+
+                <input
+                        type="text"
+                        id="duracaosprint"
+                        class="form-control"
+                        readonly>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================
+             ÚLTIMA SPRINT
+             ======================================================== -->
+
+        <div
+                id="ultimaSprint"
+                class="alert alert-light border mt-3"
+                style="display:none;">
+
+            <div class="d-flex align-items-center">
+
+                <i class="bi bi-info-circle me-2"></i>
+
+                <div>
+
+                    <strong>Última Sprint:</strong>
+
+                    <span id="descricaoUltimaSprint"></span>
+
+                    <br>
+
+                    <small>
+
+                        Período:
+                        <span id="periodoUltimaSprint"></span>
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================
+             VISIBILIDADE / ATIVA
+             ======================================================== -->
+
+        <label class="checkbox-group mt-3">
+
+            <input
+                    type="checkbox"
+                    id="visivel"
+                    value="0">
+
+            Sprint visível no quadro
+
+
+            <input
+                    type="checkbox"
+                    id="ativa"
+                    value="1">
+
+            Sprint ativa
+
+        </label>
+
+
+        <!-- RESULTADO -->
+
+        <div id="resultadogeral"></div>
+
+
+        <!-- ========================================================
+             BOTÕES
+             ======================================================== -->
+
+        <div
+                class="btn-group"
+                data-toggle="buttons-radio">
+
+            <button
+                    type="button"
+                    class="btn btn-add"
+                    onclick="criarSprint()">
+
+                Novo
+
+            </button>
+
+
+            <button
+                    type="button"
+                    class="btn btn-salvar"
+                    onclick="salvarSprint()">
+
+                Salvar
+
+            </button>
+
+
+            <button
+                    type="button"
+                    class="btn btn-listar"
+                    onclick="listarSprints(comboEmpreendimento.value)">
+
+                Listar
+
+            </button>
+
+
+            <button
+                    type="button"
+                    class="btn btn-voltar"
+                    onclick="history.back()">
+
+                Voltar
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         ABA AUSÊNCIAS
+         ============================================================ -->
+
+    <div
+            id="ausencias"
+            class="conteudo-aba">
+
+        <div id="resultadoausencia"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    //--------------------- MANIPULAÇÃO DOS DADOS
+
+    const API = 'http://localhost:8080/sprints';
+
+    const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
+
+
+    // ==============================================================
+    // CONFIGURAÇÃO
+    // ==============================================================
+
+    let configuracaoSprint = {
+        idconfiguracao: 0,
+        idempreendimento: 0,
+        duracao_sprint: 0,
+        horas_trabalho_dia: 0,
+        considerar_feriados: false,
+        permitir_sprint_sobreposta: false,
+        permitir_multiplas_sprint_ativas: false
+
+    };
+
+
+    // ==============================================================
+    // ALTERNAR ABAS
+    // ==============================================================
+
+    function alternarAba(event, idAbaDestino) {
+
+        const conteudos =
+            document.querySelectorAll('.conteudo-aba');
+
+        conteudos.forEach(conteudo =>
+            conteudo.classList.remove('ativo')
+        );
+
+
+        const botoes =
+            document.querySelectorAll('.aba-botao');
+
+        botoes.forEach(botao =>
+            botao.classList.remove('ativa')
+        );
+
+
+        document
+            .getElementById(idAbaDestino)
+            .classList.add('ativo');
+
+
+        event.currentTarget.classList.add('ativa');
+
+
+        if (idAbaDestino === "ausencias") {
+
+        }
+    }
+
+
+    // ==============================================================
+    // CARREGAR CONFIGURAÇÃO DO EMPREENDIMENTO
+    // ==============================================================
+    async function carregarConfiguracao() {
+        const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
+        if (!idEmpreendimento) {
+           configuracaoSprint.idempreendimento = 0;
+            document.getElementById('dtiniciosprint').value = '';
+            document.getElementById('dtfinalsprint').value = '';
+            document.getElementById('duracaosprint').value = '';
+            document.getElementById('ultimaSprint').style.display = 'none';
+            return;
+        }
+        try {
+            const response = await fetch(`${API_EMPREENDIMENTO}/DTO/${idEmpreendimento}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
+                return;
+            }
+            const data = await response.json();
+            configuracaoSprint.idconfiguracao = data.idconfiguracao;
+            configuracaoSprint.idempreendimento = data.idempreendimento;
+            configuracaoSprint.duracao_min_sprint = data.duracao_sprint || 0;
+            configuracaoSprint.horas_trabalho_dia =  data.horas_trabalho_dia || 0;
+            configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
+            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
+            configuracaoSprint.considerar_feriados = data.considerar_feriados;
+            /*
+             * NOVO FLUXO:
+             *
+             * Primeiro busca a última Sprint.
+             * Depois calcula as datas da nova Sprint.
+             */
+            await carregarUltimaSprint(idEmpreendimento);
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", error.message,"error");
+
+        }
+
+    }
+
+
+    // ==============================================================
+    // BUSCAR ÚLTIMA SPRINT DO EMPREENDIMENTO
+    // ==============================================================
+
+    async function carregarUltimaSprint(idEmpreendimento) {
+        try {
+            const response = await fetch(`${API}/ultima/${idEmpreendimento}`);
+            /*
+             * Se o backend ainda não possuir esse endpoint,
+             * consideramos que não existe Sprint anterior.
+            */
+            if (!response.ok) {
+                montarDatasPrimeiraSprint();
+                return;
+            }
+            const sprint = await response.json();
+            if (!sprint) {
+                montarDatasPrimeiraSprint();
+                return;
+            }
+            /*
+             * Mostra informações da última Sprint
+             */
+            document.getElementById('ultimaSprint').style.display = 'block';
+            document.getElementById('descricaoUltimaSprint').textContent = sprint.descsprint || 'Sem descrição';
+            document.getElementById('periodoUltimaSprint').textContent =`${formatarDataBR(sprint.dtiniciosprint)} até ${formatarDataBR(sprint.dtfinalsprint)}`;
+            /*
+             * Calcula a nova Sprint
+             */
+            montarDatasNovaSprint(sprint.dtfinalsprint);
+            document.getElementById('duracaoUltimaSprint').value = sprint.duracao;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", "Erro ao buscar a última Sprint: " + error.message, "error");
+        }
+    }
+
+
+    // ==============================================================
+    // PRIMEIRA SPRINT
+    // ==============================================================
+
+    function montarDatasPrimeiraSprint() {
+
+        /*
+         * Não existe Sprint anterior.
+         *
+         * Para a primeira Sprint utilizamos a data atual
+         * como início.
+         */
+
+        const hoje =
+            new Date();
+
+
+        const dataInicio =
+            formatarDataInput(hoje);
+
+
+        const dataFim =
+            calcularDataFim(
+                hoje,
+                configuracaoSprint.duracao_max_sprint
+            );
+
+
+        document.getElementById(
+            'dtiniciosprint'
+        ).value = dataInicio;
+
+
+        document.getElementById(
+            'dtfinalsprint'
+        ).value = dataFim;
+
+
+        document.getElementById(
+            'duracaosprint'
+        ).value =
+            configuracaoSprint.duracao_max_sprint +
+            ' dias';
+
+
+        document.getElementById(
+            'ultimaSprint'
+        ).style.display = 'none';
+
+    }
+
+
+    // ==============================================================
+    // MONTAR DATAS DA NOVA SPRINT
+    // ==============================================================
+
+    function montarDatasNovaSprint(dataFimUltimaSprint) {
+
+        if (!dataFimUltimaSprint) {
+
+            montarDatasPrimeiraSprint();
+
+            return;
+        }
+
+
+        /*
+         * A nova Sprint começa no dia seguinte ao término
+         * da Sprint anterior.
+         */
+
+        const partes =
+            dataFimUltimaSprint.split('-');
+
+
+        const dataFimAnterior =
+            new Date(
+                Number(partes[0]),
+                Number(partes[1]) - 1,
+                Number(partes[2])
+            );
+
+
+        const dataInicio =
+            new Date(dataFimAnterior);
+
+
+        dataInicio.setDate(
+            dataInicio.getDate() + 1
+        );
+
+
+        /*
+         * A duração utilizada continua sendo a configuração
+         * máxima da Sprint, como no comportamento anterior.
+         */
+
+        const dataFim =
+            calcularDataFim(
+                dataInicio,
+                configuracaoSprint.duracao_max_sprint
+            );
+
+
+        document.getElementById(
+            'dtiniciosprint'
+        ).value =
+            formatarDataInput(dataInicio);
+
+
+        document.getElementById(
+            'dtfinalsprint'
+        ).value =
+            dataFim;
+
+
+        document.getElementById(
+            'duracaosprint'
+        ).value =
+            configuracaoSprint.duracao_max_sprint +
+            ' dias';
+
+    }
+
+
+    // ==============================================================
+    // CALCULAR DATA FINAL
+    // ==============================================================
+
+    function calcularDataFim(dataInicio, duracao) {
+
+        const dataFim =
+            new Date(dataInicio);
+
+
+        /*
+         * Mantém o mesmo comportamento anterior:
+         * duração em dias corridos.
+         */
+
+        dataFim.setDate(
+            dataFim.getDate() + duracao - 1
+        );
+
+
+        return formatarDataInput(dataFim);
+
+    }
+
+
+    // ==============================================================
+    // FORMATAR DATA PARA INPUT
+    // ==============================================================
+
+    function formatarDataInput(data) {
+
+        const ano =
+            data.getFullYear();
+
+        const mes =
+            String(
+                data.getMonth() + 1
+            ).padStart(2, '0');
+
+        const dia =
+            String(
+                data.getDate()
+            ).padStart(2, '0');
+
+
+        return `${ano}-${mes}-${dia}`;
+
+    }
+   // ==============================================================
+    // CARREGAR EMPREENDIMENTOS
+    // ==============================================================
+   async function carregarEmpreendimento() {
+        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const empreendimentos = await resposta.json();
+            comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idempreendimento;
+                opcao.textContent = e.descempreendimento;
+                comboEmpreendimento.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela( "resultadogeral",MSG.erroCarregar("EMPREENDIMENTO"), "error");
+        }
+    }
+    // ==============================================================
+    // INICIALIZAÇÃO
+    // ==============================================================
+    document.addEventListener('DOMContentLoaded',() => {
+            carregarEmpreendimento();
+        }
+    );
+    // ==============================================================
+    // ALTERAÇÃO DO EMPREENDIMENTO
+    // ==============================================================
+    document.getElementById('comboEmpreendimento').addEventListener('change',() => {
+                carregarConfiguracao();
+                listarAusencias(document.getElementById("dtiniciosprint").value,
+                                document.getElementById("dtfinalsprint").value);
+            }
+        );
+    // ==============================================================
+    // NOVA SPRINT
+    // ==============================================================
+
+    function criarSprint() {
+        limpaFormulario();
+    }
+    // ==============================================================
+    // SALVAR SPRINT
+    // ==============================================================
+    async function salvarSprint() {
+        const eValido = await validaEntrada();
+        if (!eValido) return;
+        // Leitura dos campos
+        const descsprint = document.getElementById('descsprint').value;
+        const dtiniciosprint = document.getElementById('dtiniciosprint').value;
+        const dtfinalsprint = document.getElementById('dtfinalsprint').value;
+        const visivel = document.getElementById('visivel').checked;
+        const ativa = document.getElementById('ativa').checked;
+        const sprint = {
+            descsprint: descsprint || null,
+            dtiniciosprint: dtiniciosprint,
+            dtfinalsprint: dtfinalsprint,
+            visivel: visivel || true,
+            ativa: ativa || true,
+            empreendimento: {
+                idEmpreendimento: document.getElementById("comboEmpreendimento").value,
+            }
+        };
+        try {
+            const response = await fetch(`${API}/salvar`, {
+                method: 'POST',
+                headers: {
+                            'Content-Type':'application/json'
+                         },
+                body: JSON.stringify(sprint)
+                    }
+                );
+            if (!response.ok) {
+
+                throw new Error(
+                    await response.text()
+                );
+
+            }
+            mostrarMensagemNaTela("resultadogeral",MSG.salvo("SPRINT"),"success");
+            limpaFormulario();
+            listarSprints();
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message,"error");
+
+        }
+    }
+    // ==============================================================
+    // LISTAR SPRINTS
+    // ==============================================================
+    async function listarSprints(idEmpreendimento) {
+        try {
+            const response = await fetch(`${API}/listar/DTO/${idEmpreendimento}`);
+            const data = await response.json();
+            let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                          <thead> <tr>
+                                <th>ID</th>
+                                <th>Descrição</th>
+                                <th>Data Início</th>
+                                <th>Data Fim</th>
+                                <th>Visível no quadro?</th>
+                                <th>Ativa?</th>
+                                <th>Ações</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            data.forEach(sprint => {
+                tabela += `<tr>
+                        <td>${sprint.idsprint}</td>
+                        <td>${sprint.descsprint || ''}</td>
+                        <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
+                        <td>${formatarDataBR(sprint.dtfinalsprint)}</td>
+                        <td>${sprint.visivel ? '✅ Sim' : '❌ Não'} </td>
+                        <td>${sprint.ativa ? '✅ Sim' : '❌ Não'}</td>
+                        <td style="text-align:center;"> <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();encerrarSprint(${sprint.idsprint})">Encerrar Sprint</button></td>
+                        <td style="text-align:center;"> <button type="button" class="btn btn-add" onclick=" event.stopPropagation(); duplicarSprint(${sprint.idsprint})"> Duplicar Sprint </button></td>
+                    </tr>
+                `;
+            });
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadogeral').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral",MSG.erroCarregar("SPRINT"),"error");
+        }
+    }
+    // ==============================================================
+    // DUPLICAR SPRINT
+    // ==============================================================
+    async function duplicarSprint(idsprint) {
+        return true;
+    }
+    // ==============================================================
+    // ENCERRAR SPRINT
+    // ==============================================================
+    async function encerrarSprint(idsprint) {
+        if (!confirm("Tem certeza que deseja encerrar esta Sprint?")) {
+            return;
+        }
+        try {
+            const response = await fetch(`${API}/encerrar/${idsprint}`, {
+                        method: 'POST'
+                    }
+                );
+            if (!response.ok) {
+                throw new Error(await response.text());
+            }
+            mostrarMensagemNaTela("resultadogeral",MSG.alterado("SPRINT"), "success");
+            limpaFormulario();
+            listarSprints();
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", MSG.erroSalvar("SPRINT"),"error");
+        }
+    }
+    // ==============================================================
+    // LIMPAR FORMULÁRIO
+    // ==============================================================
+    function limpaFormulario() {
+        document.getElementById('idsprint').value = "";
+        document.getElementById('descsprint').value = "";
+        document.getElementById('dtiniciosprint').value = "";
+        document.getElementById('dtfinalsprint').value = "";
+        document.getElementById('duracaosprint').value = "";
+        document.getElementById('visivel').checked = false;
+        document.getElementById('ativa').checked = false;
+        document.getElementById('ultimaSprint').style.display = 'none';
+        /*
+         * Mantém o empreendimento selecionado.
+         *
+         * Isso é proposital: ao criar uma nova Sprint,
+         * o contexto do empreendimento não deve ser perdido.
+         */
+
+    }
+    // ==============================================================
+    // FORMATAR DATA BR
+    // ==============================================================
+    function formatarDataBR(dataString) {
+        if (!dataString) return '';
+        const partes =dataString.split('-');
+        if (partes.length !== 3) {
+            return dataString;
+        }
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+    // ==============================================================
+    // LISTAR AUSÊNCIAS
+    // ==============================================================
+    async function listarAusencias() {
+        data_inicio = document.getElementById("data_inicio").value;
+        data_fim = document.getElementById("data_inicio").value;
+        const container = document.getElementById("resultadoausencia");
+        try {
+            const response = await fetch(`${API}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultadoausencia", MSG.erroCarregar("AUSÊNCIAS"), "error");
+                return;
+            }
+            const data = await response.json();
+            if (!data || data.length === 0) {
+                container.innerHTML = `
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Data inicial</th>
+                                <th>Data final</th>
+                                <th>Tipo ausência</th>
+                                <th>Observação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td
+                                   colspan="4"
+                                    style="text-align:center;">
+                                    <p style="color:red">
+                                        Nenhuma ausência cadastrada para este período!
+                                   </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>`;
+                return;
+            }
+            let tabela = ` <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Usuário</th>
+                            <th>Data inicial</th>
+                            <th>Data final</th>
+                            <th>Tipo ausência</th>
+                            <th>Observação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            data.forEach(a => {
+                tabela += `
+                    <tr style="cursor:pointer;">
+                      <td>${a.idusuario?.nome ||'N/A'}</td>
+                      <td>${formatarDataBR(a.data_inicio)}</td>
+                      <td>${formatarDataBR(a.data_fim)}</td>
+                      <td>${a.tipoausencia?.desc_tipo_ausencia ?? ''}</td>
+                      <td>${a.observacao ??''}</td>
+                    </tr>`;
+            });
+            tabela += `</tbody> </table>`;
+            container.innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
+        }
+    }
+    // ==============================================================
+    // VALIDAÇÃO DE ENTRADA
+    // ==============================================================
+    async function validaEntrada() {
+        if (!validarDuracaoSprint()) {
+            return false;
+        }
+        const parametrosValidos = await validaParametros();
+        if (!parametrosValidos) {
+            return false;
+        }
+        return true;
+    }
+    // ==============================================================
+    // VALIDAR DURAÇÃO
+    // ==============================================================
+    function validarDuracaoSprint() {
+        const dtInicio = document.getElementById("dtiniciosprint").value;
+        const dtFim =document.getElementById("dtfinalsprint").value;
+        if (!dtInicio || !dtFim) {
+            mostrarMensagemNaTela("resultadogeral","As datas da Sprint ainda não foram calculadas.","warning");
+            return false;
+        }
+        const inicio = new Date(dtInicio);
+        const fim = new Date(dtFim);
+        const dias = Math.ceil((fim - inicio) / (1000 * 60 * 60 * 24)) + 1;
+        if (dias < configuracaoSprint.duracao_min_sprint) {
+            mostrarMensagemNaTela("resultadogeral",`A sprint deve ter no mínimo ${configuracaoSprint.duracao_min_sprint} dias.`,"warning");
+            return false;
+        }
+        if (dias > configuracaoSprint.duracao_max_sprint) {
+            mostrarMensagemNaTela("resultadogeral",`A sprint deve ter no máximo ${configuracaoSprint.duracao_max_sprint} dias.`,"warning" );
+            return false;
+        }
+        return true;
+    }
+    // ==============================================================
+    // VALIDAR PARÂMETROS
+    // ==============================================================
+    async function validaParametros() {
+        const data_inicio = document.getElementById("dtiniciosprint").value;
+        const data_fim = document.getElementById("dtfinalsprint").value;
+        const idempreendimento = document.getElementById("comboEmpreendimento").value;
+        if (!idempreendimento) {
+            mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!","warning");
+            return false;
+        }
+        try {
+            const response = await fetch(`${API}/verifica_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}`);
+            if (!response.ok) {
+                const msg = await response.text();
+                mostrarMensagemNaTela("resultadogeral",msg ||"Erro ao buscar sprint!", "error");
+                return false;
+            }
+            const existeSobreposicao = await response.json();
+            if (existeSobreposicao && !configuracaoSprint.permitir_sprint_sobreposta) {
+                mostrarMensagemNaTela("resultadogeral", "Já existem sprints abertas nesse período!", "warning");
+                return false;
+            }
+            return true;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral",error.message || "Erro ao buscar sprints", "error");
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
