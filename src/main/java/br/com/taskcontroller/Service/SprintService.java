@@ -57,22 +57,6 @@ public class SprintService {
         return sprintRepository.montaCabecalho(idEmpreendimento,idSprint,dataInicio,dataFim);
     }
 
-    public Optional<SprintDataDTO> carregaUltima(Long idEmpreendimento) {
-        Optional<SprintDataDTO> ultimaSprint = sprintRepository.carregaUltima(idEmpreendimento);
-        if (ultimaSprint.isEmpty()) {
-            return Optional.empty();
-        }
-        Empreendimento empreendimento = empreendimentoService.buscarPorId(idEmpreendimento);
-
-        // A nova Sprint começa no dia seguinte ao término da anterior
-        LocalDate dataInicio = ultimaSprint.get().data_fim().plusDays(1);
-
-        // Duração configurada para a Sprint
-        int duracao = empreendimento.getDuracao_sprint();
-
-        LocalDate dataFim = calcularDataFim(dataInicio, duracao);
-        return Optional.of(new SprintDataDTO(idEmpreendimento,dataInicio,dataFim, duracao));
-    }
     private LocalDate calcularDataFim(LocalDate inicio, int duracao) {
         LocalDate data = inicio;
         int dias = 0;
@@ -90,5 +74,45 @@ public class SprintService {
     private boolean ehFimDeSemana(LocalDate data) {
         DayOfWeek dia = data.getDayOfWeek();
         return dia == DayOfWeek.SATURDAY || dia == DayOfWeek.SUNDAY;
+    }
+
+    /*
+    Procura uma sprint várida
+    Se achar, retorna
+    Senão, cria
+
+     */
+    public Optional<SprintDataDTO> carregarValida(Long idEmpreendimento) {
+        Optional<SprintDataDTO> sprintValida = sprintRepository.buscarSprintValida(idEmpreendimento,LocalDate.now());
+        if (sprintValida.isPresent()) {
+            return sprintValida;
+        }
+        // Não existe sprint válida
+        Sprint sprint = new Sprint();
+        Empreendimento empreendimento = empreendimentoService.buscarPorId(idEmpreendimento);
+        int duracao = empreendimento.getDuracao_sprint();
+
+        sprint.setEmpreendimento(empreendimento);
+
+        LocalDate dataInicio = LocalDate.now();
+        sprint.setDtiniciosprint(dataInicio);
+        LocalDate dataFim = calcularDataFim(dataInicio,duracao);
+        sprint.setDtfinalsprint(dataFim);
+        sprint.setAtiva(true);
+        sprint.setVisivel(true);
+
+        sprint.setDescsprint("SPRINT NOVA");
+
+        Sprint novaSprint = sprintRepository.save(sprint);
+
+        // Retorna a sprint recém-criada
+        return Optional.of(new SprintDataDTO(
+                novaSprint.getIdsprint(),
+                idEmpreendimento,
+                novaSprint.getDescsprint(),
+                novaSprint.getDtiniciosprint(),
+                novaSprint.getDtfinalsprint(),
+                novaSprint.isVisivel(),
+                novaSprint.isAtiva()));
     }
 }

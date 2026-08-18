@@ -15,6 +15,7 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
     SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
         a.idausencia,
         a.usuario.idusuario,
+        a.usuario.nome,
         a.data_cadastro,
         a.data_inicio,
         a.data_fim,
@@ -32,6 +33,7 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
     SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
         a.idausencia,
         a.usuario.idusuario,
+        a.usuario.nome,
         a.data_cadastro,
         a.data_inicio,
         a.data_fim,

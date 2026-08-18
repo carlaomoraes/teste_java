@@ -79,119 +79,29 @@
             </select>
         </div> <br>
         <!-- ID DA SPRINT -->
-        <input
-                type="number"
-                id="idsprint"
-                placeholder="ID da sprint (Deixe vazio para novo)"
-                readonly>
-
-
+        <input type="number" id="idsprint" placeholder="ID da sprint (Deixe vazio para novo)" readonly>
         <!-- DESCRIÇÃO -->
-
-        <label for="descsprint">
-            Descrição da sprint:
-        </label>
-
-        <input
-                type="text"
-                id="descsprint"
-                oninput="converterMaiusculo(this)">
-
-
-
+        <label for="descsprint"> Descrição da sprint: </label>
+        <input type="text" id="descsprint" oninput="converterMaiusculo(this)">
         <!-- ========================================================
              INFORMAÇÕES DA SPRINT
              ======================================================== -->
-
         <div class="row mt-3">
-
-            <!-- DATA INÍCIO -->
-
             <div class="col-md-4">
-
-                <label for="dtiniciosprint">
-                    Data de Início:
-                </label>
-
-                <input
-                        type="date"
-                        id="dtiniciosprint"
-                        class="form-control"
-                        readonly>
-
+                <label for="dtiniciosprint"> Data de Início: </label>
+                <input type="date" id="dtiniciosprint" class="form-control" readonly>
             </div>
-
-
-            <!-- DATA FIM -->
-
             <div class="col-md-4">
-
-                <label for="dtfinalsprint">
-                    Data de Término:
-                </label>
-
-                <input
-                        type="date"
-                        id="dtfinalsprint"
-                        class="form-control"
-                        readonly>
-
+                <label for="dtfinalsprint"> Data de Término: </label>
+                <input type="date" id="dtfinalsprint" class="form-control" readonly>
             </div>
-
-
             <!-- DURAÇÃO -->
 
             <div class="col-md-4">
-
-                <label>
-                    Duração:
-                </label>
-
-                <input
-                        type="text"
-                        id="duracaosprint"
-                        class="form-control"
-                        readonly>
-
+                <label> Duração: </label>
+                <input type="text" id="duracaosprint" class="form-control" readonly>
             </div>
-
         </div>
-
-
-        <!-- ========================================================
-             ÚLTIMA SPRINT
-             ======================================================== -->
-
-        <div
-                id="ultimaSprint"
-                class="alert alert-light border mt-3"
-                style="display:none;">
-
-            <div class="d-flex align-items-center">
-
-                <i class="bi bi-info-circle me-2"></i>
-
-                <div>
-
-                    <strong>Última Sprint:</strong>
-
-                    <span id="descricaoUltimaSprint"></span>
-
-                    <br>
-
-                    <small>
-
-                        Período:
-                        <span id="periodoUltimaSprint"></span>
-
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
-
 
         <!-- ========================================================
              VISIBILIDADE / ATIVA
@@ -226,51 +136,12 @@
              BOTÕES
              ======================================================== -->
 
-        <div
-                class="btn-group"
-                data-toggle="buttons-radio">
-
-            <button
-                    type="button"
-                    class="btn btn-add"
-                    onclick="criarSprint()">
-
-                Novo
-
-            </button>
-
-
-            <button
-                    type="button"
-                    class="btn btn-salvar"
-                    onclick="salvarSprint()">
-
-                Salvar
-
-            </button>
-
-
-            <button
-                    type="button"
-                    class="btn btn-listar"
-                    onclick="listarSprints(comboEmpreendimento.value)">
-
-                Listar
-
-            </button>
-
-
-            <button
-                    type="button"
-                    class="btn btn-voltar"
-                    onclick="history.back()">
-
-                Voltar
-
-            </button>
-
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn btn-add" onclick="criarSprint()"> Novo </button>
+            <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar </button>
+            <button type="button" class="btn btn-listar" onclick="listarSprints(comboEmpreendimento.value)">Listar </button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
-
     </div>
 
 
@@ -372,7 +243,7 @@
             const data = await response.json();
             configuracaoSprint.idconfiguracao = data.idconfiguracao;
             configuracaoSprint.idempreendimento = data.idempreendimento;
-            configuracaoSprint.duracao_min_sprint = data.duracao_sprint || 0;
+            configuracaoSprint.duracao_sprint = data.duracao_sprint || 0;
             configuracaoSprint.horas_trabalho_dia =  data.horas_trabalho_dia || 0;
             configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
             configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
@@ -390,218 +261,34 @@
         }
 
     }
-
-
     // ==============================================================
     // BUSCAR ÚLTIMA SPRINT DO EMPREENDIMENTO
     // ==============================================================
-
     async function carregarUltimaSprint(idEmpreendimento) {
         try {
-            const response = await fetch(`${API}/ultima/${idEmpreendimento}`);
+            const response = await fetch(`${API}/valida_ultima/${idEmpreendimento}`);
             /*
              * Se o backend ainda não possuir esse endpoint,
              * consideramos que não existe Sprint anterior.
             */
-            if (!response.ok) {
-                montarDatasPrimeiraSprint();
-                return;
-            }
             const sprint = await response.json();
-            if (!sprint) {
-                montarDatasPrimeiraSprint();
-                return;
-            }
             /*
              * Mostra informações da última Sprint
              */
-            document.getElementById('ultimaSprint').style.display = 'block';
-            document.getElementById('descricaoUltimaSprint').textContent = sprint.descsprint || 'Sem descrição';
-            document.getElementById('periodoUltimaSprint').textContent =`${formatarDataBR(sprint.dtiniciosprint)} até ${formatarDataBR(sprint.dtfinalsprint)}`;
-            /*
-             * Calcula a nova Sprint
-             */
-            montarDatasNovaSprint(sprint.dtfinalsprint);
-            document.getElementById('duracaoUltimaSprint').value = sprint.duracao;
+            document.getElementById("idsprint").value = sprint.idsprint;
+            document.getElementById("dtiniciosprint").value = sprint.dtiniciosprint;
+            document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
+            document.getElementById("ativa").checked = sprint.ativa;
+            document.getElementById("visivel").checked = sprint.visivel;
+            document.getElementById("descsprint").value = sprint.descsprint;
+            listarAusencias(document.getElementById("dtiniciosprint").value,
+                document.getElementById("dtfinalsprint").value);
+
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", "Erro ao buscar a última Sprint: " + error.message, "error");
         }
     }
 
-
-    // ==============================================================
-    // PRIMEIRA SPRINT
-    // ==============================================================
-
-    function montarDatasPrimeiraSprint() {
-
-        /*
-         * Não existe Sprint anterior.
-         *
-         * Para a primeira Sprint utilizamos a data atual
-         * como início.
-         */
-
-        const hoje =
-            new Date();
-
-
-        const dataInicio =
-            formatarDataInput(hoje);
-
-
-        const dataFim =
-            calcularDataFim(
-                hoje,
-                configuracaoSprint.duracao_max_sprint
-            );
-
-
-        document.getElementById(
-            'dtiniciosprint'
-        ).value = dataInicio;
-
-
-        document.getElementById(
-            'dtfinalsprint'
-        ).value = dataFim;
-
-
-        document.getElementById(
-            'duracaosprint'
-        ).value =
-            configuracaoSprint.duracao_max_sprint +
-            ' dias';
-
-
-        document.getElementById(
-            'ultimaSprint'
-        ).style.display = 'none';
-
-    }
-
-
-    // ==============================================================
-    // MONTAR DATAS DA NOVA SPRINT
-    // ==============================================================
-
-    function montarDatasNovaSprint(dataFimUltimaSprint) {
-
-        if (!dataFimUltimaSprint) {
-
-            montarDatasPrimeiraSprint();
-
-            return;
-        }
-
-
-        /*
-         * A nova Sprint começa no dia seguinte ao término
-         * da Sprint anterior.
-         */
-
-        const partes =
-            dataFimUltimaSprint.split('-');
-
-
-        const dataFimAnterior =
-            new Date(
-                Number(partes[0]),
-                Number(partes[1]) - 1,
-                Number(partes[2])
-            );
-
-
-        const dataInicio =
-            new Date(dataFimAnterior);
-
-
-        dataInicio.setDate(
-            dataInicio.getDate() + 1
-        );
-
-
-        /*
-         * A duração utilizada continua sendo a configuração
-         * máxima da Sprint, como no comportamento anterior.
-         */
-
-        const dataFim =
-            calcularDataFim(
-                dataInicio,
-                configuracaoSprint.duracao_max_sprint
-            );
-
-
-        document.getElementById(
-            'dtiniciosprint'
-        ).value =
-            formatarDataInput(dataInicio);
-
-
-        document.getElementById(
-            'dtfinalsprint'
-        ).value =
-            dataFim;
-
-
-        document.getElementById(
-            'duracaosprint'
-        ).value =
-            configuracaoSprint.duracao_max_sprint +
-            ' dias';
-
-    }
-
-
-    // ==============================================================
-    // CALCULAR DATA FINAL
-    // ==============================================================
-
-    function calcularDataFim(dataInicio, duracao) {
-
-        const dataFim =
-            new Date(dataInicio);
-
-
-        /*
-         * Mantém o mesmo comportamento anterior:
-         * duração em dias corridos.
-         */
-
-        dataFim.setDate(
-            dataFim.getDate() + duracao - 1
-        );
-
-
-        return formatarDataInput(dataFim);
-
-    }
-
-
-    // ==============================================================
-    // FORMATAR DATA PARA INPUT
-    // ==============================================================
-
-    function formatarDataInput(data) {
-
-        const ano =
-            data.getFullYear();
-
-        const mes =
-            String(
-                data.getMonth() + 1
-            ).padStart(2, '0');
-
-        const dia =
-            String(
-                data.getDate()
-            ).padStart(2, '0');
-
-
-        return `${ano}-${mes}-${dia}`;
-
-    }
    // ==============================================================
     // CARREGAR EMPREENDIMENTOS
     // ==============================================================
@@ -633,10 +320,11 @@
     // ==============================================================
     document.getElementById('comboEmpreendimento').addEventListener('change',() => {
                 carregarConfiguracao();
-                listarAusencias(document.getElementById("dtiniciosprint").value,
-                                document.getElementById("dtfinalsprint").value);
             }
         );
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+    });
     // ==============================================================
     // NOVA SPRINT
     // ==============================================================
@@ -684,7 +372,7 @@
             }
             mostrarMensagemNaTela("resultadogeral",MSG.salvo("SPRINT"),"success");
             limpaFormulario();
-            listarSprints();
+            await listarSprints();
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message,"error");
 
@@ -791,9 +479,7 @@
     // ==============================================================
     // LISTAR AUSÊNCIAS
     // ==============================================================
-    async function listarAusencias() {
-        data_inicio = document.getElementById("data_inicio").value;
-        data_fim = document.getElementById("data_inicio").value;
+    async function listarAusencias(data_inicio, data_fim) {
         const container = document.getElementById("resultadoausencia");
         try {
             const response = await fetch(`${API}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
@@ -842,17 +528,17 @@
             data.forEach(a => {
                 tabela += `
                     <tr style="cursor:pointer;">
-                      <td>${a.idusuario?.nome ||'N/A'}</td>
+                      <td>${a.nome}</td>
                       <td>${formatarDataBR(a.data_inicio)}</td>
                       <td>${formatarDataBR(a.data_fim)}</td>
-                      <td>${a.tipoausencia?.desc_tipo_ausencia ?? ''}</td>
+                      <td>${a.tipoausencia}</td>
                       <td>${a.observacao ??''}</td>
                     </tr>`;
             });
             tabela += `</tbody> </table>`;
             container.innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
+           mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
         }
     }
     // ==============================================================

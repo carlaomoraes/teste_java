@@ -133,11 +133,11 @@ public class SprintController {
 
         return service.existeSobreposicao(idempreendimento,idsprint,data_inicio,data_fim);
     }
-    // CARREGAR ULTIMA SPRINT DO EMPREENDIMENTO
-    @GetMapping("/ultima/{idempreendimento}")
-    public Optional<SprintDataDTO> carregarUltima(@PathVariable Long idempreendimento) {
-        Optional<SprintDataDTO> ultimaSprint = service.carregaUltima(idempreendimento);
-        return ultimaSprint;
+    // RETORNA A ULTIMA SPRINT VALIDA DO EMPREENDIMENTO
+    @GetMapping("/valida_ultima/{idempreendimento}")
+    public Optional<SprintDataDTO> carregarUltimaValida(@PathVariable Long idempreendimento) {
+
+        return service.carregarValida(idempreendimento);
     }
 
     private boolean isWeekend(LocalDate date) {

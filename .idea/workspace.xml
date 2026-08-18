@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de equipe - OK">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Ausencia/AusenciaListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Ausencia/AusenciaListagemDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/SprintDataDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/SprintDataDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/AusenciaProgramadaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/AusenciaProgramadaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -895,6 +901,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/AusenciaProgramadaService.java</url>
           <line>19</line>
           <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java</url>
+          <line>86</line>
+          <option name="timeStamp" value="80" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EquipeUsuarioDTO.java</url>

@@ -3,9 +3,12 @@ package br.com.taskcontroller.Record;
 import java.time.LocalDate;
 
 public record SprintDataDTO(
+        Long idsprint,
         Long idempreendimento,
-        LocalDate data_inicio,
-        LocalDate data_fim,
-        int duracao
+        String descsprint,
+        LocalDate dtiniciosprint,
+        LocalDate dtfinalsprint,
+        boolean Visivel,
+        boolean Ativa
 ) {
 }

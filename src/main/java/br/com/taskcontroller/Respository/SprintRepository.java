@@ -57,19 +57,19 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
     @Query("""
     SELECT new br.com.taskcontroller.Record.SprintDataDTO(
+        s.idsprint,
         s.empreendimento.idempreendimento,
+        s.descsprint,
         s.dtiniciosprint,
         s.dtfinalsprint,
-        0
-    )
+        s.ativa,
+        s.visivel    )
     FROM Sprint s
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
-      AND s.dtfinalsprint = (
-          SELECT MAX(s2.dtfinalsprint)
-          FROM Sprint s2
-          WHERE s2.empreendimento.idempreendimento = :idEmpreendimento
-      )
+      AND :hoje BETWEEN s.dtiniciosprint AND s.dtfinalsprint
 """)
-    Optional<SprintDataDTO> carregaUltima(@Param("idEmpreendimento") Long idEmpreendimento);
-
+    Optional<SprintDataDTO> buscarSprintValida(
+            @Param("idEmpreendimento") Long idEmpreendimento,
+            @Param("hoje") LocalDate hoje
+    );
 }
