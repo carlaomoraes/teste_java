@@ -23,7 +23,7 @@ public class LoginService {
         System.out.println(usuario);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String hash = encoder.encode("admin");
-        System.out.println(hash);
+        System.out.println(hash); -> Gravar esse conteudo na base
 */
         if (usuario != null && encoder.matches(senha, usuario.senha())) {
             UsuarioLoginDTO dto = new UsuarioLoginDTO(

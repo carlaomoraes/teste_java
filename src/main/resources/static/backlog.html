@@ -14,28 +14,18 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/sprintatual.css">
+    <link rel="stylesheet" href="css/pages/backlog.css">
     <link rel="stylesheet" href="css/pages/funcoes.css">
 </head>
 <body>
 <script src="js/utils/funcoes.js"></script>
 <script src="js/utils/mensagens.js"></script>
 <div class="container mt-4">
-
-    <div class="card shadow">
-
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Cadastro de Item do Backlog</h5>
-        </div>
-
-        <div class="card-body">
-
+    <h1>Backlog - TaskController 1.0</h1>
+    <div class="card-body">
             <form id="frmBacklog">
-
                 <input type="hidden" id="idestoria">
-
                 <div class="row">
-
                     <div class="col-md-8 mb-3">
                         <label class="form-label">Título *</label>
                         <input type="text"
@@ -44,10 +34,9 @@
                                maxlength="200"
                                required>
                     </div>
-
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Épico *</label>
-                        <select id="comboEpico"
+                        <label class="form-label">Empreendimento *</label>
+                        <select id="comboEmpreendimento"
                                 class="form-select"
                                 required>
                         </select>
@@ -59,14 +48,14 @@
                     <label class="form-label">Descrição</label>
                     <textarea id="descricao"
                               class="form-control"
-                              rows="5"></textarea>
+                              rows="3"></textarea>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Critérios de Aceite</label>
                     <textarea id="criteriosAceite"
                               class="form-control"
-                              rows="4"></textarea>
+                              rows="3"></textarea>
                 </div>
 
                 <div class="row">
@@ -134,18 +123,15 @@
 
         <div class="card-footer text-end">
 
-            <button class="btn btn-secondary">
-                Cancelar
-            </button>
+            <div class="btn-group" data-toggle="buttons-radio">
+                <button type="button" class="btn btn-salvar"  onclick="salvarBacklog()">Salvar</button>
+                <button type="button" class="btn btn-listar" onclick="listarBacklog()">Listar</button>
+                <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+            </div>
+            <div id="resultado"></div>
 
-            <button class="btn btn-success"
-                    onclick="salvarBacklog()">
-                Salvar
-            </button>
 
         </div>
-
-    </div>
 
 </div>
 <script>

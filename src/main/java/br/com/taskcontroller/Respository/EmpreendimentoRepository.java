@@ -44,13 +44,17 @@ public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, 
     List<EmpreendimentoDTO> findByAtivoTrue();
 
     @Query("""
-    SELECT new br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO(
+    SELECT distinct new br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO(
         e.idempreendimento,
         e.descempreendimento
     )
-    FROM Empreendimento e
+    from Empreendimento e
+     join Empreendimento_Equipe ee on ee.empreendimento.idempreendimento = e.idempreendimento
+     join Equipe eq on eq.idequipe = ee.equipe.idequipe
+     join Equipe_Usuario eu on eu.equipe.idequipe = eq.idequipe
+     join Usuario u on u.idusuario = eu.usuario.idusuario
     WHERE e.ativo = 1
-    ORDER BY e.prioridade.idprioridade
+    ORDER BY e.descempreendimento
 """)
     List<EmpreendimentoComboDTO> montaComboEmpreendimento();
     @Query("""

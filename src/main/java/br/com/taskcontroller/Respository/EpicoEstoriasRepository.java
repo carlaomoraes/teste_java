@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Estoria;
+import br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -90,4 +91,37 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     WHERE e.epico.idepico = :idepico
 """)
     List<EstoriaListagemDTO> listaEstoriasPorEpico(@Param("idepico") Long idepico);
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO(
+        e.idestoria,
+        e.descestoria,
+        s.idstatus,
+        s.descstatus,
+        c.idusuario,
+        c.nome,
+        r.idusuario,
+        r.nome,
+        e.resumo,
+        COALESCE(e.pontos,0),
+        ep.idepico,
+        ep.nome,
+        p.idprioridade,
+        p.descprioridade)
+     FROM Estoria e
+    JOIN e.status s
+    join e.responsavel r
+    join e.criador c
+    join e.epico ep
+    join ep.prioridade p
+    WHERE e.ativa = true
+      AND NOT EXISTS (
+              SELECT 1
+                FROM SprintEstoria se
+               WHERE se.estoria.idestoria = e.idestoria
+      )
+      AND ep.empreendimento.idempreendimento = :idempreendimento
+""")
+    List<EstoriaBacklogDTO> listaEstoriasBacklog(@Param("idempreendimento") Long idempreendimento);
+
 }

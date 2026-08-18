@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Respository;
 
-import br.com.taskcontroller.Modelo.EquipeUsuario;
+import br.com.taskcontroller.Modelo.Equipe_Usuario;
 import br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Long> {
+public interface EquipeUsuarioRepository extends JpaRepository<Equipe_Usuario, Long> {
     @Query("""
        select distinct new br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO(
               eu.usuario.idusuario,
               eu.usuario.nome
        )
-       from EquipeUsuario eu
+       from Equipe_Usuario eu
        where eu.equipe.idequipe = :idequipe
        """)
     List<EquipeUsuarioDTO> listarMembros(Long idequipe);
@@ -24,7 +24,7 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
     @Transactional
     @Query("""
        delete
-       from EquipeUsuario eu
+       from Equipe_Usuario eu
        where eu.equipe.idequipe = :idEquipe
        and eu.usuario.idusuario = :idUsuario
        """)
@@ -36,7 +36,7 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
               eu.usuario.idusuario,
               eu.usuario.nome
        )
-       from EquipeUsuario eu
+       from Equipe_Usuario eu
      WHERE eu.equipe.idequipe = :idequipe
     ORDER BY eu.usuario.nome
 """)
@@ -49,7 +49,7 @@ public interface EquipeUsuarioRepository extends JpaRepository<EquipeUsuario, Lo
        )
       FROM Usuario u
      WHERE u.idusuario NOT IN (SELECT eu.usuario.idusuario
-                                 FROM EquipeUsuario eu
+                                 FROM Equipe_Usuario eu
                                 WHERE eu.equipe.idequipe = :idequipe)
   ORDER BY u.nome""")
     List<EquipeUsuarioDTO> buscarUsuariosDisponiveis(@Param("idequipe") Long idequipe);

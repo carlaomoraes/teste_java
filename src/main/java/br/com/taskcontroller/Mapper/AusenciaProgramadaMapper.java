@@ -10,7 +10,6 @@ public class AusenciaProgramadaMapper {
 
     public static AusenciaProgramada toEntity(AusenciaProgramadaRequestDTO dto) {
         AusenciaProgramada a = new AusenciaProgramada();
-        System.out.println(dto);
         a.setIdausencia(dto.getIdausencia());
         Usuario usuario = new Usuario();
         usuario.setIdusuario(dto.getIdusuario());

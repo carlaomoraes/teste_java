@@ -3,7 +3,7 @@ package br.com.taskcontroller.Controller;
 import br.com.taskcontroller.DTO.EquipeRequestDTO;
 import br.com.taskcontroller.Mapper.EquipeMapper;
 import br.com.taskcontroller.Modelo.Equipe;
-import br.com.taskcontroller.Modelo.EquipeUsuario;
+import br.com.taskcontroller.Modelo.Equipe_Usuario;
 import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO;
 import br.com.taskcontroller.Respository.EquipeRepository;
@@ -90,7 +90,7 @@ public class EquipeController {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        EquipeUsuario equipeUsuario = new EquipeUsuario();
+        Equipe_Usuario equipeUsuario = new Equipe_Usuario();
         equipeUsuario.setEquipe(equipe);
         equipeUsuario.setUsuario(usuario);
 
