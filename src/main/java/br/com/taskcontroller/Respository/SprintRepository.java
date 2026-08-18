@@ -63,7 +63,8 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
         s.dtiniciosprint,
         s.dtfinalsprint,
         s.ativa,
-        s.visivel    )
+        s.visivel,
+        0)
     FROM Sprint s
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
       AND :hoje BETWEEN s.dtiniciosprint AND s.dtfinalsprint

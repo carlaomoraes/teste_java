@@ -9,6 +9,7 @@ public record SprintDataDTO(
         LocalDate dtiniciosprint,
         LocalDate dtfinalsprint,
         boolean Visivel,
-        boolean Ativa
+        boolean Ativa,
+        int duracao
 ) {
 }

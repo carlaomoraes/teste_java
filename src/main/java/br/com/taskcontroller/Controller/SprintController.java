@@ -135,7 +135,7 @@ public class SprintController {
     }
     // RETORNA A ULTIMA SPRINT VALIDA DO EMPREENDIMENTO
     @GetMapping("/valida_ultima/{idempreendimento}")
-    public Optional<SprintDataDTO> carregarUltimaValida(@PathVariable Long idempreendimento) {
+    public Optional<SprintDataDTO> carregarValida(@PathVariable Long idempreendimento) {
 
         return service.carregarValida(idempreendimento);
     }

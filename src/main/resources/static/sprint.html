@@ -137,9 +137,8 @@
              ======================================================== -->
 
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-add" onclick="criarSprint()"> Novo </button>
+            <button type="button" class="btn btn-add" onclick="criarSprint(comboEmpreendimento.value)"> Novo </button>
             <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar </button>
-            <button type="button" class="btn btn-listar" onclick="listarSprints(comboEmpreendimento.value)">Listar </button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
     </div>
@@ -328,10 +327,35 @@
     // ==============================================================
     // NOVA SPRINT
     // ==============================================================
-
-    function criarSprint() {
+    async function criarSprint(idempreendimento) {
+        if(idempreendimento === ""){
+            mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
+            return false;
+        }
         limpaFormulario();
+        try {
+            const response = await fetch(`${API}/valida_ultima/${idempreendimento}`);
+            if (!response.ok) {
+                const msg = await response.text();
+                mostrarMensagemNaTela("resultadogeral", msg || "Erro ao criar sprint!", "error");
+                return false;
+            }
+            const sprint = await response.json();
+            document.getElementById("idsprint").value = sprint.idsprint;
+            document.getElementById("dtiniciosprint").value = sprint.dtiniciosprint;
+            document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
+            document.getElementById("ativa").checked = sprint.ativa;
+            document.getElementById("visivel").checked = sprint.visivel;
+            document.getElementById("descsprint").value = sprint.descsprint;
+            document.getElementById("duracaosprint").value = sprint.duracao;
+            await listarAusencias(document.getElementById("dtiniciosprint").value,
+                                  document.getElementById("dtfinalsprint").value);
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao criar sprints", "error");
+            return false;
+        }
     }
+
     // ==============================================================
     // SALVAR SPRINT
     // ==============================================================
@@ -364,18 +388,13 @@
                     }
                 );
             if (!response.ok) {
-
-                throw new Error(
-                    await response.text()
-                );
-
+                throw new Error(await response.text());
             }
             mostrarMensagemNaTela("resultadogeral",MSG.salvo("SPRINT"),"success");
             limpaFormulario();
             await listarSprints();
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message,"error");
-
         }
     }
     // ==============================================================
@@ -456,7 +475,7 @@
         document.getElementById('duracaosprint').value = "";
         document.getElementById('visivel').checked = false;
         document.getElementById('ativa').checked = false;
-        document.getElementById('ultimaSprint').style.display = 'none';
+        //document.getElementById('ultimaSprint').style.display = 'none';
         /*
          * Mantém o empreendimento selecionado.
          *
@@ -584,12 +603,15 @@
         const data_inicio = document.getElementById("dtiniciosprint").value;
         const data_fim = document.getElementById("dtfinalsprint").value;
         const idempreendimento = document.getElementById("comboEmpreendimento").value;
+        const idSprint = document.getElementById("idSprint").value;
         if (!idempreendimento) {
             mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!","warning");
             return false;
         }
         try {
-            const response = await fetch(`${API}/verifica_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}`);
+            const linha = `${API}/verifica_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}&idSprint=${idSprint}`;
+            console.log(linha);
+            const response = await fetch(linha);
             if (!response.ok) {
                 const msg = await response.text();
                 mostrarMensagemNaTela("resultadogeral",msg ||"Erro ao buscar sprint!", "error");
