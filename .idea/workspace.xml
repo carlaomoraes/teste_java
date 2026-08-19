@@ -4,10 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de backlog">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Correção cadastro de sprint">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/COMBO/UsuarioComboDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaInclusaoDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EmpreendimentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EmpreendimentoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/UsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/COMBO/EmpreendimentoComboDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/COMBO/EmpreendimentoComboDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/EstoriaResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/EstoriaResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/EstoriaResquestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/EstoriaResquestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/EstoriaMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/EstoriaMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Estoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Estoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaBacklogDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaBacklogDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EmpreendimentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EmpreendimentoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoEstoriasRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoEstoriasRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/backlog.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/backlog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/pages/backlog.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/backlog.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,11 +171,11 @@
       <recent name="br.com.taskboard.demo.DAO" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="br.com.taskcontroller.Record.COMBO" />
       <recent name="br.com.taskcontroller.Service" />
       <recent name="br.com.taskcontroller.Controller" />
       <recent name="br.com.taskcontroller.DTO" />
       <recent name="br.com.taskcontroller.Record.Estoria" />
-      <recent name="br.com.taskcontroller.Record" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TaskControllerApplication">
@@ -388,14 +404,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00107" summary="Ajustes no lay-out">
-      <option name="closed" value="true" />
-      <created>1784431511963</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1784431511963</updated>
     </task>
     <task id="LOCAL-00108" summary="Ajustes no lay-out">
       <option name="closed" value="true" />
@@ -781,7 +789,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787081427227</updated>
     </task>
-    <option name="localTasksCounter" value="156" />
+    <task id="LOCAL-00156" summary="Correção cadastro de sprint">
+      <option name="closed" value="true" />
+      <created>1787104393659</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1787104393659</updated>
+    </task>
+    <option name="localTasksCounter" value="157" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -821,7 +837,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajustes na aba configuração" />
     <MESSAGE value="Ajustes no cadastro de tarefa" />
     <MESSAGE value="Ajustes no cadastro de sprint" />
     <MESSAGE value="Resolvendo erros de execução" />
@@ -846,7 +861,8 @@
     <MESSAGE value="Cadastro de equipe - OK" />
     <MESSAGE value="Cadastro de sprint - Refatorando" />
     <MESSAGE value="Cadastro de backlog" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de backlog" />
+    <MESSAGE value="Correção cadastro de sprint" />
+    <option name="LAST_COMMIT_MESSAGE" value="Correção cadastro de sprint" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -873,7 +889,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java</url>
-          <line>88</line>
+          <line>90</line>
           <option name="timeStamp" value="74" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

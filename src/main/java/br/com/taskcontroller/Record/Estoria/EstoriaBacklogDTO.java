@@ -8,12 +8,14 @@ public record EstoriaBacklogDTO(
         Long idcriador,
         String nomecriador,
         Long idresponsavel,
-        String nomeesponsavel,
+        String nomeresponsavel,
         String resumo,
         Long pontos,
         Long idepico,
         String nome,
-        Long idprioridades,
-        String descprioridades)
+        String corepico,
+        Long idprioridade,
+        String descprioridade,
+        String corprioridade)
 {
 }

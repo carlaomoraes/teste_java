@@ -33,6 +33,7 @@ public class EmpreendimentoController {
             @PathVariable Long idEmpreendimento) {
 
         return ResponseEntity.ok(service.buscarPorId(idEmpreendimento));
+
     }
 
     @GetMapping("/listar")
@@ -134,9 +135,8 @@ public class EmpreendimentoController {
         return service.buscarPorIdDTO(idEmpreendimento);
     }
 
-    @GetMapping("/montaCombo")
+    @GetMapping("/montaComboEmpreendimento")
     public List<EmpreendimentoComboDTO> montaComboEmpreendimento() {
-
         return service.montaComboEmpreendimento();
     }
 }

@@ -21,6 +21,8 @@ public class EstoriaResquestDTO {
     private LocalDate data_fim;
     private Long pontos;
     private boolean ativa;
+    private String tags;
+    private String criterios;
     private Empreendimento_Equipe empreendimentoEquipe;
 
     public Long getIdestoria() {
@@ -125,5 +127,29 @@ public class EstoriaResquestDTO {
 
     public void setEmpreendimentoEquipe(Empreendimento_Equipe empreendimentoEquipe) {
         this.empreendimentoEquipe = empreendimentoEquipe;
+    }
+
+    public boolean isBloqueada() {
+        return bloqueada;
+    }
+
+    public boolean isAtiva() {
+        return ativa;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getCriterios() {
+        return criterios;
+    }
+
+    public void setCriterios(String criterios) {
+        this.criterios = criterios;
     }
 }

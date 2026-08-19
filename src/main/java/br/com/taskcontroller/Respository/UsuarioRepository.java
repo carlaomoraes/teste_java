@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Respository;
 
+import br.com.taskcontroller.Record.COMBO.UsuarioComboDTO;
 import br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO;
 import br.com.taskcontroller.Modelo.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -45,4 +46,15 @@ public interface UsuarioRepository  extends JpaRepository<Usuario, Long> {
     ORDER BY u.nome
     """)
     UsuarioListagemDTO buscarPorLinha(@Param("idusuario") Long idusuario);
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.COMBO.UsuarioComboDTO(
+        u.idusuario,
+        u.nome
+    )
+    FROM Usuario u
+    JOIN u.papel p
+    ORDER BY u.nome
+    """)
+    List<UsuarioComboDTO> montaCombo();
 }

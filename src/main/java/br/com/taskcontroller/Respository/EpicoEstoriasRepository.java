@@ -102,12 +102,14 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         c.nome,
         r.idusuario,
         r.nome,
-        e.resumo,
+        COALESCE(e.resumo,"N/A"),
         COALESCE(e.pontos,0),
         ep.idepico,
         ep.nome,
+        ep.cor,
         p.idprioridade,
-        p.descprioridade)
+        p.descprioridade,
+        p.corprioridade)
      FROM Estoria e
     JOIN e.status s
     join e.responsavel r

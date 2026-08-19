@@ -2,15 +2,15 @@ package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.DTO.UsuarioRequestDTO;
 import br.com.taskcontroller.Mapper.UsuarioMapper;
+import br.com.taskcontroller.Record.COMBO.UsuarioComboDTO;
 import br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO;
-import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Papel;
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Respository.UsuarioRepository;
 import br.com.taskcontroller.Service.EmpreendimentoService;
 import br.com.taskcontroller.Service.PapelService;
 import br.com.taskcontroller.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,9 @@ public class UsuarioController {
 
     @Autowired
     private EmpreendimentoService empreendimentoService;
+
+    @Autowired
+    private UsuarioRepository repository;
 
 
     // BUSCAR POR ID
@@ -77,5 +80,11 @@ public class UsuarioController {
     public ResponseEntity<String> excluir(@PathVariable Long idusuario) {
         service.excluir(idusuario);
         return ResponseEntity.ok().body("Usuário excluído com sucesso");
+    }
+
+    // MONTA COMBO
+    @GetMapping("/montaCombo")
+    public List<UsuarioComboDTO> montaComboUsuario() {
+        return repository.montaCombo();
     }
 }

@@ -1,11 +1,13 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Mapper.EpicoMapper;
+import br.com.taskcontroller.Mapper.EstoriaMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Epico.EpicoConsultaDTO;
 import br.com.taskcontroller.Record.Epico.EpicoInclusaoDTO;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaInclusaoDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EpicoService;
@@ -98,11 +100,17 @@ public class EpicoController {
     public List<EstoriaListagemDTO> listarEstoriaPorEpico(@PathVariable Long idEpico) {
         return epicoEstoriasRepository.listaEstoriasPorEpico(idEpico);
     }
+//    Epico epico = EpicoMapper.toEntity(dto);
+//        return ResponseEntity.ok(service.salvar(epico));
 
     @PostMapping("/{idEpico}/adicionarEstoria")
     public ResponseEntity<?> adicionarEstoria(
             @PathVariable Long idEpico,
-            @RequestBody Estoria estoria) {
+            @RequestBody EstoriaInclusaoDTO dto) {
+        Estoria estoria = EstoriaMapper.toEntity(dto);
+        return ResponseEntity.ok(epicoEstoriasRepository.save(estoria));
+
+        /*
         Epico epico = service.buscarPorId(idEpico);
         Usuario criador = usuarioRepository.findById(estoria.getCriador().getIdusuario())
                 .orElseThrow(() -> new RuntimeException("Usuário criador não encontrado"));
@@ -113,7 +121,7 @@ public class EpicoController {
         estoria.setResponsavel(responsavel);
         epicoEstoriasRepository.save(estoria);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build(); */
     }
 
     // LISTAR TODAS AS ESTORIAS POR ÉPICO

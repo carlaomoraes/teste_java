@@ -22,6 +22,9 @@ public class EstoriaResponseDTO {
     private Long pontos;
     private boolean ativa;
     private Empreendimento_Equipe empreendimentoEquipe;
+    private String tags;
+    private String criterios;
+
 
     public Long getIdestoria() {
         return idestoria;
@@ -125,5 +128,33 @@ public class EstoriaResponseDTO {
 
     public void setEmpreendimentoEquipe(Empreendimento_Equipe empreendimentoEquipe) {
         this.empreendimentoEquipe = empreendimentoEquipe;
+    }
+
+    public boolean isBloqueada() {
+        return bloqueada;
+    }
+
+    public void setBloqueada(boolean bloqueada) {
+        this.bloqueada = bloqueada;
+    }
+
+    public boolean isAtiva() {
+        return ativa;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getCriterios() {
+        return criterios;
+    }
+
+    public void setCriterios(String criterios) {
+        this.criterios = criterios;
     }
 }

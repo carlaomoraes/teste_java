@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Blob;
 import java.time.LocalDate;
 
 @Getter
@@ -40,7 +41,7 @@ public class Estoria {
 
     private boolean bloqueada;
 
-    private String resumo;
+    private Blob resumo;
 
     @Column(name = "data_inicio")
     private LocalDate data_inicio;
@@ -48,13 +49,17 @@ public class Estoria {
     @Column(name = "data_fim")
     private LocalDate data_fim;
 
-    private Long pontos;
+    private int pontos;
 
     private boolean ativa;
 
     private Long horas_estimadas;
 
     private Long horas_realizadas;
+
+    private String tags;
+
+    private String criterios;
 
     public Long getIdestoria() {
         return idestoria;
@@ -120,14 +125,6 @@ public class Estoria {
         this.bloqueada = bloqueada;
     }
 
-    public String getResumo() {
-        return resumo;
-    }
-
-    public void setResumo(String resumo) {
-        this.resumo = resumo;
-    }
-
     public LocalDate getData_inicio() {
         return data_inicio;
     }
@@ -144,11 +141,11 @@ public class Estoria {
         this.data_fim = data_fim;
     }
 
-    public Long getPontos() {
+    public int getPontos() {
         return pontos;
     }
 
-    public void setPontos(Long pontos) {
+    public void setPontos(int pontos) {
         this.pontos = pontos;
     }
 
@@ -174,5 +171,29 @@ public class Estoria {
 
     public void setHoras_realizadas(Long horas_realizadas) {
         this.horas_realizadas = horas_realizadas;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getCriterios() {
+        return criterios;
+    }
+
+    public void setCriterios(String criterios) {
+        this.criterios = criterios;
+    }
+
+    public Blob getResumo() {
+        return resumo;
+    }
+
+    public void setResumo(Blob resumo) {
+        this.resumo = resumo;
     }
 }

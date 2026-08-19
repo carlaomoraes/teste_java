@@ -49,10 +49,10 @@ public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, 
         e.descempreendimento
     )
     from Empreendimento e
-     join Empreendimento_Equipe ee on ee.empreendimento.idempreendimento = e.idempreendimento
-     join Equipe eq on eq.idequipe = ee.equipe.idequipe
-     join Equipe_Usuario eu on eu.equipe.idequipe = eq.idequipe
-     join Usuario u on u.idusuario = eu.usuario.idusuario
+    JOIN Empreendimento_Equipe ee ON ee.empreendimento.idempreendimento = e.idempreendimento
+    JOIN Equipe eq ON eq.idequipe = ee.equipe.idequipe
+    JOIN Equipe_Usuario eu on eu.equipe.idequipe = eq.idequipe
+    JOIN usuario u on u.idusuario = eu.usuario.idusuario
     WHERE e.ativo = 1
     ORDER BY e.descempreendimento
 """)

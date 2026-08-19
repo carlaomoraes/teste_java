@@ -132,9 +132,20 @@
                 <label>Horas realizadas</label>
                 <input type="number"  id="horas_realizadas" class="form-control text-end" disabled>
             </div>
-            <div>
-                <label>Pontos</label>
-                <input type="number"  id="pontos" class="form-control text-end" disabled>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Story Points *</label>
+                <select id="combostorypoints"
+                        class="form-select">
+
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>5</option>
+                    <option>8</option>
+                    <option>13</option>
+                    <option>21</option>
+
+                </select>
             </div>
 
             <label class="checkbox-group">
@@ -601,7 +612,7 @@
             status: {
                 idstatus: document.getElementById('comboStatusES').value || null,
             },
-            pontos: Number(document.getElementById('pontos').value) || 0.0,
+            pontos: document.getElementById('combostorypoints').value || 0,
             horas_estimadas: Number(document.getElementById('horas_estimadas').value) || 0.0,
             horas_realizadas: Number(document.getElementById('horas_realizadas').value) || 0.0,
         };
@@ -825,7 +836,7 @@
                      document.getElementById('data_inicialES').value = formatarData(estoria.data_inicio);
                      document.getElementById('data_fim_previstaES').value = formatarData(estoria.data_fim);
                      document.getElementById('resumo_estoria').value = estoria.resumo;
-                     document.getElementById('pontos').value = estoria.pontos;
+                    document.getElementById('combostorypoints').value = estoria.pontos;
                      document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
                      document.getElementById('horas_realizadas').value = estoria.horas_realizadas;
                      //CARREGANDO OS COMBOS

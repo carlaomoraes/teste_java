@@ -24,16 +24,9 @@
     <h1>Backlog - TaskController 1.0</h1>
     <div class="card-body">
             <form id="frmBacklog">
+                <input type="hidden" id="idepico">
                 <input type="hidden" id="idestoria">
                 <div class="row">
-                    <div class="col-md-8 mb-3">
-                        <label class="form-label">Título *</label>
-                        <input type="text"
-                               id="descestoria"
-                               class="form-control"
-                               maxlength="200"
-                               required>
-                    </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Empreendimento *</label>
                         <select id="comboEmpreendimento"
@@ -45,37 +38,33 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Descrição</label>
-                    <textarea id="descricao"
-                              class="form-control"
-                              rows="3"></textarea>
+                    <label>Descrição</label>
+                    <input type="text" id="descestoria" oninput="converterMaiusculo(this)">
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label">Critérios de Aceite</label>
                     <textarea id="criteriosAceite"
                               class="form-control"
                               rows="3"></textarea>
                 </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Responsável</label>
+                    <select id="comboResponsavel"
+                            class="form-select">
+                    </select>
+                </div>
 
                 <div class="row">
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label">Prioridade *</label>
-                        <select id="comboPrioridade"
-                                class="form-select">
-
-                            <option value="1">Muito Alta</option>
-                            <option value="2">Alta</option>
-                            <option value="3">Média</option>
-                            <option value="4">Baixa</option>
-
+                        <select id="comboPrioridades" class="form-select">
                         </select>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label">Story Points *</label>
-                        <select id="storypoints"
+                        <select id="combostorypoints"
                                 class="form-select">
 
                             <option>1</option>
@@ -88,12 +77,9 @@
 
                         </select>
                     </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Responsável</label>
-                        <select id="comboResponsavel"
-                                class="form-select">
-                        </select>
+                    <div class="col-md-3 mb-3">
+                        <label>Horas estimadas</label>
+                        <input type="number" id="horas_estimadas" class="form-control text-end">
                     </div>
 
                 </div>
@@ -109,9 +95,9 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Observações</label>
+                        <label class="form-label">Resumo</label>
                         <input type="text"
-                               id="observacao"
+                               id="resumo"
                                class="form-control">
                     </div>
 
@@ -125,7 +111,7 @@
 
             <div class="btn-group" data-toggle="buttons-radio">
                 <button type="button" class="btn btn-salvar"  onclick="salvarBacklog()">Salvar</button>
-                <button type="button" class="btn btn-listar" onclick="listarBacklog()">Listar</button>
+                <button type="button" class="btn btn-listar" onclick="carregarEstorias(document.getElementById('comboEmpreendimento').value);">Listar</button>
                 <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
             </div>
             <div id="resultado"></div>
@@ -135,7 +121,183 @@
 
 </div>
 <script>
+    const API = 'http://localhost:8080/backlog';
+    const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_EPICO = 'http://localhost:8080/epicos';
+    const API_PRIORIDADE = 'http://localhost:8080/prioridade';
 
+    // ==============================================================
+    // CARREGAR COMBOS
+    // ==============================================================
+    async function carregarEmpreendimento() {
+        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/montaComboEmpreendimento`);
+            const empreendimentos = await resposta.json();
+            comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idempreendimento;
+                opcao.textContent = e.descempreendimento;
+                comboEmpreendimento.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela( "resultado",MSG.erroCarregar("EMPREENDIMENTO"), "error");
+        }
+    }
+    async function carregarGestor() {
+        const comboResponsavel = document.getElementById("comboResponsavel");
+        try {
+            const resposta = await fetch(`${API_USUARIOS}/listar`);
+            const usuarios = await resposta.json();
+            usuarios.forEach(usuario => {
+                const opcao = document.createElement('option');
+                opcao.value = usuario.idusuario;
+                opcao.textContent = usuario.nome;
+                comboResponsavel.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", "Erro ao carregar gestor: "+error.message,"error");
+        }
+    }
+    async function carregarPrioridade() {
+        const comboPrioridades = document.getElementById("comboPrioridades");
+        try {
+            const resposta = await fetch(`${API_PRIORIDADE}/listar`);
+            const prioridades = await resposta.json();
+            prioridades.forEach(prioridade => {
+                const opcao = document.createElement('option');
+                opcao.value = prioridade.idprioridade;
+                opcao.textContent = prioridade.descprioridade;
+                comboPrioridades.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("PRIORIDADES"), "error");
+        }
+    }
+
+    // ==============================================================
+    // INICIALIZAÇÃO
+    // ==============================================================
+    document.addEventListener('DOMContentLoaded',() => {
+            carregarEmpreendimento();
+            carregarGestor();
+            carregarPrioridade();
+        }
+    );
+    // 2. Attach the 'change' event listener
+    comboEmpreendimento.addEventListener('change', (event) => {
+        // Get the selected option's value
+        const selectedValue = event.target.value;
+
+        carregarEstorias(selectedValue);
+    });
+    async function carregarEstorias(idEmpreendimento) {
+        if(Number(idEmpreendimento) === 0){
+            mostrarMensagemNaTela("resultado", "Selecione o empreendimento!", "warning");
+            return;
+        }
+        try {
+            const response = await fetch(`${API}/${idEmpreendimento}`);
+            const data = await response.json();
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">Épico</th>
+                        <th class="table-header">ID Estória</th>
+                        <th class="table-header">Descrição</th>
+                        <th class="table-header">Status</th>
+                        <th class="table-header">Prioridade</th>
+                        <th class="table-header">Resumo</th>
+                        <th class="table-header">Pontos</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(backlog => {
+                const cor = corHexValida(backlog.corepico) ? backlog.corepico : "#6c757d";
+                tabela += `<tr onclick="buscarPorLinha(${backlog.idepico},${backlog.idestoria})" style="cursor:pointer;">
+                                <td style="border-left:8px solid ${cor};">${backlog.nome}</td>
+                                <td>${backlog.idestoria}</td>
+                                <td>${backlog.descestoria}</td>
+                                <td>${backlog.descstatus}</td>
+                                <td> <span class="badge" style="background-color:${backlog.corprioridade}; color:white;">${backlog.descprioridade}</span></td>
+                                <td>${backlog.resumo}</td>
+                                <td>${backlog.pontos}</td>
+                                </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.errolistar("BACKLOG"), "error");
+        }
+    }
+    async function buscarPorLinha(idEpico, idEstoria) {
+        try {
+            const response = await fetch(`${API_EPICO}/${idEpico}/estorias/${idEstoria}`);
+            const estoria = await response.json();
+                if (!response.ok) {
+                    mostrarMensagemNaTela("resultado",MSG.erroCarregar("ÉPICO"), "error");
+                } else {
+                    document.getElementById('idepico').value = estoria.idepico;
+                    document.getElementById('idestoria').value = estoria.idestoria;
+                    document.getElementById('descestoria').value = estoria.descestoria;
+                    // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+                    document.getElementById('resumo').value = estoria.resumo;
+                    document.getElementById('combostorypoints').value = estoria.pontos;
+                    document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
+                    //CARREGANDO OS COMBOS
+                    document.getElementById('comboResponsavel').value = estoria.idresponsavel;
+                    mostrarMensagemNaTela("resultado","Estória selecionada: " + estoria.descestoria, "success");
+                }
+            } catch (error) {
+                mostrarMensagemNaTela("resultado",MSG.erroCarregar("ESTORIAS"), "error");
+            }
+        }
+    async function salvarBacklog() {
+        const idEpico = document.getElementById('idepico').value;
+        const idEstoria = document.getElementById('idestoria').value;
+        const descestoria = document.getElementById('descestoria').value;
+        const resumo = document.getElementById('resumo').value;
+        const estoria = {
+            idepico: Number(idEpico) || null,
+            idEstoria: Number(idEstoria) || null,
+            descEstoria: descestoria || null,
+            resumo: resumo,
+            criador: {
+                idCriador: document.getElementById('comboCriadorES').value || null,
+            },
+            responsavel: {
+                idresponsavel: document.getElementById('comboResponsavelES').value || null,
+            },
+            status: {
+                idstatus: document.getElementById('comboStatusES').value || null,
+            },
+            idprioridade: document.getElementById('comboPrioridade').value || null,
+            pontos: document.getElementById('combostorypoints').value || 0,
+            horas_estimadas: Number(document.getElementById('horas_estimadas').value) || 0.0,
+        };
+        try {
+            const response = await fetch(`${API_EPICO}/adicionarEstoria`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(estoria)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("resultado_estoria",MSG.salvo("ESTÓRIA"),"error");
+            setTimeout(() => {
+                limparFormulario("ES");
+                carregarEstorias(idEpico);
+            }, 1000);
+
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_estoria",MSG.erroSalvar("ESTÓRIA"),"error");
+        }
+    }
 </script>
 </body>
 </html>
