@@ -49,7 +49,8 @@ public class SprintService {
         return sprintRepository.findById(idSprint).orElseThrow(() -> new RuntimeException("Sprint não encontrado"));
     }
 
-    public boolean existeSobreposicao(Long idEmpreendimento,Long idSprint, LocalDate dataInicio,LocalDate dataFim) {
+    public boolean existeSobreposicao(Long idEmpreendimento,Long idSprint,
+                                      LocalDate dataInicio,LocalDate dataFim) {
         return sprintRepository.buscaSprintPorIntervalo(dataInicio,dataFim,idEmpreendimento, idSprint) > 0;
     }
 

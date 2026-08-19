@@ -603,13 +603,14 @@
         const data_inicio = document.getElementById("dtiniciosprint").value;
         const data_fim = document.getElementById("dtfinalsprint").value;
         const idempreendimento = document.getElementById("comboEmpreendimento").value;
-        const idSprint = document.getElementById("idSprint").value;
+        const inputSprint = document.getElementById("idsprint");
+        const idSprint = inputSprint && inputSprint.value !== "" ? Number(inputSprint.value): -1;
         if (!idempreendimento) {
             mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!","warning");
             return false;
         }
         try {
-            const linha = `${API}/verifica_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}&idSprint=${idSprint}`;
+            const linha = `${API}/sprint_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}&idSprint=${idSprint}`;
             console.log(linha);
             const response = await fetch(linha);
             if (!response.ok) {

@@ -4,26 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de sprint - Refatorando">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/BacklogController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/SprintEstoriaRequestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/SprintEstoriaResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/SprintEstoriaMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/SprintEstoria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaBacklogDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/BacklogService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/backlog.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro de backlog">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/AusenciaProgramadaMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/AusenciaProgramadaMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/EquipeUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Equipe_Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EmpreendimentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EmpreendimentoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoEstoriasRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoEstoriasRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/LoginService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/backlog.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/backlog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -404,14 +388,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00106" summary="Mensagens padronizadas">
-      <option name="closed" value="true" />
-      <created>1784423487813</created>
-      <option name="number" value="00106" />
-      <option name="presentableId" value="LOCAL-00106" />
-      <option name="project" value="LOCAL" />
-      <updated>1784423487814</updated>
     </task>
     <task id="LOCAL-00107" summary="Ajustes no lay-out">
       <option name="closed" value="true" />
@@ -797,7 +773,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787058818902</updated>
     </task>
-    <option name="localTasksCounter" value="155" />
+    <task id="LOCAL-00155" summary="Cadastro de backlog">
+      <option name="closed" value="true" />
+      <created>1787081427227</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1787081427227</updated>
+    </task>
+    <option name="localTasksCounter" value="156" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -837,7 +821,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Aba anexo começando" />
     <MESSAGE value="Ajustes na aba configuração" />
     <MESSAGE value="Ajustes no cadastro de tarefa" />
     <MESSAGE value="Ajustes no cadastro de sprint" />
@@ -862,7 +845,8 @@
     <MESSAGE value="Cadastro de tarefas com DTO na listagem e consulta" />
     <MESSAGE value="Cadastro de equipe - OK" />
     <MESSAGE value="Cadastro de sprint - Refatorando" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de sprint - Refatorando" />
+    <MESSAGE value="Cadastro de backlog" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cadastro de backlog" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
