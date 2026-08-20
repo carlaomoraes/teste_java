@@ -109,7 +109,8 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         ep.cor,
         p.idprioridade,
         p.descprioridade,
-        p.corprioridade)
+        p.corprioridade,
+        e.pontos)
      FROM Estoria e
     JOIN e.status s
     join e.responsavel r
