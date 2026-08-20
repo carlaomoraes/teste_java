@@ -4,6 +4,7 @@ import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaRoadmapDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,9 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
+
     @Query("""
-            SELECT new br.com.taskcontroller.Record.EstoriaConsultaDTO(
-        e.idestoria,
+       SELECT new br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO(
+        e.idestoria/*,
         e.descestoria,
         e.status.idstatus,
         s.descstatus,
@@ -29,14 +31,14 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         COALESCE(e.horas_realizadas,0),
         e.data_inicio,
         e.data_fim,
-        e.bloqueada)
+        e.bloqueada*/)
     FROM Estoria e
             JOIN e.status s
             join e.responsavel r
             join e.criador c
            WHERE e.idestoria = :idestoria
              and e.epico.idepico = :idepico
-          """)
+    """)
     EstoriaConsultaDTO buscarPorId(@Param("idestoria") Long idestoria,
                                    @Param("idepico") Long idepico);
 
@@ -68,8 +70,8 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     long contarRelacionamentos(@Param("idEpico") Long idEpico);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.EstoriaListagemDTO(
-        e.idestoria,
+    SELECT new br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO(
+        e.idestoria/*,
         e.descestoria,
         e.status.idstatus,
         s.descstatus,
@@ -83,7 +85,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         COALESCE(e.horas_realizadas,0),
         e.data_inicio,
         e.data_fim,
-        e.bloqueada)
+        e.bloqueada*/)
     FROM Estoria e
     JOIN e.status s
     join e.responsavel r
@@ -93,8 +95,8 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     List<EstoriaListagemDTO> listaEstoriasPorEpico(@Param("idepico") Long idepico);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.EstoriaBacklogDTO(
-        e.idestoria,
+    SELECT new br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO(
+        e.idestoria/*,
         e.descestoria,
         s.idstatus,
         s.descstatus,
@@ -109,7 +111,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         ep.cor,
         p.idprioridade,
         p.descprioridade,
-        p.corprioridade)
+        p.corprioridade*/)
      FROM Estoria e
     JOIN e.status s
     join e.responsavel r
@@ -126,4 +128,21 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
 """)
     List<EstoriaBacklogDTO> listaEstoriasBacklog(@Param("idempreendimento") Long idempreendimento);
 
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Estoria.EstoriaRoadmapDTO(
+        e.idestoria,
+        e.descestoria,
+        ep.idepico,
+        ep.nome,
+        ep.cor,
+        s.descsprint,
+        s.dtiniciosprint,
+        s.dtfinalsprint)
+     FROM Estoria e
+     join e.epico ep
+     join SprintEstoria se
+     join Sprint s
+     where ep.empreendimento.idempreendimento = :idempreendimento
+""")
+    List<EstoriaRoadmapDTO> listaEstoriasRoadmap(@Param("idempreendimento") Long idempreendimento);
 }
