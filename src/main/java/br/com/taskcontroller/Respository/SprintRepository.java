@@ -41,7 +41,7 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
                                        @Param("data_fim") LocalDate data_fim);
 
     @Query("""
-    select new br.com.taskcontroller.Record.SprintListagemDTO(
+    select new br.com.taskcontroller.Record.Sprint.SprintListagemDTO(
             s.empreendimento.idempreendimento,
             s.idsprint,
             s.descsprint,
@@ -56,7 +56,7 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
     List<SprintListagemDTO> listar(@Param("idempreendimento") Long idempreendimento);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.SprintDataDTO(
+    SELECT new br.com.taskcontroller.Record.Sprint.SprintDataDTO(
         s.idsprint,
         s.empreendimento.idempreendimento,
         s.descsprint,
