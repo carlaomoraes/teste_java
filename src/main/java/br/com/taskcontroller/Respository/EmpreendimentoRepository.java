@@ -1,8 +1,8 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Empreendimento;
-import br.com.taskcontroller.Record.Empreendimento.EmpreendimentoDTO;
 import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
+import br.com.taskcontroller.Record.Empreendimento.EmpreendimentoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -44,7 +44,7 @@ public interface EmpreendimentoRepository extends JpaRepository<Empreendimento, 
     List<EmpreendimentoDTO> findByAtivoTrue();
 
     @Query("""
-    SELECT distinct new br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO(
+    SELECT distinct new br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO(
         e.idempreendimento,
         e.descempreendimento
     )
