@@ -12,11 +12,10 @@ public interface PapelRepository extends JpaRepository<Papel, Long> {
     SELECT new br.com.taskcontroller.Record.COMBO.PapelComboDTO(
         p.idpapel,
         p.descpapel,
-        coalesce(p.valorhora, 1)
+        p.valorhora
     )
     FROM Papel p
     ORDER BY p.idpapel
     """)
     List<PapelComboDTO> montaComboPapel();
-
 }

@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Entity
@@ -15,5 +17,5 @@ public class Papel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idpapel;
     private String descpapel;
-    private double valorhora;
+    private BigDecimal valorhora;
 }
