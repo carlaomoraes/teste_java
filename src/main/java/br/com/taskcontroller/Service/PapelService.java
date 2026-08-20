@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.DTO.COMBO.PapelComboDTO;
 import br.com.taskcontroller.Modelo.Papel;
+import br.com.taskcontroller.Record.COMBO.PapelComboDTO;
 import br.com.taskcontroller.Respository.PapelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

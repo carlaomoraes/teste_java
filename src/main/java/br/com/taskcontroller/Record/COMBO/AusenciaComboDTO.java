@@ -1,4 +1,4 @@
-package br.com.taskcontroller.DTO.COMBO;
+package br.com.taskcontroller.Record.COMBO;
 
 public record AusenciaComboDTO(
         Long idtipoausencia,

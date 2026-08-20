@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.COMBO.PapelComboDTO;
+import br.com.taskcontroller.Record.COMBO.PapelComboDTO;
 import br.com.taskcontroller.Modelo.Papel;
 import br.com.taskcontroller.Respository.PapelRepository;
 import br.com.taskcontroller.Service.PapelService;

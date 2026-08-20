@@ -1,6 +1,5 @@
 package br.com.taskcontroller.Mapper;
 
-import br.com.taskcontroller.DTO.EpicoRequestDTO;
 import br.com.taskcontroller.DTO.EpicoResponseDTO;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Epico.EpicoInclusaoDTO;

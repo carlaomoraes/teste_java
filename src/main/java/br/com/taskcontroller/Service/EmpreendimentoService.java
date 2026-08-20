@@ -1,10 +1,10 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Empreendimento_Equipe;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Record.Empreendimento.EmpreendimentoDTO;
+import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Respository.EmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EquipeEmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EquipeRepository;

@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
+import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.Usuario;

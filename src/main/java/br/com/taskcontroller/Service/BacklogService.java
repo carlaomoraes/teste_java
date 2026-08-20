@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Service;
 
 
-import br.com.taskcontroller.DTO.COMBO.EmpreendimentoComboDTO;
+import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO;
 import br.com.taskcontroller.Respository.EmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;

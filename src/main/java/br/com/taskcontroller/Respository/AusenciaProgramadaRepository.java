@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Respository;
 
-import br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO;
+import br.com.taskcontroller.Record.COMBO.AusenciaComboDTO;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaProgramada, Long> {
     @Query("""
-    SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
+    SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
         a.idausencia,
         a.usuario.idusuario,
         a.usuario.nome,
@@ -30,7 +30,7 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
     List<AusenciaListagemDTO> findByIdusuario_Idusuario(Long idUsuario);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
+    SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
         a.idausencia,
         a.usuario.idusuario,
         a.usuario.nome,
@@ -51,7 +51,7 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
     );
 
     @Query("""
-    SELECT new br.com.taskcontroller.DTO.COMBO.AusenciaComboDTO(
+    SELECT new br.com.taskcontroller.Record.COMBO.AusenciaComboDTO(
         a.id_tipo_ausencia,
         a.desc_tipo_ausencia
     )

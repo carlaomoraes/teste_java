@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Tarefa;
-import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
+import br.com.taskcontroller.Record.TarefaConsultaDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

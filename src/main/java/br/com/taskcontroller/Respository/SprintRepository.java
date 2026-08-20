@@ -2,8 +2,8 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
-import br.com.taskcontroller.Record.SprintDataDTO;
-import br.com.taskcontroller.Record.SprintListagemDTO;
+import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
+import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
-            SELECT new br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO(
+            SELECT new br.com.taskcontroller.Record.EstoriaConsultaDTO(
         e.idestoria,
         e.descestoria,
         e.status.idstatus,
@@ -68,7 +68,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     long contarRelacionamentos(@Param("idEpico") Long idEpico);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO(
+    SELECT new br.com.taskcontroller.Record.EstoriaListagemDTO(
         e.idestoria,
         e.descestoria,
         e.status.idstatus,
@@ -93,7 +93,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     List<EstoriaListagemDTO> listaEstoriasPorEpico(@Param("idepico") Long idepico);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO(
+    SELECT new br.com.taskcontroller.Record.EstoriaBacklogDTO(
         e.idestoria,
         e.descestoria,
         s.idstatus,

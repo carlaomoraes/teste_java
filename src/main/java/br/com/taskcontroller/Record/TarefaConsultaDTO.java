@@ -1,4 +1,4 @@
-package br.com.taskcontroller.Record.Tarefa;
+package br.com.taskcontroller.Record;
 
 import java.time.LocalDate;
 

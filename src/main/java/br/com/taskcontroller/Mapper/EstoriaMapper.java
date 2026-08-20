@@ -1,7 +1,6 @@
 package br.com.taskcontroller.Mapper;
 
 
-import br.com.taskcontroller.DTO.EstoriaResponseDTO;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Estoria.EstoriaInclusaoDTO;
 
