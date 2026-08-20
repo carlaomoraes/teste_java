@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
-import br.com.taskcontroller.Record.TarefaConsultaDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import br.com.taskcontroller.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;

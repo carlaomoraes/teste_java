@@ -2,7 +2,7 @@ package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.Tarefa;
-import br.com.taskcontroller.Record.TarefaConsultaDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
