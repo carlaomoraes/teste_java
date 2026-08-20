@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Record.Estoria;
 
 public record EstoriaBacklogDTO(
-        Long idestoria,
+        Long idestoria/*,
         String descestoria,
         Long idstatus,
         String descstatus,
@@ -16,6 +16,6 @@ public record EstoriaBacklogDTO(
         String corepico,
         Long idprioridade,
         String descprioridade,
-        String corprioridade)
+        String corprioridade*/)
 {
 }

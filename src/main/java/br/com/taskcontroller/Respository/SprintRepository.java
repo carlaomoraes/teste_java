@@ -74,5 +74,4 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
             @Param("hoje") LocalDate hoje
     );
 
-    // CRIAR A CONSULTA PARA A TELA DO BACKLOG
 }

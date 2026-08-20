@@ -22,7 +22,12 @@
 <script src="js/utils/mensagens.js"></script>
 <div class="container mt-4">
     <h1>Backlog - TaskController 1.0</h1>
-    <div class="card-body">
+    <div class="abas-container">
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'backlog')">Backlog</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'roadmap')">Roadmap</button>
+    </div>
+
+    <div id="usuarios" class="conteudo-aba ativo">
             <form id="frmBacklog">
                 <input type="hidden" id="idepico">
                 <input type="hidden" id="idestoria">
@@ -115,11 +120,11 @@
                 <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
             </div>
             <div id="resultado"></div>
-
-
         </div>
-
-</div>
+    </div>
+    <div id="roadmap" class="conteudo-aba ativo">
+        <div id="resultadoroadmap"></div>
+    </div>
 <script>
     const API = 'http://localhost:8080/backlog';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';

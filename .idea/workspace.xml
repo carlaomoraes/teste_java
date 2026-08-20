@@ -4,60 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Cadastro backlog">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Refatoracao dos pacotes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/AusenciaProgramadaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/AusenciaProgramadaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/BacklogController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/BacklogController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EmpreendimentoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EmpreendimentoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EpicoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/EquipeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/PapelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/PapelController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TarefaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TarefaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/UsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/COMBO/AusenciaComboDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/COMBO/AusenciaComboDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/COMBO/EmpreendimentoComboDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/COMBO/PapelComboDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/EpicoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/EpicoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/EstoriaMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/EstoriaMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Empreendimento/EmpreendimentoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Empreendimento/EmpreendimentoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoConsultaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoConsultaDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoInclusaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoInclusaoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Epico/EpicoListagemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Equipe/EquipeCardDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Equipe/EquipeCardDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Equipe/EquipeUsuarioDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Equipe/EquipeUsuarioDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaBacklogDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaBacklogDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaConsultaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaConsultaDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaInclusaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaInclusaoDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaListagemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/SprintDataDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/SprintDataDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/SprintListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/SprintListagemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Tarefa/TarefaConsultaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/TarefaConsultaDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Usuario/UsuarioAutenticacaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Usuario/UsuarioAutenticacaoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Usuario/UsuarioInclusaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Usuario/UsuarioInclusaoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Usuario/UsuarioListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Usuario/UsuarioListagemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Usuario/UsuarioLoginDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Usuario/UsuarioLoginDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/AusenciaProgramadaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/AusenciaProgramadaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EmpreendimentoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EmpreendimentoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoEstoriasRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoEstoriasRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EpicoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EquipeUsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/LoginRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/LoginRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/PapelRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/PapelRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/UsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/AusenciaProgramadaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/AusenciaProgramadaService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/BacklogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/BacklogService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EmpreendimentoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EmpreendimentoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EpicoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EpicoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/LoginService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/PapelService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/PapelService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TarefaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TarefaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/UsuarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/backlog.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/backlog.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,22 +149,22 @@
       <recent name="" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="br.com.taskcontroller.Record.Tarefa" />
       <recent name="br.com.taskcontroller.Record.Sprint" />
       <recent name="br.com.taskcontroller.Record.Usuario" />
       <recent name="br.com.taskcontroller.Record.Estoria" />
       <recent name="br.com.taskcontroller.Record.Equipe" />
-      <recent name="br.com.taskcontroller.Record.Epico" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="br.com.taskboard.demo.Controller" />
       <recent name="br.com.taskboard.demo.DAO" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="br.com.taskcontroller.Record.Estoria" />
       <recent name="br.com.taskcontroller.Record.COMBO" />
       <recent name="br.com.taskcontroller.Service" />
       <recent name="br.com.taskcontroller.Controller" />
       <recent name="br.com.taskcontroller.DTO" />
-      <recent name="br.com.taskcontroller.Record.Estoria" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TaskControllerApplication">
@@ -438,70 +393,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00109" summary="Ajustes no lay-out">
-      <option name="closed" value="true" />
-      <created>1784504008233</created>
-      <option name="number" value="00109" />
-      <option name="presentableId" value="LOCAL-00109" />
-      <option name="project" value="LOCAL" />
-      <updated>1784504008233</updated>
-    </task>
-    <task id="LOCAL-00110" summary="Ajustes na aba equipes">
-      <option name="closed" value="true" />
-      <created>1784579435667</created>
-      <option name="number" value="00110" />
-      <option name="presentableId" value="LOCAL-00110" />
-      <option name="project" value="LOCAL" />
-      <updated>1784579435668</updated>
-    </task>
-    <task id="LOCAL-00111" summary="Aba equipes concluída">
-      <option name="closed" value="true" />
-      <created>1784654977823</created>
-      <option name="number" value="00111" />
-      <option name="presentableId" value="LOCAL-00111" />
-      <option name="project" value="LOCAL" />
-      <updated>1784654977823</updated>
-    </task>
-    <task id="LOCAL-00112" summary="Aba anexo começando">
-      <option name="closed" value="true" />
-      <created>1784665303348</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1784665303348</updated>
-    </task>
-    <task id="LOCAL-00113" summary="Ajustes na aba configuração">
-      <option name="closed" value="true" />
-      <created>1784682270843</created>
-      <option name="number" value="00113" />
-      <option name="presentableId" value="LOCAL-00113" />
-      <option name="project" value="LOCAL" />
-      <updated>1784682270843</updated>
-    </task>
-    <task id="LOCAL-00114" summary="Ajustes na aba configuração">
-      <option name="closed" value="true" />
-      <created>1784810066566</created>
-      <option name="number" value="00114" />
-      <option name="presentableId" value="LOCAL-00114" />
-      <option name="project" value="LOCAL" />
-      <updated>1784810066566</updated>
-    </task>
-    <task id="LOCAL-00115" summary="Ajustes no cadastro de sprint">
-      <option name="closed" value="true" />
-      <created>1784811749534</created>
-      <option name="number" value="00115" />
-      <option name="presentableId" value="LOCAL-00115" />
-      <option name="project" value="LOCAL" />
-      <updated>1784811749534</updated>
-    </task>
-    <task id="LOCAL-00116" summary="Ajustes no cadastro de tarefa">
-      <option name="closed" value="true" />
-      <created>1784833838713</created>
-      <option name="number" value="00116" />
-      <option name="presentableId" value="LOCAL-00116" />
-      <option name="project" value="LOCAL" />
-      <updated>1784833838713</updated>
     </task>
     <task id="LOCAL-00117" summary="Ajustes no cadastro de sprint">
       <option name="closed" value="true" />
@@ -831,7 +722,71 @@
       <option name="project" value="LOCAL" />
       <updated>1787173876661</updated>
     </task>
-    <option name="localTasksCounter" value="158" />
+    <task id="LOCAL-00158" summary="Refatoracao dos pacotes">
+      <option name="closed" value="true" />
+      <created>1787232975350</created>
+      <option name="number" value="00158" />
+      <option name="presentableId" value="LOCAL-00158" />
+      <option name="project" value="LOCAL" />
+      <updated>1787232975351</updated>
+    </task>
+    <task id="LOCAL-00159" summary="Refatoracao dos pacotes">
+      <option name="closed" value="true" />
+      <created>1787247016170</created>
+      <option name="number" value="00159" />
+      <option name="presentableId" value="LOCAL-00159" />
+      <option name="project" value="LOCAL" />
+      <updated>1787247016170</updated>
+    </task>
+    <task id="LOCAL-00160" summary="Refatoracao dos pacotes">
+      <option name="closed" value="true" />
+      <created>1787247054551</created>
+      <option name="number" value="00160" />
+      <option name="presentableId" value="LOCAL-00160" />
+      <option name="project" value="LOCAL" />
+      <updated>1787247054551</updated>
+    </task>
+    <task id="LOCAL-00161" summary="Refatoracao dos pacotes">
+      <option name="closed" value="true" />
+      <created>1787247076107</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1787247076107</updated>
+    </task>
+    <task id="LOCAL-00162" summary="Refatoracao dos pacotes">
+      <option name="closed" value="true" />
+      <created>1787247141638</created>
+      <option name="number" value="00162" />
+      <option name="presentableId" value="LOCAL-00162" />
+      <option name="project" value="LOCAL" />
+      <updated>1787247141639</updated>
+    </task>
+    <task id="LOCAL-00163" summary="Refatoracao dos pacotes">
+      <option name="closed" value="true" />
+      <created>1787247180056</created>
+      <option name="number" value="00163" />
+      <option name="presentableId" value="LOCAL-00163" />
+      <option name="project" value="LOCAL" />
+      <updated>1787247180056</updated>
+    </task>
+    <task id="LOCAL-00164" summary="Refatoracao dos pacotes">
+      <option name="closed" value="true" />
+      <created>1787247220352</created>
+      <option name="number" value="00164" />
+      <option name="presentableId" value="LOCAL-00164" />
+      <option name="project" value="LOCAL" />
+      <updated>1787247220352</updated>
+    </task>
+    <task id="LOCAL-00165" summary="Refatoracao dos pacotes">
+      <option name="closed" value="true" />
+      <created>1787248082910</created>
+      <option name="number" value="00165" />
+      <option name="presentableId" value="LOCAL-00165" />
+      <option name="project" value="LOCAL" />
+      <updated>1787248082910</updated>
+    </task>
+    <option name="localTasksCounter" value="166" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -871,7 +826,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajustes no cadastro de sprint" />
     <MESSAGE value="Resolvendo erros de execução" />
     <MESSAGE value="Tratando transição de status" />
     <MESSAGE value="Ajustes na forma listar empreendimento" />
@@ -896,7 +850,8 @@
     <MESSAGE value="Cadastro de backlog" />
     <MESSAGE value="Correção cadastro de sprint" />
     <MESSAGE value="Cadastro backlog" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cadastro backlog" />
+    <MESSAGE value="Refatoracao dos pacotes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refatoracao dos pacotes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

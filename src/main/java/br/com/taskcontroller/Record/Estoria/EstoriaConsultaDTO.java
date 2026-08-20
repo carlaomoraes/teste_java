@@ -3,7 +3,7 @@ package br.com.taskcontroller.Record.Estoria;
 import java.time.LocalDate;
 
 public record EstoriaConsultaDTO(
-        Long idestoria,
+        Long idestoria/*,
         String descestoria,
         Long idstatus,
         String descstatus,
@@ -17,6 +17,6 @@ public record EstoriaConsultaDTO(
         Long horas_realizadas,
         LocalDate data_inicio,
         LocalDate data_fim,
-        Boolean bloqueada
+        Boolean bloqueada*/
 ) {
 }

@@ -3,6 +3,7 @@ package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaRoadmapDTO;
 import br.com.taskcontroller.Respository.EmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class BacklogService {
 
     public List<EmpreendimentoComboDTO> montaComboEmpreendimento() {
         return repositoryEmpreendimento.montaComboEmpreendimento();
+    }
+
+    public List<EstoriaRoadmapDTO> montaRoadmap(Long idempreendimento) {
+        return repository.listaEstoriasRoadmap(idempreendimento);
     }
 }
