@@ -36,7 +36,7 @@ public class BacklogController {
 
         return service.montaComboEmpreendimento();
     }
-    @GetMapping("/roadmap/{idempreendimento}")
+    @GetMapping("/{idempreendimento}/roadmap")
     public List<EstoriaRoadmapDTO> monntaRoadmap(@PathVariable Long idempreendimento) {
         return service.montaRoadmap(idempreendimento);
     }
