@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaProgramada, Long> {
     @Query("""
-    SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
+    SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
         a.idausencia,
         a.usuario.idusuario,
         a.usuario.nome,
@@ -30,7 +30,7 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
     List<AusenciaListagemDTO> findByIdusuario_Idusuario(Long idUsuario);
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.AusenciaListagemDTO(
+    SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
         a.idausencia,
         a.usuario.idusuario,
         a.usuario.nome,
