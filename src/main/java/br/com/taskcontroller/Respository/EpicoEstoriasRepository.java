@@ -110,20 +110,21 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         p.idprioridade,
         p.descprioridade,
         p.corprioridade,
-        e.pontos)
-     FROM Estoria e
+        0
+    )
+    FROM Estoria e
     JOIN e.status s
-    join e.responsavel r
-    join e.criador c
-    join e.epico ep
-    join ep.prioridade p
+    JOIN e.responsavel r
+    JOIN e.criador c
+    JOIN e.epico ep
+    JOIN ep.prioridade p
     WHERE e.ativa = true
-      AND NOT EXISTS (
-              SELECT 1
-                FROM SprintEstoria se
-               WHERE se.estoria.idestoria = e.idestoria
-      )
       AND ep.empreendimento.idempreendimento = :idempreendimento
+      AND NOT EXISTS (
+          SELECT 1
+          FROM SprintEstoria se
+          WHERE se.estoria.idestoria = e.idestoria
+      )
 """)
     List<EstoriaBacklogDTO> listaEstoriasBacklog(@Param("idempreendimento") Long idempreendimento);
 
@@ -136,12 +137,13 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         ep.cor,
         s.descsprint,
         s.dtiniciosprint,
-        s.dtfinalsprint)
-     FROM Estoria e
-     join e.epico ep
-     join SprintEstoria se
-     join Sprint s
-     where ep.empreendimento.idempreendimento = :idempreendimento
+        s.dtfinalsprint
+    )
+    FROM Estoria e
+    JOIN e.epico ep
+    JOIN SprintEstoria se ON se.estoria.idestoria = e.idestoria
+    JOIN Sprint s ON s.idsprint = se.sprint.idsprint
+    WHERE ep.empreendimento.idempreendimento = :idempreendimento
 """)
-    List<EstoriaRoadmapDTO> listaEstoriasRoadmap(@Param("idempreendimento") Long idempreendimento);
+    List<EstoriaRoadmapDTO> listaEstoriasRoadmap(Long idempreendimento);
 }

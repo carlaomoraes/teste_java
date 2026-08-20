@@ -21,110 +21,212 @@
 <script src="js/utils/funcoes.js"></script>
 <script src="js/utils/mensagens.js"></script>
 <div class="container mt-4">
+
     <h1>Backlog - TaskController 1.0</h1>
+
+    <!-- ABAS -->
     <div class="abas-container">
-        <button class="aba-botao ativa" onclick="alternarAba(event, 'backlog')">Backlog</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'roadmap')">Roadmap</button>
+        <button class="aba-botao ativa"
+                onclick="alternarAba(event, 'backlog')">
+            Backlog
+        </button>
+
+        <button class="aba-botao"
+                onclick="alternarAba(event, 'roadmap')">
+            Roadmap
+        </button>
     </div>
 
-    <div id="usuarios" class="conteudo-aba ativo">
-            <form id="frmBacklog">
-                <input type="hidden" id="idepico">
-                <input type="hidden" id="idestoria">
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Empreendimento *</label>
-                        <select id="comboEmpreendimento"
-                                class="form-select"
-                                required>
-                        </select>
-                    </div>
 
-                </div>
+    <!-- EMPREENDIMENTO -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label class="form-label">
+                Empreendimento *
+            </label>
 
-                <div class="mb-3">
-                    <label>Descrição</label>
-                    <input type="text" id="descestoria" oninput="converterMaiusculo(this)">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Critérios de Aceite</label>
-                    <textarea id="criteriosAceite"
-                              class="form-control"
-                              rows="3"></textarea>
-                </div>
+            <select id="comboEmpreendimento"
+                    class="form-select"
+                    required>
+            </select>
+        </div>
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- ABA BACKLOG                                               -->
+    <!-- ========================================================= -->
+
+    <div id="backlog" class="conteudo-aba ativo">
+
+        <form id="frmBacklog">
+
+            <input type="hidden" id="idepico">
+            <input type="hidden" id="idestoria">
+
+
+            <!-- DESCRIÇÃO -->
+            <div class="mb-3">
+                <label for="descestoria" class="form-label">
+                    Estória
+                </label>
+
+                <input type="text"
+                       id="descestoria"
+                       class="form-control"
+                       oninput="converterMaiusculo(this)">
+            </div>
+
+
+            <!-- RESPONSÁVEL -->
+            <div class="row">
+
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Responsável</label>
+
+                    <label for="comboResponsavel"
+                           class="form-label">
+                        Responsável
+                    </label>
+
                     <select id="comboResponsavel"
                             class="form-select">
                     </select>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Prioridade *</label>
-                        <select id="comboPrioridades" class="form-select">
-                        </select>
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Story Points *</label>
-                        <select id="combostorypoints"
-                                class="form-select">
-
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>5</option>
-                            <option>8</option>
-                            <option>13</option>
-                            <option>21</option>
-
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label>Horas estimadas</label>
-                        <input type="number" id="horas_estimadas" class="form-control text-end">
-                    </div>
 
                 </div>
 
-                <div class="row">
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Tags</label>
-                        <input type="text"
-                               id="tags"
-                               class="form-control"
-                               placeholder="Ex.: API, Login, Financeiro">
-                    </div>
+                <!-- PRIORIDADE -->
+                <div class="col-md-3 mb-3">
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Resumo</label>
-                        <input type="text"
-                               id="resumo"
-                               class="form-control">
-                    </div>
+                    <label for="comboPrioridades"
+                           class="form-label">
+                        Prioridade *
+                    </label>
+
+                    <select id="comboPrioridades"
+                            class="form-select">
+                    </select>
 
                 </div>
 
-            </form>
 
-        </div>
+                <!-- STORY POINTS -->
+                <div class="col-md-3 mb-3">
 
-        <div class="card-footer text-end">
+                    <label for="combostorypoints"
+                           class="form-label">
+                        Story Points *
+                    </label>
 
-            <div class="btn-group" data-toggle="buttons-radio">
-                <button type="button" class="btn btn-salvar"  onclick="salvarBacklog()">Salvar</button>
-                <button type="button" class="btn btn-listar" onclick="carregarEstorias(document.getElementById('comboEmpreendimento').value);">Listar</button>
-                <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+                    <select id="combostorypoints"
+                            class="form-select">
+
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="8">8</option>
+                        <option value="13">13</option>
+                        <option value="21">21</option>
+
+                    </select>
+
+                </div>
+
             </div>
-            <div id="resultado"></div>
+
+
+            <!-- HORAS + RESUMO -->
+            <div class="row">
+
+                <div class="col-md-3 mb-3">
+
+                    <label for="horas_estimadas"
+                           class="form-label">
+                        Horas estimadas
+                    </label>
+
+                    <input type="number"
+                           id="horas_estimadas"
+                           class="form-control text-end"
+                           min="0"
+                           step="0.5">
+
+                </div>
+
+
+                <div class="col-md-9 mb-3">
+
+                    <label for="resumo"
+                           class="form-label">
+                        Resumo
+                    </label>
+
+                    <input type="text"
+                           id="resumo"
+                           class="form-control">
+
+                </div>
+
+            </div>
+
+        </form>
+
+
+        <!-- BOTÕES -->
+        <div class="btn-group">
+
+            <button type="button"
+                    class="btn btn-salvar"
+                    onclick="salvarBacklog()">
+                Salvar
+            </button>
+
+            <button type="button"
+                    class="btn btn-listar"
+                    onclick="carregarEstorias(
+                        document.getElementById('comboEmpreendimento').value
+                    )">
+                Listar
+            </button>
+
+            <button type="button"
+                    class="btn btn-voltar"
+                    onclick="history.back()">
+                Voltar
+            </button>
+
         </div>
+
     </div>
-    <div id="roadmap" class="conteudo-aba ativo">
-        <div id="resultadoroadmap"></div>
+
+
+    <!-- ========================================================= -->
+    <!-- ABA ROADMAP                                               -->
+    <!-- ========================================================= -->
+
+    <div id="roadmap"
+         class="conteudo-aba">
+
+        <div id="resultadoRoadmap">
+
+            <div class="text-center text-muted py-5">
+                Selecione um empreendimento para visualizar o roadmap.
+            </div>
+
+        </div>
+
     </div>
+
+
+    <!-- RESULTADO -->
+    <div class="card-footer text-end mt-3">
+
+        <div id="resultado"></div>
+
+    </div>
+
+</div>
 <script>
     const API = 'http://localhost:8080/backlog';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
@@ -180,6 +282,25 @@
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("PRIORIDADES"), "error");
         }
+    }
+    function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
     }
 
     // ==============================================================

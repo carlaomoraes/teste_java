@@ -15,6 +15,6 @@ public record EstoriaBacklogDTO(
         Long idprioridade,
         String descprioridade,
         String corprioridade,
-        int póntos)
+        int pontos)
 {
 }

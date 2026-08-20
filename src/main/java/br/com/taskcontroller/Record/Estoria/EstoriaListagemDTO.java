@@ -17,6 +17,6 @@ public record EstoriaListagemDTO(
         Long horas_realizadas,
         LocalDate data_inicio,
         LocalDate data_fim,
-        Boolean bloqueada */
+        Boolean bloqueada*/
 ) {
 }
