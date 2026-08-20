@@ -96,7 +96,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
 
     @Query("""
     SELECT new br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO(
-        e.idestoria/*,
+        e.idestoria,
         e.descestoria,
         s.idstatus,
         s.descstatus,
@@ -104,14 +104,12 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         c.nome,
         r.idusuario,
         r.nome,
-        COALESCE(e.resumo,"N/A"),
-        COALESCE(e.pontos,0),
         ep.idepico,
         ep.nome,
         ep.cor,
         p.idprioridade,
         p.descprioridade,
-        p.corprioridade*/)
+        p.corprioridade)
      FROM Estoria e
     JOIN e.status s
     join e.responsavel r
