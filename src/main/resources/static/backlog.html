@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/pages/backlog.css">
     <link rel="stylesheet" href="css/pages/funcoes.css">
 </head>
+
 <body>
 <script src="js/utils/funcoes.js"></script>
 <script src="js/utils/mensagens.js"></script>
@@ -197,6 +198,13 @@
             </button>
 
         </div>
+        <!-- RESULTADO -->
+        <div class="card-footer text-end mt-3">
+
+            <div id="resultado"></div>
+
+        </div>
+
 
     </div>
 
@@ -217,15 +225,6 @@
         </div>
 
     </div>
-
-
-    <!-- RESULTADO -->
-    <div class="card-footer text-end mt-3">
-
-        <div id="resultado"></div>
-
-    </div>
-
 </div>
 <script>
     const API = 'http://localhost:8080/backlog';
@@ -317,9 +316,11 @@
         // Get the selected option's value
         const selectedValue = event.target.value;
 
-        carregarEstorias(selectedValue);
+        montaBacklog(selectedValue);
+        montarRoadmap(selectedValue);
+
     });
-    async function carregarEstorias(idEmpreendimento) {
+    async function montarRoadmap(idEmpreendimento) {
         if(Number(idEmpreendimento) === 0){
             mostrarMensagemNaTela("resultado", "Selecione o empreendimento!", "warning");
             return;
@@ -327,61 +328,51 @@
         try {
             const response = await fetch(`${API}/${idEmpreendimento}`);
             const data = await response.json();
+        } catch (error) {
+            mostrarMensagemNaTela("resultadoRoadmap", MSG.errolistar("ROADMAP"), "error");
+        }
+
+     }
+    async function montaBacklog(idEmpreendimento) {
+        if(Number(idEmpreendimento) === 0){
+            mostrarMensagemNaTela("resultado", "Selecione o empreendimento!", "warning");
+            return;
+        }
+        try {
+            const response = await fetch(`${API}/backlog/${idEmpreendimento}`);
+            const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
-                        <th class="table-header">Épico</th>
                         <th class="table-header">ID Estória</th>
-                        <th class="table-header">Descrição</th>
                         <th class="table-header">Status</th>
-                        <th class="table-header">Prioridade</th>
-                        <th class="table-header">Resumo</th>
-                        <th class="table-header">Pontos</th>
-
+                        <th class="table-header">Criador</th>
+                        <th class="table-header">Responsável</th>
+                        <th class="table-header">Código do Épico</th>
+                        <th class="table-header">Nome do Épico</th>
                     </tr>
                 </thead>
                 <tbody>
         `;
             data.forEach(backlog => {
                 const cor = corHexValida(backlog.corepico) ? backlog.corepico : "#6c757d";
-                tabela += `<tr onclick="buscarPorLinha(${backlog.idepico},${backlog.idestoria})" style="cursor:pointer;">
-                                <td style="border-left:8px solid ${cor};">${backlog.nome}</td>
-                                <td>${backlog.idestoria}</td>
+                tabela += `<tr onclick="buscarPorLinha(${backlog.idestoria})"
+                                style="cursor:pointer;">
                                 <td>${backlog.descestoria}</td>
                                 <td>${backlog.descstatus}</td>
-                                <td> <span class="badge" style="background-color:${backlog.corprioridade}; color:white;">${backlog.descprioridade}</span></td>
-                                <td>${backlog.resumo}</td>
-                                <td>${backlog.pontos}</td>
+                                <td>${backlog.nomecriador}</td>
+                                <td>${backlog.nomeresponsavel}</td>
+                                <td>${backlog.idepico}</td>
+                                <td>${backlog.nome}</td>
                                 </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('resultado').innerHTML = tabela;
+                tabela += `</tbody></table>`;
+
+            document.getElementById('resultadoRoadmap').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.errolistar("BACKLOG"), "error");
+            mostrarMensagemNaTela("resultadoRoadmap", MSG.errolistar("BACKLOG"), "error");
         }
     }
-    async function buscarPorLinha(idEpico, idEstoria) {
-        try {
-            const response = await fetch(`${API_EPICO}/${idEpico}/estorias/${idEstoria}`);
-            const estoria = await response.json();
-                if (!response.ok) {
-                    mostrarMensagemNaTela("resultado",MSG.erroCarregar("ÉPICO"), "error");
-                } else {
-                    document.getElementById('idepico').value = estoria.idepico;
-                    document.getElementById('idestoria').value = estoria.idestoria;
-                    document.getElementById('descestoria').value = estoria.descestoria;
-                    // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-                    document.getElementById('resumo').value = estoria.resumo;
-                    document.getElementById('combostorypoints').value = estoria.pontos;
-                    document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
-                    //CARREGANDO OS COMBOS
-                    document.getElementById('comboResponsavel').value = estoria.idresponsavel;
-                    mostrarMensagemNaTela("resultado","Estória selecionada: " + estoria.descestoria, "success");
-                }
-            } catch (error) {
-                mostrarMensagemNaTela("resultado",MSG.erroCarregar("ESTORIAS"), "error");
-            }
-        }
     async function salvarBacklog() {
         const idEpico = document.getElementById('idepico').value;
         const idEstoria = document.getElementById('idestoria').value;
