@@ -8,8 +8,11 @@ public record EstoriaRoadmapDTO(
         Long idepico,
         String nome,
         String cor,
+        Long idsprint,
         String descsprint,
         LocalDate dtiniciosprint,
-        LocalDate dtfinalsprint
+        LocalDate dtfinalsprint,
+        Boolean ativa,
+        Boolean visivel
 ) {
 }
