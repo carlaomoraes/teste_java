@@ -184,14 +184,6 @@
             </button>
 
             <button type="button"
-                    class="btn btn-listar"
-                    onclick="carregarEstorias(
-                        document.getElementById('comboEmpreendimento').value
-                    )">
-                Listar
-            </button>
-
-            <button type="button"
                     class="btn btn-voltar"
                     onclick="history.back()">
                 Voltar
@@ -326,23 +318,47 @@
             return;
         }
         try {
-            const response = await fetch(`${API}/${idEmpreendimento}`);
+            const response = await fetch(`${API}/${idEmpreendimento}/roadmap`);
             const data = await response.json();
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID Sprint</th>
+                        <th class="table-header">Data inicial</th>
+                        <th class="table-header">Data final</th>
+                        <th class="table-header">Nome do Épico</th>
+                        <th class="table-header">Estória</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(roadmap => {
+                const cor = corHexValida(roadmap.corepico) ? roadmap.corepico : "#6c757d";
+                tabela += `<tr>
+                                <td>${roadmap.idsprint} - ${roadmap.descsprint}</td>
+                                <td>${roadmap.dtiniciosprint}</td>
+                                <td>${roadmap.dtfinalsprint}</td>
+                                <td style="background-color: ${cor};">${roadmap.nome} </td>
+                                <td>${roadmap.descestoria}</td>
+                                </tr>`;});
+            tabela += `</tbody></table>`;
+
+            document.getElementById('resultadoRoadmap').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("resultadoRoadmap", MSG.errolistar("ROADMAP"), "error");
         }
-
-     }
+    }
     async function montaBacklog(idEmpreendimento) {
         if(Number(idEmpreendimento) === 0){
             mostrarMensagemNaTela("resultado", "Selecione o empreendimento!", "warning");
             return;
         }
+        let tabela = ``;
         try {
-            const response = await fetch(`${API}/backlog/${idEmpreendimento}`);
+            const response = await fetch(`${API}/${idEmpreendimento}`);
             const data = await response.json();
-            let tabela = `
-            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+            tabela = ` <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
                     <tr>
                         <th class="table-header">ID Estória</th>
@@ -359,18 +375,18 @@
                 const cor = corHexValida(backlog.corepico) ? backlog.corepico : "#6c757d";
                 tabela += `<tr onclick="buscarPorLinha(${backlog.idestoria})"
                                 style="cursor:pointer;">
-                                <td>${backlog.descestoria}</td>
+                                <td>${backlog.idestoria} - ${backlog.descestoria}</td>
                                 <td>${backlog.descstatus}</td>
                                 <td>${backlog.nomecriador}</td>
                                 <td>${backlog.nomeresponsavel}</td>
                                 <td>${backlog.idepico}</td>
-                                <td>${backlog.nome}</td>
+                                <td style="background-color: ${cor};">${backlog.nome} </td>
                                 </tr>`;});
                 tabela += `</tbody></table>`;
 
-            document.getElementById('resultadoRoadmap').innerHTML = tabela;
+            document.getElementById('resultado').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultadoRoadmap", MSG.errolistar("BACKLOG"), "error");
+            mostrarMensagemNaTela("resultado", MSG.errolistar("BACKLOG"), "error");
         }
     }
     async function salvarBacklog() {
