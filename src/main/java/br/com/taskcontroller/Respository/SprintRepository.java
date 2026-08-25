@@ -73,5 +73,20 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
             @Param("idEmpreendimento") Long idEmpreendimento,
             @Param("hoje") LocalDate hoje
     );
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Sprint.SprintDataDTO(
+        s.idsprint,
+        s.empreendimento.idempreendimento,
+        s.descsprint,
+        s.dtiniciosprint,
+        s.dtfinalsprint,
+        s.ativa,
+        s.visivel,
+        0)
+    FROM Sprint s
+    WHERE s.empreendimento.idempreendimento = :idEmpreendimento
+      AND s.ativa = true
+""")
+    List<SprintDataDTO> buscarSprintAtiva(@Param("idEmpreendimento") Long idEmpreendimento);
 
 }

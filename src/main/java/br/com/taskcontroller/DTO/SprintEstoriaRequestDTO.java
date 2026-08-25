@@ -1,14 +1,13 @@
 package br.com.taskcontroller.DTO;
 
-import br.com.taskcontroller.Modelo.Estoria;
-import br.com.taskcontroller.Modelo.Sprint;
-
 import java.time.LocalDate;
 
 public class SprintEstoriaRequestDTO {
     private Long idsprintEstoria;
-    private Sprint sprint;
-    private Estoria estoria;
+    private Long idsprint;
+    private Long idestoria;
+    private int pontos;
+    private Long horasestimadas;
     private int ordem = 0;
     private LocalDate dataplanejamento;
 
@@ -20,20 +19,36 @@ public class SprintEstoriaRequestDTO {
         this.idsprintEstoria = idsprintEstoria;
     }
 
-    public Sprint getSprint() {
-        return sprint;
+    public Long getIdsprint() {
+        return idsprint;
     }
 
-    public void setSprint(Sprint sprint) {
-        this.sprint = sprint;
+    public void setIdsprint(Long idsprint) {
+        this.idsprint = idsprint;
     }
 
-    public Estoria getEstoria() {
-        return estoria;
+    public Long getIdestoria() {
+        return idestoria;
     }
 
-    public void setEstoria(Estoria estoria) {
-        this.estoria = estoria;
+    public void setIdestoria(Long idestoria) {
+        this.idestoria = idestoria;
+    }
+
+    public int getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
+    }
+
+    public Long getHorasestimadas() {
+        return horasestimadas;
+    }
+
+    public void setHorasestimadas(Long horasestimadas) {
+        this.horasestimadas = horasestimadas;
     }
 
     public int getOrdem() {

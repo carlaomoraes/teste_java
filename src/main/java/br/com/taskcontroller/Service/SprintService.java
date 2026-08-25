@@ -112,4 +112,10 @@ public class SprintService {
                 novaSprint.isAtiva(),
                 duracao));
     }
+
+    public List<SprintDataDTO> carregarSprints(Long idEmpreendimento) {
+        return sprintRepository.buscarSprintAtiva(idEmpreendimento);
+    }
+
+
 }

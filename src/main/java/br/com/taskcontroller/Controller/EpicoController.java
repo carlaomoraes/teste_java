@@ -8,7 +8,6 @@ import br.com.taskcontroller.Record.Epico.EpicoInclusaoDTO;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaInclusaoDTO;
-import br.com.taskcontroller.Record.Estoria.EstoriaListagemDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EpicoService;
 import br.com.taskcontroller.Service.PrioridadesService;
@@ -97,7 +96,7 @@ public class EpicoController {
     }
     // LISTAR TODAS ESTÓRIAS POR ÉPICO
     @GetMapping("/{idEpico}/estorias")
-    public List<EstoriaListagemDTO> listarEstoriaPorEpico(@PathVariable Long idEpico) {
+    public List<EstoriaConsultaDTO> listarEstoriaPorEpico(@PathVariable Long idEpico) {
         return epicoEstoriasRepository.listaEstoriasPorEpico(idEpico);
     }
 //    Epico epico = EpicoMapper.toEntity(dto);

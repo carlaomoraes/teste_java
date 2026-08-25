@@ -61,11 +61,6 @@
     <div id="backlog" class="conteudo-aba ativo">
 
         <form id="frmBacklog">
-
-            <input type="hidden" id="idepico">
-            <input type="hidden" id="idestoria">
-
-
             <!-- DESCRIÇÃO -->
             <div class="mb-3">
                 <label for="descestoria" class="form-label">
@@ -83,45 +78,18 @@
             <div class="row">
 
                 <div class="col-md-6 mb-3">
-
-                    <label for="comboResponsavel"
-                           class="form-label">
-                        Responsável
-                    </label>
-
-                    <select id="comboResponsavel"
-                            class="form-select">
-                    </select>
-
+                    <label for="comboResponsavel" class="form-label"> Responsável  </label>
+                    <select id="comboResponsavel" class="form-select"></select>
                 </div>
-
-
                 <!-- PRIORIDADE -->
                 <div class="col-md-3 mb-3">
-
-                    <label for="comboPrioridades"
-                           class="form-label">
-                        Prioridade *
-                    </label>
-
-                    <select id="comboPrioridades"
-                            class="form-select">
-                    </select>
-
+                    <label for="comboPrioridades" class="form-label">Prioridade *</label>
+                    <select id="comboPrioridades" class="form-select"></select>
                 </div>
-
-
                 <!-- STORY POINTS -->
                 <div class="col-md-3 mb-3">
-
-                    <label for="combostorypoints"
-                           class="form-label">
-                        Story Points *
-                    </label>
-
-                    <select id="combostorypoints"
-                            class="form-select">
-
+                    <label for="combostorypoints" class="form-label">Story Points * </label>
+                    <select id="combostorypoints" class="form-select">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -129,32 +97,17 @@
                         <option value="8">8</option>
                         <option value="13">13</option>
                         <option value="21">21</option>
-
                     </select>
-
                 </div>
-
             </div>
-
-
             <!-- HORAS + RESUMO -->
             <div class="row">
-
                 <div class="col-md-3 mb-3">
-
-                    <label for="horas_estimadas"
-                           class="form-label">
-                        Horas estimadas
-                    </label>
-
-                    <input type="number"
-                           id="horas_estimadas"
-                           class="form-control text-end"
-                           min="0"
-                           step="0.5">
-
+                    <label for="horas_estimadas"  class="form-label">Horas estimadas </label>
+                    <input type="number"id="horas_estimadas" class="form-control text-end" min="0" step="1.0">
+                    <label class="form-label">Sprint</label>
+                    <select id="comboSprint" class="form-select">  </select>
                 </div>
-
 
                 <div class="col-md-9 mb-3">
 
@@ -218,12 +171,21 @@
 
     </div>
 </div>
+</body>
+</html>
 <script>
     const API = 'http://localhost:8080/backlog';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_EPICO = 'http://localhost:8080/epicos';
     const API_PRIORIDADE = 'http://localhost:8080/prioridade';
+    const API_SPRINT = 'http://localhost:8080/sprints';
+
+    let configuracao = {
+        idepico: 0,
+        idestoria: 0,
+        idtarefa: 0
+    };
 
     // ==============================================================
     // CARREGAR COMBOS
@@ -271,7 +233,23 @@
                 comboPrioridades.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("PRIORIDADES"), "error");
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("PRIORIDADES"), "error");
+        }
+    }
+    async function carregarSprint(idempreendimento) {
+        const comboSprint = document.getElementById("comboSprint");
+        try {
+            const resposta = await fetch(`${API_SPRINT}/carregaSprint/DTO/${idempreendimento}`);
+            const sprint = await resposta.json();
+            comboSprint.innerHTML = '<option value="">Selecione...</option>';
+            sprint.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idsprint;
+                opcao.textContent = e.descsprint;
+                comboSprint.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela( "resultado",MSG.erroCarregar("SPRINT"), "error");
         }
     }
     function alternarAba(event, idAbaDestino) {
@@ -307,10 +285,9 @@
     comboEmpreendimento.addEventListener('change', (event) => {
         // Get the selected option's value
         const selectedValue = event.target.value;
-
         montaBacklog(selectedValue);
         montarRoadmap(selectedValue);
-
+        carregarSprint(selectedValue);
     });
     async function montarRoadmap(idEmpreendimento) {
         if(Number(idEmpreendimento) === 0){
@@ -359,7 +336,7 @@
             const response = await fetch(`${API}/${idEmpreendimento}`);
             const data = await response.json();
             tabela = ` <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
-                <thead>
+             <thead>
                     <tr>
                         <th class="table-header">ID Estória</th>
                         <th class="table-header">Status</th>
@@ -369,11 +346,10 @@
                         <th class="table-header">Nome do Épico</th>
                     </tr>
                 </thead>
-                <tbody>
-        `;
+            <tbody>`;
             data.forEach(backlog => {
                 const cor = corHexValida(backlog.corepico) ? backlog.corepico : "#6c757d";
-                tabela += `<tr onclick="buscarPorLinha(${backlog.idestoria})"
+                tabela += `<tr onclick="buscarPorLinha(${backlog.idepico},${backlog.idestoria})"
                                 style="cursor:pointer;">
                                 <td>${backlog.idestoria} - ${backlog.descestoria}</td>
                                 <td>${backlog.descstatus}</td>
@@ -382,55 +358,85 @@
                                 <td>${backlog.idepico}</td>
                                 <td style="background-color: ${cor};">${backlog.nome} </td>
                                 </tr>`;});
-                tabela += `</tbody></table>`;
-
+            tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
+    } catch (error) {
+        mostrarMensagemNaTela("resultado", MSG.errolistar("BACKLOG"), "error");
+    }
+    }
+    async function buscarPorLinha(idEpico, idEstoria) {
+        try {
+            const response = await fetch(`${API_EPICO}/${idEpico}/estorias/${idEstoria}`);
+            const estoria = await response.json();
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultado",estoria.mensagem, "error");
+            } else {
+                configuracao.idepico = estoria.idepico;
+                configuracao.idestoria = estoria.idestoria;
+                configuracao.idtarefa = 0;
+                document.getElementById('descestoria').value = estoria.descestoria;
+                // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+                document.getElementById('resumo').value = estoria.resumo;
+                document.getElementById('combostorypoints').value = estoria.pontos;
+                document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
+                //CARREGANDO OS COMBOS
+                document.getElementById('comboResponsavel').value = estoria.idresponsavel;
+                mostrarMensagemNaTela("resultado","Estória selecionada: " + estoria.descestoria, "success");
+            }
         } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.errolistar("BACKLOG"), "error");
+            //  mostrarMensagemNaTela("resultado",MSG.erroCarregar("ESTORIAS"), "error");
+            mostrarMensagemNaTela("resultado",error.message, "error");
         }
     }
     async function salvarBacklog() {
-        const idEpico = document.getElementById('idepico').value;
-        const idEstoria = document.getElementById('idestoria').value;
-        const descestoria = document.getElementById('descestoria').value;
-        const resumo = document.getElementById('resumo').value;
+
+        const hoje = new Date();
+
         const estoria = {
-            idepico: Number(idEpico) || null,
-            idEstoria: Number(idEstoria) || null,
-            descEstoria: descestoria || null,
-            resumo: resumo,
-            criador: {
-                idCriador: document.getElementById('comboCriadorES').value || null,
-            },
-            responsavel: {
-                idresponsavel: document.getElementById('comboResponsavelES').value || null,
-            },
-            status: {
-                idstatus: document.getElementById('comboStatusES').value || null,
-            },
-            idprioridade: document.getElementById('comboPrioridade').value || null,
-            pontos: document.getElementById('combostorypoints').value || 0,
-            horas_estimadas: Number(document.getElementById('horas_estimadas').value) || 0.0,
+            idEstoria: configuracao.idestoria || null,
+            ordem: 1,
+            dataPlanejamento: hoje,
+            idSprint: Number(document.getElementById('comboSprint').value) || null
         };
+
+        console.log("Dados do planejamento:", estoria);
+
         try {
-            const response = await fetch(`${API_EPICO}/adicionarEstoria`, {
+
+            const caminho = `${API_SPRINT}/atualiza_backlog`;
+
+            console.log("POST:", caminho);
+
+            const response = await fetch(caminho, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(estoria)
             });
-            const data = await response.json();
-            mostrarMensagemNaTela("resultado_estoria",MSG.salvo("ESTÓRIA"),"error");
             setTimeout(() => {
-                limparFormulario("ES");
-                carregarEstorias(idEpico);
+                mostrarMensagemNaTela(
+                    "resultado",
+                    MSG.salvo("ESTÓRIA"),
+                    "success"
+                );
+                const idEmpreendimento =
+                    document.getElementById('comboEmpreendimento').value;
+
+                montaBacklog(idEmpreendimento);
+                montarRoadmap(idEmpreendimento);
+
             }, 1000);
 
         } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria",MSG.erroSalvar("ESTÓRIA"),"error");
+
+            console.error("Erro ao salvar planejamento:", error);
+
+            mostrarMensagemNaTela(
+                "resultado",
+                error.message,
+                "error"
+            );
         }
     }
 </script>
-</body>
-</html>

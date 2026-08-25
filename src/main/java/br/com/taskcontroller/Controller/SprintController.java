@@ -1,15 +1,23 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.SprintEstoriaRequestDTO;
 import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
+import br.com.taskcontroller.Mapper.EstoriaMapper;
+import br.com.taskcontroller.Mapper.SprintEstoriaMapper;
+import br.com.taskcontroller.Mapper.SprintMapper;
 import br.com.taskcontroller.Modelo.Empreendimento;
+import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Sprint;
+import br.com.taskcontroller.Modelo.SprintEstoria;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
+import br.com.taskcontroller.Respository.SprintEstoriaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
 import br.com.taskcontroller.Service.EmpreendimentoService;
+import br.com.taskcontroller.Service.EstoriaService;
 import br.com.taskcontroller.Service.SprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,6 +38,9 @@ public class SprintController {
     private SprintService service;
 
     @Autowired
+    private EstoriaService estoriaService;
+
+    @Autowired
     private EmpreendimentoService empreendimentoService;
 
     @Autowired
@@ -37,6 +48,9 @@ public class SprintController {
 
     @Autowired
     private SprintRepository sprintRepository;
+
+    @Autowired
+    private SprintEstoriaRepository sprintEstoriaRepository;
 
     // BUSCAR POR ID
     @GetMapping("/{idSprint}")
@@ -48,7 +62,6 @@ public class SprintController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Sprint não encontrada");
         }
     }
-
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody Sprint sprint) {
@@ -155,4 +168,25 @@ public class SprintController {
 
         return ResponseEntity.ok(montaCabecalho(data_inicio,data_fim,idempreendimento));
     }
+    @GetMapping("/carregaSprint/DTO/{idEmpreendimento}")
+    public List<SprintDataDTO> carregarSprints(@PathVariable Long idEmpreendimento) {
+        return sprintRepository.buscarSprintAtiva(idEmpreendimento);
+    }
+
+    @PostMapping("/atualiza_backlog/")
+    public ResponseEntity<?> atualiza_backlog(@RequestBody SprintEstoriaRequestDTO dto) {
+        System.out.println(dto);
+        SprintEstoria sprintEstoria = new SprintEstoria();
+        sprintEstoria.setDataplanejamento(dto.getDataplanejamento());
+        sprintEstoria.setOrdem(dto.getOrdem());
+
+        Estoria estoria = estoriaService.buscarPorId(dto.getIdestoria());
+        sprintEstoria.setEstoria(estoria);
+
+        Sprint sprint = service.buscarPorId(dto.getIdsprint());
+        sprintEstoria.setSprint(sprint);
+
+        return ResponseEntity.ok(sprintEstoriaRepository.save(sprintEstoria));
+    }
+
 }

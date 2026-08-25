@@ -1,9 +1,11 @@
 package br.com.taskcontroller.Record.Estoria;
 
+import java.sql.Blob;
 import java.time.LocalDate;
 
 public record EstoriaConsultaDTO(
-        Long idestoria/*,
+        Long idepico,
+        Long idestoria,
         String descestoria,
         Long idstatus,
         String descstatus,
@@ -11,12 +13,12 @@ public record EstoriaConsultaDTO(
         String nomecriador,
         Long idresponsavel,
         String nomeresponsavel,
-        String resumo,
-        Long pontos,
+        int pontos,
         Long horas_estimadas,
         Long horas_realizadas,
         LocalDate data_inicio,
         LocalDate data_fim,
-        Boolean bloqueada*/
+        Boolean bloqueada,
+        Blob resumo
 ) {
 }
