@@ -3,19 +3,14 @@ package br.com.taskcontroller.Controller;
 import br.com.taskcontroller.DTO.SprintEstoriaRequestDTO;
 import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
-import br.com.taskcontroller.Modelo.Empreendimento;
-import br.com.taskcontroller.Modelo.Estoria;
-import br.com.taskcontroller.Modelo.Sprint;
-import br.com.taskcontroller.Modelo.SprintEstoria;
+import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.SprintEstoriaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
-import br.com.taskcontroller.Service.EmpreendimentoService;
-import br.com.taskcontroller.Service.EstoriaService;
-import br.com.taskcontroller.Service.SprintService;
+import br.com.taskcontroller.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -33,6 +28,12 @@ public class SprintController {
 
     @Autowired
     private SprintService service;
+
+    @Autowired
+    private EpicoService epicoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Autowired
     private EstoriaService estoriaService;
@@ -172,26 +173,29 @@ public class SprintController {
 
     @PostMapping("/atualiza_backlog")
     public ResponseEntity<?> atualiza_backlog(@RequestBody SprintEstoriaRequestDTO dto) {
-        System.out.println("ENTROU DE ATUALIZACAO DO BACKLOG");
-        System.out.println(dto);
         SprintEstoria sprintEstoria = new SprintEstoria();
         sprintEstoria.setDataplanejamento(dto.getDataplanejamento());
-
         Estoria estoria = estoriaService.buscarPorId(dto.getIdestoria());
+        estoria.setHoras_estimadas(dto.getHorasestimadas());
+        estoria.setPontos(dto.getPontos());;
+        estoria.setHoras_estimadas(dto.getHorasestimadas());
+        Usuario usuario = usuarioService.buscarPorId(dto.getIdresponsavel());
+        estoria.setResponsavel(usuario);
+        estoriaService.atualizar(estoria);
+        Prioridades prioridades = new Prioridades();
+        prioridades.setIdprioridade(dto.getIdprioridade());
+        Epico epico = epicoService.buscarPorId(dto.getIdepico());
+        epico.setPrioridade(prioridades);
+        epico.setResponsavel(usuario);
+        epicoService.atualizar(epico);
         sprintEstoria.setEstoria(estoria);
-
         Sprint sprint = service.buscarPorId(dto.getIdsprint());
         sprintEstoria.setSprint(sprint);
-
         return ResponseEntity.ok(sprintEstoriaRepository.save(sprintEstoria));
     }
     @DeleteMapping("/{idSprint}/{idEstoria}")
-    public ResponseEntity<?> excluirDoRoadmap(
-            @PathVariable Long idSprint,
-            @PathVariable Long idEstoria) {
-
+    public ResponseEntity<?> excluirDoRoadmap(@PathVariable Long idSprint,@PathVariable Long idEstoria) {
         service.excluirDoRoadmap(idSprint, idEstoria);
-
         return ResponseEntity.ok().build();
     }
 }

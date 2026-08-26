@@ -317,23 +317,337 @@ select:focus {
 
 .roadmap {
     position: relative;
-    padding-left: 35px;
+    padding: 10px 5px 10px 35px;
 }
 
-/* Linha vertical */
+
+/* =========================================================
+   SPRINT
+   ========================================================= */
+
+.roadmap-sprint {
+    position: relative;
+    margin-bottom: 28px;
+}
+
+
+/* =========================================================
+   CABEÇALHO DA SPRINT
+   ========================================================= */
+
+.roadmap-sprint-header {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+
+    padding: 8px 12px;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    font-size: 14px;
+}
+
+
+.roadmap-sprint-header::before {
+    content: "";
+
+    position: absolute;
+
+    left: -31px;
+    top: 13px;
+
+    width: 14px;
+    height: 14px;
+
+    background-color: #6c757d;
+
+    border-radius: 50%;
+
+    border: 3px solid #fff;
+
+    box-shadow: 0 0 0 2px #dee2e6;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   SPRINT ATUAL
+   ========================================================= */
+
+.roadmap-sprint.atual .roadmap-sprint-header::before {
+    background-color: #198754;
+    box-shadow: 0 0 0 2px #198754;
+}
+
+
+.roadmap-sprint-nome {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-right: 20px;
+}
+
+
+.roadmap-sprint-datas {
+    font-size: 13px;
+    color: #64748b;
+}
+
+
+/* =========================================================
+   BADGE ATUAL
+   ========================================================= */
+
+.roadmap-atual {
+    margin-left: auto;
+
+    padding: 4px 9px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #198754;
+    background-color: #d1e7dd;
+
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   ESTÓRIAS
+   ========================================================= */
+
+.roadmap-stories {
+    padding-top: 4px;
+}
+
+
+.roadmap-story {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 42px;
+
+    padding: 6px 8px 6px 0;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+
+.roadmap-story:hover {
+    background-color: #f8fafc;
+}
+
+
+/* =========================================================
+   LINHA DA TIMELINE
+   ========================================================= */
+
+.roadmap-story-linha {
+    width: 25px;
+    height: 1px;
+
+    margin-right: 8px;
+
+    background-color: #cbd5e1;
+}
+
+
+.roadmap-story-linha::before {
+    content: "";
+
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    margin-left: -1px;
+
+    border-radius: 50%;
+
+    background-color: #94a3b8;
+}
+
+
+/* Última estória */
+.roadmap-story.ultima .roadmap-story-linha {
+    background: transparent;
+}
+
+
+/* =========================================================
+   CONTEÚDO DA ESTÓRIA
+   ========================================================= */
+
+.roadmap-story-conteudo {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    min-width: 0;
+}
+
+
+.roadmap-story-nome {
+    flex: 1;
+
+    min-width: 0;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #334155;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   ÉPICO
+   ========================================================= */
+
+.roadmap-story-epico {
+    display: flex;
+    align-items: center;
+
+    width: 220px;
+
+    font-size: 13px;
+
+    color: #64748b;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.roadmap-epico-cor {
+    display: inline-block;
+
+    flex-shrink: 0;
+
+    width: 4px;
+    height: 20px;
+
+    margin-right: 8px;
+
+    border-radius: 2px;
+}
+
+
+/* =========================================================
+   BOTÃO EXCLUIR
+   ========================================================= */
+
+.roadmap-btn-excluir {
+    flex-shrink: 0;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    margin-left: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #94a3b8;
+    background-color: transparent;
+
+    border: none;
+
+    opacity: 0;
+
+    transition:
+            opacity 0.15s ease,
+            color 0.15s ease,
+            background-color 0.15s ease;
+}
+
+
+.roadmap-story:hover .roadmap-btn-excluir {
+    opacity: 1;
+}
+
+
+.roadmap-btn-excluir:hover {
+    color: #dc2626;
+    background-color: #fee2e2;
+}
+
+
+/* =========================================================
+   LINHA VERTICAL
+   ========================================================= */
+
 .roadmap::before {
     content: "";
+
     position: absolute;
 
     left: 10px;
-    top: 10px;
-    bottom: 10px;
+    top: 20px;
+    bottom: 20px;
 
     width: 2px;
 
     background-color: #dee2e6;
 }
 
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .roadmap {
+        padding-left: 28px;
+    }
+
+    .roadmap::before {
+        left: 7px;
+    }
+
+    .roadmap-sprint-header::before {
+        left: -27px;
+    }
+
+    .roadmap-sprint-nome {
+        margin-right: 10px;
+    }
+
+    .roadmap-story-epico {
+        width: 150px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .roadmap-story-epico {
+        display: none;
+    }
+
+    .roadmap-sprint-datas {
+        display: block;
+    }
+
+    .roadmap-atual {
+        margin-left: 8px;
+    }
+
+}
 
 /* =========================================================
    ITEM DA SPRINT

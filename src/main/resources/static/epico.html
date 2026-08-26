@@ -278,6 +278,8 @@
         const comboCriadorES = document.getElementById("comboCriadorES");
         const comboCriadorTA = document.getElementById("comboCriadorTA");
         const comboResponsavelES = document.getElementById("comboResponsavelES");
+        const comboResponsavelTA = document.getElementById("comboResponsavelTA");
+
 
         try {
             const resposta = await fetch(`${API_USUARIOS}/listar`);
@@ -290,6 +292,7 @@
                 comboCriadorES.add(opcao.cloneNode(true));
                 comboCriadorTA.add(opcao.cloneNode(true));
                 comboResponsavelES.add(opcao.cloneNode(true));
+                comboResponsavelTA.add(opcao.cloneNode(true));
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", "Erro ao carregar gestor: "+error.message,"error");
@@ -414,14 +417,13 @@
 
     async function salvarTarefa(idEpico, idEstoria) {
         const hoje = new Date();
-        const bloqueada = document.getElementById("bloqueada").checked || 0;
-        const descTarefa = document.getElementById("descTarefa").value;
+        const bloqueada = document.getElementById("bloqueada_tarefa").checked || 0;
+        const descTarefa = document.getElementById("desctarefa").value;
         const data_inicio = document.getElementById("data_inicio_TA").value || hoje;
         const data_fim_prevista = document.getElementById("data_fim_TA").value || hoje;
         const tarefa = {
             idestoria: Number(idEstoria) || null,
             desctarefa: descTarefa || null,
-            obsepico: obsepico || null,
             bloqueada: bloqueada,
             data_inicio: data_inicio,
             data_fim_prevista: data_fim_prevista,
@@ -850,8 +852,7 @@
                      carregarStatusEstoria(statusAtualEstoria);
                 }
             } catch (error) {
-             //   mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
-                mostrarMensagemNaTela("resultado_estoria",error.message, "error");
+                mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
             }
         } else if (ABA === "TAREFA") {
             configuracao.idtarefa = idTarefa;
@@ -878,7 +879,8 @@
                     document.getElementById('horas_estimadas').value = tarefa.horas_estimadas;
                     // MONTA O COMBO PARA PROXIMO STATUS
                     statusAtualTarefa = tarefa.idstatus;
-                    carregarStatusTarefa(statusAtualTarefa);
+                    await carregarStatusTarefa(statusAtualTarefa);
+                    mostrarMensagemNaTela("resultado_tarefa","Tarefa selecionada: " + tarefa.idtarefa, "success");
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");

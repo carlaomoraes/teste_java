@@ -168,7 +168,6 @@
             </div>
 
         </div>
-
     </div>
 </div>
 </body>
@@ -239,7 +238,9 @@
     async function carregarSprint(idempreendimento) {
         const comboSprint = document.getElementById("comboSprint");
         try {
-            const resposta = await fetch(`${API_SPRINT}/carregaSprint/DTO/${idempreendimento}`);
+            const Caminho = `${API_SPRINT}/carregaSprint/DTO/${idempreendimento}`;
+            console.log(Caminho);
+            const resposta = await fetch(Caminho);
             const sprint = await resposta.json();
             comboSprint.innerHTML = '<option value="">Selecione...</option>';
             sprint.forEach(e => {

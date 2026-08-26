@@ -81,6 +81,7 @@ public class EpicoController {
     // ESTORIAS POR ÉPICOS
     // =========================
     // BUSCAR POR ID
+    // =========================
     @GetMapping("/{idepico}/estorias/{idestoria}")
     public ResponseEntity<?> buscarEstoriaPorId(@PathVariable Long idepico,
                                                 @PathVariable Long idestoria) {
@@ -88,7 +89,7 @@ public class EpicoController {
         if (epico == null) {
             ResponseEntity.status(HttpStatus.CONFLICT).body("Épico não encontrado");
         }
-        EstoriaConsultaDTO estoria = epicoEstoriasRepository.buscarPorId(idepico, idestoria);
+        EstoriaConsultaDTO estoria = epicoEstoriasRepository.buscarPorId(idestoria);
         if (estoria == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Estória não encontrada");
         }

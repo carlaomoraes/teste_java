@@ -26,8 +26,7 @@ public class BacklogController {
     private EmpreendimentoRepository empreendimentoRepository;
 
     @GetMapping("/{idempreendimento}")
-    public List<EstoriaBacklogDTO> listar(
-            @PathVariable Long idempreendimento) {
+    public List<EstoriaBacklogDTO> listar(@PathVariable Long idempreendimento) {
 
         return service.listar(idempreendimento);
     }
