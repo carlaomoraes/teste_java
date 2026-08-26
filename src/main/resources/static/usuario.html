@@ -361,7 +361,7 @@
             });
             const texto = await response.text();
             mostrarMensagemNaTela("resultadoausencia", MSG.excluido("AUSÊNCIA PROGRAMADA"), "success");
-            listarAusencias();
+            await listarAusencias();
         } catch (error) {
             mostrarMensagemNaTela("resultadoausencia", MSG.erroExcluir("AUSÊNCIA PROGRAMADA"), "error");
         }

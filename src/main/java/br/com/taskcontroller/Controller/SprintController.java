@@ -3,9 +3,6 @@ package br.com.taskcontroller.Controller;
 import br.com.taskcontroller.DTO.SprintEstoriaRequestDTO;
 import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
-import br.com.taskcontroller.Mapper.EstoriaMapper;
-import br.com.taskcontroller.Mapper.SprintEstoriaMapper;
-import br.com.taskcontroller.Mapper.SprintMapper;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Sprint;
@@ -173,12 +170,12 @@ public class SprintController {
         return sprintRepository.buscarSprintAtiva(idEmpreendimento);
     }
 
-    @PostMapping("/atualiza_backlog/")
+    @PostMapping("/atualiza_backlog")
     public ResponseEntity<?> atualiza_backlog(@RequestBody SprintEstoriaRequestDTO dto) {
+        System.out.println("ENTROU DE ATUALIZACAO DO BACKLOG");
         System.out.println(dto);
         SprintEstoria sprintEstoria = new SprintEstoria();
         sprintEstoria.setDataplanejamento(dto.getDataplanejamento());
-        sprintEstoria.setOrdem(dto.getOrdem());
 
         Estoria estoria = estoriaService.buscarPorId(dto.getIdestoria());
         sprintEstoria.setEstoria(estoria);
@@ -188,5 +185,13 @@ public class SprintController {
 
         return ResponseEntity.ok(sprintEstoriaRepository.save(sprintEstoria));
     }
+    @DeleteMapping("/{idSprint}/{idEstoria}")
+    public ResponseEntity<?> excluirDoRoadmap(
+            @PathVariable Long idSprint,
+            @PathVariable Long idEstoria) {
 
+        service.excluirDoRoadmap(idSprint, idEstoria);
+
+        return ResponseEntity.ok().build();
+    }
 }

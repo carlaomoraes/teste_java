@@ -8,7 +8,6 @@ public class SprintEstoriaRequestDTO {
     private Long idestoria;
     private int pontos;
     private Long horasestimadas;
-    private int ordem = 0;
     private LocalDate dataplanejamento;
 
     public Long getIdsprintEstoria() {
@@ -49,14 +48,6 @@ public class SprintEstoriaRequestDTO {
 
     public void setHorasestimadas(Long horasestimadas) {
         this.horasestimadas = horasestimadas;
-    }
-
-    public int getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(int ordem) {
-        this.ordem = ordem;
     }
 
     public LocalDate getDataplanejamento() {

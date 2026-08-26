@@ -17,7 +17,6 @@ public class SprintEstoriaMapper {
 
     public static SprintEstoria toEntity(SprintEstoriaRequestDTO dto){
         SprintEstoria s = new SprintEstoria();
-        s.setOrdem(dto.getOrdem());
         s.setDataplanejamento(dto.getDataplanejamento());
         Sprint sprint = new Sprint();
         sprint.setIdsprint(dto.getIdsprint());
@@ -34,7 +33,6 @@ public class SprintEstoriaMapper {
         dto.setIdsprintEstoria(s.getIdsprintEstoria());
         dto.setSprint(s.getSprint());
         dto.setEstoria(s.getEstoria());
-        dto.setOrdem(s.getOrdem());
         dto.setDataplanejamento(s.getDataplanejamento());
         return dto;
     }

@@ -306,6 +306,7 @@
                         <th class="table-header">Data final</th>
                         <th class="table-header">Nome do Épico</th>
                         <th class="table-header">Estória</th>
+                        <th class="table-header">Ação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -318,6 +319,7 @@
                                 <td>${roadmap.dtfinalsprint}</td>
                                 <td style="background-color: ${cor};">${roadmap.nome} </td>
                                 <td>${roadmap.descestoria}</td>
+                                <td><button type="button" class="btn" onclick="event.stopPropagation(); excluirRoadmap(${roadmap.idsprint}, ${roadmap.idestoria})"> Voltar ao backlog </button></td>
                                 </tr>`;});
             tabela += `</tbody></table>`;
 
@@ -384,29 +386,21 @@
                 mostrarMensagemNaTela("resultado","Estória selecionada: " + estoria.descestoria, "success");
             }
         } catch (error) {
-            //  mostrarMensagemNaTela("resultado",MSG.erroCarregar("ESTORIAS"), "error");
-            mostrarMensagemNaTela("resultado",error.message, "error");
+            mostrarMensagemNaTela("resultado",MSG.erroCarregar("ESTORIAS"), "error");
         }
     }
     async function salvarBacklog() {
-
         const hoje = new Date();
-
         const estoria = {
-            idEstoria: configuracao.idestoria || null,
-            ordem: 1,
-            dataPlanejamento: hoje,
-            idSprint: Number(document.getElementById('comboSprint').value) || null
+            idestoria: configuracao.idestoria || null,
+            idsprint: Number(document.getElementById('comboSprint').value) || null,
+            dataplanejamento: hoje.toISOString().split("T")[0],
+            pontos: Number(document.getElementById('combostorypoints').value) || 0,
+            horasestimadas: Number(document.getElementById('horas_estimadas').value) || 0
         };
-
-        console.log("Dados do planejamento:", estoria);
-
         try {
-
             const caminho = `${API_SPRINT}/atualiza_backlog`;
-
             console.log("POST:", caminho);
-
             const response = await fetch(caminho, {
                 method: 'POST',
                 headers: {
@@ -415,28 +409,28 @@
                 body: JSON.stringify(estoria)
             });
             setTimeout(() => {
-                mostrarMensagemNaTela(
-                    "resultado",
-                    MSG.salvo("ESTÓRIA"),
-                    "success"
-                );
-                const idEmpreendimento =
-                    document.getElementById('comboEmpreendimento').value;
-
+                mostrarMensagemNaTela("resultado", MSG.salvo("BACKLOG"),"success");
+                const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
                 montaBacklog(idEmpreendimento);
                 montarRoadmap(idEmpreendimento);
-
             }, 1000);
-
         } catch (error) {
-
-            console.error("Erro ao salvar planejamento:", error);
-
-            mostrarMensagemNaTela(
-                "resultado",
-                error.message,
-                "error"
-            );
+            mostrarMensagemNaTela("resultado", MSG.erroSalvar("BACKLOG"),"error");
+        }
+    }
+    async function excluirRoadmap(idSprint, idEstoria) {
+        try {
+            const response = await fetch(`${API_SPRINT}/${idSprint}/${idEstoria}`, {
+                method: 'DELETE'
+            });
+            setTimeout(() => {
+                mostrarMensagemNaTela("resultado", MSG.excluido("ROADMAP"),"success");
+                const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
+                montaBacklog(idEmpreendimento);
+                montarRoadmap(idEmpreendimento);
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroExcluir("ROADMAP"), "error");
         }
     }
 </script>

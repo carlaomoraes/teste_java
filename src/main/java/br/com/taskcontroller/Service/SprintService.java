@@ -7,6 +7,7 @@ import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Respository.SprintRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -117,5 +118,9 @@ public class SprintService {
         return sprintRepository.buscarSprintAtiva(idEmpreendimento);
     }
 
+    @Transactional
+    public void excluirDoRoadmap(Long idSprint, Long idEstoria) {
+        sprintRepository.excluirDoRoadmap(idSprint, idEstoria);
+    }
 
 }

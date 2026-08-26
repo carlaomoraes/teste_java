@@ -5,6 +5,7 @@ import br.com.taskcontroller.Projection.CabecalhoProjection;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -88,5 +89,14 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
       AND s.ativa = true
 """)
     List<SprintDataDTO> buscarSprintAtiva(@Param("idEmpreendimento") Long idEmpreendimento);
+
+    @Modifying
+    @Query("""
+    DELETE FROM SprintEstoria se
+    WHERE se.sprint.idsprint = :idSprint
+      AND se.estoria.idestoria = :idEstoria
+""")
+    void excluirDoRoadmap(Long idSprint, Long idEstoria);
+
 
 }

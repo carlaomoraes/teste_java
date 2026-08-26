@@ -9,7 +9,6 @@ public class SprintEstoriaResponseDTO {
     private Long idsprintEstoria;
     private Sprint sprint;
     private Estoria estoria;
-    private int ordem = 0;
     private LocalDate dataplanejamento;
 
     public Long getIdsprintEstoria() {
@@ -34,14 +33,6 @@ public class SprintEstoriaResponseDTO {
 
     public void setEstoria(Estoria estoria) {
         this.estoria = estoria;
-    }
-
-    public int getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(int ordem) {
-        this.ordem = ordem;
     }
 
     public LocalDate getDataplanejamento() {

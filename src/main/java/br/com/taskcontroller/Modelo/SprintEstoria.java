@@ -23,8 +23,6 @@ public class SprintEstoria {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idestoria", nullable = false)
     private Estoria estoria;
-    @Column(name = "ordem")
-    private int ordem = 0;
     @Column(name = "dataplanejamento")
     private LocalDate dataplanejamento;
 
@@ -50,14 +48,6 @@ public class SprintEstoria {
 
     public void setEstoria(Estoria estoria) {
         this.estoria = estoria;
-    }
-
-    public int getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(int ordem) {
-        this.ordem = ordem;
     }
 
     public LocalDate getDataplanejamento() {
