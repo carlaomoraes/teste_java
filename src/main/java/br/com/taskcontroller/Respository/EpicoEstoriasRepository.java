@@ -94,12 +94,10 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     @Query("""
         DELETE
           FROM Estoria e
-         WHERE e.epico.idepico = :idepico
-           AND e.idestoria = :idEstoria
+         WHERE e.idestoria = :idEstoria
     """)
-    void removerDoEpico(
-            @Param("idEpico") Long idEpico,
-            @Param("idEstoria") Long idEstoria);
+    void apagarEstoria(@Param("idEstoria") Long idEstoria);
+
 
     @Query("""
        SELECT COUNT(e)

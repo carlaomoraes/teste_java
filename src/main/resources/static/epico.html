@@ -154,8 +154,8 @@
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn btn-add" onclick="criarEstoria();">Nova</button>
-            <button type="button" class="btn btn-salvar" onclick="salvarEstoria(document.getElementById('idepico').value);">Salvar</button>
-            <button type="button" class="btn btn-listar"  onclick="listarEstoria(document.getElementById('idepico').value)">Listar</button>
+            <button type="button" class="btn btn-salvar" onclick="salvarEstoria();">Salvar</button>
+            <button type="button" class="btn btn-listar"  onclick="listarEstoria()">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado_estoria"></div>
@@ -201,11 +201,11 @@
             </div>
             <div>
                 <label>Horas estimadas</label>
-                <input type="number" id="horas_estimadas_tarefas" class="form-control text-end" disabled>
+                <input type="number" id="horas_estimadas_TA" class="form-control text-end" disabled>
             </div>
             <div>
                 <label>Horas realizadas</label>
-                <input type="number"  id="horas_realizadas_tarefas" class="form-control text-end" disabled>
+                <input type="number"  id="horas_realizadas_TA" class="form-control text-end" disabled>
             </div>
             <div>
                 <label>Tipo de tarefa</label>
@@ -219,8 +219,8 @@
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn btn-add" onclick="criarTarefa();">Nova</button>
-            <button type="button" class="btn btn-salvar" onclick="salvarTarefa(document.getElementById('idestoria').value);">Salvar</button>
-            <button type="button" class="btn btn-listar"  onclick="listarTarefas(document.getElementById('idestoria').value)">Listar</button>
+            <button type="button" class="btn btn-salvar" onclick="salvarTarefa();">Salvar</button>
+            <button type="button" class="btn btn-listar"  onclick="listarTarefas()">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado_tarefa"></div>
@@ -523,7 +523,7 @@
             document.getElementById('comboCriadorES').value = "";
             document.getElementById('comboResponsavelES').value = "";
             document.getElementById('comboStatusES').value = "";
-            document.getElementById('pontos').value = 0.00;
+            document.getElementById('combostorypoints').value = -1;
             document.getElementById('horas_estimadas').value = 0.00;
         } else if(ABA === "TA") {
             document.getElementById('idtarefa').value = "";
@@ -536,8 +536,8 @@
             document.getElementById('comboResponsavelTA').value = "";
             document.getElementById('comboStatusTA').value = "";
             document.getElementById('comboTipoTarefa').value = "";
-            document.getElementById('horas_estimadas_tarefa').value = 0.00;
-            document.getElementById('horas_realizadas_tarefa').value = 0.00;
+            document.getElementById('horas_estimadas_TA').value = 0.00;
+            document.getElementById('horas_realizadas_TA').value = 0.00;
         }
     }
     async function listarEpicos() {
@@ -589,7 +589,7 @@
     async function criarEstoria() {
         limparFormulario("ES");
     }
-    async function salvarEstoria(idEpico) {
+    async function salvarEstoria() {
         const hoje = new Date();
         const descestoria = document.getElementById('descestoria').value;
         const resumo = document.getElementById('resumo_estoria').value;
@@ -597,13 +597,11 @@
         const data_inicio = document.getElementById('data_inicialES').value || hoje ;
         const data_fim = document.getElementById('data_fim_previstaES').value || hoje ;
         const estoria = {
-            idepico: Number(idEpico) || null,
+            idepico: configuracao.idepico || null,
             descEstoria: descestoria || null,
-            obsepico: obsepico || null,
             bloqueada: campoBlooqueado,
             data_inicio: data_inicio || hoje,
             data_fim: data_fim || hoje,
-            codepico: codepico,
             resumo: resumo,
             criador: {
                 idCriador: document.getElementById('comboCriadorES').value || null,
@@ -619,7 +617,7 @@
             horas_realizadas: Number(document.getElementById('horas_realizadas').value) || 0.0,
         };
         try {
-            const response = await fetch(`${API_EPICO}/adicionarEstoria`, {
+            const response = await fetch(`${API_EPICO}/${configuracao.idepico}/adicionarEstoria`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -729,7 +727,7 @@
             <td>
                 <button type="button"
                         class="btn"
-                        onclick="excluirTarefa(${tarefa.idtarefa}); event.stopPropagation();">
+                        onclick="excluirTarefa(${configuracao.idepico},${tarefa.idtarefa}); event.stopPropagation();">
                     Excluir
                 </button>
             </td>
@@ -808,8 +806,8 @@
                      document.getElementById('comboPrioridadeEP').value = epico.idprioridade;
                      document.getElementById('comboCriadorEP').value = epico.idcriador;
 
-                     document.getElementById('data_inicialEP').value = formatarData(epico.data_inicialEP);
-                     document.getElementById('data_fim_previstaEP').value = formatarData(epico.data_fim_previstaEP);
+                     document.getElementById('data_inicialEP').value = epico.data_inicialEP;
+                     document.getElementById('data_fim_previstaEP').value = epico.data_fim_previstaEP;
                     // Limpa mensagens e monta equipe se o usuário mudar de aba depois
                     mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "success");
                     await listarEstoria();
@@ -835,10 +833,10 @@
                     document.getElementById('descestoria').value = estoria.descestoria;
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                      document.getElementById('bloqueada_estoria').checked = estoria.bloqueada || 0;
-                     document.getElementById('data_inicialES').value = formatarData(estoria.data_inicio);
-                     document.getElementById('data_fim_previstaES').value = formatarData(estoria.data_fim);
+                     document.getElementById('data_inicialES').value = estoria.data_inicio;
+                     document.getElementById('data_fim_previstaES').value = estoria.data_fim;
                      document.getElementById('resumo_estoria').value = estoria.resumo;
-                    document.getElementById('combostorypoints').value = estoria.pontos;
+                     document.getElementById('combostorypoints').value = estoria.pontos;
                      document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
                      document.getElementById('horas_realizadas').value = estoria.horas_realizadas;
                      //CARREGANDO OS COMBOS
@@ -868,8 +866,8 @@
                     document.getElementById('desctarefa').value = tarefa.desctarefa;
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
                     document.getElementById('bloqueada_tarefa').checked = tarefa.bloqueada || 0;
-                    document.getElementById('data_inicio_TA').value = formatarData(tarefa.data_inicio);
-                    document.getElementById('data_fim_TA').value = formatarData(tarefa.data_conclusao);
+                    document.getElementById('data_inicio_TA').value = tarefa.data_inicio;
+                    document.getElementById('data_fim_TA').value = tarefa.data_conclusao;
                     // CARREGANDO OS COMBOS
                     document.getElementById('comboStatusTA').value = tarefa.idstatus;
                     document.getElementById('comboCriadorTA').value = tarefa.idcriador;
@@ -894,6 +892,33 @@
             });
             mostrarMensagemNaTela("resultado_epico",MSG.excluido("ÉPICO"), "success");
             limparFormulario("EP");
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_epico",MSG.erroExcluir("ÉPICO"), "error");
+        }
+    }
+    async function excluirEstoria(idEstoria) {
+        console.log(idEstoria);
+        try {
+            const response = await fetch(`${API_EPICO}/remover_estoria/${idEstoria}`, {
+                method: 'DELETE'
+            });
+            mostrarMensagemNaTela("resultado_epico",MSG.excluido("ÉPICO"), "success");
+            await limparFormulario("EP");
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_epico",MSG.erroExcluir("ÉPICO"), "error");
+        }
+    }
+
+    async function excluirTarefa(idTarefa) {
+        console.log(idTarefa);
+        try {
+            const response = await fetch(`${API_EPICO}/remover_tarefa/${idTarefa}`, {
+                method: 'DELETE'
+            });
+            const texto = await response.text();
+            mostrarMensagemNaTela("resultado_epico",MSG.excluido("ÉPICO"), "success");
+            await limparFormulario("TA");
+            await listarTarefas();
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico",MSG.erroExcluir("ÉPICO"), "error");
         }

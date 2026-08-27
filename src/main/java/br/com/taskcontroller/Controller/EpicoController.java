@@ -2,12 +2,14 @@ package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Mapper.EpicoMapper;
 import br.com.taskcontroller.Mapper.EstoriaMapper;
+import br.com.taskcontroller.Mapper.TarefaMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Epico.EpicoConsultaDTO;
 import br.com.taskcontroller.Record.Epico.EpicoInclusaoDTO;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaInclusaoDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaInclusaoDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EpicoService;
 import br.com.taskcontroller.Service.PrioridadesService;
@@ -100,8 +102,6 @@ public class EpicoController {
     public List<EstoriaConsultaDTO> listarEstoriaPorEpico(@PathVariable Long idEpico) {
         return epicoEstoriasRepository.listaEstoriasPorEpico(idEpico);
     }
-//    Epico epico = EpicoMapper.toEntity(dto);
-//        return ResponseEntity.ok(service.salvar(epico));
 
     @PostMapping("/{idEpico}/adicionarEstoria")
     public ResponseEntity<?> adicionarEstoria(
@@ -109,27 +109,13 @@ public class EpicoController {
             @RequestBody EstoriaInclusaoDTO dto) {
         Estoria estoria = EstoriaMapper.toEntity(dto);
         return ResponseEntity.ok(epicoEstoriasRepository.save(estoria));
-
-        /*
-        Epico epico = service.buscarPorId(idEpico);
-        Usuario criador = usuarioRepository.findById(estoria.getCriador().getIdusuario())
-                .orElseThrow(() -> new RuntimeException("Usuário criador não encontrado"));
-        Usuario responsavel = usuarioRepository.findById(estoria.getResponsavel().getIdusuario())
-                .orElseThrow(() -> new RuntimeException("Usuário responsavel não encontrado"));
-        estoria.setEpico(epico);
-        estoria.setCriador(criador);
-        estoria.setResponsavel(responsavel);
-        epicoEstoriasRepository.save(estoria);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build(); */
     }
 
-    // LISTAR TODAS AS ESTORIAS POR ÉPICO
     // APAGAR UMA ESTORIA
-    @DeleteMapping("/{idEpico}/remover/{idEstoria}")
-    public ResponseEntity<?> removerMembro(@PathVariable Long idEpico,
-                                           @PathVariable Long idEstoria) {
-        epicoEstoriasRepository.removerDoEpico(idEpico, idEstoria);
+    @DeleteMapping("/remover_estoria/{idEstoria}")
+    public ResponseEntity<?> removerMembro(@PathVariable Long idEstoria) {
+        epicoEstoriasRepository.apagarEstoria(idEstoria);
         return ResponseEntity.noContent().build();
     }
+
 }

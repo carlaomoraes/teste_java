@@ -1,7 +1,9 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.Mapper.TarefaMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaInclusaoDTO;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import br.com.taskcontroller.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,24 +41,17 @@ public class TarefaController {
         return service.buscaPorIDDTO(idTarefa);
     }
 
+    // APAGAR UMA TAREFA
+    @DeleteMapping("/remover_tarefa/{idTarefa}")
+    public ResponseEntity<?> apagarTarefa(@PathVariable Long idTarefa) {
+        tarefaRepository.apagarTarefa(idTarefa);
+        return ResponseEntity.noContent().build();
+    }
+
     // SALVAR
     @PostMapping("/salvar")
-    public ResponseEntity<Tarefa> salvar(@RequestBody Tarefa tarefa) {
-//        StatusEntidades statusEntidades = statusService.buscarPorId(tarefa.getStatus().getIdstatus());
-//        if (statusEntidades == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        tarefa.setStatus(statusEntidades);
-        Usuario criador = usuarioService.buscarPorId(tarefa.getCriador().getIdusuario());
-        if (criador == null) {
-            return ResponseEntity.notFound().build();
-        }
-        tarefa.setCriador(criador);
-        Usuario responsavel = usuarioService.buscarPorId(tarefa.getResponsavel().getIdusuario());
-        if (responsavel == null) {
-            return ResponseEntity.notFound().build();
-        }
-        tarefa.setResponsavel(responsavel);
+    public ResponseEntity<Tarefa> salvar_tarefa(@RequestBody TarefaInclusaoDTO dto) {
+        Tarefa tarefa = TarefaMapper.toEntity(dto);
         return ResponseEntity.ok().body(service.salvar(tarefa));
     }
 
