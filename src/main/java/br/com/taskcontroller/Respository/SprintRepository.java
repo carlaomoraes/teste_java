@@ -35,6 +35,8 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
       and s.empreendimento.idempreendimento = :idempreendimento
       and s.ativa = true
       and s.visivel = true
+ ORDER BY s.idsprint
+     
 """)
     CabecalhoProjection montaCabecalho(@Param("idempreendimento") Long idempreendimento,
                                        @Param("idsprint") Long idsprint,
@@ -49,10 +51,11 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
             s.dtiniciosprint,
             s.dtfinalsprint,
             s.ativa,
-            s.visivel
-            )
+            s.visivel)
     from Sprint s
    where s.empreendimento.idempreendimento = :idempreendimento
+ORDER BY s.idsprint
+
 """)
     List<SprintListagemDTO> listar(@Param("idempreendimento") Long idempreendimento);
 
@@ -69,6 +72,7 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
     FROM Sprint s
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
       AND :hoje BETWEEN s.dtiniciosprint AND s.dtfinalsprint
+ ORDER BY s.idsprint
 """)
     Optional<SprintDataDTO> buscarSprintValida(
             @Param("idEmpreendimento") Long idEmpreendimento,
@@ -87,6 +91,7 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
     FROM Sprint s
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
       AND s.ativa = true
+ ORDER BY s.idsprint
 """)
     List<SprintDataDTO> buscarSprintAtiva(@Param("idEmpreendimento") Long idEmpreendimento);
 
@@ -97,6 +102,5 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
       AND se.estoria.idestoria = :idEstoria
 """)
     void excluirDoRoadmap(Long idSprint, Long idEstoria);
-
 
 }

@@ -180,6 +180,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
     JOIN Sprint s ON s.idsprint = se.sprint.idsprint
     WHERE e.ativa = true
       AND ep.empreendimento.idempreendimento = :idempreendimento
+ ORDER BY s.idsprint desc
 """)
     List<EstoriaRoadmapDTO> listaEstoriasRoadmap(Long idempreendimento);
 }

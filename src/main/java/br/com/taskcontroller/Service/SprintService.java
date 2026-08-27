@@ -122,5 +122,4 @@ public class SprintService {
     public void excluirDoRoadmap(Long idSprint, Long idEstoria) {
         sprintRepository.excluirDoRoadmap(idSprint, idEstoria);
     }
-
 }

@@ -5,8 +5,13 @@ import br.com.taskcontroller.DTO.SprintEstoriaResponseDTO;
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Modelo.SprintEstoria;
+import br.com.taskcontroller.Service.SprintService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SprintEstoriaMapper {
+
+    @Autowired
+    private static SprintService service;
 
     public static SprintEstoria toEntity(SprintEstoriaRequestDTO dto){
         SprintEstoria s = new SprintEstoria();
@@ -24,9 +29,9 @@ public class SprintEstoriaMapper {
     public static SprintEstoriaResponseDTO toDTO(SprintEstoria s) {
         SprintEstoriaResponseDTO dto = new SprintEstoriaResponseDTO();
         dto.setIdsprintEstoria(s.getIdsprintEstoria());
-        dto.setSprint(s.getSprint());
-        dto.setEstoria(s.getEstoria());
         dto.setDataplanejamento(s.getDataplanejamento());
+        dto.setIdepico(s.getEstoria().getEpico().getIdepico());
+        dto.setIdestoria(s.getEstoria().getIdestoria());
         return dto;
     }
 }

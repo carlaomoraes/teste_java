@@ -67,7 +67,6 @@ public class BacklogService {
 
         estoriaService.atualizar(estoria);
 
-
         // 2. Atualiza o épico
         Epico epico = epicoService.buscarPorId(dto.getIdepico());
         Prioridades prioridade = new Prioridades();
@@ -75,7 +74,6 @@ public class BacklogService {
         epico.setPrioridade(prioridade);
         epico.setResponsavel(usuario);
         epicoService.atualizar(epico);
-
 
         // 3. Cria o vínculo da estória com a sprint
         Sprint sprint = sprintService.buscarPorId(dto.getIdsprint());

@@ -57,4 +57,5 @@ public class SprintEstoria {
     public void setDataplanejamento(LocalDate dataplanejamento) {
         this.dataplanejamento = dataplanejamento;
     }
+
 }
