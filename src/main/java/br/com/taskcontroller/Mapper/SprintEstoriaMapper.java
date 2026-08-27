@@ -5,13 +5,6 @@ import br.com.taskcontroller.DTO.SprintEstoriaResponseDTO;
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Modelo.SprintEstoria;
-import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
-import br.com.taskcontroller.Respository.SprintEstoriaRepository;
-import br.com.taskcontroller.Respository.SprintRepository;
-import br.com.taskcontroller.Service.EmpreendimentoService;
-import br.com.taskcontroller.Service.EstoriaService;
-import br.com.taskcontroller.Service.SprintService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class SprintEstoriaMapper {
 

@@ -30,13 +30,7 @@ public class SprintController {
     private SprintService service;
 
     @Autowired
-    private EpicoService epicoService;
-
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private EstoriaService estoriaService;
+    private BacklogService backlogService;
 
     @Autowired
     private EmpreendimentoService empreendimentoService;
@@ -173,24 +167,7 @@ public class SprintController {
 
     @PostMapping("/atualiza_backlog")
     public ResponseEntity<?> atualiza_backlog(@RequestBody SprintEstoriaRequestDTO dto) {
-        SprintEstoria sprintEstoria = new SprintEstoria();
-        sprintEstoria.setDataplanejamento(dto.getDataplanejamento());
-        Estoria estoria = estoriaService.buscarPorId(dto.getIdestoria());
-        estoria.setHoras_estimadas(dto.getHorasestimadas());
-        estoria.setPontos(dto.getPontos());;
-        estoria.setHoras_estimadas(dto.getHorasestimadas());
-        Usuario usuario = usuarioService.buscarPorId(dto.getIdresponsavel());
-        estoria.setResponsavel(usuario);
-        estoriaService.atualizar(estoria);
-        Prioridades prioridades = new Prioridades();
-        prioridades.setIdprioridade(dto.getIdprioridade());
-        Epico epico = epicoService.buscarPorId(dto.getIdepico());
-        epico.setPrioridade(prioridades);
-        epico.setResponsavel(usuario);
-        epicoService.atualizar(epico);
-        sprintEstoria.setEstoria(estoria);
-        Sprint sprint = service.buscarPorId(dto.getIdsprint());
-        sprintEstoria.setSprint(sprint);
+        SprintEstoria sprintEstoria = backlogService.atualizar(dto);
         return ResponseEntity.ok(sprintEstoriaRepository.save(sprintEstoria));
     }
     @DeleteMapping("/{idSprint}/{idEstoria}")

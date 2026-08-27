@@ -290,6 +290,21 @@
         montarRoadmap(selectedValue);
         carregarSprint(selectedValue);
     });
+    async function limparFormulario() {
+        configuracao.idepico = 0;
+        configuracao.idestoria = 0;
+        configuracao.idtarefa = 0;
+        document.getElementById('descestoria').value = "";
+        // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+        document.getElementById('resumo').value = "";
+        document.getElementById('combostorypoints').value = "";
+        document.getElementById('horas_estimadas').value = 0;
+        //CARREGANDO OS COMBOS
+        document.getElementById('comboResponsavel').value = 0;
+        document.getElementById('comboSprint').value = 0;
+        document.getElementById('comboPrioridades').value = 0;
+
+    }
     async function montarRoadmap(idEmpreendimento) {
         if(Number(idEmpreendimento) === 0){
             mostrarMensagemNaTela("resultado", "Selecione o empreendimento!", "warning");
@@ -316,8 +331,8 @@
                 const cor = corHexValida(roadmap.corepico) ? roadmap.corepico : "#6c757d";
                 tabela += `<tr>
                                 <td>${roadmap.idsprint} - ${roadmap.descsprint}</td>
-                                <td>${roadmap.dtiniciosprint}</td>
-                                <td>${roadmap.dtfinalsprint}</td>
+                                <td>${formatarData(roadmap.dtiniciosprint)}</td>
+                                <td>${formatarData(roadmap.dtfinalsprint)}</td>
                                 <td style="background-color: ${cor};">${roadmap.nome} </td>
                                 <td>${roadmap.descestoria}</td>
                                 <td><button type="button" class="btn" onclick="event.stopPropagation(); excluirRoadmap(${roadmap.idsprint}, ${roadmap.idestoria})"> Voltar ao backlog </button></td>
@@ -393,8 +408,11 @@
     async function salvarBacklog() {
         const hoje = new Date();
         const estoria = {
-            idestoria: configuracao.idestoria || null,
             idsprint: Number(document.getElementById('comboSprint').value) || null,
+            idestoria: configuracao.idestoria || null,
+            idresponsavel: Number(document.getElementById('comboResponsavel').value) || null,
+            idepico: configuracao.idepico || null,
+            idprioridade: Number(document.getElementById('comboPrioridades').value) || null,
             dataplanejamento: hoje.toISOString().split("T")[0],
             pontos: Number(document.getElementById('combostorypoints').value) || 0,
             horasestimadas: Number(document.getElementById('horas_estimadas').value) || 0
@@ -414,6 +432,7 @@
                 const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
                 montaBacklog(idEmpreendimento);
                 montarRoadmap(idEmpreendimento);
+                limparFormulario();
             }, 1000);
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroSalvar("BACKLOG"),"error");
