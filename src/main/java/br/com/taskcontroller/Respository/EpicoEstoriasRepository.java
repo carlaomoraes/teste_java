@@ -19,30 +19,22 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         ep.idepico,
         e.idestoria,
         e.descestoria,
-
         s.idstatus,
         s.descstatus,
-
         c.idusuario,
         c.nome,
-
         r.idusuario,
         r.nome,
-
         ep.nome,
         ep.cor,
-
         p.idprioridade,
         p.descprioridade,
         p.corprioridade,
-
         COALESCE(e.pontos, 1),
         COALESCE(e.horas_estimadas, 0),
         COALESCE(e.horas_realizadas, 0),
-
         e.data_inicio,
         e.data_fim,
-
         e.bloqueada,
         e.resumo
     )
@@ -60,30 +52,22 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         ep.idepico,
         e.idestoria,
         e.descestoria,
-
         s.idstatus,
         s.descstatus,
-
         c.idusuario,
         c.nome,
-
         r.idusuario,
         r.nome,
-
         ep.nome,
         ep.cor,
-
         p.idprioridade,
         p.descprioridade,
         p.corprioridade,
-
         COALESCE(e.pontos, 1),
         COALESCE(e.horas_estimadas, 0),
         COALESCE(e.horas_realizadas, 0),
-
         e.data_inicio,
         e.data_fim,
-
         e.bloqueada,
         e.resumo
     )

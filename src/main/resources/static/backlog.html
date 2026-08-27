@@ -306,10 +306,11 @@
 
     }
     async function montarRoadmap(idEmpreendimento) {
-        if(Number(idEmpreendimento) === 0){
+        if (Number(idEmpreendimento) === 0) {
             mostrarMensagemNaTela("resultado", "Selecione o empreendimento!", "warning");
             return;
         }
+
         try {
             const response = await fetch(`${API}/${idEmpreendimento}/roadmap`);
             const data = await response.json();
@@ -328,20 +329,29 @@
                 <tbody>
         `;
             data.forEach(roadmap => {
-                const cor = corHexValida(roadmap.corepico) ? roadmap.corepico : "#6c757d";
-                tabela += `<tr>
-                                <td>${roadmap.idsprint} - ${roadmap.descsprint}</td>
-                                <td>${formatarData(roadmap.dtiniciosprint)}</td>
-                                <td>${formatarData(roadmap.dtfinalsprint)}</td>
-                                <td style="background-color: ${cor};">${roadmap.nome} </td>
-                                <td>${roadmap.descestoria}</td>
-                                <td><button type="button" class="btn" onclick="event.stopPropagation(); excluirRoadmap(${roadmap.idsprint}, ${roadmap.idestoria})"> Voltar ao backlog </button></td>
-                                </tr>`;});
+                const cor = corHexValida(roadmap.corepico) ? roadmap.corepico: "#6c757d";
+                tabela += `
+                <tr>
+                    <td>${roadmap.idsprint} - ${roadmap.descsprint}</td>
+                    <td>${formatarData(roadmap.dtiniciosprint)}</td>
+                    <td>${formatarData(roadmap.dtfinalsprint)}</td>
+                    <td style="background-color: ${cor};">${roadmap.nome}</td>
+                    <td>${roadmap.descestoria}</td>
+                    <td>
+                        <button type="button"
+                                class="btn btn-outline-secondary btn-sm"
+                                onclick="event.stopPropagation(); excluirRoadmap(${roadmap.idsprint}, ${roadmap.idestoria})">
+                            <i class="bi bi-arrow-left"></i>
+                            Voltar ao backlog
+                        </button>
+                    </td>
+                </tr>
+            `;
+            });
             tabela += `</tbody></table>`;
-
             document.getElementById('resultadoRoadmap').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultadoRoadmap", MSG.errolistar("ROADMAP"), "error");
+            mostrarMensagemNaTela("resultadoRoadmap", MSG.errolistar("ROADMAP"),"error");
         }
     }
     async function montaBacklog(idEmpreendimento) {
@@ -407,36 +417,37 @@
     }
     async function salvarBacklog() {
         const hoje = new Date();
-        const estoria = {
-            idsprint: Number(document.getElementById('comboSprint').value) || null,
-            idestoria: configuracao.idestoria || null,
-            idresponsavel: Number(document.getElementById('comboResponsavel').value) || null,
-            idepico: configuracao.idepico || null,
-            idprioridade: Number(document.getElementById('comboPrioridades').value) || null,
-            dataplanejamento: hoje.toISOString().split("T")[0],
-            pontos: Number(document.getElementById('combostorypoints').value) || 0,
-            horasestimadas: Number(document.getElementById('horas_estimadas').value) || 0
-        };
-        try {
-            const caminho = `${API_SPRINT}/atualiza_backlog`;
-            console.log("POST:", caminho);
-            const response = await fetch(caminho, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(estoria)
-            });
-            setTimeout(() => {
-                mostrarMensagemNaTela("resultado", MSG.salvo("BACKLOG"),"success");
-                const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
-                montaBacklog(idEmpreendimento);
-                montarRoadmap(idEmpreendimento);
-                limparFormulario();
-            }, 1000);
-        } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.erroSalvar("BACKLOG"),"error");
+         const estoria = {
+             idsprint: Number(document.getElementById('comboSprint').value) || null,
+             idestoria: configuracao.idestoria || null,
+             idresponsavel: Number(document.getElementById('comboResponsavel').value) || null,
+             idepico: configuracao.idepico || null,
+             idprioridade: Number(document.getElementById('comboPrioridades').value) || null,
+             dataplanejamento: hoje.toISOString().split("T")[0],
+             pontos: Number(document.getElementById('combostorypoints').value) || 0,
+             horasestimadas: Number(document.getElementById('horas_estimadas').value) || 0
+         };
+         try {
+             const caminho = `${API_SPRINT}/atualiza_backlog`;
+             console.log("POST:", caminho);
+             const response = await fetch(caminho, {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   },
+                   body: JSON.stringify(estoria)
+               });
+               setTimeout(() => {
+                   mostrarMensagemNaTela("resultado", MSG.salvo("BACKLOG"),"success");
+                   const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
+                   montaBacklog(idEmpreendimento);
+                   montarRoadmap(idEmpreendimento);
+                   limparFormulario();
+               }, 1000);
+         } catch (error) {
+               mostrarMensagemNaTela("resultado", MSG.erroSalvar("BACKLOG"),"error");
         }
+
     }
     async function excluirRoadmap(idSprint, idEstoria) {
         try {
@@ -445,9 +456,8 @@
             });
             setTimeout(() => {
                 mostrarMensagemNaTela("resultado", MSG.excluido("ROADMAP"),"success");
-                const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
-                montaBacklog(idEmpreendimento);
-                montarRoadmap(idEmpreendimento);
+                montaBacklog(document.getElementById('comboEmpreendimento').value);
+                montarRoadmap(document.getElementById('comboEmpreendimento').value);
             }, 1000);
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroExcluir("ROADMAP"), "error");

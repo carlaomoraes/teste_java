@@ -54,7 +54,6 @@ public class BacklogService {
     public List<EstoriaRoadmapDTO> montaRoadmap(Long idempreendimento) {
         return repository.listaEstoriasRoadmap(idempreendimento);
     }
-    @Transactional
     public SprintEstoria atualizar(SprintEstoriaRequestDTO dto) {
         // 1. Busca a estória
         Estoria estoria = estoriaService.buscarPorId(dto.getIdestoria());
