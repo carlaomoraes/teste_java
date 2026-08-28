@@ -1,7 +1,6 @@
 package br.com.taskcontroller.Mapper;
 
 import br.com.taskcontroller.DTO.*;
-import br.com.taskcontroller.DTO.TarefaRequestDTO;
 import br.com.taskcontroller.DTO.TarefaResponseDTO;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Tarefa.TarefaInclusaoDTO;
@@ -9,7 +8,6 @@ import br.com.taskcontroller.Record.Tarefa.TarefaInclusaoDTO;
 public class TarefaMapper {
     public static Tarefa toEntity(TarefaInclusaoDTO dto) {
         Tarefa t = new Tarefa();
-        t.setIdtarefa(dto.idtarefa());
         Estoria estoria = new Estoria();
         estoria.setIdestoria(dto.idestoria());
         t.setEstoria(estoria);

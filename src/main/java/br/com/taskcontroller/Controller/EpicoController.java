@@ -29,10 +29,6 @@ public class EpicoController {
     private EpicoService service;
 
     @Autowired
-    private UsuarioService usuarioService;
-    @Autowired
-    private PrioridadesService prioridadesService;
-    @Autowired
     private EpicoEstoriasRepository epicoEstoriasRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -40,6 +36,13 @@ public class EpicoController {
     private EpicoRepository epicoRepository;
     @Autowired
     private PrioridadesRepository prioridadesRepository;
+    @Autowired
+    private StatusEntidadesRepository statusEntidadesRepository;
+
+
+    @Autowired
+    private EmpreendimentoRepository empreendimentoRepository;
+
 
     // BUSCAR POR ID - DTO
     @GetMapping("/DTO/{idepico}")
@@ -55,16 +58,33 @@ public class EpicoController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<Epico> salvar(@RequestBody EpicoInclusaoDTO dto) {
-        Epico epico = EpicoMapper.toEntity(dto);
+        Epico epico;
+        if(dto.idepico() == null){
+            epico = EpicoMapper.toEntity(dto);
+        } else {
+            epico = service.buscarPorId(dto.idepico());
+            epico.setBloqueado(dto.bloqueado());
+            epico.setData_cadastro(dto.data_cadastro());
+            epico.setData_inicio(dto.data_inicio());
+            epico.setData_fim_prevista(dto.data_fim_prevista());
+            epico.setCodepico(dto.codepico());
+            epico.setCor(dto.cor());
+            epico.setPercentual(dto.percentual());
+            epico.setNome(dto.nome());
+            epico.setCor(dto.cor());
+            epico.setPercentual(dto.percentual());
+            epico.setAtivo(dto.ativo());
+            epico.setBloqueado(dto.bloqueado());
+        }
+        Empreendimento empreendimento = empreendimentoRepository.findById(dto.idempreendimento()).orElse(null);
+        epico.setEmpreendimento(empreendimento);
+        Usuario usuario = usuarioRepository.findById(dto.idresponsavel()).orElse(null);
+        epico.setResponsavel(usuario);
+        StatusEntidades status = statusEntidadesRepository.findById(dto.idstatus()).orElse(null);
+        epico.setStatus(status);
+        Prioridades prioridades = prioridadesRepository.findById(dto.idprioridade()).orElse(null);
+        epico.setPrioridade(prioridades);
         return ResponseEntity.ok(service.salvar(epico));
-    }
-
-    // ATUALIZAR
-    @PutMapping("/atualizar/{idepico}")
-    public Epico atualizar(@PathVariable Long idepico,
-                             @RequestBody Epico epico) {
-        epico.setIdepico(idepico);
-        return service.atualizar(epico);
     }
 
     // LISTAR

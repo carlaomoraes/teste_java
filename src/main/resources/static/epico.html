@@ -412,30 +412,34 @@
         limparFormulario("EP");
     }
     async function criarTarefa() {
-        limparFormulario("TA");
+        const hoje = new Date();
+        await limparFormulario("TA");
+        document.getElementById("data_inicio_TA").value = hoje;
+        document.getElementById("data_fim_TA").value = hoje;
+        document.getElementById('comboCriadorTA').value = sessionStorage.getItem("usuarioIdUsuario");
+        document.getElementById('comboResponsavelTA').value = sessionStorage.getItem("usuarioIdUsuario");
     }
 
-    async function salvarTarefa(idEpico, idEstoria) {
+    async function salvarTarefa() {
         const hoje = new Date();
         const bloqueada = document.getElementById("bloqueada_tarefa").checked || 0;
         const descTarefa = document.getElementById("desctarefa").value;
         const data_inicio = document.getElementById("data_inicio_TA").value || hoje;
         const data_fim_prevista = document.getElementById("data_fim_TA").value || hoje;
         const tarefa = {
-            idestoria: Number(idEstoria) || null,
+            idtarefa: Number(document.getElementById("idtarefa").value) || null,
+            idestoria: Number(configuracao.idestoria) || null,
             desctarefa: descTarefa || null,
-            bloqueada: bloqueada,
+            bloqueada: bloqueada || false,
+            idcriador: document.getElementById('comboCriadorTA').value || null,
+            idresponsavel: document.getElementById('comboResponsavelTA').value || null,
+            idstatus: document.getElementById('comboStatusTA').value || null,
+            horas_estimadas: Number(document.getElementById('horas_estimadas_TA').value) || 0,
+            horas_realizadas: Number(document.getElementById('horas_realizadas_TA').value) || 0,
             data_inicio: data_inicio,
             data_fim_prevista: data_fim_prevista,
-            criador: {
-                idcriador: document.getElementById('comboCriadorTA').value || null,
-            },
-            responsavel: {
-                idresponsavel: document.getElementById('comboResponsavelTA').value || null,
-            },
-            status: {
-                idstatus: document.getElementById('comboStatusTA').value || null,
-            },
+            data_conclusao: null,
+            idtipotarefa: document.getElementById('comboTipoTarefa').value
         };
         try {
             const response = await fetch(`${API_TAREFA}/salvar`, {
@@ -625,10 +629,10 @@
                 body: JSON.stringify(estoria)
             });
             const data = await response.json();
-            mostrarMensagemNaTela("resultado_estoria",MSG.salvo("ESTÓRIA"),"error");
+            mostrarMensagemNaTela("resultado_estoria",MSG.salvo("ESTÓRIA"),"success");
             setTimeout(() => {
                 limparFormulario("ES");
-                listarEstoria(idEpico);
+                listarEstoria(configuracao.idepico);
             }, 1000);
 
         } catch (error) {
@@ -727,7 +731,7 @@
             <td>
                 <button type="button"
                         class="btn"
-                        onclick="excluirTarefa(${configuracao.idepico},${tarefa.idtarefa}); event.stopPropagation();">
+                        onclick="excluirTarefa(${tarefa.idtarefa}); event.stopPropagation();">
                     Excluir
                 </button>
             </td>
@@ -735,8 +739,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado_tarefa').innerHTML = tabela;
         } catch (error) {
-            //mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
-            mostrarMensagemNaTela("resultado_tarefa",error.message,"error");
+            mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
         }
     }
     async function listarEquipes(idEmpreendimento) {
@@ -912,15 +915,15 @@
     async function excluirTarefa(idTarefa) {
         console.log(idTarefa);
         try {
-            const response = await fetch(`${API_EPICO}/remover_tarefa/${idTarefa}`, {
+            const response = await fetch(`${API_TAREFA}/excluir/${idTarefa}`, {
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela("resultado_epico",MSG.excluido("ÉPICO"), "success");
+            mostrarMensagemNaTela("resultado_tarefa",MSG.excluido("TAREFA"), "success");
             await limparFormulario("TA");
             await listarTarefas();
         } catch (error) {
-            mostrarMensagemNaTela("resultado_epico",MSG.erroExcluir("ÉPICO"), "error");
+            mostrarMensagemNaTela("resultado_tarefa",MSG.erroExcluir("TAREFA"), "error");
         }
     }
 

@@ -1,8 +1,10 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
+import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
+import br.com.taskcontroller.Respository.EstoriaRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,8 @@ public class TarefaService {
     @Autowired
     private TarefaRepository repository;
 
+    @Transactional
     public Tarefa salvar(Tarefa tarefa) {
-
         return repository.save(tarefa);
     }
 
