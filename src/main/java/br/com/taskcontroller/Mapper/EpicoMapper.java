@@ -21,8 +21,8 @@ public class EpicoMapper {
         statusEntidades.setIdstatus(dto.idstatus());
         e.setStatus(statusEntidades);
         e.setBloqueado(dto.bloqueado());
-        e.setData_inicio(dto.data_inicialEP());
-        e.setData_fim_prevista(dto.data_fim_previstaEP());
+        e.setData_inicio(dto.data_inicio());
+        e.setData_fim_prevista(dto.data_fim_prevista());
         e.setCodepico(dto.codepico());
         e.setNome(dto.nome());
         e.setCor(dto.cor());
