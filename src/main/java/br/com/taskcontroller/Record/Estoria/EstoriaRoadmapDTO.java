@@ -13,6 +13,7 @@ public record EstoriaRoadmapDTO(
         LocalDate dtiniciosprint,
         LocalDate dtfinalsprint,
         Boolean ativa,
-        Boolean visivel
+        Boolean visivel,
+        int ordem
 ) {
 }

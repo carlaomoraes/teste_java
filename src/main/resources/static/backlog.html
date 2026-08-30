@@ -416,38 +416,39 @@
         }
     }
     async function salvarBacklog() {
-        const hoje = new Date();
-         const estoria = {
-             idsprint: Number(document.getElementById('comboSprint').value) || null,
-             idestoria: configuracao.idestoria || null,
-             idresponsavel: Number(document.getElementById('comboResponsavel').value) || null,
-             idepico: configuracao.idepico || null,
-             idprioridade: Number(document.getElementById('comboPrioridades').value) || null,
-             dataplanejamento: hoje.toISOString().split("T")[0],
-             pontos: Number(document.getElementById('combostorypoints').value) || 0,
-             horasestimadas: Number(document.getElementById('horas_estimadas').value) || 0
-         };
-         try {
-             const caminho = `${API_SPRINT}/atualiza_backlog`;
-             console.log("POST:", caminho);
-             const response = await fetch(caminho, {
-                   method: 'POST',
-                   headers: {
-                       'Content-Type': 'application/json'
-                   },
-                   body: JSON.stringify(estoria)
-               });
-               setTimeout(() => {
-                   mostrarMensagemNaTela("resultado", MSG.salvo("BACKLOG"),"success");
-                   const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
-                   montaBacklog(idEmpreendimento);
-                   montarRoadmap(idEmpreendimento);
-                   limparFormulario();
-               }, 1000);
-         } catch (error) {
-               mostrarMensagemNaTela("resultado", MSG.erroSalvar("BACKLOG"),"error");
+        if(validaEntrada()) {
+            const hoje = new Date();
+            const estoria = {
+                idsprint: Number(document.getElementById('comboSprint').value) || null,
+                idestoria: configuracao.idestoria || null,
+                idresponsavel: Number(document.getElementById('comboResponsavel').value) || null,
+                idepico: configuracao.idepico || null,
+                idprioridade: Number(document.getElementById('comboPrioridades').value) || null,
+                dataplanejamento: hoje.toISOString().split("T")[0],
+                pontos: Number(document.getElementById('combostorypoints').value) || 0,
+                horasestimadas: Number(document.getElementById('horas_estimadas').value) || 0
+            };
+            try {
+                const caminho = `${API_SPRINT}/atualiza_backlog`;
+                console.log("POST:", caminho);
+                const response = await fetch(caminho, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(estoria)
+                });
+                setTimeout(() => {
+                    mostrarMensagemNaTela("resultado", MSG.salvo("BACKLOG"),"success");
+                    const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
+                    montaBacklog(idEmpreendimento);
+                    montarRoadmap(idEmpreendimento);
+                    limparFormulario();
+                }, 1000);
+            } catch (error) {
+                mostrarMensagemNaTela("resultado", MSG.erroSalvar("BACKLOG"),"error");
+            }
         }
-
     }
     async function excluirRoadmap(idSprint, idEstoria) {
         try {
@@ -462,5 +463,24 @@
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroExcluir("ROADMAP"), "error");
         }
+    }
+    function validaEntrada() {
+        if(document.getElementById('descestoria').value === "") {
+            mostrarMensagemNaTela("resultado", "Selecione uma estória", "warning");
+            return false;
+        }
+        if(document.getElementById('combostorypoints').value === "") {
+            mostrarMensagemNaTela("resultado", "Selecione story point", "warning");
+            return false;
+        }
+        if(document.getElementById('comboprioridades').value === "") {
+            mostrarMensagemNaTela("resultado", "Selecione uma prioridade", "warning");
+            return false;
+        }
+        if(document.getElementById('comboResponsavel').value === "") {
+            mostrarMensagemNaTela("resultado", "Selecione um responsável", "warning");
+            return false;
+        }
+        return true;
     }
 </script>

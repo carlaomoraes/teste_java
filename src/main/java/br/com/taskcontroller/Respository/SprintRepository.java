@@ -103,4 +103,10 @@ ORDER BY s.idsprint
 """)
     void excluirDoRoadmap(Long idSprint, Long idEstoria);
 
+    @Query("""
+    SELECT COUNT(ordem) + 1 FROM SprintEstoria se
+    WHERE se.sprint.idsprint = :idSprint
+""")
+    int retornaOrdem(Long idSprint);
+
 }

@@ -12,7 +12,6 @@ import br.com.taskcontroller.Respository.SprintEstoriaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,16 +31,13 @@ public class BacklogService {
     private EpicoService epicoService;
 
     @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
     private SprintService sprintService;
 
     @Autowired
-    private SprintEstoriaRepository sprintEstoriaRepository;
+    private PrioridadesService prioridadesService;
 
     @Autowired
-    private SprintRepository sprintRepository;
+    private SprintEstoriaRepository sprintEstoriaRepository;
 
     public List<EstoriaBacklogDTO> listar(Long idempreendimento) {
         return repository.listaEstoriasBacklog(idempreendimento);
@@ -68,8 +64,7 @@ public class BacklogService {
 
         // 2. Atualiza o épico
         Epico epico = epicoService.buscarPorId(dto.getIdepico());
-        Prioridades prioridade = new Prioridades();
-        prioridade.setIdprioridade(dto.getIdprioridade());
+        Prioridades prioridade = prioridadesService.buscarPorId(dto.getIdprioridade());
         epico.setPrioridade(prioridade);
         epico.setResponsavel(usuario);
         epicoService.atualizar(epico);
@@ -77,9 +72,12 @@ public class BacklogService {
         // 3. Cria o vínculo da estória com a sprint
         Sprint sprint = sprintService.buscarPorId(dto.getIdsprint());
         SprintEstoria sprintEstoria = new SprintEstoria();
+        int Ultima = sprintService.retornaOrdem(sprint.getIdsprint());
+
         sprintEstoria.setDataplanejamento(dto.getDataplanejamento());
         sprintEstoria.setEstoria(estoria);
         sprintEstoria.setSprint(sprint);
+        sprintEstoria.setOrdem(Ultima);
 
         return sprintEstoriaRepository.save(sprintEstoria);
     }
