@@ -25,6 +25,8 @@ public class SprintEstoria {
     private Estoria estoria;
     @Column(name = "dataplanejamento")
     private LocalDate dataplanejamento;
+    @Column(name="ordem")
+    private int ordem;
 
     public Long getIdsprintEstoria() {
         return idsprintEstoria;
@@ -58,4 +60,11 @@ public class SprintEstoria {
         this.dataplanejamento = dataplanejamento;
     }
 
+    public int getOrdem() {
+        return ordem;
+    }
+
+    public void setOrdem(int ordem) {
+        this.ordem = ordem;
+    }
 }

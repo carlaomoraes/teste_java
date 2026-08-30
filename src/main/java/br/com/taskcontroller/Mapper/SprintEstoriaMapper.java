@@ -24,6 +24,7 @@ public class SprintEstoriaMapper {
         estoria.setPontos(dto.getPontos());
         estoria.setHoras_estimadas(dto.getHorasestimadas());
         s.setEstoria(estoria);
+        s.setOrdem(dto.getOrdem());
         return s;
     }
     public static SprintEstoriaResponseDTO toDTO(SprintEstoria s) {
@@ -32,6 +33,7 @@ public class SprintEstoriaMapper {
         dto.setDataplanejamento(s.getDataplanejamento());
         dto.setIdepico(s.getEstoria().getEpico().getIdepico());
         dto.setIdestoria(s.getEstoria().getIdestoria());
+        dto.setOrdem(s.getOrdem());
         return dto;
     }
 }
