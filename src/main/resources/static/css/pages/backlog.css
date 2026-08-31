@@ -793,3 +793,110 @@ select:focus {
     }
 
 }
+/* =========================================================
+   ROADMAP - TABELA
+   ========================================================= */
+
+.roadmap-table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.roadmap-table thead th {
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    padding: 8px 12px;
+}
+
+.roadmap-table tbody tr {
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.roadmap-table tbody td {
+    border: none;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.roadmap-table tbody td:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+.roadmap-table tbody td:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+
+/* =========================================================
+   SPRINT
+   ========================================================= */
+
+.sprint-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sprint-info strong {
+    font-size: 14px;
+    color: #212529;
+}
+
+.sprint-info span {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+
+/* =========================================================
+   PERÍODO
+   ========================================================= */
+
+.periodo-sprint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-size: 13px;
+    color: #495057;
+}
+
+.periodo-sprint i {
+    color: #adb5bd;
+}
+
+
+/* =========================================================
+   ÉPICO
+   ========================================================= */
+
+.epico-roadmap {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ESTÓRIA
+   ========================================================= */
+
+.estoria-roadmap {
+    font-size: 14px;
+    color: #343a40;
+    line-height: 1.4;
+}

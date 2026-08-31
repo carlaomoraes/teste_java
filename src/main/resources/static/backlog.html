@@ -306,52 +306,104 @@
 
     }
     async function montarRoadmap(idEmpreendimento) {
+
         if (Number(idEmpreendimento) === 0) {
-            mostrarMensagemNaTela("resultado", "Selecione o empreendimento!", "warning");
+            mostrarMensagemNaTela(
+                "resultado",
+                "Selecione o empreendimento!",
+                "warning"
+            );
             return;
         }
 
         try {
+
             const response = await fetch(`${API}/${idEmpreendimento}/roadmap`);
             const data = await response.json();
+
             let tabela = `
-            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+            <table class="table roadmap-table">
                 <thead>
                     <tr>
-                        <th class="table-header">ID Sprint</th>
-                        <th class="table-header">Data inicial</th>
-                        <th class="table-header">Data final</th>
-                        <th class="table-header">Nome do Épico</th>
-                        <th class="table-header">Estória</th>
-                        <th class="table-header">Ação</th>
+                        <th>Sprint</th>
+                        <th>Período</th>
+                        <th>Épico</th>
+                        <th>Estória</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
+
                 <tbody>
         `;
+
             data.forEach(roadmap => {
-                const cor = corHexValida(roadmap.corepico) ? roadmap.corepico: "#6c757d";
+
+                const cor = corHexValida(roadmap.corepico)
+                    ? roadmap.corepico
+                    : "#6c757d";
+
                 tabela += `
                 <tr>
-                    <td>${roadmap.idsprint} - ${roadmap.descsprint}</td>
-                    <td>${formatarData(roadmap.dtiniciosprint)}</td>
-                    <td>${formatarData(roadmap.dtfinalsprint)}</td>
-                    <td style="background-color: ${cor};">${roadmap.nome}</td>
-                    <td>${roadmap.descestoria}</td>
+
+                    <td>
+                        <div class="sprint-info">
+                            <strong>Sprint ${roadmap.idsprint}</strong>
+                            <span>${roadmap.descsprint}</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="periodo-sprint">
+                            <span>${formatarData(roadmap.dtiniciosprint)}</span>
+                            <i class="bi bi-arrow-right"></i>
+                            <span>${formatarData(roadmap.dtfinalsprint)}</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <span class="epico-roadmap"
+                              style="background-color: ${cor};">
+                            ${roadmap.nome}
+                        </span>
+                    </td>
+
+                    <td>
+                        <div class="estoria-roadmap">
+                            ${roadmap.descestoria}
+                        </div>
+                    </td>
+
                     <td>
                         <button type="button"
                                 class="btn btn-outline-secondary btn-sm"
                                 onclick="event.stopPropagation(); excluirRoadmap(${roadmap.idsprint}, ${roadmap.idestoria})">
+
                             <i class="bi bi-arrow-left"></i>
                             Voltar ao backlog
+
                         </button>
                     </td>
+
                 </tr>
             `;
             });
-            tabela += `</tbody></table>`;
-            document.getElementById('resultadoRoadmap').innerHTML = tabela;
+
+            tabela += `
+                </tbody>
+            </table>
+        `;
+
+            document.getElementById("resultadoRoadmap").innerHTML = tabela;
+
         } catch (error) {
-            mostrarMensagemNaTela("resultadoRoadmap", MSG.errolistar("ROADMAP"),"error");
+
+            console.error(error);
+
+            mostrarMensagemNaTela(
+                "resultadoRoadmap",
+                MSG.errolistar("ROADMAP"),
+                "error"
+            );
         }
     }
     async function montaBacklog(idEmpreendimento) {
