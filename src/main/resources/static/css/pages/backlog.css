@@ -311,6 +311,21 @@ select:focus {
     flex-direction:column;
 }
 
+.btn-salvar { background-color: var(--primary-color); color: white; }
+.btn-salvar:hover { background-color: #112d55; }
+
+.btn-listar { background-color: var(--status-green); color: white; }
+.btn-listar:hover { background-color: #059669; }
+
+.btn-voltar { background-color: #e2e8f0; color: #475569; }
+.btn-voltar:hover { background-color: #cbd5e1; }
+
+.btn-add { background-color: var(--primary-color); color: white; width: 100%; }
+.btn-remove { background-color: #8c97a5; color: white; width: 100%; }
+
+.btn:active { transform: scale(0.98); }
+
+
 /* =========================================================
    ROADMAP
    ========================================================= */

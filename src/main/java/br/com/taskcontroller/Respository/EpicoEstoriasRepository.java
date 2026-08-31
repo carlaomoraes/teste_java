@@ -155,10 +155,14 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         s.dtfinalsprint,
         s.ativa,
         s.visivel,
-        se.ordem
+        se.ordem,
+        p.idprioridade,
+        p.descprioridade,
+        p.corprioridade
     )
     FROM Estoria e
     JOIN e.epico ep
+    JOIN ep.prioridade p
     JOIN SprintEstoria se ON se.estoria.idestoria = e.idestoria
     JOIN Sprint s ON s.idsprint = se.sprint.idsprint
     WHERE e.ativa = true

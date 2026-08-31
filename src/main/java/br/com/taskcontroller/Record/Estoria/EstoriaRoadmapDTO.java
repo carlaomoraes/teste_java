@@ -14,6 +14,9 @@ public record EstoriaRoadmapDTO(
         LocalDate dtfinalsprint,
         Boolean ativa,
         Boolean visivel,
-        int ordem
+        int ordem,
+        Long idprioridade,
+        String descprioridade,
+        String corprioridade
 ) {
 }

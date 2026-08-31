@@ -306,21 +306,13 @@
 
     }
     async function montarRoadmap(idEmpreendimento) {
-
         if (Number(idEmpreendimento) === 0) {
-            mostrarMensagemNaTela(
-                "resultado",
-                "Selecione o empreendimento!",
-                "warning"
-            );
+            mostrarMensagemNaTela("resultado","Selecione o empreendimento!","warning");
             return;
         }
-
         try {
-
             const response = await fetch(`${API}/${idEmpreendimento}/roadmap`);
             const data = await response.json();
-
             let tabela = `
             <table class="table roadmap-table">
                 <thead>
@@ -329,6 +321,7 @@
                         <th>Período</th>
                         <th>Épico</th>
                         <th>Estória</th>
+                        <th>Prioridade</th>
                         <th>Ação</th>
                     </tr>
                 </thead>
@@ -372,16 +365,11 @@
                             ${roadmap.descestoria}
                         </div>
                     </td>
-
+                    <td> <span class="badge" style="background-color:${roadmap.corprioridade}; color:white;">
+                            ${roadmap.descprioridade}</span></td>
                     <td>
-                        <button type="button"
-                                class="btn btn-outline-secondary btn-sm"
-                                onclick="event.stopPropagation(); excluirRoadmap(${roadmap.idsprint}, ${roadmap.idestoria})">
-
-                            <i class="bi bi-arrow-left"></i>
-                            Voltar ao backlog
-
-                        </button>
+                          <button type="button" class="btn btn-remove" onclick="excluirRoadmap(${roadmap.idsprint}, ${roadmap.idestoria})">
+                             Voltar ao backlog</button>
                     </td>
 
                 </tr>
@@ -415,15 +403,15 @@
         try {
             const response = await fetch(`${API}/${idEmpreendimento}`);
             const data = await response.json();
-            tabela = ` <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+            tabela = ` <table class="table roadmap-table" border="1" width="100%" cellspacing="0" cellpadding="10">
              <thead>
                     <tr>
-                        <th class="table-header">ID Estória</th>
-                        <th class="table-header">Status</th>
-                        <th class="table-header">Criador</th>
-                        <th class="table-header">Responsável</th>
-                        <th class="table-header">Código do Épico</th>
-                        <th class="table-header">Nome do Épico</th>
+                        <th>Estória</th>
+                        <th>Status</th>
+                        <th>Criador</th>
+                        <th>Responsável</th>
+                        <th>Nome do Épico</th>
+                        <th>Prioridade</th>
                     </tr>
                 </thead>
             <tbody>`;
@@ -431,13 +419,16 @@
                 const cor = corHexValida(backlog.corepico) ? backlog.corepico : "#6c757d";
                 tabela += `<tr onclick="buscarPorLinha(${backlog.idepico},${backlog.idestoria})"
                                 style="cursor:pointer;">
-                                <td>${backlog.idestoria} - ${backlog.descestoria}</td>
-                                <td>${backlog.descstatus}</td>
-                                <td>${backlog.nomecriador}</td>
-                                <td>${backlog.nomeresponsavel}</td>
-                                <td>${backlog.idepico}</td>
-                                <td style="background-color: ${cor};">${backlog.nome} </td>
-                                </tr>`;});
+                                <td><div class="sprint-info">
+                                    <strong>${backlog.descestoria}</strong>
+                                    </div>
+                                </td>
+                                <td><div class="estoria-roadmap">${backlog.descstatus}</div></td>
+                                <td><div class="estoria-roadmap">${backlog.nomecriador}</div></td>
+                                <td><div class="estoria-roadmap">${backlog.nomeresponsavel}</div></td>
+                                <td><span class="epico-roadmap" style="background-color: ${cor};">${backlog.nome}</span></td>
+                                <td> <span class="badge" style="background-color:${backlog.corprioridade}; color:white;">${backlog.descprioridade}</span></td>
+                            </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
     } catch (error) {
@@ -525,7 +516,7 @@
             mostrarMensagemNaTela("resultado", "Selecione story point", "warning");
             return false;
         }
-        if(document.getElementById('comboprioridades').value === "") {
+        if(document.getElementById('comboPrioridades').value === "") {
             mostrarMensagemNaTela("resultado", "Selecione uma prioridade", "warning");
             return false;
         }
