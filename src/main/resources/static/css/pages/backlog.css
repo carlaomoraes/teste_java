@@ -904,7 +904,32 @@ select:focus {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+/* =========================================================
+   ORDENAÇÃO
+   ========================================================= */
 
+.ordem-header {
+    width: 35px;
+}
+
+.ordem-coluna {
+    width: 35px;
+    text-align: center;
+}
+
+.ordem-icon {
+    font-size: 20px;
+    color: #adb5bd;
+    cursor: grab;
+}
+
+.ordem-icon:hover {
+    color: #6c757d;
+}
+
+.ordem-icon:active {
+    cursor: grabbing;
+}
 
 /* =========================================================
    ESTÓRIA

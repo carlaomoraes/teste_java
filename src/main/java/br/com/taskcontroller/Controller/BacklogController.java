@@ -4,12 +4,11 @@ package br.com.taskcontroller.Controller;
 import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaRoadmapDTO;;
+import br.com.taskcontroller.Record.RoadmapOrdemDTO;
 import br.com.taskcontroller.Service.BacklogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +31,13 @@ public class BacklogController {
     @GetMapping("/{idempreendimento}/roadmap")
     public List<EstoriaRoadmapDTO> monntaRoadmap(@PathVariable Long idempreendimento) {
         return service.montaRoadmap(idempreendimento);
+    }
+    @PutMapping("/reordenar")
+    public ResponseEntity<?> reordenar(
+            @RequestBody List<RoadmapOrdemDTO> lista) {
+
+        service.reordenar(lista);
+
+        return ResponseEntity.ok().build();
     }
 }

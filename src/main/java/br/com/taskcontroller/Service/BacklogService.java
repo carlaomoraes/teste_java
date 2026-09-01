@@ -6,12 +6,14 @@ import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaRoadmapDTO;
+import br.com.taskcontroller.Record.RoadmapOrdemDTO;
 import br.com.taskcontroller.Respository.EmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.SprintEstoriaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -80,5 +82,12 @@ public class BacklogService {
         sprintEstoria.setOrdem(Ultima);
 
         return sprintEstoriaRepository.save(sprintEstoria);
+    }
+    @Transactional
+    public void reordenar(List<RoadmapOrdemDTO> lista) {
+        for (RoadmapOrdemDTO dto : lista) {
+            SprintEstoria sprintEstoria = sprintEstoriaRepository.buscarSprintEstoria(dto.idsprint(),dto.idestoria());
+            sprintEstoria.setOrdem(dto.ordem());
+        }
     }
 }

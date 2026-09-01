@@ -34,28 +34,30 @@ public class EstoriaMapper {
         empreendimento.setIdempreendimento_equipe(dto.getIdempreendiemnto_equipe());
         e.setTags(dto.getTags());
         e.setCriterios(dto.getCriterios());
+        e.setOrdem(dto.getOrdem());
         return e;
     }
 
     public static EstoriaInclusaoDTO toDTO(Estoria e) {
         EstoriaInclusaoDTO dto = new EstoriaInclusaoDTO();
-        dto.setIdestoria(dto.getIdestoria());
-        dto.setIdestoria(dto.getIdestoria());
-        dto.setIdepico(dto.getIdepico());
-        dto.setIdcriador(dto.getIdcriador());
-        dto.setIdresponsavel(dto.getIdresponsavel());
+        dto.setIdestoria(e.getIdestoria());
+        dto.setIdestoria(e.getIdestoria());
+        dto.setIdepico(e.getEpico().getIdepico());
+        dto.setIdcriador(e.getCriador().getIdusuario());
+        dto.setIdresponsavel(e.getResponsavel().getIdusuario());
         dto.setIdstatus(e.getStatus().getIdstatus());
-        dto.setBloqueada(dto.isBloqueada());
-        dto.setResumo(dto.getResumo());
-        dto.setData_inicio(dto.getData_inicio());
-        dto.setData_fim(dto.getData_fim());
-        dto.setPontos(dto.getPontos());
-        dto.setHoras_estimadas(dto.getHoras_estimadas());
-        dto.setHoras_realizadas(dto.getHoras_realizadas());
-        dto.setAtiva(dto.isAtiva());
-        dto.setIdempreendiemnto_equipe(dto.getIdempreendiemnto_equipe());
-        dto.setTags(dto.getTags());
-        dto.setCriterios(dto.getCriterios());
+        dto.setBloqueada(e.isBloqueada());
+        dto.setResumo(e.getResumo());
+        dto.setData_inicio(e.getData_inicio());
+        dto.setData_fim(e.getData_fim());
+        dto.setPontos(e.getPontos());
+        dto.setHoras_estimadas(e.getHoras_estimadas());
+        dto.setHoras_realizadas(e.getHoras_realizadas());
+        dto.setAtiva(e.isAtiva());
+        dto.setIdempreendiemnto_equipe(e.getEmpreendimentoEquipe().getIdempreendimento_equipe());
+        dto.setTags(e.getTags());
+        dto.setCriterios(e.getCriterios());
+        dto.setOrdem(e.getOrdem());
         return dto;
     }
 }

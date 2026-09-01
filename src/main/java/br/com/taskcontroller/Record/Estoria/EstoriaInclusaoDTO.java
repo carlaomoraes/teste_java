@@ -21,6 +21,8 @@ public class EstoriaInclusaoDTO {
     Long idempreendiemnto_equipe;
     private String tags;
     private String criterios;
+    private int ordem;
+    public EstoriaInclusaoDTO() {}
 
     public Long getIdestoria() {
         return idestoria;
@@ -156,5 +158,13 @@ public class EstoriaInclusaoDTO {
 
     public void setCriterios(String criterios) {
         this.criterios = criterios;
+    }
+
+    public int getOrdem() {
+        return ordem;
+    }
+
+    public void setOrdem(int ordem) {
+        this.ordem = ordem;
     }
 }

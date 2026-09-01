@@ -135,6 +135,7 @@
                     onclick="salvarBacklog()">
                 Salvar
             </button>
+            <button type="button" class="btn btn-listar" onclick="cancelarEdicao(document.getElementById('comboEmpreendimento').value);">Cancelar</button>
 
             <button type="button"
                     class="btn btn-voltar"
@@ -286,10 +287,15 @@
     comboEmpreendimento.addEventListener('change', (event) => {
         // Get the selected option's value
         const selectedValue = event.target.value;
-        montaBacklog(selectedValue);
-        montarRoadmap(selectedValue);
-        carregarSprint(selectedValue);
+        cancelarEdicao(selectedValue);
     });
+
+    async function cancelarEdicao(idEmpreendimento) {
+        await montaBacklog(idEmpreendimento);
+        await montarRoadmap(idEmpreendimento);
+        await carregarSprint(idEmpreendimento);
+        await limparFormulario();
+    }
     async function limparFormulario() {
         configuracao.idepico = 0;
         configuracao.idestoria = 0;
@@ -317,6 +323,7 @@
             <table class="table roadmap-table">
                 <thead>
                     <tr>
+                        <th class="ordem-header"</th>
                         <th>Sprint</th>
                         <th>Período</th>
                         <th>Épico</th>
@@ -326,7 +333,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="tbodyRoadmap">
         `;
 
             data.forEach(roadmap => {
@@ -337,7 +344,9 @@
 
                 tabela += `
                 <tr>
-
+                     <td class="ordem-coluna">
+                        <i class="bi bi-grip-vertical ordem-icon"></i>
+                    </td>
                     <td>
                         <div class="sprint-info">
                             <strong>Sprint ${roadmap.idsprint}</strong>
@@ -375,23 +384,142 @@
                 </tr>
             `;
             });
-
-            tabela += `
-                </tbody>
-            </table>
-        `;
-
-            document.getElementById("resultadoRoadmap").innerHTML = tabela;
-
+            tabela += `</tbody></table>`;
+         document.getElementById("resultadoRoadmap").innerHTML = tabela;
+         ativarDragDropRoadmap();
         } catch (error) {
-
             console.error(error);
-
-            mostrarMensagemNaTela(
-                "resultadoRoadmap",
-                MSG.errolistar("ROADMAP"),
-                "error"
+            mostrarMensagemNaTela("resultadoRoadmap",MSG.errolistar("ROADMAP"),"error");
+        }
+    }
+    function ativarDragDropRoadmap() {
+        const linhas = document.querySelectorAll(".roadmap-row");
+        let linhaArrastada = null;
+        linhas.forEach(linha => {
+            linha.addEventListener("dragstart", function (event) {
+                linhaArrastada = this;
+                this.classList.add("arrastando");
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData(
+                    "text/plain",
+                    this.dataset.idestoria
+                );
+            });
+            linha.addEventListener("dragend", function () {
+                this.classList.remove("arrastando");
+                document.querySelectorAll(".roadmap-row").forEach(row => {
+                        row.classList.remove("drag-over");
+                    });
+                linhaArrastada = null;
+            });
+            linha.addEventListener("dragover", function (event) {
+                event.preventDefault();
+                if (!linhaArrastada) {
+                    return;
+                }
+                // Não permite trocar entre Sprints
+                if(this.dataset.idsprint !== linhaArrastada.dataset.idsprint) {
+                    return;
+                }
+                this.classList.add("drag-over");
+                const tbody = this.parentNode;
+                const rect = this.getBoundingClientRect();
+                const posicao = event.clientY - rect.top;
+                if (posicao > rect.height / 2) {
+                    tbody.insertBefore(linhaArrastada, this.nextSibling);
+                } else {
+                    tbody.insertBefore(linhaArrastada,this);
+                }
+                this.classList.remove("drag-over");
+            });
+            linha.addEventListener("drop", function (event) {
+                event.preventDefault();
+                if (!linhaArrastada) {
+                    return;
+                }
+                if (this.dataset.idsprint !==  linhaArrastada.dataset.idsprint) {
+                    return;
+                }
+                salvarOrdemSprint(linhaArrastada.dataset.idsprint);
+            });
+        });
+    }
+    function ativarDragDropBacklog() {
+        const linhas = document.querySelectorAll(".backlog-row");
+        let linhaArrastada = null;
+        linhas.forEach(linha => {
+            linha.addEventListener("dragstart", function (event) {
+                linhaArrastada = this;
+                this.classList.add("arrastando");
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData(
+                    "text/plain",
+                    this.dataset.idestoria
+                );
+            });
+            linha.addEventListener("dragend", function () {
+                this.classList.remove("arrastando");
+                document.querySelectorAll(".backlog-row").forEach(row => {
+                    row.classList.remove("drag-over");
+                });
+                linhaArrastada = null;
+            });
+            linha.addEventListener("dragover", function (event) {
+                event.preventDefault();
+                if (!linhaArrastada) {
+                    return;
+                }
+                // Não permite trocar entre Sprints
+                if(this.dataset.idsprint !== linhaArrastada.dataset.idsprint) {
+                    return;
+                }
+                this.classList.add("drag-over");
+                const tbody = this.parentNode;
+                const rect = this.getBoundingClientRect();
+                const posicao = event.clientY - rect.top;
+                if (posicao > rect.height / 2) {
+                    tbody.insertBefore(linhaArrastada, this.nextSibling);
+                } else {
+                    tbody.insertBefore(linhaArrastada,this);
+                }
+                this.classList.remove("drag-over");
+            });
+            linha.addEventListener("drop", function (event) {
+                event.preventDefault();
+                if (!linhaArrastada) {
+                    return;
+                }
+                if (this.dataset.idsprint !==  linhaArrastada.dataset.idsprint) {
+                    return;
+                }
+                salvarOrdemSprint(linhaArrastada.dataset.idsprint);
+            });
+        });
+    }
+    async function salvarOrdemSprint(idSprint) {
+        const linhas = document.querySelectorAll(`.roadmap-row[data-idsprint="${idSprint}"]`);
+        const lista = [];
+        linhas.forEach((linha, index) => {
+            lista.push({
+                idestoria: Number(linha.dataset.idestoria),
+                ordem: index + 1
+            });
+        });
+        try {
+            const response = await fetch(`${API}/reordenar`,{
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(lista)
+                }
             );
+            if (!response.ok) {
+                throw new Error("Erro ao salvar a ordem.");
+            }
+        } catch (error) {
+            console.error(error);
+            mostrarMensagemNaTela("resultadoRoadmap","Erro ao salvar a ordem das estórias.","error");
         }
     }
     async function montaBacklog(idEmpreendimento) {
@@ -406,6 +534,7 @@
             tabela = ` <table class="table roadmap-table" border="1" width="100%" cellspacing="0" cellpadding="10">
              <thead>
                     <tr>
+                        <th class="ordem-header"</th>
                         <th>Estória</th>
                         <th>Status</th>
                         <th>Criador</th>
@@ -414,11 +543,14 @@
                         <th>Prioridade</th>
                     </tr>
                 </thead>
-            <tbody>`;
+            <tbody id="tbodyBacklog">`;
             data.forEach(backlog => {
                 const cor = corHexValida(backlog.corepico) ? backlog.corepico : "#6c757d";
                 tabela += `<tr onclick="buscarPorLinha(${backlog.idepico},${backlog.idestoria})"
                                 style="cursor:pointer;">
+                                <td class="ordem-coluna">
+                                    <i class="bi bi-grip-vertical ordem-icon"></i>
+                                </td>
                                 <td><div class="sprint-info">
                                     <strong>${backlog.descestoria}</strong>
                                     </div>
@@ -431,6 +563,7 @@
                             </tr>`;});
             tabela += `</tbody></table>`;
             document.getElementById('resultado').innerHTML = tabela;
+            ativarDragDropBacklog();
     } catch (error) {
         mostrarMensagemNaTela("resultado", MSG.errolistar("BACKLOG"), "error");
     }
