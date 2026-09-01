@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipo ausência - TaskController 1.0</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS específico da tela -->
+    <link rel="stylesheet" href="css/pages/tipoausencias.css">
+    <link rel="stylesheet" href="css/pages/funcoes.css">
+</head>
+<body>
+<script src="js/utils/funcoes.js"></script>
+<script src="js/utils/mensagens.js"></script>
+<div class="container">
+    <h1>Tipo ausências - TaskController 1.0</h1>
+    <div id="TipoAusencias" >
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idTipoAusencias').value)" name="idTipoAusencias" id="idTipoAusencias" placeholder="ID do tipo de ausência (Deixe vazio para novo)">
+        <input type="text" id="descricao" placeholder="Descrição do tipo de ausência" oninput="converterMaiusculo(this)">
+        <div>
+            <label for="cor">Cor de identificação da ausência</label>
+            <input type="color" id="cor" value="#2196F3">
+        </div>
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn btn-add"  onclick="criarTipoAusencias()">Novo</button>
+            <button type="button" class="btn btn-salvar"  onclick="salvarTipoAusencias()">Salvar</button>
+            <button type="button" class="btn btn-listar" onclick="listarTipoAusencias()">Listar</button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+        </div>
+        <div id="resultado"></div>
+    </div>
+</div>
+
+<script>
+    let idTipoAusencias = 0;
+    //--------------------- MANIPULAÇÃO DOS DADOS
+    const API_TIPO_AUSENCIAS = 'http://localhost:8080/tipo_ausencias';
+    async function criarTipoAusencias() {
+        await limparFormulario();
+    }
+    async function salvarTipoAusencias() {
+        const id_tipo_ausencia = document.getElementById("idTipoAusencias").value;
+        const desc_tipo_ausencia = document.getElementById('descricao').value;
+        const cor_tipo_ausencia = document.getElementById('cor').value;
+        const TipoAusencias = {
+            id_tipo_ausencia: id_tipo_ausencia || null,
+            desc_tipo_ausencia: desc_tipo_ausencia || null,
+            cor_tipo_ausencia: cor_tipo_ausencia || null
+        };
+        try {
+            const response = await fetch(`${API_TIPO_AUSENCIAS}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(TipoAusencias)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("resultado", MSG.salvo("TIPO DE AUSÊNCIAS"), "success");
+            setTimeout(() => {
+                limparFormulario();
+                listarAusencias();
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroSalvar("TIPO DE AUSÊENCIAS"), "error");
+        }
+    }
+    async function limparFormulario() {
+        document.getElementById("idTipoAusencias").value = "";
+        document.getElementById('descricao').value = "";
+        document.getElementById('cor').value = "#2196F3";
+        mostrarMensagemNaTela("resultado", "", "error");
+    }
+    async function buscarPorLinha(id) {
+        try {
+            const response = await fetch(`${API_TIPO_AUSENCIAS}/${id}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultado", MSG.erroCarregar("TIPO DE AUSÊNCIAS"), "error");
+                return;
+            }
+            const TipoAusencias = await response.json();
+            document.getElementById("idTipoAusencias").value = TipoAusencias.id_tipo_ausencia;
+            document.getElementById('descricao').value = TipoAusencias.desc_tipo_ausencia;
+            document.getElementById('cor').value = TipoAusencias.cor_tipo_ausencia;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("TIPO DE AUSÊNCIA"), "error");
+        }
+    }
+    async function listarTipoAusencias() {
+        try {
+            const response = await fetch(`${API_TIPO_AUSENCIAS}/listar`);
+            const data = await response.json();
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Descrição</th>
+                        <th class="table-header">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(TipoAusencias => {
+                const cor = corHexValida(TipoAusencias.cor_tipo_ausencia) ? TipoAusencias.cor_tipo_ausencia : "#6c757d";
+                tabela += `<tr onclick="buscarPorLinha(${TipoAusencias.id_tipo_ausencia})"
+                                style="cursor:pointer;">
+                                <td style="border-left:8px solid ${cor};">
+                                ${TipoAusencias.id_tipo_ausencia}</td>
+                                <td>${TipoAusencias.desc_tipo_ausencia}</td>
+                                <td> <button type="button" class="btn btn-excluir"  onclick="event.stopPropagation();excluirTipoAusencias(${TipoAusencias.id_tipo_ausencia})">Excluir</button></td>
+            </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.errolistar("TIPO DE AUSÊNCIAS"), "error");
+        }
+    }
+    async function excluirTipoAusencias(idTipoAusencias) {
+        try {
+            const response = await fetch(`${API_TIPO_AUSENCIAS}/excluir/${idTipoAusencias}`, {
+                method: 'DELETE'
+            });
+            const texto = await response.text();
+            setTimeout(() => {
+                limparFormulario();
+                listarAusencias();
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroExcluir("TIPO DE AUSÊNCIA"), "error");
+        }
+    }
+</script>
+</body>
+</html>

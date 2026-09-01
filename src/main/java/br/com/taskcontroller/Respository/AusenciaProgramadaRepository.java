@@ -20,7 +20,8 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
         a.data_inicio,
         a.data_fim,
         a.observacao,
-        ta.desc_tipo_ausencia
+        ta.desc_tipo_ausencia,
+        ta.cor_tipo_ausencia
     )
     FROM AusenciaProgramada a
     JOIN a.tipoausencia ta
@@ -38,7 +39,8 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
         a.data_inicio,
         a.data_fim,
         a.observacao,
-        a.tipoausencia.desc_tipo_ausencia
+        a.tipoausencia.desc_tipo_ausencia,
+        a.tipoausencia.cor_tipo_ausencia
     )
     FROM AusenciaProgramada a
     WHERE a.data_inicio <= :data_fim

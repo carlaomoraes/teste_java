@@ -1,247 +1,159 @@
-:root{
+/* =========================================================
+   SPRINT
+   ========================================================= */
 
-    --altura-linha:42px;
-    --largura-coluna:60px;
-
-    --cinza:#f8f9fa;
-    --grid:#dee2e6;
-
-    --verde:#198754;
-    --amarelo:#ffc107;
-    --vermelho:#dc3545;
-    --azul:#0d6efd;
-
+.sprint-container {
+    width: 100%;
 }
 
-.roadmap{
 
-    overflow:auto;
-    border:1px solid var(--grid);
-    border-radius:8px;
-    background:white;
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
 
+.sprint-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    background-color: #fff;
+
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+
+    padding: 16px;
+
+    margin-bottom: 16px;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
 }
 
-/* Cabeçalho */
+.sprint-header h2 {
+    margin: 0 0 8px;
 
-.roadmap-header{
-
-    display:grid;
-    grid-template-columns:250px repeat(15,var(--largura-coluna));
-    background:#f1f3f5;
-    font-weight:bold;
-    position:sticky;
-    top:0;
-    z-index:20;
-
+    font-size: 22px;
+    font-weight: 600;
 }
 
-.roadmap-header div{
-
-    padding:10px;
-    border-right:1px solid var(--grid);
-    text-align:center;
-
+.sprint-periodo {
+    font-size: 13px;
+    color: #6c757d;
 }
 
-/* Linha */
 
-.roadmap-row{
+/* =========================================================
+   SAÚDE
+   ========================================================= */
 
-    display:grid;
-    grid-template-columns:250px repeat(15,var(--largura-coluna));
-    min-height:var(--altura-linha);
-    position:relative;
+.sprint-saude {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 
+    gap: 8px;
 }
 
-.roadmap-row div{
-
-    border-right:1px solid var(--grid);
-    border-bottom:1px solid var(--grid);
-
+.sprint-saude strong {
+    font-size: 18px;
+    color: #f0ad00;
 }
 
-/* Nome */
-
-.nome{
-
-    padding:10px;
-    background:#fafafa;
-    font-weight:600;
-
+.sprint-saude span {
+    font-size: 13px;
+    color: #495057;
 }
 
-/* Barra */
 
-.barra{
+/* =========================================================
+   INDICADORES
+   ========================================================= */
 
-    height:24px;
-    margin-top:8px;
+.sprint-indicadores {
+    display: grid;
 
-    border-radius:14px;
+    grid-template-columns:
+        repeat(4, 1fr);
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    gap: 24px;
 
-    color:white;
-    font-size:12px;
-    font-weight:bold;
-
+    margin-bottom: 16px;
 }
 
-/* Situações */
+.indicador {
+    border-radius: 6px;
 
-.concluida{
+    padding: 18px 16px;
 
-    background:var(--verde);
+    color: white;
 
+    min-height: 95px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.andamento{
-
-    background:var(--azul);
-
+.indicador strong {
+    font-size: 26px;
+    font-weight: 600;
 }
 
-.atrasada{
-
-    background:var(--vermelho);
-
+.indicador span {
+    margin-top: 6px;
+    font-size: 14px;
 }
 
-.ausencia{
-
-    background:var(--amarelo);
-    color:black;
-
+.indicador-concluido {
+    background-color: #198754;
 }
 
-/* Hoje */
-
-.hoje{
-
-    position:absolute;
-
-    top:0;
-    bottom:0;
-
-    width:3px;
-
-    background:red;
-
-    z-index:100;
-
+.indicador-andamento {
+    background-color: #0d6efd;
 }
 
-/* Final de semana */
-
-.fim-semana{
-
-    background:#f5f5f5;
-
+.indicador-atrasado {
+    background-color: #dc3545;
 }
 
-/* Hover */
-
-.roadmap-row:hover{
-
-    background:#f8fbff;
-
+.indicador-capacidade {
+    background-color: #6c757d;
 }
 
-/* Cards */
 
-.indicadores{
+/* =========================================================
+   ROADMAP
+   ========================================================= */
 
-    display:grid;
+.sprint-roadmap {
+    border: 1px solid #dee2e6;
 
-    grid-template-columns:repeat(4,1fr);
+    border-radius: 6px;
 
-    gap:15px;
+    overflow: hidden;
 
-    margin-bottom:20px;
-
+    background-color: #fff;
 }
 
-.indicador{
+.roadmap-titulo {
+    padding: 10px 16px;
 
-    border-radius:10px;
+    border-bottom: 1px solid #dee2e6;
 
-    padding:15px;
+    font-size: 15px;
+    font-weight: 500;
 
-    color:white;
-
+    background-color: #f8f9fa;
 }
 
-.indicador h2{
 
-    margin:0;
+/* =========================================================
+   AÇÕES
+   ========================================================= */
 
-}
+.sprint-acoes {
+    display: flex;
 
-.indicador small{
+    gap: 10px;
 
-    opacity:.8;
-
-}
-
-.verde{
-
-    background:#198754;
-
-}
-
-.azul{
-
-    background:#0d6efd;
-
-}
-
-.vermelho{
-
-    background:#dc3545;
-
-}
-
-.cinza{
-
-    background:#6c757d;
-
-}
-.tipo {
-
-    width:6px;
-    border-radius:4px 0 0 4px;
-
-}
-
-.tipo-tarefa{
-
-    background:#0d6efd;
-
-}
-
-.tipo-ausencia{
-
-    background:#ffc107;
-
-}
-
-.tipo-marco{
-
-    background:#dc3545;
-
-}
-.fim-semana {
-    background: #f1f3f5;
-}
-
-.feriado {
-    background: #ffe5e5;
-}
-
-.hoje {
-    background: #fff3cd;
+    margin-top: 16px;
 }
