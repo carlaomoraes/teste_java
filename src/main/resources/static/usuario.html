@@ -67,7 +67,7 @@
             <button type="button" class="btn"  onclick="salvarAusencias(sessionStorage.getItem('idusuario'));">Salvar</button>
             <button type="button" class="btn" onclick="cancelarAusencia(sessionStorage.getItem('idusuario'));">Cancelar</button>
         </div>
-        <div id="resultadoAusencias"></div>
+        <div id="resultadoausencias"></div>
     </div>
 </div>
 
@@ -278,18 +278,18 @@
                     body: JSON.stringify(ausencias)
                 });
                 const data = await response.json();
-                mostrarMensagemNaTela("resultadoausencia", MSG.salvo("AUSÊNCIA"), "success");
-                await cancelarAusencia();
+                mostrarMensagemNaTela("resultadoausencias", MSG.salvo("AUSÊNCIA"), "success");
                 setTimeout(() => {
+                    cancelarAusencia();
                     listarAusencias(document.getElementById('idusuario').value);
                 }, 1000);
             } catch (error) {
-                mostrarMensagemNaTela("resultadoausencia", MSG.erroSalvar("AUSÊNCIA"), "error");
+                mostrarMensagemNaTela("resultadoausencias", MSG.erroSalvar("AUSÊNCIA"), "error");
             }
         }
     }
     async function listarAusencias() {
-         const container = document.getElementById("resultadoAusencias");
+         const container = document.getElementById("resultadoausencias");
          try {
              const response = await fetch(`${API_AUSENCIAS}/usuario/${document.getElementById('idusuario').value}`);
               const data = await response.json();
@@ -351,7 +351,7 @@
                 tabela += `</tbody> </table>`;
         container.innerHTML = tabela;
       } catch (error) {
-          mostrarMensagemNaTela("resultadoausencia", MSG.errolistar("AUSÊNCIA PROGRAMADA"), "error");
+          mostrarMensagemNaTela("resultadoausencias", MSG.errolistar("AUSÊNCIA PROGRAMADA"), "error");
       }
     }
     async function excluirAusencia(idausencia) {
@@ -360,10 +360,10 @@
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela("resultadoausencia", MSG.excluido("AUSÊNCIA PROGRAMADA"), "success");
+            mostrarMensagemNaTela("resultadoausencias", MSG.excluido("AUSÊNCIA PROGRAMADA"), "success");
             await listarAusencias();
         } catch (error) {
-            mostrarMensagemNaTela("resultadoausencia", MSG.erroExcluir("AUSÊNCIA PROGRAMADA"), "error");
+            mostrarMensagemNaTela("resultadoausencias", MSG.erroExcluir("AUSÊNCIA PROGRAMADA"), "error");
         }
     }
     async function cancelarAusencia() {
@@ -371,7 +371,6 @@
         document.getElementById('datainicial').value = "";
         document.getElementById('datafinal').value = "";
         document.getElementById('observacao').value = "";
-        await listarAusencias();
     }
     async function validaEntrada(aba) {
         if (aba === 1) {
@@ -388,7 +387,7 @@
             return true;
         } else {
             if (document.getElementById('idusuario').value === "") {
-                mostrarMensagemNaTela("resultadoausencia", "Selecione um usuário", "error");
+                mostrarMensagemNaTela("resultadoausencias", "Selecione um usuário", "error");
                 return false;
             } else {
                 const invalido =

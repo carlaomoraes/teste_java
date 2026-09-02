@@ -142,32 +142,17 @@
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
     </div>
-
-
     <!-- ============================================================
          ABA AUSÊNCIAS
          ============================================================ -->
-
-    <div
-            id="ausencias"
-            class="conteudo-aba">
-
+    <div id="ausencias" class="conteudo-aba">
         <div id="resultadoausencia"></div>
-
     </div>
-
 </div>
-
-
 <script>
-
     //--------------------- MANIPULAÇÃO DOS DADOS
-
     const API = 'http://localhost:8080/sprints';
-
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
-
-
     // ==============================================================
     // CONFIGURAÇÃO
     // ==============================================================
@@ -280,8 +265,8 @@
             document.getElementById("ativa").checked = sprint.ativa;
             document.getElementById("visivel").checked = sprint.visivel;
             document.getElementById("descsprint").value = sprint.descsprint;
-            listarAusencias(document.getElementById("dtiniciosprint").value,
-                document.getElementById("dtfinalsprint").value);
+            await listarAusencias(document.getElementById("dtiniciosprint").value,
+                                  document.getElementById("dtfinalsprint").value);
 
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", "Erro ao buscar a última Sprint: " + error.message, "error");
@@ -550,7 +535,7 @@
                       <td>${a.nome}</td>
                       <td>${formatarDataBR(a.data_inicio)}</td>
                       <td>${formatarDataBR(a.data_fim)}</td>
-                      <td>${a.tipoausencia}</td>
+                      <td> <span class="badge" style="background-color:${a.cor_tipo_ausencia}; color:white;">${a.tipoausencia ?? ''}</span></td>
                       <td>${a.observacao ??''}</td>
                     </tr>`;
             });
