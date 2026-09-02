@@ -31,10 +31,6 @@
             Parâmetros
         </button>
 
-        <button class="aba-botao"
-                onclick="alternarAba(event,'cadastros')">
-            Cadastros
-        </button>
 
         <button class="aba-botao"
                 onclick="alternarAba(event,'equipe')">
@@ -132,44 +128,6 @@
                 </div>
                 <br>
                 <button class="btn btn-success" onclick="salvarConfiguracao()">Salvar Configurações </button>
-            </div>
-        </div>
-    </div>
-    <!-- CADASTROS -->
-    <div id="cadastros" class="conteudo-aba">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-list-task fs-1"></i>
-                        <h5>Tipos de Tarefa</h5>
-                        <button class="btn btn-primary">
-                            Gerenciar
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-exclamation-circle fs-1"></i>
-                        <h5>Tipos de Ausência</h5>
-                        <button class="btn btn-primary">
-                            Gerenciar
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-kanban fs-1"></i>
-                        <h5>Tipos de Sistema</h5>
-                        <button class="btn btn-primary">
-                            Gerenciar
-                       </button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -272,6 +230,9 @@
         carregarEmpreendimento();
         carregarConfiguracao();
     });
+    async function abrirAusencia() {
+        window.location.href = "tipo_ausencia.html";
+    }
 
     async function carregarConfiguracao() {
         const idEmpreendimento = document.getElementById('comboEmpreendimento').value;

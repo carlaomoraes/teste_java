@@ -1,7 +1,8 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.Papel;
-import br.com.taskcontroller.Record.COMBO.PapelComboDTO;
+import br.com.taskcontroller.Record.Papel.PapelComboDTO;
+import br.com.taskcontroller.Record.Papel.PapelListagemDTO;
 import br.com.taskcontroller.Respository.PapelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,14 @@ public class PapelService {
          return repository.save(Papel);
     }
 
-    public List<Papel> listar() {
+    public List<PapelListagemDTO> listar() {
 
-        return repository.findAll();
+        return repository.listaPapel();
+    }
+
+    public PapelListagemDTO buscaPorIDDTO(Long idPapel) {
+
+        return repository.buscaPapel(idPapel);
     }
 
     public Papel atualizar(Papel Papel) {
