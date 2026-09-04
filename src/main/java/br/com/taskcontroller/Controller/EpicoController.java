@@ -37,7 +37,7 @@ public class EpicoController {
     @Autowired
     private PrioridadesRepository prioridadesRepository;
     @Autowired
-    private StatusEntidadesRepository statusEntidadesRepository;
+    private StatusEntidadeRepository statusEntidadeRepository;
 
 
     @Autowired
@@ -80,7 +80,7 @@ public class EpicoController {
         epico.setEmpreendimento(empreendimento);
         Usuario usuario = usuarioRepository.findById(dto.idresponsavel()).orElse(null);
         epico.setResponsavel(usuario);
-        StatusEntidades status = statusEntidadesRepository.findById(dto.idstatus()).orElse(null);
+        StatusEntidades status = statusEntidadeRepository.findById(dto.idstatus()).orElse(null);
         epico.setStatus(status);
         Prioridades prioridades = prioridadesRepository.findById(dto.idprioridade()).orElse(null);
         epico.setPrioridade(prioridades);

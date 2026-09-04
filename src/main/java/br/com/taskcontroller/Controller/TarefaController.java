@@ -33,7 +33,7 @@ public class TarefaController {
     private TipoTarefaRepository tipoTarefaRepository;
 
     @Autowired
-    private StatusEntidadesRepository statusEntidadesRepository;
+    private StatusEntidadeRepository statusEntidadeRepository;
 
 
     // BUSCAR POR ID
@@ -77,7 +77,7 @@ public class TarefaController {
         }
         Estoria estoria = estoriaRepository.findById(dto.idestoria()).orElseThrow();
 
-        StatusEntidades status = statusEntidadesRepository.findById(dto.idstatus()).orElseThrow();
+        StatusEntidades status = statusEntidadeRepository.findById(dto.idstatus()).orElseThrow();
 
         Usuario criador = usuarioRepository.findById(dto.idcriador()).orElseThrow();
 

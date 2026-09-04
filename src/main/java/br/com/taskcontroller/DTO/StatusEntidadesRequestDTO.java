@@ -1,15 +1,9 @@
-package br.com.taskcontroller.Modelo;
+package br.com.taskcontroller.DTO;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import br.com.taskcontroller.Modelo.Empreendimento;
+import br.com.taskcontroller.Modelo.TipoEntidade;
 
-@Getter
-@Setter
-@Entity
-public class StatusEntidades {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class StatusEntidadesRequestDTO {
     private Long idstatus;
     private String descstatus;
     private int ordem;
@@ -18,12 +12,8 @@ public class StatusEntidades {
     private int finalizado;
     private int cancelado;
     private int ativo;
-    @ManyToOne
-    @JoinColumn(name = "idempreendimento")
     private Empreendimento empreendimento;
-    @ManyToOne
-    @JoinColumn(name="idtipo_entidade")
-    private TipoEntidade tipoentidade;
+    private TipoEntidade tipoEntidade;
 
     public Long getIdstatus() {
         return idstatus;
@@ -97,11 +87,11 @@ public class StatusEntidades {
         this.empreendimento = empreendimento;
     }
 
-    public TipoEntidade getTipoentidade() {
-        return tipoentidade;
+    public TipoEntidade getTipoEntidade() {
+        return tipoEntidade;
     }
 
-    public void setTipoentidade(TipoEntidade tipoentidade) {
-        this.tipoentidade = tipoentidade;
+    public void setTipoEntidade(TipoEntidade tipoEntidade) {
+        this.tipoEntidade = tipoEntidade;
     }
 }

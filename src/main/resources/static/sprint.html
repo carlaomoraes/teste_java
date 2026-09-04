@@ -279,7 +279,7 @@
    async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         try {
-            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/montaComboEmpreendimento`);
             const empreendimentos = await resposta.json();
             comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
             empreendimentos.forEach(e => {

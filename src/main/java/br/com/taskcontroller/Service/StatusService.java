@@ -33,4 +33,9 @@ public class StatusService {
     public StatusEntidades buscarPorId(Long idStatus) {
         return statusEntidadeRepository.findById(idStatus).orElseThrow(() -> new RuntimeException("Status não encontrado"));
     }
+
+    public List<StatusEntidades> listarStatusEntidades() {
+        List<StatusEntidades> statusEntidades = statusEntidadeRepository.findAll();
+        return statusEntidades;
+    }
 }

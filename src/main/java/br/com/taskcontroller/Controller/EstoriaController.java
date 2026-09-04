@@ -29,7 +29,7 @@ public class EstoriaController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private StatusEntidadesRepository statusEntidadesRepository;
+    private StatusEntidadeRepository statusEntidadeRepository;
 
     // BUSCAR POR ID
     @GetMapping("/{idEstoria}")
@@ -66,7 +66,7 @@ public class EstoriaController {
         Epico epico = epicoRepository.findById(dto.getIdepico()).orElseThrow();
         estoria.setEpico(epico);
 
-        StatusEntidades status = statusEntidadesRepository.findById(dto.getIdstatus()).orElseThrow();
+        StatusEntidades status = statusEntidadeRepository.findById(dto.getIdstatus()).orElseThrow();
 
         Usuario criador = usuarioRepository.findById(dto.getIdcriador()).orElseThrow();
 
