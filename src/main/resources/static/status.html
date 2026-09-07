@@ -39,16 +39,6 @@
             <label for="descstatus" class="form-label">Descrição</label>
             <input type="text" id="descstatus" placeholder="Descrição do status" oninput="converterMaiusculo(this)">
         </div>
-        <div class="row">
-            <div class="col-md-3 mb-3">
-                <label for="txtOrdem" class="form-label">Ordem *</label>
-                <input type="number" id="txtOrdem" maxlength="10">
-            </div>
-            <div class="col-md-3 mb-3">
-                <label for="cor">Cor do Status</label>
-                <input type="color" id="cor" value="#2196F3">
-            </div>
-        </div>
         <div class="col-md-12 mb-12">
             <label class="form-label">
                 Aplicável a:
@@ -58,6 +48,16 @@
                     class="form-select"
                     required>
             </select>
+        </div>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label for="txtOrdem" class="form-label">Ordem *</label>
+                <input type="text" id="txtOrdem" maxlength="10">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="cor">Cor do Status</label>
+                <input type="color" id="cor" value="#2196F3">
+            </div>
         </div>
         <label class="checkbox-group">
             <input type="checkbox" id="ativo" value="1">Ativo
@@ -77,7 +77,7 @@
 
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
-    const API_STATUS = 'http://localhost:8080/status_entidades';
+    const API = 'http://localhost:8080/status_entidades';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
 
     // ==============================================================
@@ -102,7 +102,7 @@
     async function carregarTipoTarefa() {
         const comboTipo = document.getElementById("comboTipo");
         try {
-            const resposta = await fetch(`${API_STATUS}/DTO/montaComboTipoEntidades`);
+            const resposta = await fetch(`${API}/DTO/montaComboTipoEntidades`);
             const tipos = await resposta.json();
             comboTipo.innerHTML = '<option value="">Selecione...</option>';
             tipos.forEach(t => {
@@ -131,6 +131,39 @@
             listarTipostatus();
         }
     );
+    document.getElementById('comboTipo').addEventListener('change',() => {
+        buscaMaiorOrdem(document.getElementById('comboEmpreendimento').value,
+                                                                    document.getElementById('comboTipo').value);
+        }
+    );
+    async function buscaMaiorOrdem(idEmpreendimento, idStatus) {
+        if (idEmpreendimento === "") {
+            mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
+            return false;
+        }
+        if (idStatus === "") {
+            mostrarMensagemNaTela("resultadogeral", "Selecione um objeto!", "warning");
+            return false;
+        }
+        try {
+            const linha =`${API}/ultimaordem?idEmpreendimento=${idEmpreendimento}&idStatusEntidade=${idStatus}`;
+            const response = await fetch(linha);
+            if (!response.ok) {
+                const msg = await response.text();
+                mostrarMensagemNaTela("resultadogeral",msg || "Erro ao buscar ordem!","error");
+                return false;
+            }
+            const ordem = await response.json();
+            document.getElementById("txtOrdem").value = ordem;
+        } catch (error) {
+            mostrarMensagemNaTela(
+                "resultadogeral",
+                error.message || "Erro ao buscar ordem",
+                "error"
+            );
+            return false;
+        }
+    }
 
     async function criarTipostatus() {
         if (Number(document.getElementById('comboEmpreendimento').value) === 0) {
@@ -144,23 +177,31 @@
             mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
             return;
         }
+        const idempreendimento = document.getElementById('comboEmpreendimento').value;
+        const idtipoentidade = document.getElementById('comboTipo').value;
         const idstatus = Number(document.getElementById("idstatus").value);
         const descstatus = document.getElementById('descstatus').value;
-        const tipostatus = document.getElementById('cmbtipostatus').value;
+        const inicial = document.getElementById('inicial').checked;
         const ativo = document.getElementById('ativo').checked;
+        const cancelado = document.getElementById('cancelado').checked;
+        const finalizado = document.getElementById('finalizado').checked;
 
         const Tipostatus = {
             idstatus: idstatus || null,
             descstatus: descstatus || null,
-            tipostatus: tipostatus,
-            ativo: ativo || false
+            idtipoentidade: idtipoentidade || null,
+            ativo: ativo || false,
+            cancelado: cancelado || false,
+            finalizado: finalizado || false,
+            inicial: inicial || false,
+            idempreendimento: idempreendimento || null
         };
 
         console.log(Tipostatus);
 
         try {
 
-            const response = await fetch(`${API_STATUS}/salvar`, {
+            const response = await fetch(`${API}/salvar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -206,7 +247,7 @@
     }
     async function buscarPorLinha(id) {
         try {
-            const response = await fetch(`${API_STATUS}/DTO/${id}`);
+            const response = await fetch(`${API}/DTO/${id}`);
             if (!response.ok) {
                 mostrarMensagemNaTela("resultado", MSG.erroCarregar("TIPO DE status"), "error");
                 return;
@@ -235,7 +276,7 @@
         }
         try {
             const idempreendimento = Number(document.getElementById('comboEmpreendimento').value);
-            const response = await fetch(`${API_STATUS}/listar/${idempreendimento}`);
+            const response = await fetch(`${API}/listar/${idempreendimento}`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">

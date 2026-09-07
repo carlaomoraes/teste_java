@@ -6,10 +6,10 @@ public record StatusEntidadesListagemDTO(
         String descstatus,
         int ordem,
         String cor,
-        int inicial,
-        int finalizado,
-        int cancelado,
-        int ativo,
+        boolean inicial,
+        boolean finalizado,
+        boolean cancelado,
+        boolean ativo,
         Long idtipo_entidade,
         String desctipo_entidade
 ) {

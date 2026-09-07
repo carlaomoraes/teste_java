@@ -14,10 +14,10 @@ public class StatusEntidades {
     private String descstatus;
     private int ordem;
     private String cor;
-    private int inicial;
-    private int finalizado;
-    private int cancelado;
-    private int ativo;
+    private boolean inicial;
+    private boolean finalizado;
+    private boolean cancelado;
+    private boolean ativo;
     @ManyToOne
     @JoinColumn(name = "idempreendimento")
     private Empreendimento empreendimento;
@@ -57,35 +57,35 @@ public class StatusEntidades {
         this.cor = cor;
     }
 
-    public int getInicial() {
+    public boolean isInicial() {
         return inicial;
     }
 
-    public void setInicial(int inicial) {
+    public void setInicial(boolean inicial) {
         this.inicial = inicial;
     }
 
-    public int getFinalizado() {
+    public boolean isFinalizado() {
         return finalizado;
     }
 
-    public void setFinalizado(int finalizado) {
+    public void setFinalizado(boolean finalizado) {
         this.finalizado = finalizado;
     }
 
-    public int getCancelado() {
+    public boolean isCancelado() {
         return cancelado;
     }
 
-    public void setCancelado(int cancelado) {
+    public void setCancelado(boolean cancelado) {
         this.cancelado = cancelado;
     }
 
-    public int getAtivo() {
+    public boolean isAtivo() {
         return ativo;
     }
 
-    public void setAtivo(int ativo) {
+    public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
 

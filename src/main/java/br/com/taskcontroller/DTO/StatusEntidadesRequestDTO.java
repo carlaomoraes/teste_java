@@ -1,19 +1,16 @@
 package br.com.taskcontroller.DTO;
 
-import br.com.taskcontroller.Modelo.Empreendimento;
-import br.com.taskcontroller.Modelo.TipoEntidade;
-
 public class StatusEntidadesRequestDTO {
     private Long idstatus;
     private String descstatus;
     private int ordem;
     private String cor;
-    private int inicial;
-    private int finalizado;
-    private int cancelado;
-    private int ativo;
-    private Empreendimento empreendimento;
-    private TipoEntidade tipoEntidade;
+    private boolean inicial;
+    private boolean finalizado;
+    private boolean cancelado;
+    private boolean ativo;
+    private Long idempreendimento;
+    private Long idtipoEntidade;
 
     public Long getIdstatus() {
         return idstatus;
@@ -47,51 +44,51 @@ public class StatusEntidadesRequestDTO {
         this.cor = cor;
     }
 
-    public int getInicial() {
+    public boolean isInicial() {
         return inicial;
     }
 
-    public void setInicial(int inicial) {
+    public void setInicial(boolean inicial) {
         this.inicial = inicial;
     }
 
-    public int getFinalizado() {
+    public boolean isFinalizado() {
         return finalizado;
     }
 
-    public void setFinalizado(int finalizado) {
+    public void setFinalizado(boolean finalizado) {
         this.finalizado = finalizado;
     }
 
-    public int getCancelado() {
+    public boolean isCancelado() {
         return cancelado;
     }
 
-    public void setCancelado(int cancelado) {
+    public void setCancelado(boolean cancelado) {
         this.cancelado = cancelado;
     }
 
-    public int getAtivo() {
+    public boolean isAtivo() {
         return ativo;
     }
 
-    public void setAtivo(int ativo) {
+    public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
 
-    public Empreendimento getEmpreendimento() {
-        return empreendimento;
+    public Long getIdempreendimento() {
+        return idempreendimento;
     }
 
-    public void setEmpreendimento(Empreendimento empreendimento) {
-        this.empreendimento = empreendimento;
+    public void setIdempreendimento(Long idempreendimento) {
+        this.idempreendimento = idempreendimento;
     }
 
-    public TipoEntidade getTipoEntidade() {
-        return tipoEntidade;
+    public Long getIdtipoEntidade() {
+        return idtipoEntidade;
     }
 
-    public void setTipoEntidade(TipoEntidade tipoEntidade) {
-        this.tipoEntidade = tipoEntidade;
+    public void setIdtipoEntidade(Long idtipoEntidade) {
+        this.idtipoEntidade = idtipoEntidade;
     }
 }
