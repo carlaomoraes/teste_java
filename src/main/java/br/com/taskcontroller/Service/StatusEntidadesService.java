@@ -6,6 +6,8 @@ import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
 import br.com.taskcontroller.Respository.StatusEntidadeRepository;
 import br.com.taskcontroller.Respository.TipoEntidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +23,6 @@ public class StatusEntidadesService {
 
     public StatusEntidades salvar(StatusEntidades StatusEntidades) {
         return repository.save(StatusEntidades);
-    }
-
-    public List<StatusEntidadesListagemDTO> listar() {
-        //return repository.
-        return null;
     }
 
     public StatusEntidades atualizar(StatusEntidades StatusEntidade) {
@@ -44,5 +41,6 @@ public class StatusEntidadesService {
     public List<TipoEntidadeDTO> montaComboTipoEntidade() {
         return tipoEntidadeRepository.montaComboTipoEntidade();
     }
+
 
 }

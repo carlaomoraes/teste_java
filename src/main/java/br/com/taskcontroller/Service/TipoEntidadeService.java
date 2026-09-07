@@ -6,7 +6,6 @@ import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
 import br.com.taskcontroller.Respository.TipoEntidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -23,7 +22,17 @@ public class TipoEntidadeService {
         return repository.montaComboTipoEntidade();
     }
 
-    public List<StatusEntidadesListagemDTO> listar() {
-        return repository.listar();
+    public List<StatusEntidadesListagemDTO> listar(Long idEmpreendimento) {
+        return repository.listar(idEmpreendimento);
     }
+
+    public StatusEntidadesListagemDTO buscarPorLinha(Long idStatus) {
+        return repository.buscarPorLinha(idStatus);
+    }
+
+    public Integer proximaOrdem(Long idEmpreendimento, Long idTipoEntidade) {
+        Integer maiorOrdem = repository.buscarMaiorOrdem(idEmpreendimento,idTipoEntidade);
+        return maiorOrdem + 1;
+    }
+
 }

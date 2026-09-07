@@ -1,11 +1,8 @@
 package br.com.taskcontroller.Mapper;
 
 
-import br.com.taskcontroller.DTO.Etapa_sistemaResponseDTO;
-import br.com.taskcontroller.DTO.Etapa_sistemaResquestDTO;
 import br.com.taskcontroller.DTO.PapelRequestDTO;
 import br.com.taskcontroller.DTO.PapelResponseDTO;
-import br.com.taskcontroller.Modelo.Etapa_sistema;
 import br.com.taskcontroller.Modelo.Papel;
 
 public class PapelMapper {

@@ -133,11 +133,17 @@
     );
 
     async function criarTipostatus() {
-
-
+        if (Number(document.getElementById('comboEmpreendimento').value) === 0) {
+            mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
+            return;
+        }
     }
 
     async function salvarTipostatus() {
+        if (Number(document.getElementById('comboEmpreendimento').value) === 0) {
+            mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
+            return;
+        }
         const idstatus = Number(document.getElementById("idstatus").value);
         const descstatus = document.getElementById('descstatus').value;
         const tipostatus = document.getElementById('cmbtipostatus').value;
@@ -196,7 +202,6 @@
         document.getElementById("idstatus").value = "";
         document.getElementById('descstatus').value = "";
         document.getElementById('ativo').checked = false;
-        document.getElementById('cmbtipostatus').value = 0;
         mostrarMensagemNaTela("resultado", "", "error");
     }
     async function buscarPorLinha(id) {
@@ -210,17 +215,27 @@
 
             document.getElementById("idstatus").value = Tipostatus.idstatus;
             document.getElementById('descstatus').value = Tipostatus.descstatus;
-            document.getElementById('ativo').checked = Tipostatus.ativo || true;
-            document.getElementById('cmbtipostatus').value = Tipostatus.tipostatus;
+            document.getElementById('inicial').checked = Tipostatus.inicial && 1;
+            document.getElementById('finalizado').checked = Tipostatus.finalizado && 1;
+            document.getElementById('cancelado').checked = Tipostatus.cancelado && 1;
+            document.getElementById('ativo').checked = Tipostatus.ativo && 1;
+            document.getElementById('cor').value = corHexValida(Tipostatus.cor) ? Tipostatus.cor : "#6c757d";
+            document.getElementById('txtOrdem').value = Tipostatus.ordem;
+            document.getElementById('comboTipo').value = Tipostatus.idtipo_entidade;
             mostrarMensagemNaTela("resultado", "status selecionado: " +  Tipostatus.descstatus, "success");
-
         } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.erroCarregar("status"), "error");
+            //mostrarMensagemNaTela("resultado", MSG.erroCarregar("status"), "error");
+            mostrarMensagemNaTela("resultado", error.value, "error");
         }
     }
-    async function listarTipostatus(idempreendimento) {
+    async function listarTipostatus() {
+        if (Number(document.getElementById('comboEmpreendimento').value) === 0) {
+            mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
+            return;
+        }
         try {
-            const response = await fetch(`${API_STATUS}/listar?idempreendimento=${idempreendimento}`);
+            const idempreendimento = Number(document.getElementById('comboEmpreendimento').value);
+            const response = await fetch(`${API_STATUS}/listar/${idempreendimento}`);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">

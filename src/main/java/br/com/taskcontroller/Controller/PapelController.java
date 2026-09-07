@@ -46,9 +46,6 @@ public class PapelController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody PapelRequestDTO dto) {
-        System.out.println("ENTROU NO SALVAR PAPEL");
-        System.out.println(dto);
-
         Papel papel = PapelMapper.toEntity(dto);
         return ResponseEntity.ok().body(service.salvar(papel));
     }
@@ -56,7 +53,6 @@ public class PapelController {
     // LISTAR
     @GetMapping("/listar")
     public List<PapelListagemDTO> listar() {
-
         return service.listar();
     }
 

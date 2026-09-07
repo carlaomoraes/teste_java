@@ -2,6 +2,7 @@ package br.com.taskcontroller.DTO;
 
 public class StatusEntidadesResponseDTO {
     private Long idstatus;
+    private Long idempreendimento;
     private String descstatus;
     private int ordem;
     private String cor;
@@ -72,5 +73,13 @@ public class StatusEntidadesResponseDTO {
 
     public void setAtivo(int ativo) {
         this.ativo = ativo;
+    }
+
+    public Long getIdempreendimento() {
+        return idempreendimento;
+    }
+
+    public void setIdempreendimento(Long idempreendimento) {
+        this.idempreendimento = idempreendimento;
     }
 }

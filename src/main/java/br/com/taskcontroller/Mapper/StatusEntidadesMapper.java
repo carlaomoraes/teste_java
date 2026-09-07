@@ -6,17 +6,25 @@ import br.com.taskcontroller.DTO.StatusEntidadesResponseDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.TipoEntidade;
+import br.com.taskcontroller.Service.EmpreendimentoService;
+import br.com.taskcontroller.Service.TipoEntidadeService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class StatusEntidadesMapper {
+
+    @Autowired
+    private static TipoEntidadeService tipoEntidadeService;
+
+    @Autowired
+    private static EmpreendimentoService empreendimentoService;
+
 
     public static StatusEntidades toEntity(StatusEntidadesRequestDTO dto) {
         StatusEntidades s = new StatusEntidades();
         s.setIdstatus(dto.getIdstatus());
-        TipoEntidade t = new TipoEntidade();
-        t.setIdtipo_entidade(dto.getIdstatus());
+        TipoEntidade t = tipoEntidadeService.buscarPorId(dto.getIdstatus());
         s.setTipoentidade(t);
-        Empreendimento e = new Empreendimento();
-        e.setIdempreendimento(dto.getEmpreendimento().getIdempreendimento());
+        Empreendimento e = empreendimentoService.buscarPorId(dto.getEmpreendimento().getIdempreendimento());
         s.setEmpreendimento(e);
         s.setDescstatus(dto.getDescstatus());
         s.setOrdem(dto.getOrdem());
@@ -31,12 +39,8 @@ public class StatusEntidadesMapper {
     public static StatusEntidadesResponseDTO toDTO(StatusEntidades s) {
         StatusEntidadesResponseDTO dto = new StatusEntidadesResponseDTO();
         dto.setIdstatus(s.getIdstatus());
-        TipoEntidade t = new TipoEntidade();
-        t.setIdtipo_entidade(s.getIdstatus());
-        s.setTipoentidade(t);
-        Empreendimento e = new Empreendimento();
-        e.setIdempreendimento(s.getEmpreendimento().getIdempreendimento());
-        s.setEmpreendimento(e);
+        dto.setIdstatus(s.getIdstatus());
+        dto.setIdempreendimento(dto.getIdempreendimento());
         s.setDescstatus(s.getDescstatus());
         s.setOrdem(s.getOrdem());
         s.setCor(s.getCor());
