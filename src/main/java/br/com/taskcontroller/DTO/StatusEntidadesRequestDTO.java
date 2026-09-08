@@ -10,7 +10,7 @@ public class StatusEntidadesRequestDTO {
     private boolean cancelado;
     private boolean ativo;
     private Long idempreendimento;
-    private Long idtipoEntidade;
+    private Long idtipoentidade;
 
     public Long getIdstatus() {
         return idstatus;
@@ -84,11 +84,11 @@ public class StatusEntidadesRequestDTO {
         this.idempreendimento = idempreendimento;
     }
 
-    public Long getIdtipoEntidade() {
-        return idtipoEntidade;
+    public Long getIdtipoentidade() {
+        return idtipoentidade;
     }
 
-    public void setIdtipoEntidade(Long idtipoEntidade) {
-        this.idtipoEntidade = idtipoEntidade;
+    public void setIdtipoentidade(Long idtipoentidade) {
+        this.idtipoentidade = idtipoentidade;
     }
 }

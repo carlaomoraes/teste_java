@@ -31,5 +31,6 @@ public interface StatusEntidadeRepository
 """)
     Integer buscarMaiorOrdem(
             @Param("idEmpreendimento") Long idEmpreendimento,
-            @Param("idTipoEntidade") Long idTipoEntidade);
+            @Param("idTipoEntidade") Long idTipoEntidade,
+            @Param("Ordem")  int Ordem);
 }

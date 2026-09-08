@@ -21,7 +21,6 @@ public class StatusEntidadesMapper {
 
     public static StatusEntidades toEntity(StatusEntidadesRequestDTO dto) {
         StatusEntidades s = new StatusEntidades();
-   //     s.setIdstatus(dto.getIdstatus());
         TipoEntidade t = tipoEntidadeService.buscarPorId(dto.getIdstatus());
         s.setTipoentidade(t);
         Empreendimento e = empreendimentoService.buscarPorId(dto.getIdempreendimento());

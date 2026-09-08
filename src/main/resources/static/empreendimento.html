@@ -202,9 +202,6 @@
         </div>
         <hr>
 
-        <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="onclick=salvarEmpreendimento()">Salvar configuração</button>
-        </div>
         <div id="resultadoconfiguracao"></div>
 
     </div>
@@ -463,7 +460,7 @@
             const data_inicio = document.getElementById('data_inicio').value;
             const data_fim = document.getElementById('data_fim').value;
             const siglaempreendimento = document.getElementById('descempreendimento').value;
-            const cor = corHexValida(document.getElementById('cor').value);
+            const cor = document.getElementById('cor').value;
             const codempreendimento = document.getElementById('codempreendimento').value;
             if(document.getElementById('bloqueado').checked) {
                 campoBlooqueado = 0;
@@ -471,7 +468,7 @@
             else {
                 campoBlooqueado = 1;
             }
-            const duracao_sprint = document.getElementById('duracao_sprint').value;
+            const duracao_sprint = document.getElementById("comboDuracao").value;
             const permitir_sprint_sobreposta = document.getElementById("permitir_sprint_sobreposta").checked;
             const permitir_multiplas_sprint_ativas = document.getElementById("permitir_multiplas_sprint_ativas").checked;
             const horas_Trabalho_Dia  = document.getElementById('horas_Trabalho_Dia').value;

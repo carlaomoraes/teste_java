@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import static br.com.taskcontroller.Mapper.StatusEntidadesMapper.empreendimentoService;
-
 @RestController
 @RequestMapping("/status_entidades")
 @RequiredArgsConstructor
@@ -35,13 +33,15 @@ public class StatusController {
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody StatusEntidadesRequestDTO dto) {
         StatusEntidades status = StatusEntidadesMapper.toEntity(dto);
+
         return ResponseEntity.ok(service.salvar(status));
 
     }
-
-    @GetMapping("/{idStatusAtual}/proximo")
-    public List<StatusDTO> buscarProximoStatus(@PathVariable Long idStatusAtual) {
-          return service.buscarProximosStatus(idStatusAtual)
+    @GetMapping("/proximo")
+    public List<StatusDTO> buscarProximoStatus(@RequestParam("idStatusAtual") Long idStatusAtual,
+                                               @RequestParam("idTipoEntidade") Long idTipoEntidade,
+                                               @RequestParam("idEmpreendimento") Long idEmpreendimento) {
+          return service.buscarProximosStatus(idStatusAtual, idTipoEntidade, idEmpreendimento)
                   .stream()
                   .map(s -> new StatusDTO(
                           s.getIdstatus(),
@@ -62,10 +62,11 @@ public class StatusController {
     public List<StatusEntidadesListagemDTO> listar(@PathVariable Long idEmpreendimento) {
         return tipoEntidadeService.listar(idEmpreendimento);
     }
-    // Retorna a ultima o ordem baseado no Empreendimento e na Entidade
-    @GetMapping("/ultimaordem")
+    // Retorna a proxima ordem baseado no Empreendimento e na Entidade
+    @GetMapping("/proximaordem")
     public int proximaOrdem(@RequestParam("idEmpreendimento") Long idEmpreendimento,
                             @RequestParam("idStatusEntidade") Long idStatusEntidade) {
         return tipoEntidadeService.proximaOrdem(idEmpreendimento, idStatusEntidade);
     }
+
 }

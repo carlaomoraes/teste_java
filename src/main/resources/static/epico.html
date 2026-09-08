@@ -242,6 +242,12 @@
     let statusAtualEstoria = 1;
     let statusAtualTarefa = 1;
 
+    const TIPO_ENTIDADE = {
+        EPICO: 1,
+        ESTORIA: 2,
+        TAREFA: 3
+    };
+
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_EPICO = 'http://localhost:8080/epicos';
@@ -313,11 +319,11 @@
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("PRIORIDADES"), "error");
         }
     }
-    async function carregarStatusEpico(idStatusAtual) {
+    async function carregarStatus(idStatusAtual, idTipoEntidade, idEmpreendimeto) {
         const comboStatusEP = document.getElementById("comboStatusEP");
         comboStatusEP.innerHTML = "";
         try {
-            const resposta = await fetch(`${API_STATUS}/${idStatusAtual}/proximo`);
+            const resposta = await fetch(`${API_STATUS}/proximo?idStatusAtual=${idStatusAtual}&idTipoEntidade=${idTipoEntidade}&idEmpreendimento=${idEmpreendimeto}`);
             const vetor = await resposta.json();
             vetor.forEach(i => {
                 const opcao = document.createElement('option');
@@ -330,40 +336,6 @@
         }
     }
 
-    async function carregarStatusEstoria(idStatusAtual) {
-        const comboStatusES = document.getElementById("comboStatusES");
-        comboStatusES.innerHTML = "";
-        try {
-            const resposta = await fetch(`${API_STATUS}/${idStatusAtual}/proximo`);
-            const vetor = await resposta.json();
-            vetor.forEach(i => {
-                const opcao = document.createElement('option');
-                opcao.value = i.idStatus;
-                opcao.textContent = i.descstatus;
-                comboStatusES.appendChild(opcao);
-            });
-        } catch (error) {
-            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
-        }
-    }
-
-    async function carregarStatusTarefa(idStatusAtual) {
-        const comboStatusTA = document.getElementById("comboStatusTA");
-        comboStatusTA.innerHTML = "";
-        try {
-            const resposta = await fetch(`${API_STATUS}/${idStatusAtual}/proximo`);
-            const vetor = await resposta.json();
-            vetor.forEach(i => {
-                const opcao = document.createElement('option');
-                opcao.value = i.idStatus;
-                opcao.textContent = i.descstatus;
-                console.log(opcao);
-                comboStatusTA.appendChild(opcao);
-            });
-        } catch (error) {
-            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
-        }
-    }
 
     async function carregarEmpreendimento() {
         const comboEmpreendimentoEP = document.getElementById("comboEmpreendimentoEP");
@@ -403,9 +375,9 @@
         carregarGestor();
         carregarPrioridade();
         carregarTipoTarefa();
-        carregarStatusEpico(statusAtualEpico);
-        carregarStatusEstoria(statusAtualEstoria);
-        carregarStatusTarefa(statusAtualTarefa);
+        carregarStatus(statusAtualEpico, 1, sessionStorage.getItem("idEmpreendimento"));
+        carregarStatus(statusAtualEstoria, 2, sessionStorage.getItem("idEmpreendimento"));
+        carregarStatus(statusAtualTarefa,3, sessionStorage.getItem("idEmpreendimento"));
     });
 
     async function criarEpico() {

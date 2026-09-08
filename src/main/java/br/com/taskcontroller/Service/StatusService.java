@@ -1,16 +1,12 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.*;
-import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.StatusEntidadeRepository;
 import br.com.taskcontroller.Respository.StatusTransicaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StatusService {
@@ -21,14 +17,13 @@ public class StatusService {
     @Autowired
     private StatusEntidadeRepository statusEntidadeRepository;
 
-    public List<StatusEntidades> buscarProximosStatus(Long idStatus) {
-        return statusTransicaoRepository
-                .findByStatusOrigemIdstatusOrderByStatusDestinoOrdem(idStatus)
-                .stream()
-                .map(StatusTransicao::getStatusDestino)
-                .toList();
-    }
-
+  public List<StatusEntidades> buscarProximosStatus(Long idStatus, Long idTipo_Entidade,  Long idEmpreendimento) {
+      return statusTransicaoRepository
+              .findByStatusOrigemIdstatusOrderByStatusDestinoOrdem(idStatus, idTipo_Entidade, idEmpreendimento)
+              .stream()
+              .map(StatusTransicao::getStatusDestino)
+              .toList();
+  }
     public StatusEntidades buscarPorId(Long idStatus) {
         return statusEntidadeRepository.findById(idStatus).orElseThrow(() -> new RuntimeException("Status não encontrado"));
     }
@@ -40,8 +35,7 @@ public class StatusService {
     public Integer proximaOrdem(Long idEmpreendimento, Long idTipoEntidade) {
         Integer maiorOrdem = statusEntidadeRepository.buscarMaiorOrdem(
                 idEmpreendimento,
-                idTipoEntidade
-        );
+                idTipoEntidade, 1);
 
         return maiorOrdem + 1;
     }
