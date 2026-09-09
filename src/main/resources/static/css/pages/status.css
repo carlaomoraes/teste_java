@@ -318,3 +318,47 @@ select:focus {
         border: 1px solid #dee2e6;
         vertical-align: middle;
     }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        max-width: 600px;
+        border-collapse: collapse;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 12px;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Destaca a primeira coluna (DE) */
+    td:first-child {
+        font-weight: bold;
+        background-color: #f9f9f9;
+        text-align: left;
+    }
+
+    /* Estiliza os ícones de permissão */
+    .check {
+        color: green;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .dash {
+        color: #999;
+    }

@@ -31,8 +31,7 @@ public class TipoEntidadeService {
     }
 
     public Integer proximaOrdem(Long idEmpreendimento, Long idTipoEntidade) {
-        Integer maiorOrdem = repository.buscarMaiorOrdem(idEmpreendimento,idTipoEntidade);
-        return maiorOrdem + 1;
+        return repository.buscarMaiorOrdem(idEmpreendimento,idTipoEntidade) + 1;
     }
 
 }

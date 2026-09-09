@@ -12,18 +12,6 @@ public interface StatusEntidadeRepository
         extends JpaRepository<StatusEntidades, Long> {
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.Status.TipoEntidadeDTO(
-        t.idtipo_entidade,
-        t.desctipo_entidade,
-        t.ativo
-    )
-    FROM TipoEntidade t
-   WHERE t.ativo = true
-    ORDER BY t.idtipo_entidade
-    """)
-    List<TipoEntidadeDTO> montaComboTipoEntidade();
-
-    @Query("""
     SELECT COALESCE(MAX(s.ordem), 0)
     FROM StatusEntidades s
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento

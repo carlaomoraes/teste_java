@@ -285,8 +285,6 @@
         const comboCriadorTA = document.getElementById("comboCriadorTA");
         const comboResponsavelES = document.getElementById("comboResponsavelES");
         const comboResponsavelTA = document.getElementById("comboResponsavelTA");
-
-
         try {
             const resposta = await fetch(`${API_USUARIOS}/listar`);
             const usuarios = await resposta.json();

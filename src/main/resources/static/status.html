@@ -22,7 +22,11 @@
 <script src="js/utils/mensagens.js"></script>
 <div class="container">
     <h1>Status - TaskController 1.0</h1>
-    <div id="Status" >
+    <div class="abas-container">
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'status')">Status</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'workflow')">Workflow</button>
+    </div>
+    <div id="status" class="conteudo-aba ativo">
         <div class="col-md-12 mb-12">
             <label class="form-label">
                 Empreendimento *
@@ -40,14 +44,8 @@
             <input type="text" id="descstatus" placeholder="Descrição do status" oninput="converterMaiusculo(this)">
         </div>
         <div class="col-md-12 mb-12">
-            <label class="form-label">
-                Aplicável a:
-            </label>
-
-            <select id="comboTipo"
-                    class="form-select"
-                    required>
-            </select>
+            <label class="form-label">Aplicável a: </label>
+            <select id="comboTipo" class="form-select" required></select>
         </div>
         <div class="row">
             <div class="col-md-3 mb-3">
@@ -73,6 +71,35 @@
         </div>
         <div id="resultado"></div>
     </div>
+    <div id="workflow" class="conteudo-aba">
+        <div class="col-md-12 mb-12">
+            <label class="form-label">Empreendimento *</label>
+            <select id="comboEmpreendimentoWorkflow"  class="form-select"   required>  </select>
+        </div>
+        <div class="col-md-12 mb-12">
+            <label class="form-label">Aplicável à</label>
+            <select id="comboTipoWorkflow"  class="form-select"   required>  </select>
+        </div>
+        <div class="col-md-12 mb-12">
+            <label class="form-label">Status Origem</label>
+            <select id="comboStatusWorkflow"  class="form-select"   required>  </select>
+        </div>
+        <div class="col-md-12 mb-12">
+            <label class="form-label">Pode ir para:</label>
+        </div>
+        <label class="checkbox-group">
+            <input type="checkbox" id="ativoW" value="0">Aberto
+            <input type="checkbox" id="inicialW" value="1">Andamento
+            <input type="checkbox" id="bloqueadoW" value="2">Bloqueado
+            <input type="checkbox" id="canceladoW" value="3">Cancelado
+            <input type="checkbox" id="concluidoW" value="4">Concluído
+        </label>
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn"  onclick="salvarWorkflow();">Salvar</button>
+            <button type="button" class="btn" onclick="cancelarWorkflow();">Cancelar</button>
+        </div>
+        <div id="resultadoworkflow"></div>
+    </div>
 </div>
 
 <script>
@@ -80,20 +107,42 @@
     const API = 'http://localhost:8080/status_entidades';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
 
+    function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
+    }
     // ==============================================================
     // CARREGAR COMBOS
     // ==============================================================
     async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+        const comboEmpreendimentoWorkflow = document.getElementById("comboEmpreendimentoWorkflow");
         try {
             const resposta = await fetch(`${API_EMPREENDIMENTO}/montaComboEmpreendimento`);
             const empreendimentos = await resposta.json();
             comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
+            comboEmpreendimentoWorkflow.innerHTML = '<option value="">Selecione...</option>';
             empreendimentos.forEach(e => {
                 const opcao = document.createElement('option');
                 opcao.value = e.idempreendimento;
                 opcao.textContent = e.descempreendimento;
-                comboEmpreendimento.appendChild(opcao);
+                comboEmpreendimento.add(opcao);
+                comboEmpreendimentoWorkflow.add(opcao.cloneNode(true));
             });
         } catch (error) {
             mostrarMensagemNaTela( "resultadogeral",MSG.erroCarregar("EMPREENDIMENTO"), "error");
@@ -101,15 +150,18 @@
     }
     async function carregarTipoTarefa() {
         const comboTipo = document.getElementById("comboTipo");
+        const comboTipoWorkflow = document.getElementById("comboTipoWorkflow");
         try {
             const resposta = await fetch(`${API}/DTO/montaComboTipoEntidades`);
             const tipos = await resposta.json();
             comboTipo.innerHTML = '<option value="">Selecione...</option>';
+            comboTipoWorkflow.innerHTML = '<option value="">Selecione...</option>';
             tipos.forEach(t => {
                 const opcao = document.createElement('option');
                 opcao.value = t.idtipo_entidade;
                 opcao.textContent = t.desctipo_entidade;
                 comboTipo.appendChild(opcao);
+                comboTipoWorkflow.add(opcao.cloneNode(true));
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("TIPO ENTIDADES"), "error");
@@ -138,6 +190,17 @@
                                                                     document.getElementById('comboTipo').value);
         }
     );
+    document.getElementById('comboTipoWorkflow').addEventListener('change',() => {
+            montaComboOrigem(document.getElementById('comboEmpreendimentoWorkflow').value,
+                             document.getElementById('comboTipoWorkflow').value);
+        }
+    );
+    async function montaComboOrigem() {
+
+    }
+
+
+
     async function buscaMaiorOrdem(idEmpreendimento, idStatus) {
         if (idEmpreendimento === "") {
             mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
@@ -158,11 +221,7 @@
             const ordem = await response.json();
             document.getElementById("txtOrdem").value = ordem;
         } catch (error) {
-            mostrarMensagemNaTela(
-                "resultadogeral",
-                error.message || "Erro ao buscar ordem",
-                "error"
-            );
+            mostrarMensagemNaTela("resultadogeral",error.message || "Erro ao buscar ordem", "error");
             return false;
         }
     }
@@ -173,6 +232,13 @@
             return;
         }
         habilitaCampos("E");
+    }
+    async function salvarWorkflow() {
+
+    }
+
+    async function cancelarWorkflow() {
+
     }
 
     async function salvarTipostatus() {

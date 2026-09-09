@@ -4,15 +4,14 @@ import br.com.taskcontroller.DTO.PapelRequestDTO;
 import br.com.taskcontroller.DTO.StatusEntidadesRequestDTO;
 import br.com.taskcontroller.Mapper.PapelMapper;
 import br.com.taskcontroller.Mapper.StatusEntidadesMapper;
-import br.com.taskcontroller.Modelo.Empreendimento;
-import br.com.taskcontroller.Modelo.Papel;
-import br.com.taskcontroller.Modelo.StatusEntidades;
-import br.com.taskcontroller.Modelo.TipoEntidade;
+import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Status.StatusDTO;
 import br.com.taskcontroller.Record.Status.StatusEntidadesListagemDTO;
 import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
+import br.com.taskcontroller.Service.PapelService;
 import br.com.taskcontroller.Service.StatusService;
+import br.com.taskcontroller.Service.StatusTransicaoService;
 import br.com.taskcontroller.Service.TipoEntidadeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +27,13 @@ public class StatusController {
 
     private final StatusService service;
     private final TipoEntidadeService tipoEntidadeService;
+    private final StatusTransicaoService statusTransicaoService;
 
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody StatusEntidadesRequestDTO dto) {
         StatusEntidades status = StatusEntidadesMapper.toEntity(dto);
-
         return ResponseEntity.ok(service.salvar(status));
-
     }
     @GetMapping("/proximo")
     public List<StatusDTO> buscarProximoStatus(@RequestParam("idStatusAtual") Long idStatusAtual,
@@ -67,6 +65,12 @@ public class StatusController {
     public int proximaOrdem(@RequestParam("idEmpreendimento") Long idEmpreendimento,
                             @RequestParam("idStatusEntidade") Long idStatusEntidade) {
         return tipoEntidadeService.proximaOrdem(idEmpreendimento, idStatusEntidade);
+    }
+
+    @GetMapping("/listatransicao")
+    public List<TipoEntidadeDTO> montaComboOrigem(@RequestParam("idEmpreendimento") Long idEmpreendimento,
+                                                  @RequestParam("idTipoEntidade") Long idTipoEntidade) {
+        return statusTransicaoService.montaComboOrigem(idTipoEntidade, idEmpreendimento);
     }
 
 }

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Map;
 
@@ -36,6 +37,17 @@ public class GlobalExceptionHandler {
                 .body(Map.of(
                         "sucesso", false,
                         "mensagem", "Ocorreu um erro interno inesperado no servidor."
+                ));
+    }
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<?> tratarRecursoNaoEncontrado(
+            NoResourceFoundException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(
+                        "sucesso", false,
+                        "mensagem", "Recurso não encontrado."
                 ));
     }
 }
