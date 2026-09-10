@@ -32,7 +32,4 @@ public class StatusTransicaoService {
 
     }
 
-    public List<TipoEntidadeDTO> montaComboOrigem(Long idTipo_Entidade, Long idEmpreendimento) {
-        return repository.montaComboOrigem(idTipo_Entidade, idEmpreendimento);
-    }
 }

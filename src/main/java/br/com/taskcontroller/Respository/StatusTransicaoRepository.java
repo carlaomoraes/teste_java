@@ -12,20 +12,4 @@ public interface StatusTransicaoRepository
     List<StatusTransicao> findByStatusOrigemIdstatusOrderByStatusDestinoOrdem(Long idStatus,
                                                                               Long idTipo_Entidade,
                                                                               Long idEmpreendimento);
-
-    @Query("""
-    SELECT new br.com.taskcontroller.Record.Status.TipoEntidadeDTO(
-                 idstatus, 
-                 descstatus,
-                 ativo   
-    )
-    FROM StatusEntidades s
-   WHERE s.ativo = true
-     AND s.empreendimento.idempreendimento = :idEmpreendimento
-      AND s.tipoentidade.idtipo_entidade = :idTipoEntidade
-    ORDER BY s.ordem
-    """)
-    List<TipoEntidadeDTO> montaComboOrigem(Long idTipo_Entidade,
-                                           Long idEmpreendimento);
-
 }

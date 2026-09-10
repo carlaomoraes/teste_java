@@ -2,8 +2,10 @@ package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.DTO.PapelRequestDTO;
 import br.com.taskcontroller.DTO.StatusEntidadesRequestDTO;
+import br.com.taskcontroller.DTO.StatusTransicaoRequestDTO;
 import br.com.taskcontroller.Mapper.PapelMapper;
 import br.com.taskcontroller.Mapper.StatusEntidadesMapper;
+import br.com.taskcontroller.Mapper.StatusTransicaoMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Status.StatusDTO;
@@ -35,6 +37,13 @@ public class StatusController {
         StatusEntidades status = StatusEntidadesMapper.toEntity(dto);
         return ResponseEntity.ok(service.salvar(status));
     }
+    // SALVAR
+    @PostMapping("/salvartransicao")
+    public ResponseEntity<?> salvarTransicao(@RequestBody StatusTransicaoRequestDTO dto) {
+        StatusTransicao status = StatusTransicaoMapper.toEntity(dto);
+        return ResponseEntity.ok(statusTransicaoService.salvar(status));
+    }
+
     @GetMapping("/proximo")
     public List<StatusDTO> buscarProximoStatus(@RequestParam("idStatusAtual") Long idStatusAtual,
                                                @RequestParam("idTipoEntidade") Long idTipoEntidade,
@@ -70,7 +79,15 @@ public class StatusController {
     @GetMapping("/listatransicao")
     public List<TipoEntidadeDTO> montaComboOrigem(@RequestParam("idEmpreendimento") Long idEmpreendimento,
                                                   @RequestParam("idTipoEntidade") Long idTipoEntidade) {
-        return statusTransicaoService.montaComboOrigem(idTipoEntidade, idEmpreendimento);
+        return null;
+                //statusTransicaoService.montaComboOrigem(idEmpreendimento, idTipoEntidade);
     }
+    @GetMapping("/montatransicao")
+    public List<TipoEntidadeDTO> montaTransicao(@RequestParam("idEmpreendimento") Long idEmpreendimento,
+                                                  @RequestParam("idTipoEntidade") Long idTipoEntidade) {
+        return null;
+                //statusTransicaoService.montaComboOrigem(idEmpreendimento, idTipoEntidade);
+    }
+
 
 }
