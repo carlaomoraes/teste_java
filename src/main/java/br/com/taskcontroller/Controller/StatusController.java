@@ -1,13 +1,10 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.PapelRequestDTO;
 import br.com.taskcontroller.DTO.StatusEntidadesRequestDTO;
 import br.com.taskcontroller.DTO.StatusTransicaoRequestDTO;
-import br.com.taskcontroller.Mapper.PapelMapper;
 import br.com.taskcontroller.Mapper.StatusEntidadesMapper;
 import br.com.taskcontroller.Mapper.StatusTransicaoMapper;
 import br.com.taskcontroller.Modelo.*;
-import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Status.StatusDTO;
 import br.com.taskcontroller.Record.Status.StatusEntidadesListagemDTO;
 import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
@@ -17,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -87,5 +83,10 @@ public class StatusController {
         return statusTransicaoService.montaTransicao(idEmpreendimento, idTipoEntidade);
     }
 
-
+    @GetMapping("/proximosstatus")
+    public List<StatusTransicaoDTO> mostraProximosStatus(@RequestParam("idEmpreendimento") Long idEmpreendimento,
+                                                         @RequestParam("idTipoEntidade") Long idTipoEntidade,
+                                                         @RequestParam("idStatus") Long idStatus) {
+        return statusTransicaoService.mostraProximosStatus(idEmpreendimento, idTipoEntidade, idStatus);
+    }
 }

@@ -37,4 +37,11 @@ public class StatusTransicaoService {
         return repository.montaTransicao(idEmpreendimento, idTipoEntidade);
     }
 
+    public List<StatusTransicaoDTO> mostraProximosStatus(Long idEmpreendimento,
+                                                  Long idTipoEntidade,
+                                                  Long idStatus) {
+        return repository.buscarStatusDisponiveis(idEmpreendimento, idTipoEntidade, idStatus);
+    }
+
+
 }

@@ -87,7 +87,7 @@
         <div class="col-md-12 mb-12">
             <label class="form-label">Pode ir para:</label>
         </div>
-        <div id="checkbox_destino" class="col-md-12 mb-12">
+        <div id="containerStatusDestino" class="col-md-12 mb-12">
 
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
@@ -189,27 +189,60 @@
     document.getElementById('comboTipoW').addEventListener('change',() => {
             montaComboOrigem(document.getElementById('comboEmpreendimentoW').value,
                              document.getElementById('comboTipoW').value);
+
         }
     );
-    async function carregarTransicoes(idStatusOrigem) {
-        const response = await fetch(`${API}/origem/${idStatusOrigem}`);
-        const transicoes = await response.json();
+    document.getElementById('comboStatusW').addEventListener('change',() => {
+        montarCheckboxStatus(document.getElementById('comboEmpreendimentoW').value,
+                           document.getElementById('comboTipoW').value,
+                           document.getElementById('comboStatusW').value);
+        }
+    );
+    async function montarCheckboxStatus(idEmpreendimento,idTipoEntidade,idStatusOrigem) {
+        const container = document.getElementById("containerStatusDestino");
+        container.innerHTML = "";
+        try {
+            const response = await fetch(`${API}/disponiveis-transicao?idEmpreendimento=${idEmpreendimento}&idTipoEntidade=${idTipoEntidade}&idStatusOrigem=${idStatusOrigem}`);
+            if (!response.ok) {
+                throw new Error("Erro ao carregar status.");
+            }
+            const lista = await response.json();
+            lista.forEach(status => {
+                const div = document.createElement("div");
+                div.classList.add("form-check", "form-check-inline");
 
+                div.innerHTML = `
+                <input
+                    class="form-check-input status-destino"
+                    type="checkbox"
+                    id="status_${status.idstatus}"
+                    value="${status.idstatus}"
+                >
 
+                <label
+                    class="form-check-label"
+                    for="status_${status.idstatus}">
+                    ${status.descstatus}
+                </label>
+            `;
 
-        document.querySelectorAll(".status-destino")
-            .forEach(check => check.checked = false);
+                container.appendChild(div);
+            });
 
-        transicoes.forEach(status => {
+        } catch (erro) {
 
+            console.error(erro);
 
-        });
+            container.innerHTML = `
+            <span class="text-danger">
+                Erro ao carregar destinos.
+            </span>
+        `;
+        }
     }
     async function montaComboOrigem(idEmpreendimento,idTipoEntidade) {
         const comboStatusW = document.getElementById("comboStatusW");
         try {
-            console.log(idEmpreendimento);
-            console.log(idTipoEntidade);
             const linha = `${API}/montatransicao?idEmpreendimento=${idEmpreendimento}&idTipoEntidade=${idTipoEntidade}`;
             const resposta = await fetch(linha);
             const tipos = await resposta.json();
@@ -218,12 +251,12 @@
                 const opcao = document.createElement('option');
                 opcao.value = t.idstatus;
                 opcao.textContent = t.descstatus;
+                opcao.tabIndex = t.ordem;
                 comboStatusW.add(opcao.cloneNode(true));
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("TIPO ENTIDADES"), "error");
         }
-
     }
 
     async function buscaMaiorOrdem(idEmpreendimento, idStatus) {
@@ -252,7 +285,7 @@
     }
 
     async function criarTipostatus() {
-        if (Number(document.getElementById('comboEmpreendimento').value) === 0) {
+        if (Number(document.getElementById('comboEmpreendimentoS').value) === 0) {
             mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
             return;
         }
@@ -267,7 +300,7 @@
     }
 
     async function salvarTipostatus() {
-        if (Number(document.getElementById('comboEmpreendimento').value) === 0) {
+        if (Number(document.getElementById('comboEmpreendimentoS').value) === 0) {
             mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
             return;
         }
@@ -366,12 +399,12 @@
         }
     }
     async function listarTipostatus() {
-        if (Number(document.getElementById('comboEmpreendimento').value) === 0) {
+        if (Number(document.getElementById('comboEmpreendimentoS').value) === 0) {
             mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
             return;
         }
         try {
-            const idempreendimento = Number(document.getElementById('comboEmpreendimento').value);
+            const idempreendimento = Number(document.getElementById('comboEmpreendimentoS').value);
             const response = await fetch(`${API}/listar/${idempreendimento}`);
             const data = await response.json();
             let tabela = `

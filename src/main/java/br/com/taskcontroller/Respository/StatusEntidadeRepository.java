@@ -30,7 +30,7 @@ public interface StatusEntidadeRepository
         FROM StatusEntidades s
        WHERE s.empreendimento.idempreendimento = :idEmpreendimento
         AND s.tipoentidade.idtipo_entidade = :idTipoEntidade
-        AND s.inicial = true
+        
 """)
     List<TipoEntidadeDTO> montaComboOrigem(@Param("idEmpreendimento") Long idEmpreendimento,
                                            @Param("idTipoEntidade") Long idTipoEntidade);
