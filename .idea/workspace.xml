@@ -5,27 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Construindo workflow">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/funcoes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusTransicaoDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusEntidadeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusEntidadeRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusTransicaoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusTransicaoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusEntidadesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusEntidadesService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusTransicaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusTransicaoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/backlog.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/backlog.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/equipe.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/funcoes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/mensagens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/mensagens.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/toolbar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/utils/usuario.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/papel.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/papel.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprintatual.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprintatual.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/status.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/status.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/tipo_ausencia.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/tipo_ausencia.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/usuario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/usuario.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,61 +73,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.000000000000539" />
-      <entry key="S30" value="1.0001500761563962" />
-      <entry key="S60" value="1.0207351363141395" />
-      <entry key="M2" value="1.2626883236676483" />
-      <entry key="M5" value="2.839534518928777" />
-      <entry key="M10" value="5.857135009877811" />
-      <entry key="M15" value="8.131285595143023" />
-      <entry key="M30" value="12.226068500470623" />
-      <entry key="H1" value="18.99387193870757" />
-      <entry key="H2" value="31.450750345582264" />
-      <entry key="H4" value="47.62222827288125" />
-      <entry key="D1" value="141.95076538423692" />
-      <entry key="W1" value="211.79868674597182" />
-    </decayedCancelled>
-    <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
-      <entry key="S2" value="6.891722993430663E-134" />
-      <entry key="S5" value="5.436646873887871E-54" />
-      <entry key="S10" value="2.331661826656661E-27" />
-      <entry key="S30" value="1.3260356525558098E-9" />
-      <entry key="S60" value="3.642116347737358E-5" />
-      <entry key="M2" value="0.00611456224707982" />
-      <entry key="M5" value="0.15432582516756346" />
-      <entry key="M10" value="0.5545692533168273" />
-      <entry key="M15" value="0.9140012502977801" />
-      <entry key="M30" value="1.6684186507923853" />
-      <entry key="H1" value="2.9119313594506866" />
-      <entry key="H2" value="4.983733399484652" />
-      <entry key="H4" value="8.002973316151449" />
-      <entry key="D1" value="35.440746256901384" />
-      <entry key="W1" value="56.224969752040764" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="4.36485365593768E-140" />
+      <entry key="S10" value="2.0892268244582494E-70" />
+      <entry key="S30" value="6.032558747089328E-24" />
+      <entry key="S60" value="2.898504173396757E-12" />
+      <entry key="M2" value="3.211559231696436E-6" />
+      <entry key="M5" value="0.035746287793496846" />
+      <entry key="M10" value="1.0450032186045277" />
+      <entry key="M15" value="3.3011248980231267" />
+      <entry key="M30" value="10.541951972476486" />
+      <entry key="H1" value="18.90996542091138" />
+      <entry key="H2" value="25.45929853466154" />
+      <entry key="H4" value="32.713349165131135" />
+      <entry key="D1" value="137.48511687072198" />
+      <entry key="W1" value="264.9133844350272" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.000000001047527" />
+      <entry key="S2" value="1.008373619138132" />
+      <entry key="S5" value="1.262826877906019" />
+      <entry key="S10" value="1.8739693001225055" />
+      <entry key="S30" value="2.9814763221405016" />
+      <entry key="S60" value="3.4369900246852234" />
+      <entry key="M2" value="3.7035664035412643" />
+      <entry key="M5" value="3.881128803957982" />
+      <entry key="M10" value="4.082790889725434" />
+      <entry key="M15" value="4.459140376797517" />
+      <entry key="M30" value="5.711905340482659" />
+      <entry key="H1" value="7.213831257905726" />
+      <entry key="H2" value="8.437667088610873" />
+      <entry key="H4" value="10.318934845030032" />
+      <entry key="D1" value="42.686899907846446" />
+      <entry key="W1" value="81.4298288216121" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9138314502294005" />
-      <entry key="MS500" value="0.9821395952633915" />
-      <entry key="S2" value="0.995504677670617" />
-      <entry key="S5" value="0.9981994402866303" />
-      <entry key="S10" value="0.9990993145266922" />
-      <entry key="S30" value="0.9998497064348065" />
-      <entry key="S60" value="1.020616850123934" />
-      <entry key="M2" value="1.2686158537270995" />
-      <entry key="M5" value="2.9926083909241097" />
-      <entry key="M10" value="6.409387792124788" />
-      <entry key="M15" value="9.04273934901008" />
-      <entry key="M30" value="13.892025707438439" />
-      <entry key="H1" value="21.9030580983239" />
-      <entry key="H2" value="36.431599697968025" />
-      <entry key="H4" value="55.62265467766154" />
-      <entry key="D1" value="177.38952038246964" />
-      <entry key="W1" value="268.0232018356141" />
+      <entry key="MS100" value="2.388780472870996E-24" />
+      <entry key="MS500" value="1.8864291895658507E-5" />
+      <entry key="S2" value="0.07081215302880925" />
+      <entry key="S5" value="0.531442204161764" />
+      <entry key="S10" value="1.3145280953903637" />
+      <entry key="S30" value="2.6922609856861457" />
+      <entry key="S60" value="3.2713160248682587" />
+      <entry key="M2" value="3.614524277226231" />
+      <entry key="M5" value="3.8796100408513263" />
+      <entry key="M10" value="5.10853120903423" />
+      <entry key="M15" value="7.746772541857565" />
+      <entry key="M30" value="16.24605548413142" />
+      <entry key="H1" value="26.11926496009042" />
+      <entry key="H2" value="33.894430403572684" />
+      <entry key="H4" value="43.03065089580657" />
+      <entry key="D1" value="180.1701642150314" />
+      <entry key="W1" value="346.3426540497788" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -457,14 +444,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00147" summary="Cadastro de equipe com DTO">
-      <option name="closed" value="true" />
-      <created>1786591780324</created>
-      <option name="number" value="00147" />
-      <option name="presentableId" value="LOCAL-00147" />
-      <option name="project" value="LOCAL" />
-      <updated>1786591780325</updated>
     </task>
     <task id="LOCAL-00148" summary="Cadastro de epico com DTO na consulta - ok">
       <option name="closed" value="true" />
@@ -850,7 +829,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788982557403</updated>
     </task>
-    <option name="localTasksCounter" value="196" />
+    <task id="LOCAL-00196" summary="Construindo workflow">
+      <option name="closed" value="true" />
+      <created>1789064040637</created>
+      <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
+      <option name="project" value="LOCAL" />
+      <updated>1789064040637</updated>
+    </task>
+    <option name="localTasksCounter" value="197" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

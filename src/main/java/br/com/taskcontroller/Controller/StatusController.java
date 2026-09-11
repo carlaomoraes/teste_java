@@ -10,11 +10,9 @@ import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Status.StatusDTO;
 import br.com.taskcontroller.Record.Status.StatusEntidadesListagemDTO;
+import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
 import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
-import br.com.taskcontroller.Service.PapelService;
-import br.com.taskcontroller.Service.StatusService;
-import br.com.taskcontroller.Service.StatusTransicaoService;
-import br.com.taskcontroller.Service.TipoEntidadeService;
+import br.com.taskcontroller.Service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +28,8 @@ public class StatusController {
     private final StatusService service;
     private final TipoEntidadeService tipoEntidadeService;
     private final StatusTransicaoService statusTransicaoService;
+    private final StatusEntidadesService statusEntidadesService;
+
 
     // SALVAR
     @PostMapping("/salvar")
@@ -79,14 +79,12 @@ public class StatusController {
     @GetMapping("/listatransicao")
     public List<TipoEntidadeDTO> montaComboOrigem(@RequestParam("idEmpreendimento") Long idEmpreendimento,
                                                   @RequestParam("idTipoEntidade") Long idTipoEntidade) {
-        return null;
-                //statusTransicaoService.montaComboOrigem(idEmpreendimento, idTipoEntidade);
+        return statusEntidadesService.montaComboOrigem(idEmpreendimento, idTipoEntidade);
     }
     @GetMapping("/montatransicao")
-    public List<TipoEntidadeDTO> montaTransicao(@RequestParam("idEmpreendimento") Long idEmpreendimento,
-                                                  @RequestParam("idTipoEntidade") Long idTipoEntidade) {
-        return null;
-                //statusTransicaoService.montaComboOrigem(idEmpreendimento, idTipoEntidade);
+    public List<StatusTransicaoDTO> montaTransicao(@RequestParam("idEmpreendimento") Long idEmpreendimento,
+                                                   @RequestParam("idTipoEntidade") Long idTipoEntidade) {
+        return statusTransicaoService.montaTransicao(idEmpreendimento, idTipoEntidade);
     }
 
 

@@ -205,18 +205,19 @@
 
         });
     }
-
     async function montaComboOrigem(idEmpreendimento,idTipoEntidade) {
         const comboStatusW = document.getElementById("comboStatusW");
         try {
-            const linha = `${API}/listatransicao?idEmpreendimento=${idEmpreendimento}&idTipoEntidade=${idTipoEntidade}`;
+            console.log(idEmpreendimento);
+            console.log(idTipoEntidade);
+            const linha = `${API}/montatransicao?idEmpreendimento=${idEmpreendimento}&idTipoEntidade=${idTipoEntidade}`;
             const resposta = await fetch(linha);
             const tipos = await resposta.json();
             comboStatusW.innerHTML = '<option value="">Selecione...</option>';
             tipos.forEach(t => {
                 const opcao = document.createElement('option');
-                opcao.value = t.idtipo_entidade;
-                opcao.textContent = t.desctipo_entidade;
+                opcao.value = t.idstatus;
+                opcao.textContent = t.descstatus;
                 comboStatusW.add(opcao.cloneNode(true));
             });
         } catch (error) {

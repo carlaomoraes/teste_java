@@ -21,4 +21,17 @@ public interface StatusEntidadeRepository
             @Param("idEmpreendimento") Long idEmpreendimento,
             @Param("idTipoEntidade") Long idTipoEntidade,
             @Param("Ordem")  int Ordem);
+
+    @Query("""
+        SELECT new br.com.taskcontroller.Record.Status.TipoEntidadeDTO(
+                    idstatus,
+                descstatus,
+                ativo)
+        FROM StatusEntidades s
+       WHERE s.empreendimento.idempreendimento = :idEmpreendimento
+        AND s.tipoentidade.idtipo_entidade = :idTipoEntidade
+        AND s.inicial = true
+""")
+    List<TipoEntidadeDTO> montaComboOrigem(@Param("idEmpreendimento") Long idEmpreendimento,
+                                           @Param("idTipoEntidade") Long idTipoEntidade);
 }

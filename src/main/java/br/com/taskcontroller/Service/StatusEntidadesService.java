@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -37,10 +38,8 @@ public class StatusEntidadesService {
         return repository.findById(idStatusEntidades).orElseThrow(() -> new RuntimeException("Status Entidades não encontrado"));
 
     }
-
-    public List<TipoEntidadeDTO> montaComboTipoEntidade() {
-        return tipoEntidadeRepository.montaComboTipoEntidade();
+    public List<TipoEntidadeDTO> montaComboOrigem(Long idEmpreendimento,
+                                                  Long  idTipoEntidade) {
+        return repository.montaComboOrigem(idEmpreendimento, idTipoEntidade);
     }
-
-
 }

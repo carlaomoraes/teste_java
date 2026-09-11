@@ -2,6 +2,7 @@ package br.com.taskcontroller.Service;
 
 
 import br.com.taskcontroller.Modelo.StatusTransicao;
+import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
 import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
 import br.com.taskcontroller.Respository.StatusTransicaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,11 @@ public class StatusTransicaoService {
 
     public StatusTransicao buscarPorId(Long idStatusTransicao) {
         return repository.findById(idStatusTransicao).orElseThrow(() -> new RuntimeException("Status Transição não encontrado"));
+    }
 
+    public List<StatusTransicaoDTO> montaTransicao(Long idEmpreendimento,
+                                                   Long idTipoEntidade) {
+        return repository.montaTransicao(idEmpreendimento, idTipoEntidade);
     }
 
 }
