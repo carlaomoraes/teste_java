@@ -38,8 +38,11 @@ public class StatusEntidadesService {
         return repository.findById(idStatusEntidades).orElseThrow(() -> new RuntimeException("Status Entidades não encontrado"));
 
     }
-    public List<TipoEntidadeDTO> montaComboOrigem(Long idEmpreendimento,
-                                                  Long  idTipoEntidade) {
-        return repository.montaComboOrigem(idEmpreendimento, idTipoEntidade);
+    public List<TipoEntidadeDTO> montaComboOrigem(Long  idTipoEntidade) {
+        return repository.montaComboOrigem(idTipoEntidade);
+    }
+    public List<StatusEntidades> mostraStatusDisponiveis(Long idTipoEntidade,
+                                                         Long idStatusOrigem) {
+        return repository.mostraStatusDisponiveis(idTipoEntidade,idStatusOrigem);
     }
 }

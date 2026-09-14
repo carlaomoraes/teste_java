@@ -14,13 +14,9 @@ public interface StatusEntidadeRepository
     @Query("""
     SELECT COALESCE(MAX(s.ordem), 0)
     FROM StatusEntidades s
-    WHERE s.empreendimento.idempreendimento = :idEmpreendimento
-      AND s.tipoentidade.idtipo_entidade = :idTipoEntidade
+    WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
 """)
-    Integer buscarMaiorOrdem(
-            @Param("idEmpreendimento") Long idEmpreendimento,
-            @Param("idTipoEntidade") Long idTipoEntidade,
-            @Param("Ordem")  int Ordem);
+    Integer buscarMaiorOrdem(@Param("idTipoEntidade") Long idTipoEntidade);
 
     @Query("""
         SELECT new br.com.taskcontroller.Record.Status.TipoEntidadeDTO(
@@ -28,10 +24,19 @@ public interface StatusEntidadeRepository
                 descstatus,
                 ativo)
         FROM StatusEntidades s
-       WHERE s.empreendimento.idempreendimento = :idEmpreendimento
-        AND s.tipoentidade.idtipo_entidade = :idTipoEntidade
+       WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
         
 """)
-    List<TipoEntidadeDTO> montaComboOrigem(@Param("idEmpreendimento") Long idEmpreendimento,
-                                           @Param("idTipoEntidade") Long idTipoEntidade);
+    List<TipoEntidadeDTO> montaComboOrigem(@Param("idTipoEntidade") Long idTipoEntidade);
+
+    @Query("""
+        SELECT 
+                    idstatus,
+                    descstatus,
+                    ativo
+        FROM StatusEntidades s
+       WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
+""")
+    List<StatusEntidades> mostraStatusDisponiveis(@Param("idTipoEntidade") Long idTipoEntidade,
+                                                  @Param("idStatusOrigem") Long idStatusOrigem);
 }

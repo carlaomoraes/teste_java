@@ -32,15 +32,12 @@ public class StatusTransicaoService {
         return repository.findById(idStatusTransicao).orElseThrow(() -> new RuntimeException("Status Transição não encontrado"));
     }
 
-    public List<StatusTransicaoDTO> montaTransicao(Long idEmpreendimento,
-                                                   Long idTipoEntidade) {
-        return repository.montaTransicao(idEmpreendimento, idTipoEntidade);
+    public List<StatusTransicaoDTO> montaTransicao(Long idTipoEntidade) {
+        return repository.montaTransicao(idTipoEntidade);
     }
 
-    public List<StatusTransicaoDTO> mostraProximosStatus(Long idEmpreendimento,
-                                                  Long idTipoEntidade,
-                                                  Long idStatus) {
-        return repository.buscarStatusDisponiveis(idEmpreendimento, idTipoEntidade, idStatus);
+    public List<StatusTransicaoDTO> mostraProximosStatus(Long idTipoEntidade,Long idStatus) {
+        return repository.buscarStatusDisponiveis(idTipoEntidade, idStatus);
     }
 
 

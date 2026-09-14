@@ -22,16 +22,16 @@ public class TipoEntidadeService {
         return repository.montaComboTipoEntidade();
     }
 
-    public List<StatusEntidadesListagemDTO> listar(Long idEmpreendimento) {
-        return repository.listar(idEmpreendimento);
+    public List<StatusEntidadesListagemDTO> listar(Long idTipoEntidade) {
+        return repository.listar(idTipoEntidade);
     }
 
     public StatusEntidadesListagemDTO buscarPorLinha(Long idStatus) {
         return repository.buscarPorLinha(idStatus);
     }
 
-    public Integer proximaOrdem(Long idEmpreendimento, Long idTipoEntidade) {
-        return repository.buscarMaiorOrdem(idEmpreendimento,idTipoEntidade) + 1;
+    public Integer proximaOrdem(Long idTipoEntidade) {
+        return repository.buscarMaiorOrdem(idTipoEntidade) + 1;
     }
 
 }

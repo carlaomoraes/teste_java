@@ -4,13 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Combo Status OK">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Tela WORKFLOW">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusTransicaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusTransicaoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/StatusEntidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/StatusEntidades.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusEntidadesListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusEntidadesListagemDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusEntidadeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusEntidadeRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusTransicaoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusTransicaoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TipoEntidadeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TipoEntidadeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusEntidadesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusEntidadesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusTransicaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusTransicaoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TipoEntidadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TipoEntidadeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/status.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/status.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,61 +80,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000186273799" />
-      <entry key="S2" value="1.011682557969791" />
-      <entry key="S5" value="1.1687373846277276" />
-      <entry key="S10" value="1.4201419341069887" />
-      <entry key="S30" value="2.1348555696736478" />
-      <entry key="S60" value="3.061075006057102" />
-      <entry key="M2" value="4.1053416548720225" />
-      <entry key="M5" value="6.146660522745955" />
-      <entry key="M10" value="10.856646519063167" />
-      <entry key="M15" value="15.049723820775187" />
-      <entry key="M30" value="23.80197709312259" />
-      <entry key="H1" value="34.69396840655593" />
-      <entry key="H2" value="51.549719342360625" />
-      <entry key="H4" value="76.68540568741881" />
-      <entry key="D1" value="208.91782232077207" />
-      <entry key="W1" value="360.4675370077897" />
+      <entry key="MS100" value="5.342382679083499E-35" />
+      <entry key="MS500" value="1.3981282105825895E-7" />
+      <entry key="S2" value="0.019336895475602356" />
+      <entry key="S5" value="0.20632635212816436" />
+      <entry key="S10" value="0.4542316062628891" />
+      <entry key="S30" value="0.7687039569738032" />
+      <entry key="S60" value="0.8767576387625561" />
+      <entry key="M2" value="0.9363783049803669" />
+      <entry key="M5" value="1.0313377846334182" />
+      <entry key="M10" value="1.9968955530485513" />
+      <entry key="M15" value="3.888056935256072" />
+      <entry key="M30" value="10.198259850034093" />
+      <entry key="H1" value="19.165601449246406" />
+      <entry key="H2" value="30.568081960442623" />
+      <entry key="H4" value="44.19872052858299" />
+      <entry key="D1" value="94.18273164177984" />
+      <entry key="W1" value="343.7970139172315" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="3.3281364796647E-311" />
-      <entry key="S10" value="5.892610590308319E-156" />
-      <entry key="S30" value="2.2933065967577842E-52" />
-      <entry key="S60" value="2.0462346780346606E-26" />
-      <entry key="M2" value="1.9981726166519494E-13" />
-      <entry key="M5" value="1.2849533837442034E-5" />
-      <entry key="M10" value="0.006094574689331066" />
-      <entry key="M15" value="0.05461242098396665" />
-      <entry key="M30" value="0.5786488479852606" />
-      <entry key="H1" value="2.3604559236698948" />
-      <entry key="H2" value="6.485505316117814" />
-      <entry key="H4" value="13.158434862097863" />
-      <entry key="D1" value="52.19112259044071" />
-      <entry key="W1" value="97.92388904061899" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000012173674584" />
+      <entry key="S5" value="1.0049579038041312" />
+      <entry key="S10" value="1.0913347258683361" />
+      <entry key="S30" value="1.698716542572406" />
+      <entry key="S60" value="2.1786069962012693" />
+      <entry key="M2" value="2.5341709214682693" />
+      <entry key="M5" value="2.8064829245195417" />
+      <entry key="M10" value="3.210762694447463" />
+      <entry key="M15" value="4.100218335899128" />
+      <entry key="M30" value="8.022344381255511" />
+      <entry key="H1" value="15.117182388868308" />
+      <entry key="H2" value="25.04679652751606" />
+      <entry key="H4" value="36.628084959005754" />
+      <entry key="D1" value="62.4643802317289" />
+      <entry key="W1" value="133.56598418598608" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9012504626108302" />
-      <entry key="MS500" value="0.9794203158562699" />
-      <entry key="S2" value="1.0064408966406992" />
-      <entry key="S5" value="1.1663328809472684" />
-      <entry key="S10" value="1.4186919644315188" />
-      <entry key="S30" value="2.134098600694888" />
-      <entry key="S60" value="3.0605038499682764" />
-      <entry key="M2" value="4.104946428395383" />
-      <entry key="M5" value="6.14643353640529" />
-      <entry key="M10" value="10.862512180944236" />
-      <entry key="M15" value="15.104016268158583" />
-      <entry key="M30" value="24.379634850951224" />
-      <entry key="H1" value="37.05224342884083" />
-      <entry key="H2" value="58.03192005410183" />
-      <entry key="H4" value="89.84039845028968" />
-      <entry key="D1" value="261.10651947266285" />
-      <entry key="W1" value="458.3907392034358" />
+      <entry key="MS100" value="8.271806125530277E-25" />
+      <entry key="MS500" value="1.5258789092005698E-5" />
+      <entry key="S2" value="0.0629151726590002" />
+      <entry key="S5" value="0.37825778790737313" />
+      <entry key="S10" value="0.8672879975205704" />
+      <entry key="S30" value="2.101319833252085" />
+      <entry key="S60" value="2.841633461794013" />
+      <entry key="M2" value="3.354214107210297" />
+      <entry key="M5" value="3.7884273434557834" />
+      <entry key="M10" value="5.177641312125719" />
+      <entry key="M15" value="7.960337881629214" />
+      <entry key="M30" value="18.192369475549107" />
+      <entry key="H1" value="34.25837668677245" />
+      <entry key="H2" value="55.59651027992581" />
+      <entry key="H4" value="80.81422626863827" />
+      <entry key="D1" value="156.6437804500447" />
+      <entry key="W1" value="477.36202173490045" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -143,62 +151,62 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Conexao.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;HTTP Request.All in generated-requests.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #2.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UsuarioDAOTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UsuarioDAOTest.inserir.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.DemoApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TaskControllerApplication (1).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TaskControllerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;git.auto.fetch.suggestion.counter&quot;: &quot;3&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/java/br/com/taskcontroller&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/js&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.grazie&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Conexao.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "HTTP Request.All in generated-requests.executor": "Run",
+    "HTTP Request.generated-requests | #2.executor": "Run",
+    "HTTP Request.generated-requests | #3.executor": "Run",
+    "JUnit.UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario.executor": "Run",
+    "JUnit.UsuarioDAOTest.executor": "Run",
+    "JUnit.UsuarioDAOTest.inserir.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.DemoApplication.executor": "Run",
+    "Spring Boot.TaskControllerApplication (1).executor": "Run",
+    "Spring Boot.TaskControllerApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "git.auto.fetch.suggestion.counter": "3",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/java/br/com/taskcontroller",
+    "last_opened_file_path": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/js",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ],
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;JavaScript&quot;,
-      &quot;Flow JS&quot;
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "JavaScript",
+      "Flow JS"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static\js" />
@@ -443,14 +451,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00149" summary="Cadastro de epico com DTO na inclusão - ok">
-      <option name="closed" value="true" />
-      <created>1786648107422</created>
-      <option name="number" value="00149" />
-      <option name="presentableId" value="LOCAL-00149" />
-      <option name="project" value="LOCAL" />
-      <updated>1786648107423</updated>
     </task>
     <task id="LOCAL-00150" summary="Cadastro de epico com DTO na consulta - ok">
       <option name="closed" value="true" />
@@ -836,7 +836,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789133137536</updated>
     </task>
-    <option name="localTasksCounter" value="198" />
+    <task id="LOCAL-00198" summary="Tela WORKFLOW">
+      <option name="closed" value="true" />
+      <created>1789156465237</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1789156465237</updated>
+    </task>
+    <option name="localTasksCounter" value="199" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -884,7 +892,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cadastro de epico com DTO na inclusão - ok" />
     <MESSAGE value="Cadastro de epico com DTO na consulta - ok" />
     <MESSAGE value="Cadastro de tarefas com DTO na listagem e consulta" />
     <MESSAGE value="Cadastro de equipe - OK" />
@@ -909,7 +916,8 @@
     <MESSAGE value="Ajustando ordem do cadastro de Stattus" />
     <MESSAGE value="Construindo workflow" />
     <MESSAGE value="Combo Status OK" />
-    <option name="LAST_COMMIT_MESSAGE" value="Combo Status OK" />
+    <MESSAGE value="Tela WORKFLOW" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tela WORKFLOW" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -971,7 +979,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java</url>
-          <line>22</line>
+          <line>16</line>
           <option name="timeStamp" value="127" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">

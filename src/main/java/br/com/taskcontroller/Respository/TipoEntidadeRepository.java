@@ -26,7 +26,6 @@ public interface TipoEntidadeRepository extends JpaRepository<TipoEntidade, Long
     @Query("""
     SELECT new br.com.taskcontroller.Record.Status.StatusEntidadesListagemDTO(
         s.idstatus,
-        s.empreendimento.idempreendimento,
         s.descstatus,
         s.ordem,
         s.cor,
@@ -39,15 +38,14 @@ public interface TipoEntidadeRepository extends JpaRepository<TipoEntidade, Long
     )
     FROM StatusEntidades s
     JOIN s.tipoentidade t
-   WHERE s.empreendimento.idempreendimento = :idempreendimento
+   WHERE t.idtipo_entidade = :idTipoEntidade
     ORDER BY s.ordem
     """)
-    List<StatusEntidadesListagemDTO> listar(@Param("idempreendimento") Long idempreendimento);
+    List<StatusEntidadesListagemDTO> listar(@Param("idTipoEntidade") Long idTipoEntidade);
 
     @Query("""
     SELECT new br.com.taskcontroller.Record.Status.StatusEntidadesListagemDTO(
         s.idstatus,
-        s.empreendimento.idempreendimento,
         s.descstatus,
         s.ordem,
         s.cor,
@@ -67,9 +65,7 @@ public interface TipoEntidadeRepository extends JpaRepository<TipoEntidade, Long
     @Query("""
     SELECT COALESCE(MAX(s.ordem), 0)
     FROM StatusEntidades s
-    WHERE s.empreendimento.idempreendimento = :idEmpreendimento
-          AND s.tipoentidade.idtipo_entidade = :idTipoEntidade
+    WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
 """)
-    Integer buscarMaiorOrdem( @Param("idEmpreendimento") Long idEmpreendimento,
-                              @Param("idTipoEntidade") Long idTipoEntidade);
+    Integer buscarMaiorOrdem(@Param("idTipoEntidade") Long idTipoEntidade);
 }

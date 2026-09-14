@@ -317,23 +317,44 @@
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("PRIORIDADES"), "error");
         }
     }
-    async function carregarStatus(idStatusAtual, idTipoEntidade, idEmpreendimeto) {
+    async function carregarStatus(idStatusAtual, ENTIDADE) {
         const comboStatusEP = document.getElementById("comboStatusEP");
-        comboStatusEP.innerHTML = "";
+        const comboStatusES = document.getElementById("comboStatusES");
+        const comboStatusTA = document.getElementById("comboStatusTA");
         try {
-            const resposta = await fetch(`${API_STATUS}/proximo?idStatusAtual=${idStatusAtual}&idTipoEntidade=${idTipoEntidade}&idEmpreendimento=${idEmpreendimeto}`);
+            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${ENTIDADE}`;
+            console.log(linha);
+            alert(linha);
+            alert(ENTIDADE);
+            const resposta = await fetch(linha);
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
             const vetor = await resposta.json();
-            vetor.forEach(i => {
-                const opcao = document.createElement('option');
-                opcao.value = i.idStatus;
-                opcao.textContent = i.descstatus;
-                comboStatusEP.appendChild(opcao);
+            const opcaoPadrao = document.createElement("option");
+            opcaoPadrao.value = "";
+            opcaoPadrao.textContent = "Selecione...";
+            vetor.forEach(status => {
+                const opcao = document.createElement("option");
+                opcao.value = status.idstatus;
+                opcao.textContent = status.descstatus;
+                alert(status.descstatus);
+                switch (ENTIDADE) {
+                    case TIPO_ENTIDADE.EPICO:
+                        comboStatusEP.appendChild(opcaoPadrao);
+                        break;
+                    case TIPO_ENTIDADE.ESTORIA:
+                        comboStatusES.appendChild(opcaoPadrao);
+                        break;
+                    case TIPO_ENTIDADE.TAREFA:
+                        comboStatusTA.appendChild(opcaoPadrao);
+                        break;
+                }
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("STATUS"), "error");
+            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }
     }
-
 
     async function carregarEmpreendimento() {
         const comboEmpreendimentoEP = document.getElementById("comboEmpreendimentoEP");
@@ -373,9 +394,19 @@
         carregarGestor();
         carregarPrioridade();
         carregarTipoTarefa();
-        carregarStatus(statusAtualEpico, 1, sessionStorage.getItem("idEmpreendimento"));
-        carregarStatus(statusAtualEstoria, 2, sessionStorage.getItem("idEmpreendimento"));
-        carregarStatus(statusAtualTarefa,3, sessionStorage.getItem("idEmpreendimento"));
+        /*
+        statusAtualEpico -> Aponta para o próximo status
+        idTipoEntidade -> Pega a referencia da tabela tipo_entidade
+        1 - ÉPICO
+        2 - ESTÓRIA
+        3 - TAREFA
+        4 - SPRINT
+        5 - EMPREENDIMENTO
+
+         */
+        carregarStatus(statusAtualEpico, TIPO_ENTIDADE.EPICO);
+        carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
+        carregarStatus(statusAtualTarefa,TIPO_ENTIDADE.TAREFA);
     });
 
     async function criarEpico() {
@@ -787,7 +818,7 @@
                     await listarEquipes(epico.idempreendimento);
                     // MONTA O COMBO PARA PROXIMO STATUS
                     statusAtualEpico = epico.idstatus;
-                    await carregarStatusEpico(statusAtualEpico);
+                    await carregarStatus(statusAtualEpico, TIPO_ENTIDADE.EPICO);
                 }
             } catch (error) {
               //  mostrarMensagemNaTela("resultado_epico",MSG.erroCarregar("ÉPICO"), "error");
@@ -820,7 +851,7 @@
                      await listarTarefas(idEpico, estoria.idestoria);
                      // MONTA O COMBO PARA PROXIMO STATUS
                      statusAtualEstoria = estoria.idstatus;
-                     carregarStatusEstoria(statusAtualEstoria);
+                     carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
@@ -850,7 +881,7 @@
                     document.getElementById('horas_estimadas').value = tarefa.horas_estimadas;
                     // MONTA O COMBO PARA PROXIMO STATUS
                     statusAtualTarefa = tarefa.idstatus;
-                    await carregarStatusTarefa(statusAtualTarefa);
+                    await carregarStatus(statusAtualTarefa, TIPO_ENTIDADE.TAREFA);
                     mostrarMensagemNaTela("resultado_tarefa","Tarefa selecionada: " + tarefa.idtarefa, "success");
                 }
             } catch (error) {

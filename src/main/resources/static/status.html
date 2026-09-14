@@ -28,24 +28,14 @@
     </div>
     <div id="status" class="conteudo-aba ativo">
         <div class="col-md-12 mb-12">
-            <label class="form-label">
-                Empreendimento *
-            </label>
-
-            <select id="comboEmpreendimentoS"
-                    class="form-select"
-                    required>
-            </select>
+            <label class="form-label">Aplicável a: </label>
+            <select id="comboTipoS" class="form-select" required></select>
         </div>
         <div class="col-md-12 mb-12">
             <label for="idstatus" class="form-label">ID do status</label>
             <input type="number" onblur="buscarPorLinha(document.getElementById('idstatus').value)" name="idstatus" id="idstatus" placeholder="ID do status (Deixe vazio para novo)">
             <label for="descstatus" class="form-label">Descrição</label>
             <input type="text" id="descstatus" placeholder="Descrição do status" oninput="converterMaiusculo(this)">
-        </div>
-        <div class="col-md-12 mb-12">
-            <label class="form-label">Aplicável a: </label>
-            <select id="comboTipoS" class="form-select" required></select>
         </div>
         <div class="row">
             <div class="col-md-3 mb-3">
@@ -73,10 +63,6 @@
     </div>
     <div id="workflow" class="conteudo-aba">
         <div class="col-md-12 mb-12">
-            <label class="form-label">Empreendimento *</label>
-            <select id="comboEmpreendimentoW"  class="form-select"   required>  </select>
-        </div>
-        <div class="col-md-12 mb-12">
             <label class="form-label">Aplicável à</label>
             <select id="comboTipoW"  class="form-select"   required>  </select>
         </div>
@@ -101,7 +87,6 @@
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/status_entidades';
-    const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
 
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
@@ -125,25 +110,6 @@
     // ==============================================================
     // CARREGAR COMBOS
     // ==============================================================
-    async function carregarEmpreendimento() {
-        const comboEmpreendimentoS = document.getElementById("comboEmpreendimentoS");
-        const comboEmpreendimentoW = document.getElementById("comboEmpreendimentoW");
-        try {
-            const resposta = await fetch(`${API_EMPREENDIMENTO}/montaComboEmpreendimento`);
-            const empreendimentos = await resposta.json();
-            comboEmpreendimentoS.innerHTML = '<option value="">Selecione...</option>';
-            comboEmpreendimentoW.innerHTML = '<option value="">Selecione...</option>';
-            empreendimentos.forEach(e => {
-                const opcao = document.createElement('option');
-                opcao.value = e.idempreendimento;
-                opcao.textContent = e.descempreendimento;
-                comboEmpreendimentoS.add(opcao);
-                comboEmpreendimentoW.add(opcao.cloneNode(true));
-            });
-        } catch (error) {
-            mostrarMensagemNaTela( "resultadogeral",MSG.erroCarregar("EMPREENDIMENTO"), "error");
-        }
-    }
     async function carregarTipoTarefa() {
         const comboTipoS = document.getElementById("comboTipoS");
         const comboTipoW = document.getElementById("comboTipoW");
@@ -168,41 +134,39 @@
     // INICIALIZAÇÃO
     // ==============================================================
     document.addEventListener('DOMContentLoaded',() => {
-            carregarEmpreendimento();
             carregarTipoTarefa();
             habilitaCampos("C");
         }
     );
     // ==============================================================
-    // ALTERAÇÃO DO EMPREENDIMENTO
+    // ALTERAÇÃO DO TIPO DE ENTIDADE
     // ==============================================================
-    document.getElementById('comboEmpreendimentoS').addEventListener('change',() => {
+    document.getElementById('comboTipoS').addEventListener('change',() => {
             listarTipostatus();
             habilitaCampos("C");
         }
     );
     document.getElementById('comboTipoS').addEventListener('change',() => {
-        buscaMaiorOrdem(document.getElementById('comboEmpreendimentoS').value,
-                        document.getElementById('comboTipoS').value);
+        buscaMaiorOrdem(document.getElementById('comboTipoS').value);
         }
     );
     document.getElementById('comboTipoW').addEventListener('change',() => {
-            montaComboOrigem(document.getElementById('comboEmpreendimentoW').value,
-                             document.getElementById('comboTipoW').value);
+            montaComboOrigem(document.getElementById('comboTipoW').value);
 
         }
     );
     document.getElementById('comboStatusW').addEventListener('change',() => {
-        montarCheckboxStatus(document.getElementById('comboEmpreendimentoW').value,
-                           document.getElementById('comboTipoW').value,
-                           document.getElementById('comboStatusW').value);
+        montarCheckboxStatus(document.getElementById('comboTipoW').value,
+                             document.getElementById('comboStatusW').value);
         }
     );
-    async function montarCheckboxStatus(idEmpreendimento,idTipoEntidade,idStatusOrigem) {
+    async function montarCheckboxStatus(idTipoEntidade,idStatusOrigem) {
         const container = document.getElementById("containerStatusDestino");
         container.innerHTML = "";
         try {
-            const response = await fetch(`${API}/disponiveis-transicao?idEmpreendimento=${idEmpreendimento}&idTipoEntidade=${idTipoEntidade}&idStatusOrigem=${idStatusOrigem}`);
+            const linha = `${API}/disponiveis-transicao?idTipoEntidade=${idTipoEntidade}&idStatusOrigem=${idStatusOrigem}`;
+            console.log(linha);
+            const response = await fetch(linha);
             if (!response.ok) {
                 throw new Error("Erro ao carregar status.");
             }
@@ -240,10 +204,10 @@
         `;
         }
     }
-    async function montaComboOrigem(idEmpreendimento,idTipoEntidade) {
+    async function montaComboOrigem(idTipoEntidade) {
         const comboStatusW = document.getElementById("comboStatusW");
         try {
-            const linha = `${API}/montatransicao?idEmpreendimento=${idEmpreendimento}&idTipoEntidade=${idTipoEntidade}`;
+            const linha = `${API}/montatransicao?idTipoEntidade=${idTipoEntidade}`;
             const resposta = await fetch(linha);
             const tipos = await resposta.json();
             comboStatusW.innerHTML = '<option value="">Selecione...</option>';
@@ -259,17 +223,13 @@
         }
     }
 
-    async function buscaMaiorOrdem(idEmpreendimento, idStatus) {
-        if (idEmpreendimento === "") {
-            mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
-            return false;
-        }
+    async function buscaMaiorOrdem(idStatus) {
         if (idStatus === "") {
             mostrarMensagemNaTela("resultadogeral", "Selecione um objeto!", "warning");
             return false;
         }
         try {
-            const linha =`${API}/proximaordem?idEmpreendimento=${idEmpreendimento}&idStatusEntidade=${idStatus}`;
+            const linha =`${API}/proximaordem/${idStatus}`;
             const response = await fetch(linha);
             if (!response.ok) {
                 const msg = await response.text();
@@ -285,10 +245,6 @@
     }
 
     async function criarTipostatus() {
-        if (Number(document.getElementById('comboEmpreendimentoS').value) === 0) {
-            mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
-            return;
-        }
         habilitaCampos("E");
     }
     async function salvarWorkflow() {
@@ -300,11 +256,6 @@
     }
 
     async function salvarTipostatus() {
-        if (Number(document.getElementById('comboEmpreendimentoS').value) === 0) {
-            mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
-            return;
-        }
-        const idempreendimento = document.getElementById('comboEmpreendimentoS').value;
         const idtipoentidade = document.getElementById('comboTipoS').value;
         const idstatus = Number(document.getElementById("idstatus").value);
         const descstatus = document.getElementById('descstatus').value;
@@ -328,8 +279,7 @@
             finalizado: finalizado || false,
             inicial: inicial || false,
             cor: cor || "6c757d",
-            ordem: ordem || 1,
-            idempreendimento: idempreendimento || null
+            ordem: ordem || 1
         };
         try {
             const response = await fetch(`${API}/salvar`, {
@@ -399,13 +349,10 @@
         }
     }
     async function listarTipostatus() {
-        if (Number(document.getElementById('comboEmpreendimentoS').value) === 0) {
-            mostrarMensagemNaTela("resultado", "Selecione um empreendimento!", "warnning");
-            return;
-        }
         try {
-            const idempreendimento = Number(document.getElementById('comboEmpreendimentoS').value);
-            const response = await fetch(`${API}/listar/${idempreendimento}`);
+            const idTipoS = Number(document.getElementById('comboTipoS').value);
+            const linha = `${API}/listar/${idTipoS}`;
+            const response = await fetch(linha);
             const data = await response.json();
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
@@ -443,7 +390,6 @@
     }
     function habilitaCampos(operacao) {
         if (operacao === "C") {
-            // document.getElementById('comboEmpreendimento').disabled = false;
             // document.getElementById('comboTipo').disabled = true;
             // document.getElementById('descstatus').disabled = true;
             // document.getElementById('inicial').disabled = true;
@@ -452,7 +398,6 @@
             // document.getElementById('finalizado').disabled = true;
             // document.getElementById('cor').disabled = true;
         } else if (operacao === "E") {
-            // document.getElementById('comboEmpreendimento').disabled = true;
             // document.getElementById('comboTipo').disabled = false;
             // document.getElementById('descstatus').disabled = false;
             // document.getElementById('inicial').disabled = false;

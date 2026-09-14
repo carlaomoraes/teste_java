@@ -26,7 +26,6 @@ public class StatusController {
     private final StatusTransicaoService statusTransicaoService;
     private final StatusEntidadesService statusEntidadesService;
 
-
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody StatusEntidadesRequestDTO dto) {
@@ -40,16 +39,10 @@ public class StatusController {
         return ResponseEntity.ok(statusTransicaoService.salvar(status));
     }
 
-    @GetMapping("/proximo")
-    public List<StatusDTO> buscarProximoStatus(@RequestParam("idStatusAtual") Long idStatusAtual,
-                                               @RequestParam("idTipoEntidade") Long idTipoEntidade,
-                                               @RequestParam("idEmpreendimento") Long idEmpreendimento) {
-          return service.buscarProximosStatus(idStatusAtual, idTipoEntidade, idEmpreendimento)
-                  .stream()
-                  .map(s -> new StatusDTO(
-                          s.getIdstatus(),
-                          s.getDescstatus(),
-                          s.getCor())).toList();
+    @GetMapping("{idStatusAtual}/proximo/{idTipoEntidade}")
+    public List<StatusTransicaoDTO> buscarProximoStatus(@PathVariable("idStatusAtual") Long idStatusAtual,
+                                               @PathVariable("idTipoEntidade") Long idTipoEntidade) {
+          return service.buscarProximosStatus(idStatusAtual, idTipoEntidade);
     }
 
     @GetMapping("/DTO/montaComboTipoEntidades")
@@ -61,32 +54,24 @@ public class StatusController {
         return tipoEntidadeService.buscarPorLinha(idStatus);
     }
 
-    @GetMapping("/listar/{idEmpreendimento}")
-    public List<StatusEntidadesListagemDTO> listar(@PathVariable Long idEmpreendimento) {
-        return tipoEntidadeService.listar(idEmpreendimento);
+    @GetMapping("/listar/{idTipoEntidade}")
+    public List<StatusEntidadesListagemDTO> listar(@PathVariable Long idTipoEntidade) {
+        return tipoEntidadeService.listar(idTipoEntidade);
     }
     // Retorna a proxima ordem baseado no Empreendimento e na Entidade
-    @GetMapping("/proximaordem")
-    public int proximaOrdem(@RequestParam("idEmpreendimento") Long idEmpreendimento,
-                            @RequestParam("idStatusEntidade") Long idStatusEntidade) {
-        return tipoEntidadeService.proximaOrdem(idEmpreendimento, idStatusEntidade);
+    @GetMapping("/proximaordem/{idTipoEntidade}")
+    public int proximaOrdem(@PathVariable Long idTipoEntidade) {
+        return tipoEntidadeService.proximaOrdem(idTipoEntidade);
     }
 
     @GetMapping("/listatransicao")
-    public List<TipoEntidadeDTO> montaComboOrigem(@RequestParam("idEmpreendimento") Long idEmpreendimento,
-                                                  @RequestParam("idTipoEntidade") Long idTipoEntidade) {
-        return statusEntidadesService.montaComboOrigem(idEmpreendimento, idTipoEntidade);
-    }
-    @GetMapping("/montatransicao")
-    public List<StatusTransicaoDTO> montaTransicao(@RequestParam("idEmpreendimento") Long idEmpreendimento,
-                                                   @RequestParam("idTipoEntidade") Long idTipoEntidade) {
-        return statusTransicaoService.montaTransicao(idEmpreendimento, idTipoEntidade);
+    public List<TipoEntidadeDTO> montaComboOrigem(@RequestParam("idTipoEntidade") Long idTipoEntidade) {
+        return statusEntidadesService.montaComboOrigem(idTipoEntidade);
     }
 
-    @GetMapping("/proximosstatus")
-    public List<StatusTransicaoDTO> mostraProximosStatus(@RequestParam("idEmpreendimento") Long idEmpreendimento,
-                                                         @RequestParam("idTipoEntidade") Long idTipoEntidade,
-                                                         @RequestParam("idStatus") Long idStatus) {
-        return statusTransicaoService.mostraProximosStatus(idEmpreendimento, idTipoEntidade, idStatus);
+    @GetMapping("/disponiveis-transicao")
+    List<StatusEntidades> mostraDisponiveis(@RequestParam("idTipoEntidade") Long idTipoEntidade,
+                                             @RequestParam("idStausOrigem") Long idStatusOrigem) {
+        return statusEntidadesService.mostraStatusDisponiveis(idTipoEntidade, idStatusOrigem);
     }
 }

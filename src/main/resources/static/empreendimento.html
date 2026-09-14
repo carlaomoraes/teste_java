@@ -287,11 +287,12 @@
     }
     async function carregarStatus(idStatusAtual) {
         const comboStatus = document.getElementById("comboStatus");
+        const idTipo_Entidade = 5;
         try {
             comboStatus.innerHTML = "";
-            const resposta = await fetch(
-                `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo`
-            );
+            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipo_Entidade}`;
+            console.log(linha);
+            const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
             }

@@ -18,10 +18,7 @@ public class StatusEntidades {
     private boolean finalizado;
     private boolean cancelado;
     private boolean ativo;
-    @ManyToOne
-    @JoinColumn(name = "idempreendimento")
-    private Empreendimento empreendimento;
-    @ManyToOne
+   @ManyToOne
     @JoinColumn(name="idtipo_entidade")
     private TipoEntidade tipoentidade;
 
@@ -87,14 +84,6 @@ public class StatusEntidades {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
-    }
-
-    public Empreendimento getEmpreendimento() {
-        return empreendimento;
-    }
-
-    public void setEmpreendimento(Empreendimento empreendimento) {
-        this.empreendimento = empreendimento;
     }
 
     public TipoEntidade getTipoentidade() {

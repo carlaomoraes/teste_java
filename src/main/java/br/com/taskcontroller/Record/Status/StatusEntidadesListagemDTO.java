@@ -2,7 +2,6 @@ package br.com.taskcontroller.Record.Status;
 
 public record StatusEntidadesListagemDTO(
         Long idstatus,
-        Long idempreendimento,
         String descstatus,
         int ordem,
         String cor,
