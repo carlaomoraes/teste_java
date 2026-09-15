@@ -30,6 +30,7 @@ public class StatusController {
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody StatusEntidadesRequestDTO dto) {
         StatusEntidades status = StatusEntidadesMapper.toEntity(dto);
+
         return ResponseEntity.ok(service.salvar(status));
     }
     // SALVAR

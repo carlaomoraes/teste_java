@@ -87,6 +87,7 @@
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/status_entidades';
+    const API_TRANSICAO = 'http://localhost:8080/status_transicao';
 
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
@@ -152,7 +153,6 @@
     );
     document.getElementById('comboTipoW').addEventListener('change',() => {
             montaComboOrigem(document.getElementById('comboTipoW').value);
-
         }
     );
     document.getElementById('comboStatusW').addEventListener('change',() => {
@@ -173,14 +173,7 @@
             const lista = await response.json();
             lista.forEach(status => {
                 const div = document.createElement("div");
-
-                div.classList.add(
-                    "form-check",
-                    "form-check-inline",
-                    "d-flex",
-                    "align-items-center",
-                    "gap-2"
-                );
+                div.classList.add("form-check","form-check-inline","d-flex","align-items-center","gap-2");
                 div.classList.add("form-check", "form-check-inline");
                 div.innerHTML =  `<input class="form-check-input status-destino" type="checkbox"
                                     id="status_${status.idstatus}"  value="${status.idstatus}">
@@ -236,12 +229,46 @@
     async function criarTipostatus() {
         habilitaCampos("E");
     }
-    async function salvarWorkflow() {
+    function montarDTOTransicao() {
+        const idStatusOrigem = Number(document.getElementById("comboStatusW").value);
 
+        const destinos = Array.from(document.querySelectorAll(".status-destino:checked")).map(check => Number(check.value));
+
+        return {
+            statusOrigem: idStatusOrigem,
+            statusDestino: destinos
+        };
+    }
+    async function salvarWorkflow() {
+        const resp = montarDTOTransicao();
+        console.log("Transições:", resp);
+        for (t = 0; t < resp.length; t++ ) {
+            try {
+                const dto = {
+                    statusOrigem: resp[t].statusOrigem,
+                    statusDestino: resp[t].statusDestino
+                }
+                const response = await fetch(`${API_TRANSICAO}/salvar`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(dto)
+                    }
+                );
+                mostrarMensagemNaTela("resultadoworkflow",MSG.salvo("WORKFLOW"),"success");
+
+            } catch (erro) {
+                console.error(erro);
+                mostrarMensagemNaTela("resultadoworkflow",MSG.erroSalvar("WORKFLOW"), "error");
+            }
+        }
     }
 
     async function cancelarWorkflow() {
-
+        await montarCheckboxStatus(document.getElementById('comboTipoW').value,
+            document.getElementById('comboStatusW').value);
     }
 
     async function salvarTipostatus() {
@@ -294,13 +321,13 @@
             }, 1000);
 
         } catch (error) {
-             //mostrarMensagemNaTela("resultado",MSG.erroSalvar("status"),"error");
-            mostrarMensagemNaTela("resultado",error.message,"error");
+            mostrarMensagemNaTela("resultado",MSG.erroSalvar("status"),"error");
         }
     }
     async function limparFormulario() {
         document.getElementById("idstatus").value = "";
         document.getElementById('descstatus').value = "";
+        document.getElementById('txtOrdem').value = "";
         document.getElementById('inicial').checked = false;
         document.getElementById('ativo').checked = false;
         document.getElementById('cancelado').checked = false;
@@ -333,8 +360,7 @@
             }*/
 
         } catch (error) {
-            //mostrarMensagemNaTela("resultado", MSG.erroCarregar("status"), "error");
-            mostrarMensagemNaTela("resultado", error.value, "error");
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("status"), "error");
         }
     }
     async function listarTipostatus() {

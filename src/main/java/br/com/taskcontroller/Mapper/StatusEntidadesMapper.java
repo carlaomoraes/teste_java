@@ -5,17 +5,13 @@ import br.com.taskcontroller.DTO.StatusEntidadesRequestDTO;
 import br.com.taskcontroller.DTO.StatusEntidadesResponseDTO;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.TipoEntidade;
-import br.com.taskcontroller.Service.TipoEntidadeService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class StatusEntidadesMapper {
 
-    @Autowired
-    private static TipoEntidadeService tipoEntidadeService;
-
     public static StatusEntidades toEntity(StatusEntidadesRequestDTO dto) {
         StatusEntidades s = new StatusEntidades();
-        TipoEntidade t = tipoEntidadeService.buscarPorId(dto.getIdstatus());
+        TipoEntidade t = new TipoEntidade();
+        t.setIdtipo_entidade(dto.getIdtipoentidade());
         s.setTipoentidade(t);
         s.setDescstatus(dto.getDescstatus());
         s.setOrdem(dto.getOrdem());
@@ -31,14 +27,13 @@ public class StatusEntidadesMapper {
         StatusEntidadesResponseDTO dto = new StatusEntidadesResponseDTO();
         dto.setIdstatus(s.getIdstatus());
         dto.setIdstatus(s.getIdstatus());
-        dto.setIdempreendimento(dto.getIdempreendimento());
-        s.setDescstatus(s.getDescstatus());
-        s.setOrdem(s.getOrdem());
-        s.setCor(s.getCor());
-        s.setInicial(s.isInicial());
-        s.setFinalizado(s.isFinalizado());
-        s.setCancelado(s.isCancelado());
-        s.setAtivo(s.isAtivo());
+        dto.setDescstatus(s.getDescstatus());
+        dto.setOrdem(s.getOrdem());
+        dto.setCor(s.getCor());
+        dto.setInicial(s.isInicial());
+        dto.setFinalizado(s.isFinalizado());
+        dto.setCancelado(s.isCancelado());
+        dto.setAtivo(s.isAtivo());
         return dto;
     }
 }

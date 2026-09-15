@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustando os status workflow - COMBO STATUS ORIGEM - OK">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Tela de workflow - OK">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusEntidadeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusEntidadeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusEntidadesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusEntidadesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/StatusEntidadesRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/StatusEntidadesRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/StatusEntidadesResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/StatusEntidadesResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/status.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/status.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,61 +71,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.000000000001182" />
-      <entry key="S2" value="1.0010426712001188" />
-      <entry key="S5" value="1.0641592016370174" />
-      <entry key="S10" value="1.2532966672442873" />
-      <entry key="S30" value="1.6328471914867824" />
-      <entry key="S60" value="1.8208671997149797" />
-      <entry key="M2" value="2.24878691384505" />
-      <entry key="M5" value="3.888556949886819" />
-      <entry key="M10" value="7.20884909709306" />
-      <entry key="M15" value="11.40111522985227" />
-      <entry key="M30" value="23.898966585375273" />
-      <entry key="H1" value="41.972822679278565" />
-      <entry key="H2" value="62.86437003485817" />
-      <entry key="H4" value="84.44060725130299" />
-      <entry key="D1" value="145.46257996868493" />
-      <entry key="W1" value="397.7538223744114" />
+      <entry key="MS100" value="3.038441166184594E-204" />
+      <entry key="MS500" value="1.9793845054025107E-41" />
+      <entry key="S2" value="6.670103565098466E-11" />
+      <entry key="S5" value="8.517028981334375E-5" />
+      <entry key="S10" value="0.00957482052598628" />
+      <entry key="S30" value="0.28268194308489847" />
+      <entry key="S60" value="0.8624186291789688" />
+      <entry key="M2" value="2.298486462734663" />
+      <entry key="M5" value="5.6605767498550765" />
+      <entry key="M10" value="9.084152124606156" />
+      <entry key="M15" value="11.751396781862747" />
+      <entry key="M30" value="18.610667982777308" />
+      <entry key="H1" value="33.094763187589834" />
+      <entry key="H2" value="59.14977813643707" />
+      <entry key="H4" value="91.93022534858788" />
+      <entry key="D1" value="176.03588311473192" />
+      <entry key="W1" value="434.8344286481265" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="3.913452161641807E-272" />
-      <entry key="S5" value="2.735419960931923E-109" />
-      <entry key="S10" value="5.230124244157038E-55" />
-      <entry key="S30" value="8.056966974909103E-19" />
-      <entry key="S60" value="8.989079396991019E-10" />
-      <entry key="M2" value="3.1104005298175316E-5" />
-      <entry key="M5" value="0.020654664925454435" />
-      <entry key="M10" value="0.2740528287118259" />
-      <entry key="M15" value="0.8271295149026127" />
-      <entry key="M30" value="3.547084185708461" />
-      <entry key="H1" value="10.242469396899255" />
-      <entry key="H2" value="21.613659202007568" />
-      <entry key="H4" value="35.917991360503954" />
-      <entry key="D1" value="67.90702836377982" />
-      <entry key="W1" value="140.80773778454378" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000000507505957" />
+      <entry key="S2" value="1.015009294749273" />
+      <entry key="S5" value="1.1864422401480859" />
+      <entry key="S10" value="1.4320870231750606" />
+      <entry key="S30" value="1.8457271669776336" />
+      <entry key="S60" value="2.3355347140500653" />
+      <entry key="M2" value="3.079247093533222" />
+      <entry key="M5" value="4.108778696181922" />
+      <entry key="M10" value="5.205817712817214" />
+      <entry key="M15" value="6.118710394615059" />
+      <entry key="M30" value="8.205992904167612" />
+      <entry key="H1" value="12.165892068696028" />
+      <entry key="H2" value="21.427647893786816" />
+      <entry key="H4" value="36.83716154023617" />
+      <entry key="D1" value="77.30760058818231" />
+      <entry key="W1" value="153.44210617538715" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="3.185607602799872E-6" />
-      <entry key="MS500" value="0.07954968345487416" />
-      <entry key="S2" value="0.5316774137517879" />
-      <entry key="S5" value="0.827721632169848" />
-      <entry key="S10" value="1.1077419474034533" />
-      <entry key="S30" value="1.5685016063767696" />
-      <entry key="S60" value="1.7853762636598283" />
-      <entry key="M2" value="2.2300582685098433" />
-      <entry key="M5" value="3.9004294109002533" />
-      <entry key="M10" value="7.473987541745251" />
-      <entry key="M15" value="12.216699327935086" />
-      <entry key="M30" value="27.428269474991804" />
-      <entry key="H1" value="52.19410088411721" />
-      <entry key="H2" value="84.45875963069967" />
-      <entry key="H4" value="120.34414703914142" />
-      <entry key="D1" value="213.36555951629913" />
-      <entry key="W1" value="538.5604661025491" />
+      <entry key="MS100" value="1.3559283531136521E-10" />
+      <entry key="MS500" value="0.010627897338356045" />
+      <entry key="S2" value="0.3237889361773625" />
+      <entry key="S5" value="0.7288791910986612" />
+      <entry key="S10" value="1.1113354268133087" />
+      <entry key="S30" value="1.95025892749446" />
+      <entry key="S60" value="3.0712303758550723" />
+      <entry key="M2" value="5.282565999172439" />
+      <entry key="M5" value="9.708874913706435" />
+      <entry key="M10" value="14.250292351522313" />
+      <entry key="M15" value="17.83931952673047" />
+      <entry key="M30" value="26.79571605149063" />
+      <entry key="H1" value="45.243359934370474" />
+      <entry key="H2" value="80.56099862318779" />
+      <entry key="H4" value="128.75339024361608" />
+      <entry key="D1" value="253.33890672094427" />
+      <entry key="W1" value="588.2753364707668" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -142,62 +142,62 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Conexao.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;HTTP Request.All in generated-requests.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #2.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UsuarioDAOTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UsuarioDAOTest.inserir.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.DemoApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TaskControllerApplication (1).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.TaskControllerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;git.auto.fetch.suggestion.counter&quot;: &quot;3&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/java/br/com/taskcontroller&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/js&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.grazie&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Conexao.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "HTTP Request.All in generated-requests.executor": "Run",
+    "HTTP Request.generated-requests | #2.executor": "Run",
+    "HTTP Request.generated-requests | #3.executor": "Run",
+    "JUnit.UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario.executor": "Run",
+    "JUnit.UsuarioDAOTest.executor": "Run",
+    "JUnit.UsuarioDAOTest.inserir.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.DemoApplication.executor": "Run",
+    "Spring Boot.TaskControllerApplication (1).executor": "Run",
+    "Spring Boot.TaskControllerApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "git.auto.fetch.suggestion.counter": "3",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/java/br/com/taskcontroller",
+    "last_opened_file_path": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/js",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ],
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;JavaScript&quot;,
-      &quot;Flow JS&quot;
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "JavaScript",
+      "Flow JS"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static\js" />
@@ -227,8 +227,8 @@
       <recent name="br.com.taskboard.demo.DAO" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="br.com.taskcontroller.Mapper" />
       <recent name="br.com.taskcontroller.DTO" />
+      <recent name="br.com.taskcontroller.Mapper" />
       <recent name="br.com.taskcontroller.Controller" />
       <recent name="br.com.taskcontroller.Service" />
       <recent name="br.com.taskcontroller.Record.Status" />
@@ -442,14 +442,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00152" summary="Cadastro de equipe - OK">
-      <option name="closed" value="true" />
-      <created>1786758637001</created>
-      <option name="number" value="00152" />
-      <option name="presentableId" value="LOCAL-00152" />
-      <option name="project" value="LOCAL" />
-      <updated>1786758637001</updated>
     </task>
     <task id="LOCAL-00153" summary="Cadastro de sprint - Refatorando">
       <option name="closed" value="true" />
@@ -835,7 +827,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789482324963</updated>
     </task>
-    <option name="localTasksCounter" value="201" />
+    <task id="LOCAL-00201" summary="Tela de workflow - OK">
+      <option name="closed" value="true" />
+      <created>1789485854802</created>
+      <option name="number" value="00201" />
+      <option name="presentableId" value="LOCAL-00201" />
+      <option name="project" value="LOCAL" />
+      <updated>1789485854802</updated>
+    </task>
+    <option name="localTasksCounter" value="202" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -883,7 +883,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cadastro de equipe - OK" />
     <MESSAGE value="Cadastro de sprint - Refatorando" />
     <MESSAGE value="Cadastro de backlog" />
     <MESSAGE value="Correção cadastro de sprint" />
@@ -908,7 +907,8 @@
     <MESSAGE value="Tela WORKFLOW" />
     <MESSAGE value="Ajustando os status workflow" />
     <MESSAGE value="Ajustando os status workflow - COMBO STATUS ORIGEM - OK" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajustando os status workflow - COMBO STATUS ORIGEM - OK" />
+    <MESSAGE value="Tela de workflow - OK" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tela de workflow - OK" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -970,8 +970,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java</url>
-          <line>16</line>
-          <option name="timeStamp" value="127" />
+          <line>12</line>
+          <option name="timeStamp" value="129" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusTransicaoController.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="130" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EquipeUsuarioDTO.java</url>
@@ -1000,6 +1005,7 @@
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
         <watch expression="id" language="JAVA" />
+        <watch expression="s" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
