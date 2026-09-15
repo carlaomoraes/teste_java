@@ -207,17 +207,17 @@
     async function montaComboOrigem(idTipoEntidade) {
         const comboStatusW = document.getElementById("comboStatusW");
         try {
-            const linha = `${API}/montatransicao?idTipoEntidade=${idTipoEntidade}`;
+            const linha = `${API}/listatransicao?idTipoEntidade=${idTipoEntidade}`;
             const resposta = await fetch(linha);
             const tipos = await resposta.json();
             comboStatusW.innerHTML = '<option value="">Selecione...</option>';
-            tipos.forEach(t => {
+            for (t = 0; t < tipos.length; t++ ) {
                 const opcao = document.createElement('option');
-                opcao.value = t.idstatus;
-                opcao.textContent = t.descstatus;
-                opcao.tabIndex = t.ordem;
-                comboStatusW.add(opcao.cloneNode(true));
-            });
+                opcao.value = tipos[t].idtipo_entidade;
+                opcao.textContent = tipos[t].desctipo_entidade;
+                opcao.tabIndex = tipos[t].ordem;
+                comboStatusW.add(opcao.cloneNode(true))
+            }
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("TIPO ENTIDADES"), "error");
         }
