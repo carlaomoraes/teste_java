@@ -4,23 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Tela WORKFLOW">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/StatusEntidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/StatusEntidades.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusEntidadesListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusEntidadesListagemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusEntidadeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusEntidadeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusTransicaoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusTransicaoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TipoEntidadeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TipoEntidadeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusEntidadesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusEntidadesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusTransicaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusTransicaoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TipoEntidadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TipoEntidadeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/epico.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/epico.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/status.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/status.html" afterDir="false" />
-    </list>
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustando os status workflow" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -80,61 +64,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="5.342382679083499E-35" />
-      <entry key="MS500" value="1.3981282105825895E-7" />
-      <entry key="S2" value="0.019336895475602356" />
-      <entry key="S5" value="0.20632635212816436" />
-      <entry key="S10" value="0.4542316062628891" />
-      <entry key="S30" value="0.7687039569738032" />
-      <entry key="S60" value="0.8767576387625561" />
-      <entry key="M2" value="0.9363783049803669" />
-      <entry key="M5" value="1.0313377846334182" />
-      <entry key="M10" value="1.9968955530485513" />
-      <entry key="M15" value="3.888056935256072" />
-      <entry key="M30" value="10.198259850034093" />
-      <entry key="H1" value="19.165601449246406" />
-      <entry key="H2" value="30.568081960442623" />
-      <entry key="H4" value="44.19872052858299" />
-      <entry key="D1" value="94.18273164177984" />
-      <entry key="W1" value="343.7970139172315" />
+      <entry key="MS100" value="1.0000001002426642" />
+      <entry key="MS500" value="1.0400942632911694" />
+      <entry key="S2" value="1.6665816768194386" />
+      <entry key="S5" value="2.9498101870239317" />
+      <entry key="S10" value="4.242727104498016" />
+      <entry key="S30" value="5.825679220519919" />
+      <entry key="S60" value="6.372328550699639" />
+      <entry key="M2" value="6.686684491193423" />
+      <entry key="M5" value="7.0451553397058095" />
+      <entry key="M10" value="7.762435782626926" />
+      <entry key="M15" value="9.119498953735462" />
+      <entry key="M30" value="14.586196882740207" />
+      <entry key="H1" value="23.5431070401068" />
+      <entry key="H2" value="35.40382376750885" />
+      <entry key="H4" value="49.60673724508877" />
+      <entry key="D1" value="100.60922280822797" />
+      <entry key="W1" value="350.49733864043475" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000012173674584" />
-      <entry key="S5" value="1.0049579038041312" />
-      <entry key="S10" value="1.0913347258683361" />
-      <entry key="S30" value="1.698716542572406" />
-      <entry key="S60" value="2.1786069962012693" />
-      <entry key="M2" value="2.5341709214682693" />
-      <entry key="M5" value="2.8064829245195417" />
-      <entry key="M10" value="3.210762694447463" />
-      <entry key="M15" value="4.100218335899128" />
-      <entry key="M30" value="8.022344381255511" />
-      <entry key="H1" value="15.117182388868308" />
-      <entry key="H2" value="25.04679652751606" />
-      <entry key="H4" value="36.628084959005754" />
-      <entry key="D1" value="62.4643802317289" />
-      <entry key="W1" value="133.56598418598608" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="3.158484885328704E-115" />
+      <entry key="S5" value="1.5919857642129644E-46" />
+      <entry key="S10" value="1.3735789585180562E-23" />
+      <entry key="S30" value="3.951416427481903E-8" />
+      <entry key="S60" value="3.3227283461157884E-4" />
+      <entry key="M2" value="0.031296363293651645" />
+      <entry key="M5" value="0.48397796895720513" />
+      <entry key="M10" value="1.3333366059130187" />
+      <entry key="M15" value="2.282240350939822" />
+      <entry key="M30" value="5.985197686814468" />
+      <entry key="H1" value="13.057482483677346" />
+      <entry key="H2" value="23.278044132900174" />
+      <entry key="H4" value="35.31110941929235" />
+      <entry key="D1" value="62.08432450651091" />
+      <entry key="W1" value="133.44958553952853" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="8.271806125530277E-25" />
-      <entry key="MS500" value="1.5258789092005698E-5" />
-      <entry key="S2" value="0.0629151726590002" />
-      <entry key="S5" value="0.37825778790737313" />
-      <entry key="S10" value="0.8672879975205704" />
-      <entry key="S30" value="2.101319833252085" />
-      <entry key="S60" value="2.841633461794013" />
-      <entry key="M2" value="3.354214107210297" />
-      <entry key="M5" value="3.7884273434557834" />
-      <entry key="M10" value="5.177641312125719" />
-      <entry key="M15" value="7.960337881629214" />
-      <entry key="M30" value="18.192369475549107" />
-      <entry key="H1" value="34.25837668677245" />
-      <entry key="H2" value="55.59651027992581" />
-      <entry key="H4" value="80.81422626863827" />
-      <entry key="D1" value="156.6437804500447" />
-      <entry key="W1" value="477.36202173490045" />
+      <entry key="MS100" value="0.9592642141606034" />
+      <entry key="MS500" value="1.0312393133827442" />
+      <entry key="S2" value="1.6419731545221041" />
+      <entry key="S5" value="2.9166798585867313" />
+      <entry key="S10" value="4.217350657722192" />
+      <entry key="S30" value="5.81437187797822" />
+      <entry key="S60" value="6.366543900711307" />
+      <entry key="M2" value="6.7133878061765175" />
+      <entry key="M5" value="7.5193246059955845" />
+      <entry key="M10" value="9.0826570288378" />
+      <entry key="M15" value="11.385754418245693" />
+      <entry key="M30" value="20.55011177710736" />
+      <entry key="H1" value="36.57939878450754" />
+      <entry key="H2" value="58.66474226511875" />
+      <entry key="H4" value="84.90569245136679" />
+      <entry key="D1" value="162.6902316123071" />
+      <entry key="W1" value="483.94594801270034" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -451,14 +435,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00150" summary="Cadastro de epico com DTO na consulta - ok">
-      <option name="closed" value="true" />
-      <created>1786648558776</created>
-      <option name="number" value="00150" />
-      <option name="presentableId" value="LOCAL-00150" />
-      <option name="project" value="LOCAL" />
-      <updated>1786648558777</updated>
     </task>
     <task id="LOCAL-00151" summary="Cadastro de tarefas com DTO na listagem e consulta">
       <option name="closed" value="true" />
@@ -844,7 +820,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789156465237</updated>
     </task>
-    <option name="localTasksCounter" value="199" />
+    <task id="LOCAL-00199" summary="Ajustando os status workflow">
+      <option name="closed" value="true" />
+      <created>1789419412179</created>
+      <option name="number" value="00199" />
+      <option name="presentableId" value="LOCAL-00199" />
+      <option name="project" value="LOCAL" />
+      <updated>1789419412179</updated>
+    </task>
+    <option name="localTasksCounter" value="200" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -892,7 +876,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cadastro de epico com DTO na consulta - ok" />
     <MESSAGE value="Cadastro de tarefas com DTO na listagem e consulta" />
     <MESSAGE value="Cadastro de equipe - OK" />
     <MESSAGE value="Cadastro de sprint - Refatorando" />
@@ -917,7 +900,8 @@
     <MESSAGE value="Construindo workflow" />
     <MESSAGE value="Combo Status OK" />
     <MESSAGE value="Tela WORKFLOW" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tela WORKFLOW" />
+    <MESSAGE value="Ajustando os status workflow" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajustando os status workflow" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
