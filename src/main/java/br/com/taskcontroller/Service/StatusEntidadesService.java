@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.StatusEntidades;
+import br.com.taskcontroller.Record.Status.StatusDTO;
 import br.com.taskcontroller.Record.Status.StatusEntidadesListagemDTO;
 import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
 import br.com.taskcontroller.Respository.StatusEntidadeRepository;
@@ -41,8 +42,8 @@ public class StatusEntidadesService {
     public List<TipoEntidadeDTO> montaComboOrigem(Long  idTipoEntidade) {
         return repository.montaComboOrigem(idTipoEntidade);
     }
-    public List<StatusEntidades> mostraStatusDisponiveis(Long idTipoEntidade,
-                                                         Long idStatusOrigem) {
+    public List<StatusDTO> mostraStatusDisponiveis(Long idTipoEntidade,
+                                                   Long idStatusOrigem) {
         return repository.mostraStatusDisponiveis(idTipoEntidade,idStatusOrigem);
     }
 }

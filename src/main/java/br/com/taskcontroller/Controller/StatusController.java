@@ -70,8 +70,8 @@ public class StatusController {
     }
 
     @GetMapping("/disponiveis-transicao")
-    List<StatusEntidades> mostraDisponiveis(@RequestParam("idTipoEntidade") Long idTipoEntidade,
-                                             @RequestParam("idStausOrigem") Long idStatusOrigem) {
+    List<StatusDTO> mostraDisponiveis(@RequestParam("idTipoEntidade") Long idTipoEntidade,
+                                             @RequestParam("idStatusOrigem") Long idStatusOrigem) {
         return statusEntidadesService.mostraStatusDisponiveis(idTipoEntidade, idStatusOrigem);
     }
 }

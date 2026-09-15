@@ -173,35 +173,24 @@
             const lista = await response.json();
             lista.forEach(status => {
                 const div = document.createElement("div");
+
+                div.classList.add(
+                    "form-check",
+                    "form-check-inline",
+                    "d-flex",
+                    "align-items-center",
+                    "gap-2"
+                );
                 div.classList.add("form-check", "form-check-inline");
-
-                div.innerHTML = `
-                <input
-                    class="form-check-input status-destino"
-                    type="checkbox"
-                    id="status_${status.idstatus}"
-                    value="${status.idstatus}"
-                >
-
-                <label
-                    class="form-check-label"
-                    for="status_${status.idstatus}">
-                    ${status.descstatus}
-                </label>
-            `;
-
+                div.innerHTML =  `<input class="form-check-input status-destino" type="checkbox"
+                                    id="status_${status.idstatus}"  value="${status.idstatus}">
+                                    <label class="form-check-label d-flex align-items-center gap-2" for="status_${status.idstatus}">
+                                    <span style=" width: 10px; height: 10px; border-radius: 50%; background-color: ${status.cor}; display: inline-block;"> </span> ${status.descstatus}</label>`;
                 container.appendChild(div);
             });
-
         } catch (erro) {
-
             console.error(erro);
-
-            container.innerHTML = `
-            <span class="text-danger">
-                Erro ao carregar destinos.
-            </span>
-        `;
+            container.innerHTML = `<span class="text-danger"> Erro ao carregar destinos.  </span>`;
         }
     }
     async function montaComboOrigem(idTipoEntidade) {

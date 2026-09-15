@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.StatusEntidades;
+import br.com.taskcontroller.Record.Status.StatusDTO;
 import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,13 +31,18 @@ public interface StatusEntidadeRepository
     List<TipoEntidadeDTO> montaComboOrigem(@Param("idTipoEntidade") Long idTipoEntidade);
 
     @Query("""
-        SELECT 
+        SELECT new br.com.taskcontroller.Record.Status.StatusDTO(
                     idstatus,
                     descstatus,
-                    ativo
+                    ativo,
+                    cor)
         FROM StatusEntidades s
        WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
+         AND s.ordem > (select ordem FROM StatusEntidades s 
+                        WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
+                        AND s.idstatus = :idStatusOrigem) 
+     ORDER BY s.ordem                   
 """)
-    List<StatusEntidades> mostraStatusDisponiveis(@Param("idTipoEntidade") Long idTipoEntidade,
-                                                  @Param("idStatusOrigem") Long idStatusOrigem);
+    List<StatusDTO> mostraStatusDisponiveis(@Param("idTipoEntidade") Long idTipoEntidade,
+                                            @Param("idStatusOrigem") Long idStatusOrigem);
 }
