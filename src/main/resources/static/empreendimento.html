@@ -290,8 +290,7 @@
         const idTipo_Entidade = 5;
         try {
             comboStatus.innerHTML = "";
-            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipo_Entidade}`;
-            console.log(linha);
+            const linha =`${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipo_Entidade}`;
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
@@ -301,15 +300,15 @@
             opcaoPadrao.value = "";
             opcaoPadrao.textContent = "Selecione...";
             comboStatus.appendChild(opcaoPadrao);
-
             vetor.forEach(status => {
                 const opcao = document.createElement("option");
                 opcao.value = status.idstatus;
                 opcao.textContent = status.descstatus;
+                opcao.dataset.cor = status.cor;
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
+            mostrarMensagemNaTela("resultado",MSG.erroCarregar("STATUS"), "error");
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -318,6 +317,12 @@
         carregarStatus(statusAtual);
         carregarPrioridade();
     });
+    document.getElementById("comboStatus")
+        .addEventListener("change", function () {
+            const opcao = this.options[this.selectedIndex];
+            const cor = opcao.dataset.cor;
+            this.style.borderLeft = cor ? `6px solid ${cor}`: "";
+        });
     document.addEventListener('visibilitychange', () => {
         const containerTabela = document.getElementById('"resultado"');
         if (!containerTabela) return;

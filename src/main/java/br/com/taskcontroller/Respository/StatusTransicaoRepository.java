@@ -16,7 +16,8 @@ public interface StatusTransicaoRepository
                     idstatus,
                     descstatus,
                     ativo,
-                    ordem)
+                    ordem,
+                    cor)
         FROM StatusEntidades s
        WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
 """)
@@ -28,7 +29,8 @@ public interface StatusTransicaoRepository
                     idstatus,
                     descstatus,
                     ativo,
-                    ordem)
+                    ordem,
+                    cor)
         FROM StatusEntidades s
        WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
 """)
@@ -39,7 +41,8 @@ public interface StatusTransicaoRepository
                     idstatus,
                     descstatus,
                     ativo,
-                    ordem)
+                    ordem,
+                    cor)
           FROM StatusEntidades s
      WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
        AND s.idstatus <> :idStatusOrigem

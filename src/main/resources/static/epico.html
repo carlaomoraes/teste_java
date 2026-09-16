@@ -323,9 +323,6 @@
         const comboStatusTA = document.getElementById("comboStatusTA");
         try {
             const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${ENTIDADE}`;
-            console.log(linha);
-            alert(linha);
-            alert(ENTIDADE);
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
