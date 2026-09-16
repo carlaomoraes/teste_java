@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Tela de workflow - OK">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusTransicaoListagemDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/StatusEntidadesRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/StatusEntidadesRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/StatusEntidadesResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/StatusEntidadesResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusTransicaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusTransicaoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusTransicaoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusTransicaoMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Status/StatusDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusTransicaoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/StatusTransicaoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusTransicaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/StatusTransicaoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/status.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/status.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,61 +74,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="3.038441166184594E-204" />
-      <entry key="MS500" value="1.9793845054025107E-41" />
-      <entry key="S2" value="6.670103565098466E-11" />
-      <entry key="S5" value="8.517028981334375E-5" />
-      <entry key="S10" value="0.00957482052598628" />
-      <entry key="S30" value="0.28268194308489847" />
-      <entry key="S60" value="0.8624186291789688" />
-      <entry key="M2" value="2.298486462734663" />
-      <entry key="M5" value="5.6605767498550765" />
-      <entry key="M10" value="9.084152124606156" />
-      <entry key="M15" value="11.751396781862747" />
-      <entry key="M30" value="18.610667982777308" />
-      <entry key="H1" value="33.094763187589834" />
-      <entry key="H2" value="59.14977813643707" />
-      <entry key="H4" value="91.93022534858788" />
-      <entry key="D1" value="176.03588311473192" />
-      <entry key="W1" value="434.8344286481265" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.000000003529529" />
+      <entry key="S30" value="1.0030762250700336" />
+      <entry key="S60" value="1.0962015810837666" />
+      <entry key="M2" value="1.5705252355362946" />
+      <entry key="M5" value="3.04052093209763" />
+      <entry key="M10" value="4.975522012793139" />
+      <entry key="M15" value="7.145884458683626" />
+      <entry key="M30" value="14.772283882184224" />
+      <entry key="H1" value="27.71383619606935" />
+      <entry key="H2" value="49.6977258848739" />
+      <entry key="H4" value="90.12601201970782" />
+      <entry key="D1" value="232.76247501895915" />
+      <entry key="W1" value="516.9459680410431" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000507505957" />
-      <entry key="S2" value="1.015009294749273" />
-      <entry key="S5" value="1.1864422401480859" />
-      <entry key="S10" value="1.4320870231750606" />
-      <entry key="S30" value="1.8457271669776336" />
-      <entry key="S60" value="2.3355347140500653" />
-      <entry key="M2" value="3.079247093533222" />
-      <entry key="M5" value="4.108778696181922" />
-      <entry key="M10" value="5.205817712817214" />
-      <entry key="M15" value="6.118710394615059" />
-      <entry key="M30" value="8.205992904167612" />
-      <entry key="H1" value="12.165892068696028" />
-      <entry key="H2" value="21.427647893786816" />
-      <entry key="H4" value="36.83716154023617" />
-      <entry key="D1" value="77.30760058818231" />
-      <entry key="W1" value="153.44210617538715" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="9.680335705278013E-180" />
+      <entry key="S10" value="3.1113237990200683E-90" />
+      <entry key="S30" value="1.4621894979321351E-30" />
+      <entry key="S60" value="1.2583265293935944E-15" />
+      <entry key="M2" value="4.382150388150151E-8" />
+      <entry key="M5" value="0.0024543933953596413" />
+      <entry key="M10" value="0.14302131122118475" />
+      <entry key="M15" value="0.6225810392727679" />
+      <entry key="M30" value="3.0067447790304667" />
+      <entry key="H1" value="8.432629960970075" />
+      <entry key="H2" value="21.61207397412124" />
+      <entry key="H4" value="47.10095707469286" />
+      <entry key="D1" value="128.03240237567096" />
+      <entry key="W1" value="220.9587072398692" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.3559283531136521E-10" />
-      <entry key="MS500" value="0.010627897338356045" />
-      <entry key="S2" value="0.3237889361773625" />
-      <entry key="S5" value="0.7288791910986612" />
-      <entry key="S10" value="1.1113354268133087" />
-      <entry key="S30" value="1.95025892749446" />
-      <entry key="S60" value="3.0712303758550723" />
-      <entry key="M2" value="5.282565999172439" />
-      <entry key="M5" value="9.708874913706435" />
-      <entry key="M10" value="14.250292351522313" />
-      <entry key="M15" value="17.83931952673047" />
-      <entry key="M30" value="26.79571605149063" />
-      <entry key="H1" value="45.243359934370474" />
-      <entry key="H2" value="80.56099862318779" />
-      <entry key="H4" value="128.75339024361608" />
-      <entry key="D1" value="253.33890672094427" />
-      <entry key="W1" value="588.2753364707668" />
+      <entry key="MS100" value="0.6925547340554623" />
+      <entry key="MS500" value="0.9291606742509133" />
+      <entry key="S2" value="0.9817992705948825" />
+      <entry key="S5" value="0.9926795657513535" />
+      <entry key="S10" value="0.9963330631687562" />
+      <entry key="S30" value="1.0018493164436508" />
+      <entry key="S60" value="1.095526270889084" />
+      <entry key="M2" value="1.5695800915284124" />
+      <entry key="M5" value="3.0397373418245945" />
+      <entry key="M10" value="5.113382715885016" />
+      <entry key="M15" value="7.761441056539265" />
+      <entry key="M30" value="17.768410828836576" />
+      <entry key="H1" value="36.13379850442413" />
+      <entry key="H2" value="71.2944311319226" />
+      <entry key="H4" value="137.2101638023095" />
+      <entry key="D1" value="360.7873379744334" />
+      <entry key="W1" value="737.9029084043486" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -969,14 +972,9 @@
           <option name="timeStamp" value="123" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/StatusEntidadesMapper.java</url>
-          <line>12</line>
-          <option name="timeStamp" value="129" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusTransicaoController.java</url>
-          <line>21</line>
-          <option name="timeStamp" value="130" />
+          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/StatusController.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="132" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EquipeUsuarioDTO.java</url>

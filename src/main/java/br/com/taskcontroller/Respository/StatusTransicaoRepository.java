@@ -2,6 +2,7 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.StatusTransicao;
 import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
+import br.com.taskcontroller.Record.Status.StatusTransicaoListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -53,4 +54,22 @@ public interface StatusTransicaoRepository
     List<StatusTransicaoDTO> buscarStatusDisponiveis(
             @Param("idTipoEntidade") Long idTipoEntidade,
             @Param("idStatusOrigem") Long idStatusOrigem);
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Status.StatusTransicaoListagemDTO(
+        st.idtransicao,
+        o.idstatus,
+        o.descstatus,
+        o.cor,
+        d.idstatus,
+        d.descstatus,
+        d.cor
+    )
+    FROM StatusTransicao st
+    JOIN st.statusOrigem o
+    JOIN st.statusDestino d
+   WHERE o.tipoentidade.idtipo_entidade = :idTipoEntidade
+    ORDER BY o.ordem, d.ordem
+""")
+    List<StatusTransicaoListagemDTO> listarWorkflow(Long idTipoEntidade);
 }

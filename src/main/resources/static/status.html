@@ -80,7 +80,8 @@
             <button type="button" class="btn"  onclick="salvarWorkflow();">Salvar</button>
             <button type="button" class="btn" onclick="cancelarWorkflow();">Cancelar</button>
         </div>
-        <div id="resultadoworkflow"></div>
+        <div id="listagemworkflow"></div>
+
     </div>
 </div>
 
@@ -153,11 +154,13 @@
     );
     document.getElementById('comboTipoW').addEventListener('change',() => {
             montaComboOrigem(document.getElementById('comboTipoW').value);
+            listarWorkflow(document.getElementById('comboTipoW').value);
         }
     );
     document.getElementById('comboStatusW').addEventListener('change',() => {
         montarCheckboxStatus(document.getElementById('comboTipoW').value,
                              document.getElementById('comboStatusW').value);
+
         }
     );
     async function montarCheckboxStatus(idTipoEntidade,idStatusOrigem) {
@@ -165,7 +168,6 @@
         container.innerHTML = "";
         try {
             const linha = `${API}/disponiveis-transicao?idTipoEntidade=${idTipoEntidade}&idStatusOrigem=${idStatusOrigem}`;
-            console.log(linha);
             const response = await fetch(linha);
             if (!response.ok) {
                 throw new Error("Erro ao carregar status.");
@@ -231,38 +233,40 @@
     }
     function montarDTOTransicao() {
         const idStatusOrigem = Number(document.getElementById("comboStatusW").value);
-
-        const destinos = Array.from(document.querySelectorAll(".status-destino:checked")).map(check => Number(check.value));
-
+        const destinos = Array.from(document.querySelectorAll(".status-destino:checked"))
+            .map(check => Number(check.value));
         return {
             statusOrigem: idStatusOrigem,
             statusDestino: destinos
         };
     }
     async function salvarWorkflow() {
-        const resp = montarDTOTransicao();
-        console.log("Transições:", resp);
-        for (t = 0; t < resp.length; t++ ) {
-            try {
+        const transicao = montarDTOTransicao(); // { statusOrigem: 1, statusDestino: [2, 3] }
+        try {
+            // Percorre cada destino selecionado
+            for (let i = 0; i < transicao.statusDestino.length; i++) {
                 const dto = {
-                    statusOrigem: resp[t].statusOrigem,
-                    statusDestino: resp[t].statusDestino
+                    statusOrigem: transicao.statusOrigem,
+                    statusDestino: transicao.statusDestino[i] // Envia um destino individual por chamada
+                };
+                const response = await fetch(`${API_TRANSICAO}/salvar`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dto)
+                });
+                if (!response.ok) {
+                    throw new Error(`Falha ao salvar item ${i}`);
                 }
-                const response = await fetch(`${API_TRANSICAO}/salvar`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(dto)
-                    }
-                );
-                mostrarMensagemNaTela("resultadoworkflow",MSG.salvo("WORKFLOW"),"success");
-
-            } catch (erro) {
-                console.error(erro);
-                mostrarMensagemNaTela("resultadoworkflow",MSG.erroSalvar("WORKFLOW"), "error");
             }
+            // Mostra a mensagem de sucesso apenas após salvar TODOS
+            setTimeout(() => {
+                mostrarMensagemNaTela("listagemworkflow", MSG.excluido("WORKFLOW"), "success");
+                listarWorkflow(document.getElementById('comboTipoW').value);
+            }, 1000);
+        } catch (erro) {
+            mostrarMensagemNaTela("listagemworkflow", MSG.erroSalvar("WORKFLOW"), "error");
         }
     }
 
@@ -363,6 +367,72 @@
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("status"), "error");
         }
     }
+    async function listarWorkflow(idTipoEntidade) {
+        const response = await fetch(`${API_TRANSICAO}/listar/${idTipoEntidade}`);
+        const dados = await response.json();
+        montarTabelaWorkflow(dados);
+    }
+    function montarTabelaWorkflow(dados) {
+        const container = document.getElementById("listagemworkflow");
+        let html = `
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Status origem</th>
+                    <th>Pode ir para</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+        dados.forEach(item => {
+            html += `<tr> <td> ${item.idTransicao} </td>
+                          <td> <span class="d-inline-flex align-items-center gap-2">
+                               <span style="width: 10px;height: 10px; border-radius: 50%; background-color: ${item.corOrigem}; display: inline-block;"> </span>
+                               <strong> ${item.statusOrigem} </strong> </span>
+                          </td>
+                          <td> <span class="d-inline-flex align-items-center gap-2">
+                               <span style="width: 9px;height: 9px; border-radius: 50%; background-color: ${item.corDestino}; display: inline-block;"> </span>${item.statusDestino}</span>
+                </td>
+
+                <td>
+                    <button type="button"
+                            class="btn btn-excluir"
+                            onclick="
+                                event.stopPropagation();
+                                excluirWorkflow(${item.idTransicao});
+                            ">
+                        Excluir
+                    </button>
+                </td>
+
+            </tr>
+        `;
+        });
+
+        html += `
+            </tbody>
+        </table>
+    `;
+
+        container.innerHTML = html;
+    }
+    async function excluirWorkflow(idTransicao) {
+        try {
+            const response = await fetch(`${API_TRANSICAO}/excluir/${idTransicao}`, {
+                method: 'DELETE'
+            });
+            const texto = await response.text();
+            setTimeout(() => {
+                mostrarMensagemNaTela("listagemworkflow", MSG.excluido("WORKFLOW"), "success");
+                listarWorkflow(document.getElementById('comboTipoW').value);
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela("listagemworkflow", MSG.erroExcluir("WORKFLOW"), "error");
+        }
+    }
+
     async function listarTipostatus() {
         try {
             const idTipoS = Number(document.getElementById('comboTipoS').value);
@@ -422,6 +492,7 @@
             // document.getElementById('cor').disabled = true;
         }
     }
+
 </script>
 </body>
 </html>

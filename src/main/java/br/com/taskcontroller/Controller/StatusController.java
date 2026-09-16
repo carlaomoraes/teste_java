@@ -29,8 +29,22 @@ public class StatusController {
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody StatusEntidadesRequestDTO dto) {
-        StatusEntidades status = StatusEntidadesMapper.toEntity(dto);
-
+        StatusEntidades status;
+        if(dto.getIdstatus() == null){
+            status = StatusEntidadesMapper.toEntity(dto);
+        }
+        else {
+            status = statusEntidadesService.buscarPorId(dto.getIdstatus());
+            TipoEntidade tipo = tipoEntidadeService.buscarPorId(dto.getIdtipoentidade());
+            status.setTipoentidade(tipo);
+            status.setDescstatus(dto.getDescstatus());
+            status.setOrdem(dto.getOrdem());
+            status.setCor(dto.getCor());
+            status.setInicial(dto.isInicial());
+            status.setFinalizado(dto.isFinalizado());
+            status.setCancelado(dto.isCancelado());
+            status.setAtivo(dto.isAtivo());
+        }
         return ResponseEntity.ok(service.salvar(status));
     }
     // SALVAR

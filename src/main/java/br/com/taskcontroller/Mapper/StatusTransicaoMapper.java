@@ -14,10 +14,12 @@ public class StatusTransicaoMapper {
     public static StatusTransicao toEntity(StatusTransicaoRequestDTO dto) {
         StatusTransicao s = new StatusTransicao();
         s.setIdtransicao(dto.getIdtransicao());
-        StatusEntidades origem = statusEntidadesService.buscarPorId(dto.getStatusOrigem());
+        StatusEntidades origem = new StatusEntidades();
+        origem.setIdstatus(dto.getStatusOrigem());
         s.setStatusOrigem(origem);
-        StatusEntidades destino = statusEntidadesService.buscarPorId(dto.getStatusDestino());
-        s.setStatusOrigem(destino);
+        StatusEntidades destino = new StatusEntidades();
+        destino.setIdstatus(dto.getStatusDestino());
+        s.setStatusDestino(destino);
         return s;
     }
 
