@@ -12,12 +12,10 @@ public class SprintRequestDTO {
     private LocalDate dtiniciosprint;
     private LocalDate dtfinalsprint;
     private boolean visivel;
-    private boolean ativa;
     private LocalDate dtterminosprint;
     @ManyToOne
     @JoinColumn(name = "idstatus")
     private StatusEntidades status;
-
 
     public Long getIdsprint() {
         return idsprint;
@@ -57,14 +55,6 @@ public class SprintRequestDTO {
 
     public void setVisivel(boolean visivel) {
         this.visivel = visivel;
-    }
-
-    public boolean isAtiva() {
-        return ativa;
-    }
-
-    public void setAtiva(boolean ativa) {
-        this.ativa = ativa;
     }
 
     public LocalDate getDtterminosprint() {

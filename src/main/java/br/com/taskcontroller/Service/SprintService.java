@@ -95,7 +95,6 @@ public class SprintService {
         sprint.setDtiniciosprint(dataInicio);
         LocalDate dataFim = calcularDataFim(dataInicio,duracao);
         sprint.setDtfinalsprint(dataFim);
-        sprint.setAtiva(true);
         sprint.setVisivel(true);
 
         sprint.setDescsprint("SPRINT NOVA");
@@ -110,8 +109,10 @@ public class SprintService {
                 novaSprint.getDtiniciosprint(),
                 novaSprint.getDtfinalsprint(),
                 novaSprint.isVisivel(),
-                novaSprint.isAtiva(),
-                duracao));
+                duracao,
+                novaSprint.getStatus().getIdstatus(),
+                novaSprint.getStatus().getDescstatus(),
+                novaSprint.getStatus().getCor()));
     }
 
     public List<SprintDataDTO> carregarSprints(Long idEmpreendimento) {

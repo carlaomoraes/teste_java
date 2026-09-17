@@ -30,10 +30,11 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
     @Query("""
     select s.idsprint, s.empreendimento.idempreendimento, s.dtiniciosprint, s.dtfinalsprint
     from Sprint s
+    JOIN StatusEntidades se on s.status.idstatus = se.idstatus
     where s.dtiniciosprint <= :data_fim
       and s.dtfinalsprint >= :data_inicio
       and s.empreendimento.idempreendimento = :idempreendimento
-      and s.ativa = true
+      and se.ativo = true
       and s.visivel = true
  ORDER BY s.idsprint
      
@@ -50,9 +51,12 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
             s.descsprint,
             s.dtiniciosprint,
             s.dtfinalsprint,
-            s.ativa,
-            s.visivel)
+            s.visivel,
+            s.status.idstatus,
+            s.status.descstatus,
+            s.status.cor)
     from Sprint s
+    JOIN StatusEntidades se on s.status.idstatus = se.idstatus
    where s.empreendimento.idempreendimento = :idempreendimento
 ORDER BY s.idsprint
 
@@ -66,10 +70,13 @@ ORDER BY s.idsprint
         s.descsprint,
         s.dtiniciosprint,
         s.dtfinalsprint,
-        s.ativa,
         s.visivel,
-        0)
+        0,
+        s.status.idstatus,
+        s.status.descstatus,
+        s.status.cor)
     FROM Sprint s
+    JOIN StatusEntidades se on s.status.idstatus = se.idstatus
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
       AND :hoje BETWEEN s.dtiniciosprint AND s.dtfinalsprint
  ORDER BY s.idsprint
@@ -85,12 +92,15 @@ ORDER BY s.idsprint
         s.descsprint,
         s.dtiniciosprint,
         s.dtfinalsprint,
-        s.ativa,
         s.visivel,
-        0)
+        0,
+        s.status.idstatus,
+        s.status.descstatus,
+        s.status.cor)
     FROM Sprint s
+    JOIN StatusEntidades se on s.status.idstatus = se.idstatus
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
-      AND s.ativa = true
+      and se.ativo = true
  ORDER BY s.idsprint
 """)
     List<SprintDataDTO> buscarSprintAtiva(@Param("idEmpreendimento") Long idEmpreendimento);

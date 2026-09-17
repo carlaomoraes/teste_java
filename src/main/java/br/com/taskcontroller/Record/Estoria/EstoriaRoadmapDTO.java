@@ -12,11 +12,13 @@ public record EstoriaRoadmapDTO(
         String descsprint,
         LocalDate dtiniciosprint,
         LocalDate dtfinalsprint,
-        Boolean ativa,
         Boolean visivel,
         int ordem,
         Long idprioridade,
         String descprioridade,
-        String corprioridade
+        String corprioridade,
+        Long idstatus,
+        String descstatus,
+        String corstatus
 ) {
 }

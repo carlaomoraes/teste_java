@@ -107,24 +107,21 @@
              ======================================================== -->
 
         <label class="checkbox-group mt-3">
-
-            <input
-                    type="checkbox"
-                    id="visivel"
-                    value="0">
-
-            Sprint visível no quadro
-
-
-            <input
-                    type="checkbox"
-                    id="ativa"
-                    value="1">
-
-            Sprint ativa
-
+            <input type="checkbox" id="visivel" value="0"> Sprint visível no quadro
         </label>
-
+        <div class="col-md-6">
+            <label class="form-label">
+                Status:
+            </label>
+            <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-buildings"></i>
+                    </span>
+                <select class="form-select" id="comboStatus">
+                    <option value="">-- Selecione status ---</option>
+                </select>
+            </div>
+        </div>
 
         <!-- RESULTADO -->
 
@@ -152,6 +149,7 @@
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
+    const API_STATUS = 'http://localhost:8080/status_entidades';
     // ==============================================================
     // CONFIGURAÇÃO
     // ==============================================================
@@ -167,43 +165,29 @@
 
     };
 
-
+    let statusAtual = 1;
     // ==============================================================
     // ALTERNAR ABAS
     // ==============================================================
 
     function alternarAba(event, idAbaDestino) {
-
-        const conteudos =
-            document.querySelectorAll('.conteudo-aba');
+        const conteudos = document.querySelectorAll('.conteudo-aba');
 
         conteudos.forEach(conteudo =>
             conteudo.classList.remove('ativo')
         );
-
-
-        const botoes =
-            document.querySelectorAll('.aba-botao');
+        const botoes = document.querySelectorAll('.aba-botao');
 
         botoes.forEach(botao =>
             botao.classList.remove('ativa')
         );
 
-
-        document
-            .getElementById(idAbaDestino)
-            .classList.add('ativo');
-
-
+        document.getElementById(idAbaDestino).classList.add('ativo');
         event.currentTarget.classList.add('ativa');
-
-
         if (idAbaDestino === "ausencias") {
 
         }
     }
-
-
     // ==============================================================
     // CARREGAR CONFIGURAÇÃO DO EMPREENDIMENTO
     // ==============================================================
@@ -240,9 +224,33 @@
             await carregarUltimaSprint(idEmpreendimento);
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", error.message,"error");
-
         }
-
+    }
+    async function carregarStatus(idStatusAtual) {
+        const comboStatus = document.getElementById("comboStatus");
+        const idTipo_Entidade = 4;
+        try {
+            comboStatus.innerHTML = "";
+            const linha =`${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipo_Entidade}`;
+            const resposta = await fetch(linha);
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
+            const vetor = await resposta.json();
+            const opcaoPadrao = document.createElement("option");
+            opcaoPadrao.value = "";
+            opcaoPadrao.textContent = "Selecione...";
+            comboStatus.appendChild(opcaoPadrao);
+            vetor.forEach(status => {
+                const opcao = document.createElement("option");
+                opcao.value = status.idstatus;
+                opcao.textContent = status.descstatus;
+                opcao.dataset.cor = status.cor;
+                comboStatus.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado",MSG.erroCarregar("STATUS"), "error");
+        }
     }
     // ==============================================================
     // BUSCAR ÚLTIMA SPRINT DO EMPREENDIMENTO
@@ -261,7 +269,6 @@
             document.getElementById("idsprint").value = sprint.idsprint;
             document.getElementById("dtiniciosprint").value = sprint.dtiniciosprint;
             document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
-            document.getElementById("ativa").checked = sprint.ativa;
             document.getElementById("visivel").checked = sprint.visivel;
             document.getElementById("descsprint").value = sprint.descsprint;
             await listarAusencias(document.getElementById("dtiniciosprint").value,
@@ -296,6 +303,7 @@
     // ==============================================================
     document.addEventListener('DOMContentLoaded',() => {
             carregarEmpreendimento();
+            carregarStatus(statusAtual);
         }
     );
     // ==============================================================
@@ -328,7 +336,6 @@
             document.getElementById("idsprint").value = sprint.idsprint;
             document.getElementById("dtiniciosprint").value = sprint.dtiniciosprint;
             document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
-            document.getElementById("ativa").checked = sprint.ativa;
             document.getElementById("visivel").checked = sprint.visivel;
             document.getElementById("descsprint").value = sprint.descsprint;
             document.getElementById("duracaosprint").value = sprint.duracao;
@@ -351,13 +358,12 @@
         const dtiniciosprint = document.getElementById('dtiniciosprint').value;
         const dtfinalsprint = document.getElementById('dtfinalsprint').value;
         const visivel = document.getElementById('visivel').checked;
-        const ativa = document.getElementById('ativa').checked;
+
         const sprint = {
             descsprint: descsprint || null,
             dtiniciosprint: dtiniciosprint,
             dtfinalsprint: dtfinalsprint,
             visivel: visivel || true,
-            ativa: ativa || true,
             empreendimento: {
                 idEmpreendimento: document.getElementById("comboEmpreendimento").value,
             }

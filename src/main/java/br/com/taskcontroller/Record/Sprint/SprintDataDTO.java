@@ -9,7 +9,8 @@ public record SprintDataDTO(
         LocalDate dtiniciosprint,
         LocalDate dtfinalsprint,
         boolean Visivel,
-        boolean Ativa,
-        int duracao
-) {
+        int duracao,
+        Long idstatus,
+        String descstatus,
+        String cor) {
 }

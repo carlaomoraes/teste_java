@@ -153,12 +153,14 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         s.descsprint,
         s.dtiniciosprint,
         s.dtfinalsprint,
-        s.ativa,
         s.visivel,
         se.ordem,
         p.idprioridade,
         p.descprioridade,
-        p.corprioridade
+        p.corprioridade,
+        s.status.idstatus,
+        s.status.descstatus,
+        s.status.cor
     )
     FROM Estoria e
     JOIN e.epico ep

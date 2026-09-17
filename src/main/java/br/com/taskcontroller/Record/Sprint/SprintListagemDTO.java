@@ -8,8 +8,9 @@ public record SprintListagemDTO(
     String descsprint,
     LocalDate dtiniciosprint,
     LocalDate dtfinalsprint,
-    boolean ativa,
-    boolean visivel
-)
+    boolean visivel,
+    Long idstatus,
+    String descstatus,
+    String cor)
 {
 }
