@@ -1,5 +1,9 @@
 package br.com.taskcontroller.DTO;
 
+import br.com.taskcontroller.Modelo.StatusEntidades;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 import java.time.LocalDate;
 
 public class SprintRequestDTO {
@@ -9,6 +13,11 @@ public class SprintRequestDTO {
     private LocalDate dtfinalsprint;
     private boolean visivel;
     private boolean ativa;
+    private LocalDate dtterminosprint;
+    @ManyToOne
+    @JoinColumn(name = "idstatus")
+    private StatusEntidades status;
+
 
     public Long getIdsprint() {
         return idsprint;
@@ -58,4 +67,19 @@ public class SprintRequestDTO {
         this.ativa = ativa;
     }
 
+    public LocalDate getDtterminosprint() {
+        return dtterminosprint;
+    }
+
+    public void setDtterminosprint(LocalDate dtterminosprint) {
+        this.dtterminosprint = dtterminosprint;
+    }
+
+    public StatusEntidades getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEntidades status) {
+        this.status = status;
+    }
 }

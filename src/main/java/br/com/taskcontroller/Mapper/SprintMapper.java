@@ -15,6 +15,8 @@ public class SprintMapper {
         s.setDtfinalsprint(dto.getDtfinalsprint());
         s.setVisivel(dto.isVisivel());
         s.setAtiva(dto.isAtiva());
+        s.setDtterminosprint(dto.getDtterminosprint());
+        s.setStatus(dto.getStatus());
         return s;
     }
 
@@ -26,6 +28,8 @@ public class SprintMapper {
         dto.setDtfinalsprint(s.getDtfinalsprint());
         dto.setVisivel(s.isVisivel());
         dto.setAtiva(s.isAtiva());
+        dto.setDtterminosprint(s.getDtterminosprint());
+        dto.setStatus(s.getStatus());
         return dto;
     }
 }
