@@ -311,6 +311,7 @@
     // ==============================================================
     document.getElementById('comboEmpreendimento').addEventListener('change',() => {
                 carregarConfiguracao();
+                listarSprints(document.getElementById('comboEmpreendimento').value)
             }
         );
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -401,7 +402,7 @@
                                 <th>Data Início</th>
                                 <th>Data Fim</th>
                                 <th>Visível no quadro?</th>
-                                <th>Ativa?</th>
+                                <th>Status</th>
                                 <th>Ações</th>
                             <th>&nbsp;</th>
                         </tr>
@@ -414,7 +415,7 @@
                         <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
                         <td>${formatarDataBR(sprint.dtfinalsprint)}</td>
                         <td>${sprint.visivel ? '✅ Sim' : '❌ Não'} </td>
-                        <td>${sprint.ativa ? '✅ Sim' : '❌ Não'}</td>
+                        <td> <span class="badge" style="background-color:${sprint.cor}; color:white;">${sprint.descstatus}</span></td>
                         <td style="text-align:center;"> <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();encerrarSprint(${sprint.idsprint})">Encerrar Sprint</button></td>
                         <td style="text-align:center;"> <button type="button" class="btn btn-add" onclick=" event.stopPropagation(); duplicarSprint(${sprint.idsprint})"> Duplicar Sprint </button></td>
                     </tr>
@@ -449,7 +450,7 @@
             }
             mostrarMensagemNaTela("resultadogeral",MSG.alterado("SPRINT"), "success");
             limpaFormulario();
-            listarSprints();
+            await listarSprints();
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", MSG.erroSalvar("SPRINT"),"error");
         }
