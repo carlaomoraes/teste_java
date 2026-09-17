@@ -323,6 +323,7 @@
         const comboStatusTA = document.getElementById("comboStatusTA");
         try {
             const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${ENTIDADE}`;
+            console.log(linha);
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
@@ -335,16 +336,15 @@
                 const opcao = document.createElement("option");
                 opcao.value = status.idstatus;
                 opcao.textContent = status.descstatus;
-                alert(status.descstatus);
                 switch (ENTIDADE) {
                     case TIPO_ENTIDADE.EPICO:
-                        comboStatusEP.appendChild(opcaoPadrao);
+                        comboStatusEP.appendChild(opcao);
                         break;
                     case TIPO_ENTIDADE.ESTORIA:
-                        comboStatusES.appendChild(opcaoPadrao);
+                        comboStatusES.appendChild(opcao);
                         break;
                     case TIPO_ENTIDADE.TAREFA:
-                        comboStatusTA.appendChild(opcaoPadrao);
+                        comboStatusTA.appendChild(opcao);
                         break;
                 }
             });
@@ -386,7 +386,7 @@
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
         carregarEmpreendimento();
         carregarGestor();
         carregarPrioridade();
@@ -401,13 +401,13 @@
         5 - EMPREENDIMENTO
 
          */
-        carregarStatus(statusAtualEpico, TIPO_ENTIDADE.EPICO);
-        carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
-        carregarStatus(statusAtualTarefa,TIPO_ENTIDADE.TAREFA);
+        await carregarStatus(statusAtualEpico, TIPO_ENTIDADE.EPICO);
+        await carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
+        await carregarStatus(statusAtualTarefa, TIPO_ENTIDADE.TAREFA);
     });
 
     async function criarEpico() {
-        limparFormulario("EP");
+        await limparFormulario("EP");
     }
     async function criarTarefa() {
         const hoje = new Date();
@@ -848,7 +848,7 @@
                      await listarTarefas(idEpico, estoria.idestoria);
                      // MONTA O COMBO PARA PROXIMO STATUS
                      statusAtualEstoria = estoria.idstatus;
-                     carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
+                     await carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
