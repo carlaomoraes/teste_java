@@ -11,6 +11,7 @@ public record SprintListagemDTO(
     boolean visivel,
     Long idstatus,
     String descstatus,
-    String cor)
+    String cor,
+    int duracao)
 {
 }

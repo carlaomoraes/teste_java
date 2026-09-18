@@ -6,6 +6,7 @@ import br.com.taskcontroller.Projection.CabecalhoProjection;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Respository.SprintRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -125,6 +126,11 @@ public class SprintService {
     }
 
     public int retornaOrdem(Long idSprint) {
+
         return sprintRepository.retornaOrdem(idSprint);
+    }
+
+    public SprintListagemDTO buscar(@Param("idSprint") Long idSprint) {
+        return sprintRepository.buscar(idSprint);
     }
 }

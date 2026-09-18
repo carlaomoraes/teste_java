@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustes no combo STATUS ENTIDADES no cadastro de sprint">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/SprintMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/SprintMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Sprint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Sprint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/SprintListagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/SprintListagemDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/pages/sprint.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/sprint.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/empreendimento.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/status.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/status.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +29,7 @@
     </colors>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="257" />
+    <option name="cachedIndexableFilesCount" value="258" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -67,61 +77,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="4.966958528328152E-71" />
-      <entry key="S2" value="3.1281497620141693E-18" />
-      <entry key="S5" value="1.4004222986424507E-7" />
-      <entry key="S10" value="5.2169647516234E-4" />
-      <entry key="S30" value="0.1282073433943542" />
-      <entry key="S60" value="0.5370987024193842" />
-      <entry key="M2" value="1.3460416301142941" />
-      <entry key="M5" value="4.184763869909023" />
-      <entry key="M10" value="8.248594999242728" />
-      <entry key="M15" value="11.395896963607512" />
-      <entry key="M30" value="20.144647471222605" />
-      <entry key="H1" value="36.9586199226723" />
-      <entry key="H2" value="65.64908968395687" />
-      <entry key="H4" value="112.82406457438941" />
-      <entry key="D1" value="283.28794077900676" />
-      <entry key="W1" value="581.7099368166504" />
+      <entry key="MS100" value="1.0000000000000004" />
+      <entry key="MS500" value="1.0008764746588548" />
+      <entry key="S2" value="1.1720619702147062" />
+      <entry key="S5" value="1.4958063431692872" />
+      <entry key="S10" value="1.7513685234436993" />
+      <entry key="S30" value="2.474923381631228" />
+      <entry key="S60" value="3.1670315947671197" />
+      <entry key="M2" value="4.246935536384282" />
+      <entry key="M5" value="6.847774890747356" />
+      <entry key="M10" value="9.66262322174929" />
+      <entry key="M15" value="11.318514449136675" />
+      <entry key="M30" value="13.817245983072876" />
+      <entry key="H1" value="19.197783585281538" />
+      <entry key="H2" value="40.55336326122548" />
+      <entry key="H4" value="91.58113072050925" />
+      <entry key="D1" value="315.1479553357314" />
+      <entry key="W1" value="646.5027900707789" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000000014406" />
-      <entry key="S5" value="1.0000183405953975" />
-      <entry key="S10" value="1.0042825929561754" />
-      <entry key="S30" value="1.163709185823531" />
-      <entry key="S60" value="1.4532839774028818" />
-      <entry key="M2" value="1.9503934429505057" />
-      <entry key="M5" value="2.788699695226601" />
-      <entry key="M10" value="3.3697720631668053" />
-      <entry key="M15" value="3.9450081494072324" />
-      <entry key="M30" value="6.626518767794966" />
-      <entry key="H1" value="12.630270380122548" />
-      <entry key="H2" value="24.724093447981932" />
-      <entry key="H4" value="49.33539991942093" />
-      <entry key="D1" value="142.3236688821732" />
-      <entry key="W1" value="243.32684131653974" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="4.713754347043557E-259" />
+      <entry key="S5" value="4.6703215043029766E-104" />
+      <entry key="S10" value="2.161092664441526E-52" />
+      <entry key="S30" value="6.0010115557843225E-18" />
+      <entry key="S60" value="2.4496962170408636E-9" />
+      <entry key="M2" value="4.949440591663735E-5" />
+      <entry key="M5" value="0.018959306447313445" />
+      <entry key="M10" value="0.13769351469336502" />
+      <entry key="M15" value="0.2667781093452741" />
+      <entry key="M30" value="0.5588414929371642" />
+      <entry key="H1" value="1.8787665817276606" />
+      <entry key="H2" value="8.91178212477589" />
+      <entry key="H4" value="29.847752467559427" />
+      <entry key="D1" value="140.46405991659086" />
+      <entry key="W1" value="257.9065635032158" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="4.828478217965242E-6" />
-      <entry key="MS500" value="0.08644941431318531" />
-      <entry key="S2" value="0.5422387044218481" />
-      <entry key="S5" value="0.7828559051588018" />
-      <entry key="S10" value="0.8884676601721174" />
-      <entry key="S30" value="1.235908207181648" />
-      <entry key="S60" value="1.9459604286076517" />
-      <entry key="M2" value="3.25714944949438" />
-      <entry key="M5" value="6.943802549798086" />
-      <entry key="M10" value="11.598404209658767" />
-      <entry key="M15" value="15.325189791515246" />
-      <entry key="M30" value="26.75788937658291" />
-      <entry key="H1" value="49.574590809705946" />
-      <entry key="H2" value="90.35746015861692" />
-      <entry key="H4" value="162.14268859433693" />
-      <entry key="D1" value="425.6033160634176" />
-      <entry key="W1" value="825.0348332301963" />
+      <entry key="MS100" value="0.9201876506248755" />
+      <entry key="MS500" value="0.9843534004320461" />
+      <entry key="S2" value="1.1666639945539654" />
+      <entry key="S5" value="1.492703946752503" />
+      <entry key="S10" value="1.749464315815257" />
+      <entry key="S30" value="2.4740067216249955" />
+      <entry key="S60" value="3.166440044105861" />
+      <entry key="M2" value="4.246577052159565" />
+      <entry key="M5" value="6.866361993111971" />
+      <entry key="M10" value="9.799767083769682" />
+      <entry key="M15" value="11.584682291978218" />
+      <entry key="M30" value="14.375424573530639" />
+      <entry key="H1" value="21.07467325252281" />
+      <entry key="H2" value="49.459758297643724" />
+      <entry key="H4" value="121.41915502582866" />
+      <entry key="D1" value="455.60398809806196" />
+      <entry key="W1" value="904.407310953498" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -138,62 +148,62 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Conexao.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "HTTP Request.All in generated-requests.executor": "Run",
-    "HTTP Request.generated-requests | #2.executor": "Run",
-    "HTTP Request.generated-requests | #3.executor": "Run",
-    "JUnit.UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario.executor": "Run",
-    "JUnit.UsuarioDAOTest.executor": "Run",
-    "JUnit.UsuarioDAOTest.inserir.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.DemoApplication.executor": "Run",
-    "Spring Boot.TaskControllerApplication (1).executor": "Run",
-    "Spring Boot.TaskControllerApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "master",
-    "git.auto.fetch.suggestion.counter": "3",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/java/br/com/taskcontroller",
-    "last_opened_file_path": "C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/js",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Conexao.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;HTTP Request.All in generated-requests.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #2.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UsuarioControllerTest.deveRetornarSucessoAoBuscarUsuario.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UsuarioDAOTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UsuarioDAOTest.inserir.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.DemoApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.TaskControllerApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.TaskControllerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git.auto.fetch.suggestion.counter&quot;: &quot;3&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/java/br/com/taskcontroller&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/carla_4pl9r2a/IdeaProjects/taskboard/demo/src/main/resources/static/js&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.grazie&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ],
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "JavaScript",
-      "Flow JS"
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;JavaScript&quot;,
+      &quot;Flow JS&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\carla_4pl9r2a\IdeaProjects\taskboard\demo\src\main\resources\static\js" />
@@ -916,7 +926,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java</url>
-          <line>116</line>
+          <line>123</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -966,7 +976,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java</url>
-          <line>143</line>
+          <line>150</line>
           <option name="timeStamp" value="133" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">

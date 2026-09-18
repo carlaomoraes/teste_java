@@ -54,6 +54,13 @@ public class SprintController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Sprint não encontrada");
         }
     }
+    // BUSCAR POR ID - DTO
+    @GetMapping("/DTO/{idSprint}")
+    public SprintListagemDTO buscarPorIdDTO(@PathVariable Long idSprint) {
+        return service.buscar(idSprint);
+    }
+
+
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody Sprint sprint) {

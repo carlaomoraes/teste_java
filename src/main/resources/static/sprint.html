@@ -28,46 +28,17 @@
 <script src="js/mensagens.js"></script>
 
 <div class="container">
-
     <h1>Sprint - TaskController 1.0</h1>
-
-
-    <!-- ============================================================
-         ABAS
-         ============================================================ -->
-
     <div class="abas-container">
-
-        <button
-                class="aba-botao ativa"
-                onclick="alternarAba(event, 'geral')">
-
-            Geral
-
-        </button>
-
-        <button
-                class="aba-botao"
-                onclick="alternarAba(event, 'ausencias')">
-
-            Ausências programadas
-
-        </button>
-
+        <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')"> Cadastro de sprint </button>
+        <button class="aba-botao" onclick="alternarAba(event, 'ausencias')"> Ausências programadas</button>
     </div>
-
-
     <!-- ============================================================
          ABA GERAL
          ============================================================ -->
-
     <div id="geral" class="conteudo-aba ativo">
-
         <!-- EMPREENDIMENTO -->
-
-        <label class="form-label" for="comboEmpreendimento">
-            Empreendimento:
-        </label>
+        <label class="form-label" for="comboEmpreendimento"> Empreendimento: </label>
         <div class="input-group">
             <span class="input-group-text">
                 <i class="bi bi-buildings"></i>
@@ -88,11 +59,11 @@
         <div class="row mt-3">
             <div class="col-md-4">
                 <label for="dtiniciosprint"> Data de Início: </label>
-                <input type="date" id="dtiniciosprint" class="form-control" readonly>
+                <input type="date" id="dtiniciosprint" readonly>
             </div>
             <div class="col-md-4">
                 <label for="dtfinalsprint"> Data de Término: </label>
-                <input type="date" id="dtfinalsprint" class="form-control" readonly>
+                <input type="date" id="dtfinalsprint" readonly>
             </div>
             <!-- DURAÇÃO -->
 
@@ -122,21 +93,12 @@
                 </select>
             </div>
         </div>
-
-        <!-- RESULTADO -->
-
-        <div id="resultadogeral"></div>
-
-
-        <!-- ========================================================
-             BOTÕES
-             ======================================================== -->
-
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn btn-add" onclick="criarSprint(comboEmpreendimento.value)"> Novo </button>
             <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar </button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
+        <div id="resultadogeral"></div>
     </div>
     <!-- ============================================================
          ABA AUSÊNCIAS
@@ -184,9 +146,6 @@
 
         document.getElementById(idAbaDestino).classList.add('ativo');
         event.currentTarget.classList.add('ativa');
-        if (idAbaDestino === "ausencias") {
-
-        }
     }
     // ==============================================================
     // CARREGAR CONFIGURAÇÃO DO EMPREENDIMENTO
@@ -228,10 +187,10 @@
     }
     async function carregarStatus(idStatusAtual) {
         const comboStatus = document.getElementById("comboStatus");
-        const idTipo_Entidade = 4;
+        const idTipoEntidade = 4;
         try {
             comboStatus.innerHTML = "";
-            const linha =`${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipo_Entidade}`;
+            const linha = `${API_STATUS}/disponiveis-transicao?idTipoEntidade=${idTipoEntidade}&idStatusOrigem=${idStatusAtual}`;
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
@@ -396,24 +355,26 @@
             const response = await fetch(`${API}/listar/DTO/${idEmpreendimento}`);
             const data = await response.json();
             let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
-                          <thead> <tr>
+                          <thead> <tr style="cursor:pointer;">
                                 <th>ID</th>
                                 <th>Descrição</th>
                                 <th>Data Início</th>
                                 <th>Data Fim</th>
+                                <th>Duração</th>
                                 <th>Visível no quadro?</th>
                                 <th>Status</th>
                                 <th>Ações</th>
-                            <th>&nbsp;</th>
+                                <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>`;
             data.forEach(sprint => {
-                tabela += `<tr>
+                tabela += `<tr onclick="buscarPorLinha(${sprint.idsprint})" style="cursor:pointer;">
                         <td>${sprint.idsprint}</td>
                         <td>${sprint.descsprint || ''}</td>
                         <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
                         <td>${formatarDataBR(sprint.dtfinalsprint)}</td>
+                        <td>${sprint.duracao}</td>
                         <td>${sprint.visivel ? '✅ Sim' : '❌ Não'} </td>
                         <td> <span class="badge" style="background-color:${sprint.cor}; color:white;">${sprint.descstatus}</span></td>
                         <td style="text-align:center;"> <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();encerrarSprint(${sprint.idsprint})">Encerrar Sprint</button></td>
@@ -425,6 +386,29 @@
             document.getElementById('resultadogeral').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral",MSG.erroCarregar("SPRINT"),"error");
+        }
+    }
+
+    async function buscarPorLinha(id) {
+        try {
+            const response = await fetch(`${API}/DTO/${id}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
+                return;
+            }
+            const sprint = await response.json();
+            document.getElementById('idsprint').value = sprint.idsprint;
+            document.getElementById('descsprint').value = sprint.descsprint;
+            document.getElementById('dtiniciosprint').value = sprint.dtiniciosprint;
+            document.getElementById('dtfinalsprint').value = sprint.dtfinalsprint;
+            document.getElementById('duracaosprint').value = sprint.duracao;
+            document.getElementById('visivel').checked = sprint.visivel;
+            mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " +  sprint.descsprint, "success");
+            await listarAusencias(document.getElementById("dtiniciosprint").value,document.getElementById("dtfinalsprint").value);
+            statusAtual = sprint.idstatus;
+            await carregarStatus(statusAtual);
+        } catch (error) {
+            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
         }
     }
     // ==============================================================

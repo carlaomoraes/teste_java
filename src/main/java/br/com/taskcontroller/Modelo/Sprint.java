@@ -19,7 +19,6 @@ public class Sprint {
     private LocalDate dtiniciosprint;
     private LocalDate dtfinalsprint;
     private boolean visivel;
-    private LocalDate dtterminosprint;
     @ManyToOne
     @JoinColumn(name = "idstatus")
     private StatusEntidades status;
@@ -70,14 +69,6 @@ public class Sprint {
 
     public void setVisivel(boolean visivel) {
         this.visivel = visivel;
-    }
-
-    public LocalDate getDtterminosprint() {
-        return dtterminosprint;
-    }
-
-    public void setDtterminosprint(LocalDate dtterminosprint) {
-        this.dtterminosprint = dtterminosprint;
     }
 
     public StatusEntidades getStatus() {

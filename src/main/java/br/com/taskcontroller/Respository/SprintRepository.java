@@ -54,12 +54,12 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
             s.visivel,
             s.status.idstatus,
             s.status.descstatus,
-            s.status.cor)
+            s.status.cor,
+            DATEDIFF(s.dtfinalsprint,s.dtiniciosprint))
     from Sprint s
     JOIN StatusEntidades se on s.status.idstatus = se.idstatus
    where s.empreendimento.idempreendimento = :idempreendimento
 ORDER BY s.idsprint
-
 """)
     List<SprintListagemDTO> listar(@Param("idempreendimento") Long idempreendimento);
 
@@ -71,7 +71,7 @@ ORDER BY s.idsprint
         s.dtiniciosprint,
         s.dtfinalsprint,
         s.visivel,
-        0,
+        DATEDIFF(s.dtfinalsprint,s.dtiniciosprint),
         s.status.idstatus,
         s.status.descstatus,
         s.status.cor)
@@ -93,7 +93,7 @@ ORDER BY s.idsprint
         s.dtiniciosprint,
         s.dtfinalsprint,
         s.visivel,
-        0,
+        DATEDIFF(s.dtfinalsprint,s.dtiniciosprint),
         s.status.idstatus,
         s.status.descstatus,
         s.status.cor)
@@ -119,4 +119,24 @@ ORDER BY s.idsprint
 """)
     int retornaOrdem(Long idSprint);
 
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Sprint.SprintListagemDTO(
+        s.empreendimento.idempreendimento,
+        s.idsprint,
+        s.descsprint,
+        s.dtiniciosprint,
+        s.dtfinalsprint,
+        s.visivel,
+        s.status.idstatus,
+        s.status.descstatus,
+        s.status.cor,
+        DATEDIFF(s.dtfinalsprint,s.dtiniciosprint) 
+        )
+    FROM Sprint s
+    JOIN StatusEntidades se on s.status.idstatus = se.idstatus
+    WHERE s.idsprint = :idSprint
+      and se.ativo = true
+ ORDER BY s.idsprint
+""")
+    SprintListagemDTO buscar(@Param("idSprint") Long idSprint);
 }
