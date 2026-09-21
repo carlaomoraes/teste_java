@@ -405,7 +405,7 @@
             document.getElementById('visivel').checked = sprint.visivel;
             mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " +  sprint.descsprint, "success");
             await listarAusencias(document.getElementById("dtiniciosprint").value,document.getElementById("dtfinalsprint").value);
-            statusAtual = sprint.idstatus;
+            statusAtual = sprint.idstatus + 1;
             await carregarStatus(statusAtual);
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");

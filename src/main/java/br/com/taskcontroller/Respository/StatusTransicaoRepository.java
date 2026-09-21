@@ -12,14 +12,20 @@ public interface StatusTransicaoRepository
         extends JpaRepository<StatusTransicao, Long> {
 
     @Query("""
-        SELECT new br.com.taskcontroller.Record.Status.StatusTransicaoDTO(
-                    idstatus,
-                    descstatus,
-                    ativo,
-                    ordem,
-                    cor)
-        FROM StatusEntidades s
-       WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
+    SELECT new br.com.taskcontroller.Record.Status.StatusTransicaoDTO(
+        destino.idstatus,
+        destino.descstatus,
+        destino.ativo,
+        destino.ordem,
+        destino.cor
+    )
+    FROM StatusTransicao st
+    JOIN st.statusOrigem origem
+    JOIN st.statusDestino destino
+    WHERE origem.idstatus = :idStatus
+      AND origem.tipoentidade.idtipo_entidade = :idTipoEntidade
+      AND destino.ativo = true
+    ORDER BY destino.ordem
 """)
     List<StatusTransicaoDTO> buscarProximoStatus(Long idStatus, Long idTipoEntidade);
 
