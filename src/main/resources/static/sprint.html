@@ -185,12 +185,12 @@
             mostrarMensagemNaTela("resultadogeral", error.message,"error");
         }
     }
-    async function carregarStatus(idStatusOrigem) {
+    async function carregarStatus(idStatusAtual) {
         const comboStatus = document.getElementById("comboStatus");
         const idTipoEntidade = 4;
         try {
             comboStatus.innerHTML = "";
-            const linha = `${API}/disponiveis-transicao?idTipoEntidade=${idTipoEntidade}&idStatusOrigem=${idStatusOrigem}`;
+            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipoEntidade}`;
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
