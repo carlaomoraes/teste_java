@@ -49,6 +49,7 @@ public class TarefaController {
     // BUSCAR POR ID - DTO
     @GetMapping("/DTO/{idTarefa}")
     public TarefaConsultaDTO buscarPorIDDTO(@PathVariable Long idTarefa) {
+
         return service.buscaPorIDDTO(idTarefa);
     }
 

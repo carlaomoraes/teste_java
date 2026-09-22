@@ -14,9 +14,10 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     @Query("""
             SELECT new br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO(
                 t.idtarefa,
-                t.estoria.idestoria,
-                t.status.idstatus,
+                t.estoria.idestoria/*,
+                s.idstatus,
                 s.descstatus,
+                s.cor,
                 t.desctarefa,
                 t.criador.idusuario,
                 c.nome,
@@ -29,7 +30,7 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
                 t.bloqueada,
                 t.data_fim_prevista,
                 t.data_conclusao,
-                t.data_inicio
+                t.data_inicio*/
             )
             FROM Tarefa t
             JOIN t.status s
@@ -43,9 +44,10 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     @Query("""
     SELECT new br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO(
         t.idtarefa,
-        t.estoria.idestoria,
-        t.status.idstatus,
+        t.estoria.idestoria/*,
+        s.idstatus,
         s.descstatus,
+        s.cor,
         t.desctarefa,
         t.criador.idusuario,
         c.nome,
@@ -58,7 +60,7 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
         t.bloqueada,
         t.data_fim_prevista,
         t.data_conclusao,
-        t.data_inicio
+        t.data_inicio*/
     )
     FROM Tarefa t
     JOIN t.status s

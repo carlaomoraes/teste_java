@@ -8,11 +8,14 @@ public record EpicoListagemDTO(
         String nome,
         Long idempreendimento,
         String descempreendimento,
+        Long idstatus,
         String descstatus,
+        String corstatus,
+        Long idprioridade,
         String descprioridade,
         String corprioridade,
-        LocalDate data_inicio,
-        LocalDate data_fim_prevista,
+        LocalDate data_inicialEP,
+        LocalDate data_fim_previstaEP,
         String cor
 ) {
 }

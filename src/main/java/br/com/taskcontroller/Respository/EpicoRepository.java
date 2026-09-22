@@ -18,7 +18,10 @@ public interface EpicoRepository extends JpaRepository<Epico, Long> {
         e.nome,
         ep.idempreendimento,
         ep.descempreendimento,
+        s.idstatus,
         s.descstatus,
+        s.cor,
+        p.idprioridade,
         p.descprioridade,
         p.corprioridade,
         e.data_inicio,
@@ -32,6 +35,34 @@ public interface EpicoRepository extends JpaRepository<Epico, Long> {
     WHERE e.ativo = 1
 """)
     List<EpicoListagemDTO> listar();
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Epico.EpicoConsultaDTO(
+        e.percentual,
+        e.idepico,
+        e.codepico,
+        e.nome,
+        ep.idempreendimento,
+        ep.descempreendimento,
+        s.idstatus,
+        s.descstatus,
+        s.cor,
+        p.idprioridade,
+        p.descprioridade,
+        p.corprioridade,
+        e.data_inicio,
+        e.data_fim_prevista,
+        e.cor,
+        u.idusuario,
+        u.nome
+    )
+    FROM Epico e
+    JOIN e.empreendimento ep
+    JOIN e.status s
+    JOIN e.prioridade p
+    join e.responsavel u
+    WHERE e.idepico = :id_epico
+""")
+    EpicoConsultaDTO buscaPorID(Long id_epico);
 
     @Query(value = """
         SELECT eq.idequipe AS idEquipe,
@@ -55,32 +86,6 @@ public interface EpicoRepository extends JpaRepository<Epico, Long> {
     eq.idequipe,
     eq.nomeequipe
 """, nativeQuery = true)
-    List<IndicadorEquipeProjection> buscarIndicadoresEquipe(Long id_empreendiemto);
+    List<IndicadorEquipeProjection> buscarIndicadoresEquipe(Long id_empreendimento);
 
-    @Query("""
-    SELECT new br.com.taskcontroller.Record.Epico.EpicoConsultaDTO(
-        e.percentual,
-        e.idepico,
-        e.codepico,
-        e.nome,
-        ep.idempreendimento,
-        ep.descempreendimento,
-        e.status.idstatus,
-        s.descstatus,
-        e.prioridade.idprioridade,
-        p.descprioridade,
-        e.data_inicio,
-        e.data_fim_prevista,
-        e.cor,
-        u.idusuario,
-        u.nome
-    )
-    FROM Epico e
-    JOIN e.empreendimento ep
-    JOIN e.status s
-    JOIN e.prioridade p
-    join e.responsavel u
-    WHERE e.idepico = :id_epico
-""")
-    EpicoConsultaDTO buscaPorID(Long id_epico);
 }

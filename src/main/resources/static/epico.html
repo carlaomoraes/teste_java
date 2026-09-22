@@ -317,12 +317,23 @@
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("PRIORIDADES"), "error");
         }
     }
-    async function carregarStatus(idStatusAtual, ENTIDADE) {
+    async function carregarStatus(idStatusOrigem, ENTIDADE) {
         const comboStatusEP = document.getElementById("comboStatusEP");
         const comboStatusES = document.getElementById("comboStatusES");
         const comboStatusTA = document.getElementById("comboStatusTA");
+        switch (ENTIDADE) {
+            case TIPO_ENTIDADE.EPICO:
+                comboStatusEP.innerHTML = '<option value="">Selecione...</option>';
+                break;
+            case TIPO_ENTIDADE.ESTORIA:
+                comboStatusES.innerHTML = '<option value="">Selecione...</option>';
+                break;
+            case TIPO_ENTIDADE.TAREFA:
+                comboStatusTA.innerHTML = '<option value="">Selecione...</option>';
+                break;
+        }
         try {
-            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${ENTIDADE}`;
+            const linha = `${API_STATUS}/disponiveis-transicao?idTipoEntidade=${ENTIDADE}&idStatusOrigem=${idStatusOrigem}`;
             console.log(linha);
             const resposta = await fetch(linha);
             if (!resposta.ok) {
@@ -387,10 +398,10 @@
     }
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', async () => {
-        carregarEmpreendimento();
-        carregarGestor();
-        carregarPrioridade();
-        carregarTipoTarefa();
+        await carregarEmpreendimento();
+        await carregarGestor();
+        await carregarPrioridade();
+        await carregarTipoTarefa();
         /*
         statusAtualEpico -> Aponta para o próximo status
         idTipoEntidade -> Pega a referencia da tabela tipo_entidade
@@ -399,7 +410,6 @@
         3 - TAREFA
         4 - SPRINT
         5 - EMPREENDIMENTO
-
          */
         await carregarStatus(statusAtualEpico, TIPO_ENTIDADE.EPICO);
         await carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
@@ -459,6 +469,7 @@
     }
     async function salvarEpico() {
         const hoje = new Date();
+        const idepico = document.getElementById('idepico').value;
         const nomeepico = document.getElementById('nomeepico').value;
         const codepico = document.getElementById('codepico').value;
         if(document.getElementById('bloqueado').checked)
@@ -468,6 +479,7 @@
         const data_inicialEP = document.getElementById('data_inicialEP').value || hoje ;
         const data_fim_previstaEP = document.getElementById('data_fim_previstaEP').value || hoje ;
         const epico = {
+            idepico: idepico || null,
             nome: nomeepico,
             idempreendimento: document.getElementById('comboEmpreendimentoEP').value,
             idresponsavel: document.getElementById('comboCriadorEP').value || null,
@@ -576,7 +588,7 @@
                            <td style="border-left:8px solid ${cor};">${epico.idepico}</td>
                                 <td>${epico.nome}</td>
                                 <td>${epico.codepico}</td>
-                                <td>${epico.descstatus}</td>
+                                <td> <span class="badge" style="background-color:${epico.corstatus}; color:white;">${epico.descstatus}</span></td>
                                 <td> <span class="badge" style="background-color:${epico.corprioridade}; color:white;">${epico.descprioridade}</span></td>
                                 <td>${formatarData(epico.data_inicialEP)}</td>
                                 <td>${formatarData(epico.data_fim_previstaEP)}</td>
@@ -670,7 +682,7 @@
                 tabela += `<tr onclick="buscarPorLinha(configuracao.idepico,${estoria.idestoria}, 0,'ESTORIA')" style="cursor:pointer;">
                                 <td>${estoria.idestoria}</td>
                                 <td>${estoria.descestoria}</td>
-                                <td>${estoria.descstatus}</td>
+                                <td> <span class="badge" style="background-color:${estoria.corstatus}; color:white;">${estoria.descstatus}</span></td>
                                 <td>${estoria.nomecriador}</td>
                                 <td>${estoria.nomeresponsavel}</td>
                                 <td>${formatarData(estoria.data_inicio)}</td>
@@ -681,8 +693,8 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado_estoria').innerHTML = tabela;
         } catch (error) {
-           // mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ESTÓRIA"),"error");
-            mostrarMensagemNaTela("resultado_epico",error.message,"error");
+            mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ESTÓRIA"),"error");
+
         }
     }
     async function listarTarefas() {
@@ -721,7 +733,7 @@
             <td>${obterIconeTipo(tarefa.tipotarefa)}</td>
             <td>${tarefa.idtarefa}</td>
             <td>${tarefa.desctarefa}</td>
-            <td>${tarefa.descstatus}</td>
+            <td> <span class="badge" style="background-color:${tarefa.corstatus}; color:white;">${tarefa.descstatus}</span></td>
             <td>${formatarData(tarefa.data_inicio)}</td>
             <td>${formatarData(tarefa.data_conclusao)}</td>
             <td>${tarefa.horas_estimadas ?? 0}</td>
@@ -919,7 +931,7 @@
             const texto = await response.text();
             mostrarMensagemNaTela("resultado_tarefa",MSG.excluido("TAREFA"), "success");
             await limparFormulario("TA");
-            await listarTarefas();
+            await listarTarefas(configuracao.idepico, configuracao.idestoria);
         } catch (error) {
             mostrarMensagemNaTela("resultado_tarefa",MSG.erroExcluir("TAREFA"), "error");
         }

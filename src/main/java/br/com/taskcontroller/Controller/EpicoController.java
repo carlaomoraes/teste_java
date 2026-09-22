@@ -63,6 +63,7 @@ public class EpicoController {
             epico = EpicoMapper.toEntity(dto);
         } else {
             epico = service.buscarPorId(dto.idepico());
+            epico.setIdepico(dto.idepico());
             epico.setBloqueado(dto.bloqueado());
             epico.setData_cadastro(dto.data_cadastro());
             epico.setData_inicio(dto.data_inicio());

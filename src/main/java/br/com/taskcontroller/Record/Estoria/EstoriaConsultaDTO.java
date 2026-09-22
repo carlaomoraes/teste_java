@@ -7,30 +7,23 @@ public record EstoriaConsultaDTO(
         Long idepico,
         Long idestoria,
         String descestoria,
-
         Long idstatus,
         String descstatus,
-
+        String corstatus,
         Long idcriador,
         String nomecriador,
-
         Long idresponsavel,
         String nomeresponsavel,
-
         String nomeepico,
         String corepico,
-
         Long idprioridade,
         String descprioridade,
         String corprioridade,
-
         int pontos,
         Long horas_estimadas,
         Long horas_realizadas,
-
         LocalDate data_inicio,
         LocalDate data_fim,
-
         Boolean bloqueada,
         Blob resumo
 ) {

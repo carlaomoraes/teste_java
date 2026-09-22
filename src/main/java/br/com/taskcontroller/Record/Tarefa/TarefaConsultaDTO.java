@@ -4,9 +4,10 @@ import java.time.LocalDate;
 
 public record TarefaConsultaDTO(
         Long idtarefa,
-        Long idestoria,
+        Long idestoria/*,
         Long idstatus,
         String descstatus,
+        String corstatus,
         String desctarefa,
         Long idcriador,
         String nomecriador,
@@ -19,6 +20,6 @@ public record TarefaConsultaDTO(
         boolean bloqueada,
         LocalDate data_fim_prevista,
         LocalDate data_conclusao,
-        LocalDate data_inicio
+        LocalDate data_inicio*/
 ) {
 }
