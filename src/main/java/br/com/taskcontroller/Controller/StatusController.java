@@ -90,10 +90,8 @@ public class StatusController {
         return statusEntidadesService.mostraStatusDisponiveis(idTipoEntidade, idStatusOrigem);
     }
 
-    @GetMapping("/achaOrigem")
-    List<StatusDTO> achaOrigem(@RequestParam("idTipoEntidade") Long idTipoEntidade) {
+    @GetMapping("/acharOrigem")
+    Long achaOrigem(@RequestParam("idTipoEntidade") Long idTipoEntidade) {
         return statusEntidadesService.achaOrigem(idTipoEntidade);
     }
-
-
 }

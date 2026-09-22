@@ -59,11 +59,7 @@ public interface StatusEntidadeRepository
 
 
     @Query("""
-        SELECT new br.com.taskcontroller.Record.Status.StatusDTO(
-                    idstatus,
-                    descstatus,
-                    ativo,
-                    cor)
+        SELECT COALESCE(idstatus,0) as Origem
         FROM StatusEntidades s
        WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
          AND s.finalizado = false
@@ -72,5 +68,5 @@ public interface StatusEntidadeRepository
          AND s.inicial = true
      ORDER BY s.ordem
 """)
-    List<StatusDTO> achaOrigem(@Param("idTipoEntidade") Long idTipoEntidade);
+    Long achaOrigem(@Param("idTipoEntidade") Long idTipoEntidade);
 }

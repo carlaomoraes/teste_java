@@ -227,6 +227,14 @@
 
     let statusAtual = 1;
 
+    const TIPO_ENTIDADE = {
+        EPICO: 1,
+        ESTORIA: 2,
+        TAREFA: 3,
+        SPRINT: 4,
+        EMPREENDIMENTO: 5,
+    };
+
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_STATUS = 'http://localhost:8080/status_entidades';
@@ -285,12 +293,27 @@
             mostrarMensagemNaTela("resultado", "Erro ao carregar prioridade: "+error.message,"error");
         }
     }
-    async function carregarStatus(idStatusAtual) {
+    async function acharOrdem(ENTIDADE) {
+        try {
+            const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
+            console.log(linha);
+            const resposta = await fetch(linha);
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
+            const vetor = await resposta.json();
+            console.log(vetor);
+            return vetor;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
+        }
+    }
+
+    async function carregarStatus(idStatusOrigem, ENTIDADE) {
         const comboStatus = document.getElementById("comboStatus");
-        const idTipo_Entidade = 5;
         try {
             comboStatus.innerHTML = "";
-            const linha =`${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipo_Entidade}`;
+            const linha = `${API_STATUS}/disponiveis-transicao?idTipoEntidade=${ENTIDADE}&idStatusOrigem=${idStatusOrigem}`;
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
@@ -312,10 +335,10 @@
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
-    document.addEventListener('DOMContentLoaded', () => {
-        carregarGestor();
-        carregarStatus(statusAtual);
-        carregarPrioridade();
+    document.addEventListener('DOMContentLoaded', async () => {
+        await carregarGestor();
+        await carregarStatus(await acharOrdem(TIPO_ENTIDADE.EMPREENDIMENTO), TIPO_ENTIDADE.EMPREENDIMENTO);
+        await carregarPrioridade();
     });
     document.getElementById("comboStatus")
         .addEventListener("change", function () {
@@ -606,7 +629,7 @@
                 document.getElementById("considerar_feriados").checked = Empreendimento.considerar_feriados;
                 document.getElementById("considerar_valorhoras").checked = Empreendimento.considerar_valorhoras;
                 statusAtual = Empreendimento.idstatus;
-                await carregarStatus(statusAtual);
+                await carregarStatus(statusAtual, TIPO_ENTIDADE.EMPREENDIMENTO);
                 // Limpa mensagens e monta equipe se o empreendimento mudar de aba depois
                 mostrarMensagemNaTela("resultado", "Empreendimento selecionado: " +  Empreendimento.descempreendimento, "success");
                 await montaEquipes(Empreendimento.idempreendimento);

@@ -245,7 +245,9 @@
     const TIPO_ENTIDADE = {
         EPICO: 1,
         ESTORIA: 2,
-        TAREFA: 3
+        TAREFA: 3,
+        SPRINT: 4,
+        EMPREENDIMENTO: 5,
     };
 
     //--------------------- MANIPULAÇÃO DOS DADOS
@@ -317,6 +319,22 @@
             mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("PRIORIDADES"), "error");
         }
     }
+    async function acharOrdem(ENTIDADE) {
+        try {
+            const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
+            console.log(linha);
+            const resposta = await fetch(linha);
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
+            const vetor = await resposta.json();
+            console.log(vetor);
+            return vetor;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
+        }
+    }
+
     async function carregarStatus(idStatusOrigem, ENTIDADE) {
         const comboStatusEP = document.getElementById("comboStatusEP");
         const comboStatusES = document.getElementById("comboStatusES");
@@ -417,11 +435,13 @@
     });
 
     async function criarEpico() {
-        await limparFormulario("EP");
+        await limparFormulario("EP")
+        await carregarStatus(await acharOrdem(TIPO_ENTIDADE.EPICO), TIPO_ENTIDADE.EPICO);
     }
     async function criarTarefa() {
         const hoje = new Date();
         await limparFormulario("TA");
+        await carregarStatus(acharOrdem(TIPO_ENTIDADE.TAREFA), TIPO_ENTIDADE.TAREFA);
         document.getElementById("data_inicio_TA").value = hoje;
         document.getElementById("data_fim_TA").value = hoje;
         document.getElementById('comboCriadorTA').value = sessionStorage.getItem("usuarioIdUsuario");
@@ -601,7 +621,8 @@
         }
     }
     async function criarEstoria() {
-        limparFormulario("ES");
+        await limparFormulario("ES");
+        await carregarStatus(acharOrdem(TIPO_ENTIDADE.ESTORIA), TIPO_ENTIDADE.ESTORIA);
     }
     async function salvarEstoria() {
         const hoje = new Date();

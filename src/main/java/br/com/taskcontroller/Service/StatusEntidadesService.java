@@ -46,7 +46,7 @@ public class StatusEntidadesService {
                                                    Long idStatusOrigem) {
         return repository.mostraStatusDisponiveis(idTipoEntidade,idStatusOrigem);
     }
-    public List<StatusDTO> achaOrigem(Long idTipoEntidade) {
+    public Long achaOrigem(Long idTipoEntidade) {
         return repository.achaOrigem(idTipoEntidade);
     }
 }
