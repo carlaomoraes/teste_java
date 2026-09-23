@@ -352,7 +352,6 @@
         }
         try {
             const linha = `${API_STATUS}/disponiveis-transicao?idTipoEntidade=${ENTIDADE}&idStatusOrigem=${idStatusOrigem}`;
-            console.log(linha);
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
@@ -862,7 +861,6 @@
                 if (!response.ok) {
                     mostrarMensagemNaTela("resultado_estoria",estoria.mensagem, "error");
                 } else {
-                    console.log(estoria);
                     document.getElementById('idestoria').value = estoria.idestoria;
                     document.getElementById('descestoria').value = estoria.descestoria;
                     // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
@@ -890,7 +888,6 @@
             configuracao.idtarefa = idTarefa;
             try {
                 const linha = `${API_TAREFA}/DTO/${idTarefa}`;
-                console.log(linha);
                 const response = await fetch(linha);
                 const tarefa = await response.json();
                 if (!response.ok) {
@@ -931,7 +928,6 @@
         }
     }
     async function excluirEstoria(idEstoria) {
-        console.log(idEstoria);
         try {
             const response = await fetch(`${API_EPICO}/remover_estoria/${idEstoria}`, {
                 method: 'DELETE'
@@ -944,7 +940,6 @@
     }
 
     async function excluirTarefa(idTarefa) {
-        console.log(idTarefa);
         try {
             const response = await fetch(`${API_TAREFA}/excluir/${idTarefa}`, {
                 method: 'DELETE'
@@ -981,27 +976,6 @@
             <span>${percentual}%</span>
         </div>
     `;
-    }
-    function obterIconeTipo(tipo) {
-        switch (tipo) {
-            case "BUG":
-                return '<i class="bi bi-bug-fill text-danger"></i>';
-
-            case "FUNCIONALIDADE":
-                return '<i class="bi bi-stars text-primary"></i>';
-
-            case "MELHORIA":
-                return '<i class="bi bi-wrench text-warning"></i>';
-
-            case "DOCUMENTACAO":
-                return '<i class="bi bi-file-earmark-text text-secondary"></i>';
-
-            case "TESTE":
-                return '<i class="bi bi-check2-square text-success"></i>';
-
-            default:
-                return '<i class="bi bi-circle-fill text-secondary"></i>';
-        }
     }
 </script>
 </body>

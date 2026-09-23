@@ -29,11 +29,8 @@ public class EmpreendimentoController {
     //==========================
 
     @GetMapping("/{idEmpreendimento}")
-    public ResponseEntity<Empreendimento> buscarPorId(
-            @PathVariable Long idEmpreendimento) {
-
+    public ResponseEntity<Empreendimento> buscarPorId(@PathVariable Long idEmpreendimento) {
         return ResponseEntity.ok(service.buscarPorId(idEmpreendimento));
-
     }
 
     @GetMapping("/listar")
@@ -44,11 +41,6 @@ public class EmpreendimentoController {
     @PostMapping("/salvar")
     public ResponseEntity<Empreendimento> salvar(
             @RequestBody Empreendimento empreendimento) {
-//        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
-//        if (statusEntidades == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        empreendimento.setStatus(statusEntidades);
         Usuario usuario = usuarioService.buscarPorId(empreendimento.getGestor().getIdusuario());
         if (usuario == null) {
             return ResponseEntity.notFound().build();
@@ -70,20 +62,13 @@ public class EmpreendimentoController {
             return ResponseEntity.notFound().build();
         }
         novoEmpreendimento.setGestor(usuario);
-//        StatusEntidades statusEntidades = statusService.buscarPorId(empreendimento.getStatus().getIdstatus());
-//        if (statusEntidades == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        novoEmpreendimento.setStatus(statusEntidades);
         return ResponseEntity.ok(service.atualizar(novoEmpreendimento));
     }
 
     @DeleteMapping("/excluir/{idEmpreendimento}")
     // Eclusão lógica
-    public ResponseEntity<String> excluir(
-            @PathVariable Long idEmpreendimento) {
+    public ResponseEntity<String> excluir(@PathVariable Long idEmpreendimento) {
         service.excluir(idEmpreendimento);
-
         return ResponseEntity.ok("Excluído com sucesso.");
     }
 
@@ -92,29 +77,20 @@ public class EmpreendimentoController {
     //==========================
 
     @PostMapping("/{idEmpreendimento}/equipes/adicionar/{idEquipe}")
-    public ResponseEntity<Void> adicionarEquipe(
-            @PathVariable Long idEmpreendimento,
-            @PathVariable Long idEquipe) {
-
+    public ResponseEntity<Void> adicionarEquipe(@PathVariable Long idEmpreendimento,
+                                                @PathVariable Long idEquipe) {
         service.adicionarEquipe(idEmpreendimento, idEquipe);
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{idEmpreendimento}/equipes/excluir/{idEquipe}")
-    public ResponseEntity<Void> removerEquipe(
-            @PathVariable Long idEmpreendimento,
-            @PathVariable Long idEquipe) {
-
+    public ResponseEntity<Void> removerEquipe(@PathVariable Long idEmpreendimento, @PathVariable Long idEquipe) {
         service.removerEquipe(idEmpreendimento, idEquipe);
-
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{idEmpreendimento}/equipes")
-    public List<Equipe> listarEquipes(
-            @PathVariable Long idEmpreendimento) {
-
+    public List<Equipe> listarEquipes(@PathVariable Long idEmpreendimento) {
         return service.listarEquipes(idEmpreendimento);
     }
 
@@ -129,9 +105,7 @@ public class EmpreendimentoController {
     //==========================
 
     @GetMapping("/DTO/{idEmpreendimento}")
-    public EmpreendimentoDTO buscarPorIdDTO(
-            @PathVariable Long idEmpreendimento) {
-
+    public EmpreendimentoDTO buscarPorIdDTO(@PathVariable Long idEmpreendimento) {
         return service.buscarPorIdDTO(idEmpreendimento);
     }
 

@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Empreendimento_Equipe;
 import br.com.taskcontroller.Modelo.Equipe;
@@ -10,6 +11,7 @@ import br.com.taskcontroller.Respository.EquipeEmpreendimentoRepository;
 import br.com.taskcontroller.Respository.EquipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -76,9 +78,13 @@ public class EmpreendimentoService {
         relacionamento.setEquipe(equipe);
         relacionamentoRepository.save(relacionamento);
     }
-
+    @Transactional
     public void removerEquipe(Long idEmpreendimento,Long idEquipe) {
-            relacionamentoRepository.removerMembro(idEquipe,idEmpreendimento);
+            try {
+                relacionamentoRepository.removerMembro(idEquipe,idEmpreendimento);
+            } catch (Exception e) {
+                throw new BusinessRuleException("A equipe não pode ser removida porque já possui itens alocados.");
+            }
     }
 
     public List<Equipe> listarEquipes(Long idEmpreendimento) {

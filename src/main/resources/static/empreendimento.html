@@ -383,12 +383,12 @@
             if (!response.ok) {
                 throw new Error("Erro ao adicionar equipe ao empreendimento.");
             }
-
-            mostrarMensagemNaTela("resultadoequipe","Equipe adicionada com sucesso.", "success");
-
-            // Atualiza as listas
-            montaEquipes(idEmpreendimento);
-
+            setTimeout(() => {
+                mostrarMensagemNaTela("resultadoequipe","Equipe adicionada com sucesso.", "success");
+                // Atualiza as listas
+                montaEquipes(idEmpreendimento);
+            }, 1000);
+            mostrarMensagemNaTela("resultadoequipe","", "clear");
         } catch (erro) {
             console.error(erro);
             mostrarMensagemNaTela("resultadoequipe","Erro ao adicionar equipe: "+error, "error");
@@ -397,17 +397,14 @@
     async function removerMembro() {
         const idEquipe = equipeSelecionada;
         const idEmpreendimento = document.getElementById("idempreendimento").value;
-
         if (!idEmpreendimento) {
             mostrarMensagemNaTela("resultadoequipe","Selecione um empreendimento.", "warning");
             return;
         }
-
         if (!idEquipe) {
             mostrarMensagemNaTela("resultadoequipe","Selecione uma equipe.", "warning");
             return;
         }
-
         try {
             const response = await fetch(
                 `${API_EMPREENDIMENTO}/${idEmpreendimento}/equipes/excluir/${idEquipe}`,
@@ -415,19 +412,18 @@
                     method: "DELETE"
                 }
             );
-
-            if (!response.ok) {
-                throw new Error("Erro ao remover equipe do empreendimento.");
-            }
-
-            mostrarMensagemNaTela("resultadoequipe","Equipe removida com sucesso.", "success");
-
-            // Atualiza as listas
-            montaEquipes(idEmpreendimento);
-
-        } catch (erro) {
-            console.error(erro);
-            mostrarMensagemNaTela("resultadoequipe","Erro ao remover equipe: "+erro.value, "error");
+             if (!response.ok) {
+                 mostrarMensagemNaTela("resultadoequipe","Erro ao excluir equipe, pois equipe já está vinculada", "error");
+                 return;
+             }
+            setTimeout(() => {
+                mostrarMensagemNaTela("resultadoequipe","Equipe excluída com sucesso.", "success");
+                // Atualiza as listas
+                montaEquipes(idEmpreendimento);
+            }, 1000);
+            mostrarMensagemNaTela("resultadoequipe","", "success");
+        } catch (error) {
+            mostrarMensagemNaTela("resultadoequipe",error.message, "error");
         }
     }
     // Renderiza a lista customizada mapeando os eventos de clique
