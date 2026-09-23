@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface StatusEntidadeRepository
+public interface StatusEntidadesRepository
         extends JpaRepository<StatusEntidades, Long> {
 
     @Query("""
@@ -62,11 +62,9 @@ public interface StatusEntidadeRepository
         SELECT COALESCE(idstatus,0) as Origem
         FROM StatusEntidades s
        WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
-         AND s.finalizado = false
-         AND s.cancelado = false
+         
          AND s.ativo = true
          AND s.inicial = true
-     ORDER BY s.ordem
 """)
     Long achaOrigem(@Param("idTipoEntidade") Long idTipoEntidade);
 }

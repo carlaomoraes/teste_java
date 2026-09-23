@@ -1,11 +1,15 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
+import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Respository.SprintRepository;
+import br.com.taskcontroller.Respository.StatusEntidadesRepository;
+import br.com.taskcontroller.Respository.StatusTransicaoRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +24,20 @@ public class SprintService {
 
     private final SprintRepository sprintRepository;
     private final EmpreendimentoService empreendimentoService;
+    private final StatusEntidadesService statusEntidadesService;
+    private final StatusEntidadesRepository statusEntidadesRepository;
+    private final StatusTransicaoRepository statusTransicaoRepository;
 
-    public SprintService(SprintRepository sprintRepository, EmpreendimentoService empreendimentoService) {
+    public SprintService(SprintRepository sprintRepository,
+                         EmpreendimentoService empreendimentoService,
+                         StatusEntidadesService statusEntidadesService,
+                         StatusEntidadesRepository statusEntidadesRepository,
+                         StatusTransicaoRepository statusTransicaoRepository) {
         this.sprintRepository = sprintRepository;
         this.empreendimentoService = empreendimentoService;
+        this.statusEntidadesService = statusEntidadesService;
+        this.statusEntidadesRepository = statusEntidadesRepository;
+        this.statusTransicaoRepository = statusTransicaoRepository;
     }
     public Sprint salvar(Sprint sprint) {
         return sprintRepository.save(sprint);
@@ -80,8 +94,10 @@ public class SprintService {
     Senão, cria
 
      */
-    public Optional<SprintDataDTO> carregarValida(Long idEmpreendimento) {
+    public Optional<SprintDataDTO> carregarValida(Long idEmpreendimento, Long TIPO_ENTIDADE) {
         Optional<SprintDataDTO> sprintValida = sprintRepository.buscarSprintValida(idEmpreendimento,LocalDate.now());
+        StatusEntidades statusEntidades = statusEntidadesService.buscarPorId(statusEntidadesService.achaOrigem(TIPO_ENTIDADE));
+
         if (sprintValida.isPresent()) {
             return sprintValida;
         }
@@ -99,6 +115,7 @@ public class SprintService {
         sprint.setVisivel(true);
 
         sprint.setDescsprint("SPRINT NOVA");
+        sprint.setStatus(statusEntidades);
 
         Sprint novaSprint = sprintRepository.save(sprint);
 
@@ -126,11 +143,34 @@ public class SprintService {
     }
 
     public int retornaOrdem(Long idSprint) {
-
         return sprintRepository.retornaOrdem(idSprint);
     }
 
     public SprintListagemDTO buscar(@Param("idSprint") Long idSprint) {
         return sprintRepository.buscar(idSprint);
+    }
+
+    @Transactional
+    public void alterarStatus(Long idSprint, Long idStatusDestino) {
+        Sprint sprint = sprintRepository.findById(idSprint).orElseThrow(() -> new BusinessRuleException("Sprint não encontrada."));
+        Long idStatusOrigem = sprint.getStatus().getIdstatus();
+        boolean transicaoPermitida = statusTransicaoRepository
+                .existsByStatusOrigemIdstatusAndStatusDestinoIdstatus(
+                        idStatusOrigem,
+                        idStatusDestino
+                );
+
+        if (!transicaoPermitida) {
+            throw new BusinessRuleException("Transição de status não permitida.");
+        }
+
+        StatusEntidades destino = statusEntidadesRepository
+                .findById(idStatusDestino)
+                .orElseThrow(() ->
+                        new BusinessRuleException("Status não encontrado."));
+
+        sprint.setStatus(destino);
+
+        sprintRepository.save(sprint);
     }
 }

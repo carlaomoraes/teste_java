@@ -81,4 +81,6 @@ public interface StatusTransicaoRepository
     ORDER BY o.ordem, d.ordem
 """)
     List<StatusTransicaoListagemDTO> listarWorkflow(Long idTipoEntidade);
+
+    boolean existsByStatusOrigemIdstatusAndStatusDestinoIdstatus(Long idStatusOrigem, Long idStatusDestino);
 }

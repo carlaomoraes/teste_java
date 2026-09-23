@@ -2,18 +2,14 @@ package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Mapper.EpicoMapper;
 import br.com.taskcontroller.Mapper.EstoriaMapper;
-import br.com.taskcontroller.Mapper.TarefaMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Epico.EpicoConsultaDTO;
 import br.com.taskcontroller.Record.Epico.EpicoInclusaoDTO;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaInclusaoDTO;
-import br.com.taskcontroller.Record.Tarefa.TarefaInclusaoDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EpicoService;
-import br.com.taskcontroller.Service.PrioridadesService;
-import br.com.taskcontroller.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +33,7 @@ public class EpicoController {
     @Autowired
     private PrioridadesRepository prioridadesRepository;
     @Autowired
-    private StatusEntidadeRepository statusEntidadeRepository;
+    private StatusEntidadesRepository statusEntidadesRepository;
 
 
     @Autowired
@@ -81,7 +77,7 @@ public class EpicoController {
         epico.setEmpreendimento(empreendimento);
         Usuario usuario = usuarioRepository.findById(dto.idresponsavel()).orElse(null);
         epico.setResponsavel(usuario);
-        StatusEntidades status = statusEntidadeRepository.findById(dto.idstatus()).orElse(null);
+        StatusEntidades status = statusEntidadesRepository.findById(dto.idstatus()).orElse(null);
         epico.setStatus(status);
         Prioridades prioridades = prioridadesRepository.findById(dto.idprioridade()).orElse(null);
         epico.setPrioridade(prioridades);
