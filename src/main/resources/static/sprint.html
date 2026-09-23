@@ -134,9 +134,6 @@
         SPRINT: 4,
         EMPREENDIMENTO: 5,
     };
-
-
-    let statusAtual = 1;
     // ==============================================================
     // ALTERNAR ABAS
     // ==============================================================
@@ -194,12 +191,12 @@
             mostrarMensagemNaTela("resultadogeral", error.message,"error");
         }
     }
-    async function carregarStatus(idStatusAtual) {
+    async function carregarStatus(idStatusOrigem, ENTIDADE) {
         const comboStatus = document.getElementById("comboStatus");
-        const idTipoEntidade = 4;
         try {
             comboStatus.innerHTML = "";
-            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipoEntidade}`;
+            const linha = `${API_STATUS}/${idStatusOrigem}/proximo/${ENTIDADE}`;
+
             console.log(linha);
             const resposta = await fetch(linha);
             if (!resposta.ok) {
@@ -218,7 +215,7 @@
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado",MSG.erroCarregar("STATUS"), "error");
+          mostrarMensagemNaTela("resultadogeral",MSG.erroCarregar("STATUS"), "error");
         }
     }
     // ==============================================================
@@ -272,8 +269,6 @@
     // ==============================================================
     document.addEventListener('DOMContentLoaded',() => {
             carregarEmpreendimento();
-            await carregarStatus(await acharOrdem(TIPO_ENTIDADE.SPRINT), TIPO_ENTIDADE.SPRINT);
-
         }
     );
     // ==============================================================
@@ -329,6 +324,8 @@
             document.getElementById("duracaosprint").value = sprint.duracao;
             await listarAusencias(document.getElementById("dtiniciosprint").value,
                                   document.getElementById("dtfinalsprint").value);
+            const ordem = acharOrdem(TIPO_ENTIDADE.SPRINT);
+            await carregarStatus(ordem, TIPO_ENTIDADE.SPRINT);
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao criar sprints", "error");
             return false;
@@ -341,6 +338,13 @@
     async function salvarSprint() {
         const eValido = await validaEntrada();
         if (!eValido) return;
+        const idSprint = Number(document.getElementById("idSprint").value);
+        const idStatusNovo = Number(document.getElementById("comboStatus").value);
+
+        // Se é uma Sprint existente e houve mudança de status
+        if (idSprint > 0 && idStatusNovo > 0) {
+            await alterarStatusSprint(idSprint, idStatusNovo);
+        }
         // Leitura dos campos
         const descsprint = document.getElementById('descsprint').value;
         const dtiniciosprint = document.getElementById('dtiniciosprint').value;
@@ -433,8 +437,8 @@
             document.getElementById('visivel').checked = sprint.visivel;
             mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " +  sprint.descsprint, "success");
             await listarAusencias(document.getElementById("dtiniciosprint").value,document.getElementById("dtfinalsprint").value);
-            statusAtual = sprint.idstatus + 1;
-            await carregarStatus(statusAtual);
+            await carregarStatus(sprint.idstatus, TIPO_ENTIDADE.SPRINT);
+
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
         }
@@ -477,7 +481,6 @@
         document.getElementById('dtfinalsprint').value = "";
         document.getElementById('duracaosprint').value = "";
         document.getElementById('visivel').checked = false;
-        document.getElementById('ativa').checked = false;
         //document.getElementById('ultimaSprint').style.display = 'none';
         /*
          * Mantém o empreendimento selecionado.
@@ -630,6 +633,20 @@
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral",error.message || "Erro ao buscar sprints", "error");
             return false;
+        }
+    }
+    async function alterarStatusSprint(idSprint, idStatus) {
+
+        const response = await fetch(
+            `${API_SPRINT}/${idSprint}/status/${idStatus}`,
+            {
+                method: "PATCH"
+            }
+        );
+
+        if (!response.ok) {
+            const erro = await response.json();
+            throw new Error(erro.mensagem);
         }
     }
 </script>

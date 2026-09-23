@@ -2,15 +2,11 @@ package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Record.Status.StatusDTO;
-import br.com.taskcontroller.Record.Status.StatusEntidadesListagemDTO;
 import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
-import br.com.taskcontroller.Respository.StatusEntidadeRepository;
+import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.TipoEntidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -18,7 +14,7 @@ import java.util.List;
 public class StatusEntidadesService {
 
     @Autowired
-    private StatusEntidadeRepository repository;
+    private StatusEntidadesRepository repository;
 
     @Autowired
     private TipoEntidadeRepository tipoEntidadeRepository;

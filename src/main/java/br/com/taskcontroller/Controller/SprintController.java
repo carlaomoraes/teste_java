@@ -148,7 +148,7 @@ public class SprintController {
     // RETORNA A ULTIMA SPRINT VALIDA DO EMPREENDIMENTO
     @GetMapping("/valida_ultima/{idempreendimento}")
     public Optional<SprintDataDTO> carregarValida(@PathVariable Long idempreendimento) {
-        return service.carregarValida(idempreendimento);
+        return service.carregarValida(idempreendimento, 4l);
     }
 
     private boolean isWeekend(LocalDate date) {
@@ -181,4 +181,11 @@ public class SprintController {
         service.excluirDoRoadmap(idSprint, idEstoria);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/{idSprint}/status/{idStatus}")
+    public ResponseEntity<?> alterarStatus(@PathVariable Long idSprint, @PathVariable Long idStatus) {
+        service.alterarStatus(idSprint, idStatus);
+        return ResponseEntity.noContent().build();
+    }
+
 }
