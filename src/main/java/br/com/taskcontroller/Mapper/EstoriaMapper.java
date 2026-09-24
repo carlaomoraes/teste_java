@@ -34,7 +34,6 @@ public class EstoriaMapper {
         empreendimento.setIdempreendimento_equipe(dto.getIdempreendiemnto_equipe());
         e.setTags(dto.getTags());
         e.setCriterios(dto.getCriterios());
-        e.setOrdem(dto.getOrdem());
         return e;
     }
 
@@ -57,7 +56,6 @@ public class EstoriaMapper {
         dto.setIdempreendiemnto_equipe(e.getEmpreendimentoEquipe().getIdempreendimento_equipe());
         dto.setTags(e.getTags());
         dto.setCriterios(e.getCriterios());
-        dto.setOrdem(e.getOrdem());
         return dto;
     }
 }

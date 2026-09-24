@@ -556,7 +556,7 @@
                                     <strong>${backlog.descestoria}</strong>
                                     </div>
                                 </td>
-                                <td><div class="estoria-roadmap">${backlog.descstatus}</div></td>
+                                <td> <span class="badge" style="background-color:${backlog.corstatus}; color:white;">${backlog.descstatus}</span></td>
                                 <td><div class="estoria-roadmap">${backlog.nomecriador}</div></td>
                                 <td><div class="estoria-roadmap">${backlog.nomeresponsavel}</div></td>
                                 <td><span class="epico-roadmap" style="background-color: ${cor};">${backlog.nome}</span></td>
@@ -603,7 +603,8 @@
                 idprioridade: Number(document.getElementById('comboPrioridades').value) || null,
                 dataplanejamento: hoje.toISOString().split("T")[0],
                 pontos: Number(document.getElementById('combostorypoints').value) || 0,
-                horasestimadas: Number(document.getElementById('horas_estimadas').value) || 0
+                horasestimadas: Number(document.getElementById('horas_estimadas').value) || 0,
+                ordem: 1
             };
             try {
                 const caminho = `${API_SPRINT}/atualiza_backlog`;

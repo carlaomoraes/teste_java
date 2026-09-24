@@ -5,6 +5,7 @@ public record EstoriaBacklogDTO(
         String descestoria,
         Long idstatus,
         String descstatus,
+        String corstatus,
         Long idcriador,
         String nomecriador,
         Long idresponsavel,

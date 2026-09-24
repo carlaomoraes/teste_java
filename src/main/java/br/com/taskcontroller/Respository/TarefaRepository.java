@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Tarefa;
+import br.com.taskcontroller.Record.Tarefa.TarefaQuadroDTO;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -80,4 +81,32 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     """)
     void apagarTarefa(@Param("idTarefa") Long idTarefa);
 
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Tarefa.TarefaQuadroDTO(
+        t.idtarefa,
+        t.desctarefa,
+        e.idestoria,
+        e.descestoria,
+        ep.idepico,
+        ep.nome,
+        ep.cor,
+        s.idstatus,
+        s.descstatus,
+        s.cor,
+        r.idusuario,
+        r.nome/*,
+        COALSESCE(t.horas_estimadas,0),
+        COALSESCE(t.horas_realizadas,0)*/
+    )
+    FROM Tarefa t
+    JOIN t.estoria e
+    JOIN e.epico ep
+    JOIN t.status s
+    LEFT JOIN t.responsavel r
+    JOIN SprintEstoria se ON se.estoria.idestoria = e.idestoria
+    WHERE se.sprint.idsprint = :idSprint
+      AND t.bloqueada = false
+    ORDER BY e.idestoria, t.idtarefa
+""")
+    List<TarefaQuadroDTO> buscarTarefasQuadro(@Param("idSprint") Long idSprint);
 }

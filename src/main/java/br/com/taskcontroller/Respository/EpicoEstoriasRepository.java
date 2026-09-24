@@ -116,6 +116,7 @@ public interface EpicoEstoriasRepository extends JpaRepository<Estoria, Long> {
         e.descestoria,
         s.idstatus,
         s.descstatus,
+        s.cor,
         c.idusuario,
         c.nome,
         r.idusuario,

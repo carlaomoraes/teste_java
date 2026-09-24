@@ -7,6 +7,7 @@ import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaQuadroDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.SprintEstoriaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
@@ -186,6 +187,11 @@ public class SprintController {
     public ResponseEntity<?> alterarStatus(@PathVariable Long idSprint, @PathVariable Long idStatus) {
         service.alterarStatus(idSprint, idStatus);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{idSprint}/quadro")
+    public ResponseEntity<List<TarefaQuadroDTO>> buscarQuadro(@PathVariable Long idSprint) {
+        return ResponseEntity.ok(service.buscarQuadro(idSprint));
     }
 
 }

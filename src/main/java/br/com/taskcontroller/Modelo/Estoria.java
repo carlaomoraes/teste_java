@@ -61,8 +61,6 @@ public class Estoria {
 
     private String criterios;
 
-    private int ordem;
-
     public Long getIdestoria() {
         return idestoria;
     }
@@ -199,11 +197,4 @@ public class Estoria {
         this.resumo = resumo;
     }
 
-    public int getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(int ordem) {
-        this.ordem = ordem;
-    }
 }

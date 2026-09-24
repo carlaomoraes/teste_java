@@ -7,9 +7,11 @@ import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaQuadroDTO;
 import br.com.taskcontroller.Respository.SprintRepository;
 import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.StatusTransicaoRepository;
+import br.com.taskcontroller.Respository.TarefaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,18 +29,25 @@ public class SprintService {
     private final StatusEntidadesService statusEntidadesService;
     private final StatusEntidadesRepository statusEntidadesRepository;
     private final StatusTransicaoRepository statusTransicaoRepository;
+    private final TarefaRepository tarefaRepository;
 
-    public SprintService(SprintRepository sprintRepository,
+    public SprintService(
+                        TarefaRepository tarefaRepository,
+                         SprintRepository sprintRepository,
                          EmpreendimentoService empreendimentoService,
                          StatusEntidadesService statusEntidadesService,
                          StatusEntidadesRepository statusEntidadesRepository,
-                         StatusTransicaoRepository statusTransicaoRepository) {
+                         StatusTransicaoRepository statusTransicaoRepository
+                         ) {
+        this.tarefaRepository = tarefaRepository;
         this.sprintRepository = sprintRepository;
         this.empreendimentoService = empreendimentoService;
         this.statusEntidadesService = statusEntidadesService;
         this.statusEntidadesRepository = statusEntidadesRepository;
         this.statusTransicaoRepository = statusTransicaoRepository;
+
     }
+
     public Sprint salvar(Sprint sprint) {
         return sprintRepository.save(sprint);
     }
@@ -173,4 +182,12 @@ public class SprintService {
 
         sprintRepository.save(sprint);
     }
+
+    public List<TarefaQuadroDTO> buscarQuadro(Long idSprint) {
+        if (!sprintRepository.existsById(idSprint)) {
+            throw new BusinessRuleException("Sprint não encontrada.");
+        }
+        return tarefaRepository.buscarTarefasQuadro(idSprint);
+    }
+
 }
