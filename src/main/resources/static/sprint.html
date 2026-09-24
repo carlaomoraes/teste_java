@@ -127,6 +127,16 @@
 
     };
 
+    const TIPO_ENTIDADE = {
+        EPICO: 1,
+        ESTORIA: 2,
+        TAREFA: 3,
+        SPRINT: 4,
+        EMPREENDIMENTO: 5,
+    };
+
+
+    let statusAtual = 1;
     // ==============================================================
     // ALTERNAR ABAS
     // ==============================================================
@@ -184,11 +194,12 @@
             mostrarMensagemNaTela("resultadogeral", error.message,"error");
         }
     }
-    async function carregarStatus(idStatusOrigem) {
+    async function carregarStatus(idStatusAtual) {
         const comboStatus = document.getElementById("comboStatus");
+        const idTipoEntidade = 4;
         try {
             comboStatus.innerHTML = "";
-            const linha = `${API_STATUS}/disponiveis-transicao?idTipoEntidade=4&idStatusOrigem=${idStatusOrigem}`;
+            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipoEntidade}`;
             console.log(linha);
             const resposta = await fetch(linha);
             if (!resposta.ok) {
@@ -207,8 +218,7 @@
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
-          //mostrarMensagemNaTela("resultadogeral",MSG.erroCarregar("STATUS"), "error");
-            mostrarMensagemNaTela("resultadogeral",error.value, "error");
+            mostrarMensagemNaTela("resultado",MSG.erroCarregar("STATUS"), "error");
         }
     }
     // ==============================================================
@@ -262,6 +272,8 @@
     // ==============================================================
     document.addEventListener('DOMContentLoaded',() => {
             carregarEmpreendimento();
+            await carregarStatus(await acharOrdem(TIPO_ENTIDADE.SPRINT), TIPO_ENTIDADE.SPRINT);
+
         }
     );
     // ==============================================================
@@ -276,9 +288,9 @@
     document.addEventListener('DOMContentLoaded', () => {
     });
 
-    async function acharOrdem() {
+    async function acharOrdem(ENTIDADE) {
         try {
-            const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=4`;
+            const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
             console.log(linha);
             const resposta = await fetch(linha);
             if (!resposta.ok) {
@@ -317,8 +329,6 @@
             document.getElementById("duracaosprint").value = sprint.duracao;
             await listarAusencias(document.getElementById("dtiniciosprint").value,
                                   document.getElementById("dtfinalsprint").value);
-            const ordem = await acharOrdem();
-            await carregarStatus(ordem);
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao criar sprints", "error");
             return false;
@@ -331,17 +341,6 @@
     async function salvarSprint() {
         const eValido = await validaEntrada();
         if (!eValido) return;
-        const idSprint = Number(document.getElementById("idsprint").value);
-        const idStatusNovo = Number(document.getElementById("comboStatus").value);
-
-        // Se é uma Sprint existente e houve mudança de status
-        if (idSprint > 0 && idStatusNovo > 0) {
-            await alterarStatusSprint(idSprint, idStatusNovo);
-            mostrarMensagemNaTela("resultadogeral",MSG.salvo("SPRINT"),"success");
-            limpaFormulario();
-            await listarSprints();
-            return;
-        }
         // Leitura dos campos
         const descsprint = document.getElementById('descsprint').value;
         const dtiniciosprint = document.getElementById('dtiniciosprint').value;
@@ -434,8 +433,8 @@
             document.getElementById('visivel').checked = sprint.visivel;
             mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " +  sprint.descsprint, "success");
             await listarAusencias(document.getElementById("dtiniciosprint").value,document.getElementById("dtfinalsprint").value);
-            await carregarStatus(sprint.idstatus);
-
+            statusAtual = sprint.idstatus + 1;
+            await carregarStatus(statusAtual);
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
         }
@@ -478,6 +477,7 @@
         document.getElementById('dtfinalsprint').value = "";
         document.getElementById('duracaosprint').value = "";
         document.getElementById('visivel').checked = false;
+        document.getElementById('ativa').checked = false;
         //document.getElementById('ultimaSprint').style.display = 'none';
         /*
          * Mantém o empreendimento selecionado.
@@ -607,9 +607,6 @@
         const data_fim = document.getElementById("dtfinalsprint").value;
         const idempreendimento = document.getElementById("comboEmpreendimento").value;
         const inputSprint = document.getElementById("idsprint");
-        if(Number(inputSprint.value) !== 0) {
-            return true;
-        }
         const idSprint = inputSprint && inputSprint.value !== "" ? Number(inputSprint.value): -1;
         if (!idempreendimento) {
             mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!","warning");
@@ -633,19 +630,6 @@
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral",error.message || "Erro ao buscar sprints", "error");
             return false;
-        }
-    }
-    async function alterarStatusSprint(idSprint, idStatus) {
-        const linha = `${API}/${idSprint}/status/${idStatus}`;
-        console.log(linha);
-        const response = await fetch(linha, {
-                method: "PATCH"
-            }
-        );
-
-        if (!response.ok) {
-            const erro = await response.json();
-            throw new Error(erro.mensagem);
         }
     }
 </script>
