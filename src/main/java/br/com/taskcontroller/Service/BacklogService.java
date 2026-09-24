@@ -64,28 +64,19 @@ public class BacklogService {
         // 1. Atualiza a estória
         Usuario usuario;
         Estoria estoria;
-        try {
-            estoria = estoriaService.buscarPorId(dto.getIdestoria());
+        estoria = estoriaService.buscarPorId(dto.getIdestoria());
 
-            estoria.setHoras_estimadas(dto.getHorasestimadas());
-            estoria.setPontos(dto.getPontos());
+        estoria.setHoras_estimadas(dto.getHorasestimadas());
+        estoria.setPontos(dto.getPontos());
 
-            usuario = usuarioService.buscarPorId(dto.getIdresponsavel());
-            estoria.setResponsavel(usuario);
-
-            estoriaService.atualizar(estoria);
-
-
-        } catch (Exception e) {
-            throw new BusinessRuleException(e.getMessage());
-        }
-
+        usuario = usuarioService.buscarPorId(dto.getIdresponsavel());
+        estoria.setResponsavel(usuario);
+        estoriaService.atualizar(estoria);
 
         // 2. Atualiza o épico
         Epico epico = epicoService.buscarPorId(dto.getIdepico());
 
-        Prioridades prioridade =
-                prioridadesService.buscarPorId(dto.getIdprioridade());
+        Prioridades prioridade = prioridadesService.buscarPorId(dto.getIdprioridade());
 
         epico.setPrioridade(prioridade);
         epico.setResponsavel(usuario);
@@ -95,15 +86,12 @@ public class BacklogService {
         // 3. Vincula a estória à sprint
         Sprint sprint = sprintService.buscarPorId(dto.getIdsprint());
 
-        Integer proximaOrdem =
-                sprintService.retornaOrdem(sprint.getIdsprint());
-
         SprintEstoria sprintEstoria = new SprintEstoria();
 
         sprintEstoria.setDataplanejamento(dto.getDataplanejamento());
         sprintEstoria.setEstoria(estoria);
         sprintEstoria.setSprint(sprint);
-        sprintEstoria.setOrdem(proximaOrdem);
+        sprintEstoria.setOrdem(sprintService.retornaOrdem(sprint.getIdsprint()));
 
         return sprintEstoriaRepository.save(sprintEstoria);
     }
