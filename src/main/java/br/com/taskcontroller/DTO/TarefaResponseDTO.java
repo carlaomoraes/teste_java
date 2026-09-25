@@ -4,6 +4,8 @@ import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.TipoTarefa;
 import br.com.taskcontroller.Modelo.Usuario;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class TarefaResponseDTO {
@@ -13,8 +15,8 @@ public class TarefaResponseDTO {
     private Estoria estoria;
     private Usuario criador;
     private Usuario responsavel;
-    private Long horas_estimadas;
-    private Long horas_realizadas;
+    private BigDecimal horas_estimadas;
+    private BigDecimal horas_realizadas;
     private boolean bloqueada;
     private LocalDate data_inicio;
     private LocalDate data_fim_prevista;
@@ -69,19 +71,19 @@ public class TarefaResponseDTO {
         this.responsavel = responsavel;
     }
 
-    public Long getHoras_estimadas() {
+    public BigDecimal getHoras_estimadas() {
         return horas_estimadas;
     }
 
-    public void setHoras_estimadas(Long horas_estimadas) {
+    public void setHoras_estimadas(BigDecimal horas_estimadas) {
         this.horas_estimadas = horas_estimadas;
     }
 
-    public Long getHoras_realizadas() {
+    public BigDecimal getHoras_realizadas() {
         return horas_realizadas;
     }
 
-    public void setHoras_realizadas(Long horas_realizadas) {
+    public void setHoras_realizadas(BigDecimal horas_realizadas) {
         this.horas_realizadas = horas_realizadas;
     }
 

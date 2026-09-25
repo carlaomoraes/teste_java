@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -27,9 +28,9 @@ public class Tarefa {
     @JoinColumn(name="idresponsavel")
     private Usuario responsavel;
     @Column(name = "horas_estimadas")
-    private Long horas_estimadas;
+    private BigDecimal horas_estimadas;
     @Column(name = "horas_realizadas")
-    private Long horas_realizadas;
+    private BigDecimal horas_realizadas;
     @Column(name = "bloqueada")
     private boolean bloqueada;
     @Column(name = "data_inicio")
@@ -90,19 +91,19 @@ public class Tarefa {
         this.responsavel = responsavel;
     }
 
-    public Long getHoras_estimadas() {
+    public BigDecimal getHoras_estimadas() {
         return horas_estimadas;
     }
 
-    public void setHoras_estimadas(Long horas_estimadas) {
+    public void setHoras_estimadas(BigDecimal horas_estimadas) {
         this.horas_estimadas = horas_estimadas;
     }
 
-    public Long getHoras_realizadas() {
+    public BigDecimal getHoras_realizadas() {
         return horas_realizadas;
     }
 
-    public void setHoras_realizadas(Long horas_realizadas) {
+    public void setHoras_realizadas(BigDecimal horas_realizadas) {
         this.horas_realizadas = horas_realizadas;
     }
 

@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Record.Tarefa;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record TarefaInclusaoDTO(
@@ -9,8 +10,8 @@ public record TarefaInclusaoDTO(
      Long idestoria,
      Long idcriador,
      Long idresponsavel,
-     Long horas_estimadas,
-     Long horas_realizadas,
+     BigDecimal horas_estimadas,
+     BigDecimal horas_realizadas,
      boolean bloqueada,
      LocalDate data_inicio,
      LocalDate data_fim_prevista,
