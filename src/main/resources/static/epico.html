@@ -335,7 +335,7 @@
         }
     }
 
-    async function carregarStatus(idStatusOrigem, ENTIDADE) {
+    async function carregarStatus(idStatusAtual, ENTIDADE) {
         const comboStatusEP = document.getElementById("comboStatusEP");
         const comboStatusES = document.getElementById("comboStatusES");
         const comboStatusTA = document.getElementById("comboStatusTA");
@@ -351,7 +351,7 @@
                 break;
         }
         try {
-            const linha = `${API_STATUS}/disponiveis-transicao?idTipoEntidade=${ENTIDADE}&idStatusOrigem=${idStatusOrigem}`;
+            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${ENTIDADE}`;
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);

@@ -200,7 +200,6 @@
         try {
             comboStatus.innerHTML = "";
             const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipoEntidade}`;
-            console.log(linha);
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);

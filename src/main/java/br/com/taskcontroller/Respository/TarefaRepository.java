@@ -54,8 +54,8 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
         c.nome,
         t.responsavel.idusuario,
         r.nome,
-        0,
-        0,
+        coalesce(t.horas_estimadas,0),
+        coalesce(t.horas_realizadas,0),
         tt.idtipo_tarefa,
         tt.desctipo_tarefa,
         t.bloqueada,
@@ -83,28 +83,35 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     @Query("""
     SELECT new br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO(
-        t.idtarefa,
-        t.desctarefa,
-        e.idestoria,
-        e.descestoria,
+        s.idsprint,
+        s.descsprint,
+        es.idestoria,
+        es.descestoria,
         ep.idepico,
         ep.nome,
         ep.cor,
-        s.idstatus,
-        s.descstatus,
-        s.cor,
+        t.idtarefa,
+        t.desctarefa,
+        COALESCE(t.horas_estimadas, 0),
+        COALESCE(t.horas_realizadas, 0),
+        c.idusuario,
+        c.nome,
         r.idusuario,
-        r.nome
-    )
-    FROM Tarefa t
-    JOIN t.estoria e
-    JOIN e.epico ep
-    JOIN t.status s
-    LEFT JOIN t.responsavel r
-    JOIN SprintEstoria se
-        ON se.estoria.idestoria = e.idestoria
-    WHERE se.sprint.idsprint = :idSprint
-    ORDER BY e.idestoria, t.idtarefa
+        r.nome,
+        sen.idstatus,
+        sen.descstatus,
+        sen.cor
+        
+        )
+    FROM Sprint s
+    JOIN SprintEstoria se ON se.sprint.idsprint = s.idsprint
+    JOIN Estoria es ON es.idestoria = se.estoria.idestoria
+    JOIN Epico ep ON ep.idepico = es.epico.idepico
+    JOIN Tarefa t on t.estoria.idestoria = es.idestoria
+    JOIN Usuario c on t.criador.idusuario = c.idusuario
+    JOIN Usuario r on t.responsavel.idusuario = r.idusuario
+    JOIN StatusEntidades sen on sen.idstatus = t.status.idstatus
+    WHERE s.idsprint = :idSprint
 """)
-    List<TarefaQuadroDTO> buscarTarefasQuadro(@Param("idSprint") Long idSprint);
+    List<TarefaQuadroDTO> buscarQuadro(@Param("idSprint") Long idSprint);
 }

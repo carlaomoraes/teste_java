@@ -188,7 +188,7 @@ public class SprintService {
         if (!sprintRepository.existsById(idSprint)) {
             throw new BusinessRuleException("Sprint não encontrada.");
         }
-        return tarefaRepository.buscarTarefasQuadro(idSprint);
+        return tarefaRepository.buscarQuadro(idSprint);
     }
 
 }

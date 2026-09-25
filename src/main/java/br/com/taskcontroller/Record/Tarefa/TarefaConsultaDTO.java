@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Record.Tarefa;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record TarefaConsultaDTO(
@@ -13,8 +14,8 @@ public record TarefaConsultaDTO(
         String nomecriador,
         Long idresponsavel,
         String nomeresponsavel,
-        Long horas_estimadas,
-        Long horas_realizadas,
+        BigDecimal horas_estimadas,
+        BigDecimal horas_realizadas,
         Long idtipotarefa,
         String desctipotarefa,
         boolean bloqueada,
