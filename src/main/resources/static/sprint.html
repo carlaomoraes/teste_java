@@ -431,7 +431,7 @@
             document.getElementById('visivel').checked = sprint.visivel;
             mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " +  sprint.descsprint, "success");
             await listarAusencias(document.getElementById("dtiniciosprint").value,document.getElementById("dtfinalsprint").value);
-            statusAtual = sprint.idstatus + 1;
+            statusAtual = sprint.idstatus;
             await carregarStatus(statusAtual);
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
@@ -485,17 +485,7 @@
          */
 
     }
-    // ==============================================================
-    // FORMATAR DATA BR
-    // ==============================================================
-    function formatarDataBR(dataString) {
-        if (!dataString) return '';
-        const partes =dataString.split('-');
-        if (partes.length !== 3) {
-            return dataString;
-        }
-        return `${partes[2]}/${partes[1]}/${partes[0]}`;
-    }
+
     // ==============================================================
     // LISTAR AUSÊNCIAS
     // ==============================================================

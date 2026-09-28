@@ -2,14 +2,12 @@ package br.com.taskcontroller.Service;
 
 
 import br.com.taskcontroller.DTO.SprintEstoriaRequestDTO;
-import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaRoadmapDTO;
 import br.com.taskcontroller.Record.RoadmapOrdemDTO;
 import br.com.taskcontroller.Respository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +16,14 @@ import java.util.List;
 @Service
 public class BacklogService {
 
-    private EpicoEstoriasRepository repository;
-    private EmpreendimentoRepository repositoryEmpreendimento;
-    private EstoriaService estoriaService;
-    private EpicoService epicoService;
-    private SprintService sprintService;
-    private PrioridadesService prioridadesService;
-    private SprintEstoriaRepository sprintEstoriaRepository;
-    private UsuarioService usuarioService;
+    final private EpicoEstoriasRepository repository;
+    final private EmpreendimentoRepository repositoryEmpreendimento;
+    final private EstoriaService estoriaService;
+    final private EpicoService epicoService;
+    final private SprintService sprintService;
+    final private PrioridadesService prioridadesService;
+    final private SprintEstoriaRepository sprintEstoriaRepository;
+    final private UsuarioService usuarioService;
 
     public BacklogService(
             EpicoEstoriasRepository repository,
@@ -62,14 +60,12 @@ public class BacklogService {
     @Transactional
     public SprintEstoria atualizar(SprintEstoriaRequestDTO dto) {
         // 1. Atualiza a estória
-        Usuario usuario;
-        Estoria estoria;
-        estoria = estoriaService.buscarPorId(dto.getIdestoria());
+        Estoria estoria = estoriaService.buscarPorId(dto.getIdestoria());
 
         estoria.setHoras_estimadas(dto.getHorasestimadas());
         estoria.setPontos(dto.getPontos());
 
-        usuario = usuarioService.buscarPorId(dto.getIdresponsavel());
+        Usuario usuario = usuarioService.buscarPorId(dto.getIdresponsavel());
         estoria.setResponsavel(usuario);
         estoriaService.atualizar(estoria);
 

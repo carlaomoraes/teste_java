@@ -8,7 +8,6 @@ import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO;
-import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.SprintEstoriaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
@@ -160,17 +159,9 @@ public class SprintController {
         return day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY;
     }
     // Todas as funções da sprint atual
-    // BUSCAR POR EMPREENDIMENTO
-    @GetMapping("/monta_cabecalho")
-    public ResponseEntity<?> montaCabecalho(@RequestParam LocalDate data_inicio,
-                                          @RequestParam LocalDate data_fim,
-                                          @RequestParam Long idempreendimento) {
-
-        return ResponseEntity.ok(montaCabecalho(data_inicio,data_fim,idempreendimento));
-    }
     @GetMapping("/carregaSprint/DTO/{idEmpreendimento}")
     public List<SprintDataDTO> carregarSprints(@PathVariable Long idEmpreendimento) {
-        return sprintRepository.buscarSprintAtiva(idEmpreendimento);
+        return service.carregarSprints(idEmpreendimento);
     }
 
     @PostMapping("/atualiza_backlog")

@@ -24,17 +24,14 @@
 <div class="container-fluid">
 
     <!-- Cabeçalho -->
-    <div class="card shadow-sm mb-3">
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div class="d-flex justify-content-between align-items-center" id="cabecalho" >
+    <div class="card shadow-sm mb-4">
+        <label class="form-label"> Empreendimento *</label>
+             <select id="comboEmpreendimento" class="form-select" required></select>
+        <label class="form-label">Sprint *</label>
+             <select id="comboSprint" class="form-select" required></select>
 
-            </div>
-            <div class="text-end">
-                <h5 class="text-warning">Saúde: 82%</h5>
-                <small>Dia 9 de 15</small>
-            </div>
-        </div>
     </div>
+    <div class="text-end" id="saude"></div>
 
     <!-- Cards -->
     <div class="row mb-3">
@@ -76,28 +73,17 @@
         </div>
 
     </div>
-
+    <div class="row mb-3" id="ausencia"></div>
     <!-- Roadmap -->
     <div class="card">
-        <div class="card-header">
-            Roadmap da Sprint
-        </div>
+        <div class="card-body" ></div>
         <div class="card-body p-0">
             <table class="table table-bordered align-middle mb-0">
                 <thead>
                 <tr>
                     <th style="width:250px"> Equipe / Estórias </th>
+                    <div id="roadmap"></div>
 
-                    <th>24</th>
-                    <th>25</th>
-                    <th>26</th>
-                    <th>27</th>
-                    <th>28</th>
-                    <th class="bg-warning">29</th>
-                    <th>30</th>
-                    <th>31</th>
-                    <th>01</th>
-                    <th>02</th>
 
                 </tr>
 
@@ -107,53 +93,6 @@
 
                 <!-- Ausências -->
 
-                <tr class="table-light">
-                    <td colspan="11">
-                        <b>Ausências Programadas</b>
-                    </td>
-                </tr>
-
-                <tr>
-
-                    <td>Carlos</td>
-
-                    <td></td>
-                    <td></td>
-                    <td class="bg-danger text-white" colspan="2">
-                        Férias
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                </tr>
-
-                <tr>
-
-                    <td>João</td>
-
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="bg-warning" colspan="2">
-                        Curso
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                </tr>
-
-                <!-- Tarefas -->
-
-                <tr class="table-light">
-                    <td colspan="11">
-                        <b>Estórias</b>
-                    </td>
-                </tr>
 
                 <tr>
 
@@ -206,37 +145,127 @@
 
 </div>
 <!-- BOTÕES -->
-<div class="sprint-acoes">
-
-    <button type="button"
-            class="btn btn-outline-secondary" >
-        <i class="bi bi-arrow-right"></i>
-        Salvar
-    </button>
-
-    <button type="button"
-            class="btn btn-outline-secondary" onclick="history.back()">
-        <i class="bi bi-arrow-left"></i>
-        Voltar
-    </button>
-
+<div class="btn-group">
+    <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
 </div>
 
-</div>
+
 
 <script>
-    function carregaCabecalho(){
-        let cabecalho = ` <div> `;
-            cabecalho += `<h4>Sprint 08 - Módulo Financeiro</h4>`;
-            cabecalho += `<small>20/07/2026 até 31/08/2026</small>`;
-            cabecalho += `</div>`;
-        document.getElementById('cabecalho').innerHTML = cabecalho;
+    //--------------------- MANIPULAÇÃO DOS DADOS
+    const API = 'http://localhost:8080/sprints';
+    const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
 
+    async function carregaCabecalho(idEmpreendimento) {
+        const comboSprint= document.getElementById("comboSprint");
+        comboSprint.innerHTML=`SEM SPRINT CADASTRADA!!!`;
+        try {
+            const response = await fetch(`${API}/carregaSprint/DTO/${idEmpreendimento}`);
+            const data = await response.json();
+            data.forEach(a => {
+                const opcao = document.createElement('option');
+                opcao.value = a.idsprint;
+                opcao.textContent = a.descsprint+" - Período: "+formatarData(a.dtiniciosprint) + " - "+formatarData(a.dtfinalsprint);
+                comboSprint.appendChild(opcao);
+                listarAusenciasSprint(a.dtiniciosprint, a.dtfinalsprint);
+                montaRoadmap(a.dtiniciosprint, a.dtfinalsprint);
+
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", error.message, "error");
+        }
+    }
+    async function carregarEmpreendimento() {
+        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/listar`);
+            const empreendimentos = await resposta.json();
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idempreendimento;
+                opcao.textContent = e.descempreendimento;
+                comboEmpreendimento.appendChild(opcao);
+            });
+        } catch (error) {
+            //  mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("EMPREENDIMENTO"), "error");
+            mostrarMensagemNaTela("resultado_epico", error.message, "error");
+        }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
     document.addEventListener('DOMContentLoaded', () => {
-        carregaCabecalho();
+        carregarEmpreendimento();
     });
+    // 2. Attach the 'change' event listener
+    comboEmpreendimento.addEventListener('change', (event) => {
+        // Get the selected option's value
+        const selectedValue = event.target.value;
+        carregaCabecalho(selectedValue);
+    });
+
+    // =============================================================
+    // MONTAR QUADRO DE AUSÊNCIAS DA SPRINT
+    // =============================================================
+    async function listarAusenciasSprint(dataInicioSprint, dataFimSprint) {
+        const container = document.getElementById("ausencia");
+        // Limpa o quadro
+        container.innerHTML = "";
+        // Se a sprint ainda não possui período definido
+        try {
+            const url = `${API}/listar_ausencias?data_inicio=${dataInicioSprint}`+`&data_fim=${dataFimSprint}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                mostrarMensagemNaTela("ausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
+                return;
+            }
+            const data = await response.json();
+            if(!data) {
+                return;
+            }
+            // ---------------------------------------------------------
+            // MONTA TABELA
+            // ---------------------------------------------------------
+            let tabela = `
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Usuário</th>
+                        <th>Data inicial</th>
+                        <th>Data final</th>
+                        <th>Tipo ausência</th>
+                        <th>Observação</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+            data.forEach(a => {
+                const cor = a.cor_tipo_ausencia || "#6c757d";
+                tabela += `
+                <tr><td>${a.nome ?? ""}</td><td>${formatarData(a.data_inicio)}</td><td>${formatarData(a.data_fim)}</td>
+                    <td> <span class="badge" style="background-color:${cor}; color:white;">${a.tipoausencia ?? ""}</span></td>
+                    <td> ${a.observacao ?? ""} </td>
+                </tr>`;
+            });
+            tabela += `</tbody>  </table>`;
+            container.innerHTML = tabela;
+        } catch (error) {
+            console.error(error);
+            mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
+        }
+    }
+    async function montaRoadmap(dataInicioSprint, dataFimSprint) {
+        const container = document.getElementById("roadmap");
+        container.innerHTML = "<table> ";
+        container.innerHTML += `<th>24</th>`;
+        container.innerHTML += `<th>25</th>`;
+        container.innerHTML += `<th>26</th>`;
+        container.innerHTML += `<th>27</th>`;
+        container.innerHTML += `<th>28</th>`;
+        container.innerHTML += `<th class="bg-warning">29</th>`;
+        container.innerHTML += `<th>30</th>`;
+        container.innerHTML += `<th>31</th>`;
+        container.innerHTML += `<th>01</th>`;
+        container.innerHTML += `<th>02</th>`;
+        container.innerHTML = "</table> ";
+    }
 </script>
 </body>
 </html>

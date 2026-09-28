@@ -190,5 +190,4 @@ public class SprintService {
         }
         return tarefaRepository.buscarQuadro(idSprint);
     }
-
 }

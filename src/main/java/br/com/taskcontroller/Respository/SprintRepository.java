@@ -27,6 +27,7 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
                                 @Param("data_fim") LocalDate data_fim,
                                 @Param("idempreendimento") Long idempreendimento,
                                 @Param("idsprint") Long idsprint);
+
     @Query("""
     select s.idsprint, s.empreendimento.idempreendimento, s.dtiniciosprint, s.dtfinalsprint
     from Sprint s
@@ -101,7 +102,9 @@ ORDER BY s.idsprint
     JOIN StatusEntidades se on s.status.idstatus = se.idstatus
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
       and se.ativo = true
- ORDER BY s.idsprint
+      AND s.visivel = true
+     
+ ORDER BY s.dtiniciosprint asc
 """)
     List<SprintDataDTO> buscarSprintAtiva(@Param("idEmpreendimento") Long idEmpreendimento);
 
@@ -130,14 +133,16 @@ ORDER BY s.idsprint
         s.status.idstatus,
         s.status.descstatus,
         s.status.cor,
-        DATEDIFF(s.dtfinalsprint,s.dtiniciosprint) 
+        DATEDIFF(s.dtfinalsprint,s.dtiniciosprint)
         )
     FROM Sprint s
     JOIN StatusEntidades se on s.status.idstatus = se.idstatus
     WHERE s.idsprint = :idSprint
-      and se.ativo = true
+       and se.ativo = true
+      AND s.visivel = true
  ORDER BY s.idsprint
 """)
     SprintListagemDTO buscar(@Param("idSprint") Long idSprint);
+
 
 }

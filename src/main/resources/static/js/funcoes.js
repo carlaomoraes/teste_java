@@ -36,6 +36,20 @@ function formatarData(data) {
     const [ano, mes, dia] = data.split("-");
     return `${dia}/${mes}/${ano}`;
 }
+
+// ==============================================================
+// FORMATAR DATA BR
+// ==============================================================
+function formatarDataBR(dataString) {
+    if (!dataString) return '';
+    const partes =dataString.split('-');
+    if (partes.length !== 3) {
+        return dataString;
+    }
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+
 function converterMaiusculo(campo) {
     campo.value = campo.value.toUpperCase();
 }
