@@ -99,29 +99,16 @@
                 console.error(erro);
                 throw new Error(`Erro HTTP: ${response.status}`);
             }
-
             const data = await response.json();
-
-            mostrarMensagemNaTela(
-                "resultado",
-                MSG.salvo("PAPEL"),
-                "success"
-            );
-
+            mostrarMensagemNaTela("resultado",MSG.salvo("PAPEL"),"success");
             setTimeout(() => {
                 limparFormulario();
                 listarTipoPapel();
             }, 1000);
 
         } catch (error) {
-
             console.error("Erro ao salvar papel:", error);
-
-            mostrarMensagemNaTela(
-                "resultado",
-                MSG.erroSalvar("PAPEL"),
-                "error"
-            );
+            mostrarMensagemNaTela("resultado", MSG.erroSalvar("PAPEL"),"error");
         }
     }
     async function limparFormulario() {

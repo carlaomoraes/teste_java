@@ -29,7 +29,7 @@
              <select id="comboEmpreendimento" class="form-select" required></select>
         <label class="form-label">Sprint *</label>
              <select id="comboSprint" class="form-select" required></select>
-
+        <input type="number" id="inputNumber" class="form-control">
     </div>
     <div class="text-end" id="saude"></div>
 
@@ -83,57 +83,13 @@
                 <tr>
                     <th style="width:250px"> Equipe / Estórias </th>
                     <div id="roadmap"></div>
-
-
                 </tr>
 
                 </thead>
 
                 <tbody>
 
-                <!-- Ausências -->
-
-
-                <tr>
-
-                    <td>Login</td>
-
-                    <td colspan="3" class="bg-success"></td>
-
-                    <td colspan="2"></td>
-
-                    <td colspan="5"></td>
-
-                </tr>
-
-                <tr>
-
-                    <td>Dashboard</td>
-
-                    <td></td>
-                    <td></td>
-
-                    <td colspan="5" class="bg-primary"></td>
-
-                    <td></td>
-                    <td></td>
-
-                </tr>
-
-                <tr>
-
-                    <td>Integração PIX</td>
-
-                    <td></td>
-
-                    <td colspan="4" class="bg-danger"></td>
-
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                </tr>
+                <div id="estorias_tarefas"></div>
 
                 </tbody>
 
@@ -148,13 +104,13 @@
 <div class="btn-group">
     <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
 </div>
-
-
-
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
+
+    let dataInicioSprint = null;
+    let dataFimSprint = null;
 
     async function carregaCabecalho(idEmpreendimento) {
         const comboSprint= document.getElementById("comboSprint");
@@ -165,10 +121,12 @@
             data.forEach(a => {
                 const opcao = document.createElement('option');
                 opcao.value = a.idsprint;
-                opcao.textContent = a.descsprint+" - Período: "+formatarData(a.dtiniciosprint) + " - "+formatarData(a.dtfinalsprint);
+                opcao.textContent = a.idsprint + " - "+ a.descsprint+" - Período: "+formatarData(a.dtiniciosprint) + " - "+formatarData(a.dtfinalsprint);
                 comboSprint.appendChild(opcao);
-                listarAusenciasSprint(a.dtiniciosprint, a.dtfinalsprint);
-                montaRoadmap(a.dtiniciosprint, a.dtfinalsprint);
+                document.getElementById("comboSprint");
+                listarAusenciasSprint(a.idsprint);
+                montaRoadmap(a.idsprint);
+                document.getElementById("inputNumber").value = a.idsprint;
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado", error.message, "error");
@@ -201,15 +159,24 @@
         carregaCabecalho(selectedValue);
     });
     comboSprint.addEventListener('change', (event) => {
-        const selectedValue = event.target.value;
-        listarAusenciasSprint(a.dtiniciosprint, a.dtfinalsprint);
-        montaRoadmap(a.dtiniciosprint, a.dtfinalsprint);
+        listarAusenciasSprint(event.target.value);
+        montaRoadmap(event.target.value);
+        montarKAMBAM(event.target.value);
     })
 
     // =============================================================
     // MONTAR QUADRO DE AUSÊNCIAS DA SPRINT
     // =============================================================
-    async function listarAusenciasSprint(dataInicioSprint, dataFimSprint) {
+    async function listarAusenciasSprint(idSprint)    {
+        const url = `${API}/DTO/${idSprint}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        if(!data) {
+            return;
+        }
+        dataInicioSprint = data.dtiniciosprint;
+        dataFimSprint = data.dtfinalsprint;
+        //---------
         const container = document.getElementById("ausencia");
         // Limpa o quadro
         container.innerHTML = "";
@@ -252,10 +219,22 @@
             container.innerHTML = tabela;
         } catch (error) {
             console.error(error);
-            mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
+         //   mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
+            mostrarMensagemNaTela("resultadoausencia",error.message,"error");
         }
     }
-    async function montaRoadmap(dataInicioSprint, dataFimSprint) {
+    async function montaRoadmap(idSprint) {
+        const nomesDias = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+
+        const url = `${API}/DTO/${idSprint}`;
+        const response = await fetch(url);
+        const data_sp = await response.json();
+        if(!data_sp) {
+            return;
+        }
+        var dataInicioSprint = data_sp.dtiniciosprint;
+        var dataFimSprint = data_sp.dtfinalsprint;
+
         const container = document.getElementById("roadmap");
         if (!dataInicioSprint || !dataFimSprint) {
             container.innerHTML = "";
@@ -291,14 +270,28 @@
             const dia = String(dataDia.getDate()).padStart(2, "0");
             // Verifica se é hoje
             const ehHoje = dataDia.getFullYear() === hoje.getFullYear() && dataDia.getMonth() === hoje.getMonth() && dataDia.getDate() === hoje.getDate();
-            if (ehHoje) {
-                html += `<th class="bg-warning">${dia}</th>`;
-            } else {
-                html += `<th>${dia}</th>`;
+            const ehFinaldeSemana = dataDia.getDay() === 0 || dataDia.getDay() === 6;
+
+            let classe = "";
+            if(ehHoje) {
+                classe = "bg-warning"
+            } else if (ehFinaldeSemana) {
+                classe = "fim-semana";
             }
+
+            html += `<th class="${classe}"><div>${dia}</div><small>${nomesDias[dataDia.getDay()]}</small></th>`;
+
         }
         html += `</tr></table>`;
         container.innerHTML = html;
+    }
+    async function montarKAMBAM(idSprint) {
+        const container = document.getElementById("estorias_tarefas");
+
+        const url = `${API}/${idSprint}/quadro`;
+        const response = await fetch(url);
+        const data_sp = await response.json();
+
     }
 </script>
 </body>

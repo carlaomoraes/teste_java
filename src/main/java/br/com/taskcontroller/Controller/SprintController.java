@@ -183,8 +183,8 @@ public class SprintController {
     }
 
     @GetMapping("/{idSprint}/quadro")
-    public ResponseEntity<List<TarefaQuadroDTO>> buscarQuadro(@PathVariable Long idSprint) {
-        return ResponseEntity.ok(service.buscarQuadro(idSprint));
+    public List<TarefaQuadroDTO> montaQuadro(@PathVariable Long idSprint) {
+        return service.montaQuadro(idSprint);
     }
 
 }

@@ -101,7 +101,6 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
         sen.idstatus,
         sen.descstatus,
         sen.cor
-        
         )
     FROM Sprint s
     JOIN SprintEstoria se ON se.sprint.idsprint = s.idsprint
@@ -113,5 +112,5 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     JOIN StatusEntidades sen on sen.idstatus = t.status.idstatus
     WHERE s.idsprint = :idSprint
 """)
-    List<TarefaQuadroDTO> buscarQuadro(@Param("idSprint") Long idSprint);
+    List<TarefaQuadroDTO> montaQuadro(@Param("idSprint") Long idSprint);
 }

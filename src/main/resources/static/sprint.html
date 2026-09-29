@@ -194,13 +194,13 @@
             mostrarMensagemNaTela("resultadogeral", error.message,"error");
         }
     }
-    async function carregarStatus(idStatusAtual) {
+    function carregarStatus(idStatusAtual) {
         const comboStatus = document.getElementById("comboStatus");
         const idTipoEntidade = 4;
         try {
             comboStatus.innerHTML = "";
             const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipoEntidade}`;
-            const resposta = await fetch(linha);
+            const resposta = fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
             }
@@ -271,7 +271,8 @@
     // ==============================================================
     document.addEventListener('DOMContentLoaded',async () => {
             await carregarEmpreendimento();
-            await carregarStatus(await acharOrdem(TIPO_ENTIDADE.SPRINT), TIPO_ENTIDADE.SPRINT);
+
+            carregarStatus(acharOrdem(TIPO_ENTIDADE.SPRINT), TIPO_ENTIDADE.SPRINT);
         }
     );
     // ==============================================================
@@ -286,7 +287,7 @@
     document.addEventListener('DOMContentLoaded', () => {
     });
 
-    async function acharOrdem(ENTIDADE) {
+    function acharOrdem(ENTIDADE) {
         try {
             const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
             console.log(linha);

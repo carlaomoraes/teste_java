@@ -184,10 +184,10 @@ public class SprintService {
         sprintRepository.save(sprint);
     }
 
-    public List<TarefaQuadroDTO> buscarQuadro(Long idSprint) {
+    public List<TarefaQuadroDTO> montaQuadro(Long idSprint) {
         if (!sprintRepository.existsById(idSprint)) {
             throw new BusinessRuleException("Sprint não encontrada.");
         }
-        return tarefaRepository.buscarQuadro(idSprint);
+        return tarefaRepository.montaQuadro(idSprint);
     }
 }
