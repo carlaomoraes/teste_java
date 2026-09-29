@@ -169,7 +169,6 @@
                 comboSprint.appendChild(opcao);
                 listarAusenciasSprint(a.dtiniciosprint, a.dtfinalsprint);
                 montaRoadmap(a.dtiniciosprint, a.dtfinalsprint);
-
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado", error.message, "error");
@@ -201,6 +200,11 @@
         const selectedValue = event.target.value;
         carregaCabecalho(selectedValue);
     });
+    comboSprint.addEventListener('change', (event) => {
+        const selectedValue = event.target.value;
+        listarAusenciasSprint(a.dtiniciosprint, a.dtfinalsprint);
+        montaRoadmap(a.dtiniciosprint, a.dtfinalsprint);
+    })
 
     // =============================================================
     // MONTAR QUADRO DE AUSÊNCIAS DA SPRINT
@@ -253,18 +257,48 @@
     }
     async function montaRoadmap(dataInicioSprint, dataFimSprint) {
         const container = document.getElementById("roadmap");
-        container.innerHTML = "<table> ";
-        container.innerHTML += `<th>24</th>`;
-        container.innerHTML += `<th>25</th>`;
-        container.innerHTML += `<th>26</th>`;
-        container.innerHTML += `<th>27</th>`;
-        container.innerHTML += `<th>28</th>`;
-        container.innerHTML += `<th class="bg-warning">29</th>`;
-        container.innerHTML += `<th>30</th>`;
-        container.innerHTML += `<th>31</th>`;
-        container.innerHTML += `<th>01</th>`;
-        container.innerHTML += `<th>02</th>`;
-        container.innerHTML = "</table> ";
+        if (!dataInicioSprint || !dataFimSprint) {
+            container.innerHTML = "";
+            return;
+        }
+
+        // Datas da Sprint
+        const inicio = new Date(dataInicioSprint + "T00:00:00");
+        const fim = new Date(dataFimSprint + "T00:00:00");
+
+        // Data de hoje
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        // =========================================================
+        // MONTA VETOR COM OS DIAS DA SPRINT
+        // =========================================================
+        const dias = [];
+
+        let data = new Date(inicio);
+
+        while (data <= fim) {
+            dias.push(new Date(data));
+            data.setDate(data.getDate() + 1);
+        }
+
+        // =========================================================
+        // MONTA ROADMAP
+        // =========================================================
+        let html = `<table class="table table-bordered text-center"> <tr>`;
+        for (let i = 0; i < dias.length; i++) {
+            const dataDia = dias[i];
+            const dia = String(dataDia.getDate()).padStart(2, "0");
+            // Verifica se é hoje
+            const ehHoje = dataDia.getFullYear() === hoje.getFullYear() && dataDia.getMonth() === hoje.getMonth() && dataDia.getDate() === hoje.getDate();
+            if (ehHoje) {
+                html += `<th class="bg-warning">${dia}</th>`;
+            } else {
+                html += `<th>${dia}</th>`;
+            }
+        }
+        html += `</tr></table>`;
+        container.innerHTML = html;
     }
 </script>
 </body>
