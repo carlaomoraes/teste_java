@@ -194,13 +194,13 @@
             mostrarMensagemNaTela("resultadogeral", error.message,"error");
         }
     }
-    function carregarStatus(idStatusAtual) {
+    async function carregarStatus(idStatusAtual) {
         const comboStatus = document.getElementById("comboStatus");
         const idTipoEntidade = 4;
         try {
             comboStatus.innerHTML = "";
             const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipoEntidade}`;
-            const resposta = fetch(linha);
+            const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
             }
@@ -271,8 +271,6 @@
     // ==============================================================
     document.addEventListener('DOMContentLoaded',async () => {
             await carregarEmpreendimento();
-
-            carregarStatus(acharOrdem(TIPO_ENTIDADE.SPRINT), TIPO_ENTIDADE.SPRINT);
         }
     );
     // ==============================================================
@@ -284,10 +282,10 @@
             }
         );
     // Inicializa os seletores assim que o HTML carregar completamente
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
     });
 
-    function acharOrdem(ENTIDADE) {
+   async function acharOrdem(ENTIDADE) {
         try {
             const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
             console.log(linha);
@@ -306,12 +304,13 @@
     // NOVA SPRINT
     // ==============================================================
     async function criarSprint(idempreendimento) {
+        ordem = await acharOrdem(TIPO_ENTIDADE.SPRINT);
+        await carregarStatus(ordem, TIPO_ENTIDADE.SPRINT);
         if(idempreendimento === ""){
             mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
             return false;
         }
         limpaFormulario();
-
         try {
             const response = await fetch(`${API}/valida_ultima/${idempreendimento}`);
             if (!response.ok) {
@@ -328,6 +327,7 @@
             document.getElementById("duracaosprint").value = sprint.duracao;
             await listarAusencias(document.getElementById("dtiniciosprint").value,
                                   document.getElementById("dtfinalsprint").value);
+
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao criar sprints", "error");
             return false;
@@ -476,7 +476,6 @@
         document.getElementById('dtfinalsprint').value = "";
         document.getElementById('duracaosprint').value = "";
         document.getElementById('visivel').checked = false;
-        document.getElementById('ativa').checked = false;
         //document.getElementById('ultimaSprint').style.display = 'none';
         /*
          * Mantém o empreendimento selecionado.
