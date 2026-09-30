@@ -5,8 +5,6 @@ import jakarta.persistence.Column;
 import java.math.BigDecimal;
 
 public record TarefaQuadroDTO(
-        Long idsprint,
-        String descsprint,
         Long idestoria,
         String descestoria,
         Long idespico,

@@ -231,9 +231,6 @@
         carregarEmpreendimento();
         carregarConfiguracao();
     });
-    async function abrirAusencia() {
-        window.location.href = "tipo_ausencia.html";
-    }
 
     async function carregarConfiguracao() {
         const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
@@ -256,15 +253,10 @@
             configuracaoSprint.permitir_sprint_sobreposta =  data.permitir_sprint_sobreposta;
             configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
             configuracaoSprint.considerar_feriados = data.considerar_feriados;
-            // CARREGAR A TELA
-
-
-
         } catch (error) {
             mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("CONFIGURAÇÕES"), "error");
         }
     }
-
     function alternarAba(event,id){
         document.querySelectorAll(".conteudo-aba")
             .forEach(c=>c.classList.remove("ativo"));

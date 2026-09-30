@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Quadro kanbam - Roadmad / Ausencia -&gt; OK">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/LoginService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/TarefaQuadroDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/TarefaQuadroDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/configuracao.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/pages/sprintatual.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/pages/sprintatual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,61 +77,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="5.601738830373075E-113" />
-      <entry key="S2" value="8.65128689172175E-29" />
-      <entry key="S5" value="5.954321572310022E-12" />
-      <entry key="S10" value="2.440147858698325E-6" />
-      <entry key="S30" value="0.013462909032819216" />
-      <entry key="S60" value="0.11619387629267992" />
-      <entry key="M2" value="0.3704058594820505" />
-      <entry key="M5" value="1.4328641024864013" />
-      <entry key="M10" value="3.439110618416855" />
-      <entry key="M15" value="5.300631330054599" />
-      <entry key="M30" value="10.462513481091383" />
-      <entry key="H1" value="18.79814080390067" />
-      <entry key="H2" value="32.223785021850034" />
-      <entry key="H4" value="51.46894980628634" />
-      <entry key="D1" value="150.7624928993749" />
-      <entry key="W1" value="977.4329173042358" />
+      <entry key="MS100" value="3.5987186628634663E-35" />
+      <entry key="MS500" value="1.291902025752999E-7" />
+      <entry key="S2" value="0.018962682980412413" />
+      <entry key="S5" value="0.21165709176000458" />
+      <entry key="S10" value="0.5358364190800676" />
+      <entry key="S30" value="1.221356269826967" />
+      <entry key="S60" value="1.7202388303415972" />
+      <entry key="M2" value="2.354121836671974" />
+      <entry key="M5" value="3.134238457541497" />
+      <entry key="M10" value="3.5464615918632925" />
+      <entry key="M15" value="3.8862485651269445" />
+      <entry key="M30" value="5.803418330633877" />
+      <entry key="H1" value="11.252380131487326" />
+      <entry key="H2" value="24.702506919952143" />
+      <entry key="H4" value="50.778487599506825" />
+      <entry key="D1" value="177.30762745358277" />
+      <entry key="W1" value="1008.517867484659" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0000000000070748" />
-      <entry key="S30" value="1.0002072778071862" />
-      <entry key="S60" value="1.0179545648693662" />
-      <entry key="M2" value="1.2143347561777067" />
-      <entry key="M5" value="2.7070653796321524" />
-      <entry key="M10" value="5.4245157163940005" />
-      <entry key="M15" value="7.551097046599382" />
-      <entry key="M30" value="12.029063873652659" />
-      <entry key="H1" value="17.491637922263195" />
-      <entry key="H2" value="24.447384266893277" />
-      <entry key="H4" value="33.07339253084167" />
-      <entry key="D1" value="63.845791264731496" />
-      <entry key="W1" value="321.5638177662567" />
+      <entry key="S2" value="1.0000000000117628" />
+      <entry key="S5" value="1.000061185890927" />
+      <entry key="S10" value="1.0109594194636229" />
+      <entry key="S30" value="1.3573687601882851" />
+      <entry key="S60" value="1.912913089896982" />
+      <entry key="M2" value="2.5675324737837935" />
+      <entry key="M5" value="3.2753280790329824" />
+      <entry key="M10" value="3.607088614176716" />
+      <entry key="M15" value="3.754676537901889" />
+      <entry key="M30" value="4.16094375826478" />
+      <entry key="H1" value="5.592050613658601" />
+      <entry key="H2" value="11.006789454485368" />
+      <entry key="H4" value="22.8769546470337" />
+      <entry key="D1" value="69.10477904341626" />
+      <entry key="W1" value="330.0860944174747" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="3.684754672717458E-6" />
-      <entry key="MS500" value="0.0818995877411477" />
-      <entry key="S2" value="0.534958914450139" />
-      <entry key="S5" value="0.7786246910652839" />
-      <entry key="S10" value="0.8823990308790038" />
-      <entry key="S30" value="0.9717439338617795" />
-      <entry key="S60" value="1.1083953665263233" />
-      <entry key="M2" value="1.5647435110003882" />
-      <entry key="M5" value="4.120766895431255" />
-      <entry key="M10" value="8.844655703843584" />
-      <entry key="M15" value="12.833388183451358" />
-      <entry key="M30" value="22.474907790273036" />
-      <entry key="H1" value="36.27594351497609" />
-      <entry key="H2" value="56.66022513404783" />
-      <entry key="H4" value="84.53413980709551" />
-      <entry key="D1" value="214.6049415728895" />
-      <entry key="W1" value="1298.994342528386" />
+      <entry key="MS100" value="5.0685341419086875E-6" />
+      <entry key="MS500" value="0.08729241820617836" />
+      <entry key="S2" value="0.5535396470741802" />
+      <entry key="S5" value="0.947463144055106" />
+      <entry key="S10" value="1.366934925117925" />
+      <entry key="S30" value="2.4786842543426886" />
+      <entry key="S60" value="3.5670658453301622" />
+      <entry key="M2" value="4.880676815917453" />
+      <entry key="M5" value="6.389953117752815" />
+      <entry key="M10" value="7.142981053264614" />
+      <entry key="M15" value="7.633525545815144" />
+      <entry key="M30" value="9.959583131592847" />
+      <entry key="H1" value="16.839692442193112" />
+      <entry key="H2" value="35.702963306673524" />
+      <entry key="H4" value="73.64825718616135" />
+      <entry key="D1" value="246.4084238306653" />
+      <entry key="W1" value="1338.6014452447441" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -166,7 +170,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.DemoApplication.executor": "Run",
     "Spring Boot.TaskControllerApplication (1).executor": "Run",
-    "Spring Boot.TaskControllerApplication.executor": "Debug",
+    "Spring Boot.TaskControllerApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
@@ -445,14 +449,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00170" summary="Consulta do roadmap - ok">
-      <option name="closed" value="true" />
-      <created>1787257034896</created>
-      <option name="number" value="00170" />
-      <option name="presentableId" value="LOCAL-00170" />
-      <option name="project" value="LOCAL" />
-      <updated>1787257034896</updated>
     </task>
     <task id="LOCAL-00171" summary="Consulta do roadmap - ok">
       <option name="closed" value="true" />
@@ -838,7 +834,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790709929926</updated>
     </task>
-    <option name="localTasksCounter" value="219" />
+    <task id="LOCAL-00219" summary="Quadro kanbam - Roadmad / Ausencia -&gt; OK">
+      <option name="closed" value="true" />
+      <created>1790721101720</created>
+      <option name="number" value="00219" />
+      <option name="presentableId" value="LOCAL-00219" />
+      <option name="project" value="LOCAL" />
+      <updated>1790721101721</updated>
+    </task>
+    <option name="localTasksCounter" value="220" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -83,8 +83,6 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     @Query("""
     SELECT new br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO(
-        s.idsprint,
-        s.descsprint,
         es.idestoria,
         es.descestoria,
         ep.idepico,

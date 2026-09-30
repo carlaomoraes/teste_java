@@ -184,6 +184,7 @@ public class SprintController {
 
     @GetMapping("/{idSprint}/quadro")
     public List<TarefaQuadroDTO> montaQuadro(@PathVariable Long idSprint) {
+
         return service.montaQuadro(idSprint);
     }
 

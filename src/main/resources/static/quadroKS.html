@@ -29,7 +29,6 @@
              <select id="comboEmpreendimento" class="form-select" required></select>
         <label class="form-label">Sprint *</label>
              <select id="comboSprint" class="form-select" required></select>
-        <input type="number" id="inputNumber" class="form-control">
     </div>
     <div class="text-end" id="saude"></div>
 
@@ -39,7 +38,7 @@
         <div class="col-md-3">
             <div class="card text-bg-success">
                 <div class="card-body">
-                    <h3>18</h3>
+                    <h3>0</h3>
                     Concluídas
                 </div>
             </div>
@@ -48,7 +47,7 @@
         <div class="col-md-3">
             <div class="card text-bg-primary">
                 <div class="card-body">
-                    <h3>7</h3>
+                    <h3>0</h3>
                     Em andamento
                 </div>
             </div>
@@ -57,7 +56,7 @@
         <div class="col-md-3">
             <div class="card text-bg-danger">
                 <div class="card-body">
-                    <h3>3</h3>
+                    <h3>0</h3>
                     Atrasadas
                 </div>
             </div>
@@ -66,7 +65,7 @@
         <div class="col-md-3">
             <div class="card text-bg-secondary">
                 <div class="card-body">
-                    <h3>272 h</h3>
+                    <h3>0 h</h3>
                     Capacidade
                 </div>
             </div>
@@ -81,15 +80,14 @@
             <table class="table table-bordered align-middle mb-0">
                 <thead>
                 <tr>
-                    <th style="width:250px"> Equipe / Estórias </th>
                     <div id="roadmap"></div>
+                    <div id="estorias_tarefas"></div>
+
                 </tr>
 
                 </thead>
 
                 <tbody>
-
-                <div id="estorias_tarefas"></div>
 
                 </tbody>
 
@@ -98,7 +96,7 @@
         </div>
 
     </div>
-
+    <div id="resultado"></div>
 </div>
 <!-- BOTÕES -->
 <div class="btn-group">
@@ -108,9 +106,19 @@
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
+    const API_TRANSICAO = 'http://localhost:8080/status_transicao';
+
 
     let dataInicioSprint = null;
     let dataFimSprint = null;
+
+    const TIPO_ENTIDADE = {
+        EPICO: 1,
+        ESTORIA: 2,
+        TAREFA: 3,
+        SPRINT: 4,
+        EMPREENDIMENTO: 5,
+    };
 
     async function carregaCabecalho(idEmpreendimento) {
         const comboSprint= document.getElementById("comboSprint");
@@ -126,7 +134,7 @@
                 document.getElementById("comboSprint");
                 listarAusenciasSprint(a.idsprint);
                 montaRoadmap(a.idsprint);
-                document.getElementById("inputNumber").value = a.idsprint;
+                montarKAMBAM(a.idsprint);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado", error.message, "error");
@@ -144,8 +152,7 @@
                 comboEmpreendimento.appendChild(opcao);
             });
         } catch (error) {
-            //  mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("EMPREENDIMENTO"), "error");
-            mostrarMensagemNaTela("resultado_epico", error.message, "error");
+              mostrarMensagemNaTela("resultado", MSG.erroCarregar("EMPREENDIMENTO"), "error");
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -185,7 +192,7 @@
             const url = `${API}/listar_ausencias?data_inicio=${dataInicioSprint}`+`&data_fim=${dataFimSprint}`;
             const response = await fetch(url);
             if (!response.ok) {
-                mostrarMensagemNaTela("ausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
+                mostrarMensagemNaTela("resultado",MSG.erroCarregar("AUSÊNCIAS"),"error");
                 return;
             }
             const data = await response.json();
@@ -218,9 +225,7 @@
             tabela += `</tbody>  </table>`;
             container.innerHTML = tabela;
         } catch (error) {
-            console.error(error);
-         //   mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
-            mostrarMensagemNaTela("resultadoausencia",error.message,"error");
+            mostrarMensagemNaTela("resultado",MSG.erroCarregar("AUSÊNCIAS"),"error");
         }
     }
     async function montaRoadmap(idSprint) {
@@ -287,10 +292,145 @@
     }
     async function montarKAMBAM(idSprint) {
         const container = document.getElementById("estorias_tarefas");
+        container.innerHTML = "";
+        try {
 
-        const url = `${API}/${idSprint}/quadro`;
-        const response = await fetch(url);
-        const data_sp = await response.json();
+            // =====================================================
+            // 1. BUSCA AS TAREFAS DA SPRINT
+            // =====================================================
+
+            const responseQuadro = await fetch(`${API}/${idSprint}/quadro`);
+
+            if (!responseQuadro.ok) {
+                throw new Error("Erro ao carregar tarefas");
+            }
+
+            const tarefas = await responseQuadro.json();
+            // =====================================================
+            // 2. BUSCA O WORKFLOW DE TAREFA
+            // =====================================================
+            const responseWorkflow = await fetch(`${API_TRANSICAO}/listar/${TIPO_ENTIDADE.TAREFA}`);
+            if (!responseWorkflow.ok) {
+                throw new Error("Erro ao carregar workflow");
+            }
+
+            const workflow = await responseWorkflow.json();
+
+
+            // =====================================================
+            // 3. EXTRAI OS STATUS DO WORKFLOW
+            // =====================================================
+
+            const statusTarefa = montarStatusDoWorkflow(workflow);
+
+            // =====================================================
+            // 4. MONTA O KANBAN
+            // =====================================================
+
+            let html = `
+            <div class="d-flex gap-3 overflow-auto w-100">
+        `;
+            statusTarefa.forEach(status => {
+                // Tarefas que pertencem ao status atual
+                const tarefasDaColuna = tarefas.filter(tarefa => Number(tarefa.idstatus) === Number(status.idstatus));
+                html += `
+                <div class="kanban-coluna">
+
+                    <!-- CABEÇALHO -->
+
+                    <div class="kanban-header"
+                         style="border-top:4px solid ${status.cor}">
+
+                        <strong>
+                            ${status.descstatus}
+                        </strong>
+
+                        <span class="badge bg-secondary">
+                            ${tarefasDaColuna.length}
+                        </span>
+
+                    </div>
+
+
+                    <!-- CORPO DA COLUNA -->
+
+                    <div class="kanban-body"
+                         data-status="${status.idstatus}">
+            `;
+
+
+                // =================================================
+                // CARDS
+                // =================================================
+
+                tarefasDaColuna.forEach(tarefa => {
+
+                    html += montarCardTarefa(tarefa);
+
+                });
+
+
+                html += `
+                    </div>
+                </div>
+            `;
+
+            });
+
+
+            html += `</div>`;
+
+            container.innerHTML = html;
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            mostrarMensagemNaTela(
+                "resultado",
+                MSG.erroCarregar("ESTÓRIAS/TAREFAS"),
+                "error"
+            );
+
+        }
+    }
+    function montarStatusDoWorkflow(workflow) {
+        const mapa = new Map();
+        workflow.forEach(item => {
+            // STATUS ORIGEM
+            if (!mapa.has(item.idStatusOrigem)) {
+
+                mapa.set(item.idStatusOrigem, {
+                    idstatus: item.idStatusOrigem,
+                    descstatus: item.statusOrigem,
+                    cor: item.corOrigem
+                });
+
+            }
+
+            // STATUS DESTINO
+            if (!mapa.has(item.idStatusDestino)) {
+
+                mapa.set(item.idStatusDestino, {
+                    idstatus: item.idStatusDestino,
+                    descstatus: item.statusDestino,
+                    cor: item.corDestino
+                });
+
+            }
+
+        });
+
+        return Array.from(mapa.values());
+    }
+    function montarCardTarefa(tarefa) {
+        html += ``;
+        html += `<div class="kanban-coluna">`;
+        html += `<div class="kanban-header">`;
+        html += `<div class="kanban-body">`
+        html += `">`
+        return html;
 
     }
 </script>
