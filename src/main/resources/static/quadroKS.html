@@ -321,72 +321,33 @@
             // =====================================================
             // 4. MONTA O KANBAN
             // =====================================================
-            let html = `
-            <div class="d-flex gap-3 overflow-auto w-100">
-        `;
+            let html = `<div class="d-flex gap-3 overflow-auto w-100">`;
             statusTarefa.forEach(status => {
                 // Tarefas que pertencem ao status atual
                 const tarefasDaColuna = tarefas.filter(tarefa => Number(tarefa.idstatus) === Number(status.idstatus));
-                html += `
-                <div class="kanban-coluna">
-
+                html += `<div class="kanban-coluna">
                     <!-- CABEÇALHO -->
-
-                    <div class="kanban-header"
-                         style="border-top:4px solid ${status.cor}">
-
-                        <strong>
-                            ${status.descstatus}
-                        </strong>
-
-                        <span class="badge bg-secondary">
-                            ${tarefasDaColuna.length}
-                        </span>
-
+                    <div class="kanban-header" style="border-top:4px solid ${status.cor}">
+                        <span class="badge" style="background-color:${status.cor}; color:white;">${status.descstatus}</span>
+                        <span class="badge bg-secondary"> ${tarefasDaColuna.length} </span>
                     </div>
-
-
                     <!-- CORPO DA COLUNA -->
-
                     <div class="kanban-body"
-                         data-status="${status.idstatus}">
-            `;
-
-
+                         data-status="${status.idstatus}">`;
                 // =================================================
                 // CARDS
                 // =================================================
-
                 tarefasDaColuna.forEach(tarefa => {
-
                     html += montarCardTarefa(tarefa);
-
                 });
-
-
-                html += `
-                    </div>
-                </div>
-            `;
-
+                html += `</div></div> `;
             });
-
-
             html += `</div>`;
-
             container.innerHTML = html;
-
-
         } catch (error) {
-
             console.error(error);
-
-            mostrarMensagemNaTela(
-                "resultado",
-                MSG.erroCarregar("ESTÓRIAS/TAREFAS"),
-                "error"
-            );
-
+            //mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
+            mostrarMensagemNaTela("resultado", error.message,"error");
         }
     }
     function montarStatusDoWorkflow(workflow) {
@@ -394,7 +355,6 @@
         workflow.forEach(item => {
             // STATUS ORIGEM
             if (!mapa.has(item.idStatusOrigem)) {
-
                 mapa.set(item.idStatusOrigem, {
                     idstatus: item.idStatusOrigem,
                     descstatus: item.statusOrigem,
@@ -402,10 +362,8 @@
                 });
 
             }
-
             // STATUS DESTINO
             if (!mapa.has(item.idStatusDestino)) {
-
                 mapa.set(item.idStatusDestino, {
                     idstatus: item.idStatusDestino,
                     descstatus: item.statusDestino,
@@ -413,19 +371,21 @@
                 });
 
             }
-
         });
 
         return Array.from(mapa.values());
     }
     function montarCardTarefa(tarefa) {
+        var html;
         html += ``;
         html += `<div class="kanban-coluna">`;
         html += `<div class="kanban-header">`;
-        html += `<div class="kanban-body">`
-        html += `">`
+        html += `<div class="kanban-body">`;
+        html += tarefa.idtarefa + ` - `+ tarefa.desctarefa;
+        html += `</div>`;
+        html += `</div>`;
+        html += `</div>`;
         return html;
-
     }
 </script>
 </body>
