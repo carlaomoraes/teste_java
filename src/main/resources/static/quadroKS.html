@@ -313,20 +313,14 @@
             if (!responseWorkflow.ok) {
                 throw new Error("Erro ao carregar workflow");
             }
-
             const workflow = await responseWorkflow.json();
-
-
             // =====================================================
             // 3. EXTRAI OS STATUS DO WORKFLOW
             // =====================================================
-
             const statusTarefa = montarStatusDoWorkflow(workflow);
-
             // =====================================================
             // 4. MONTA O KANBAN
             // =====================================================
-
             let html = `
             <div class="d-flex gap-3 overflow-auto w-100">
         `;

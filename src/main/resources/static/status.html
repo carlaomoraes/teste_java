@@ -271,8 +271,11 @@
     }
 
     async function cancelarWorkflow() {
-        await montarCheckboxStatus(document.getElementById('comboTipoW').value,
-            document.getElementById('comboStatusW').value);
+        document.getElementById('comboTipoW').value = "";
+        document.getElementById('comboStatusW').value = "";
+        const container = document.getElementById("listagemworkflow");
+        container.innerHTML = "";
+
     }
 
     async function salvarTipostatus() {
