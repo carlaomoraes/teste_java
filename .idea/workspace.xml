@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Quadro kanbam - ESTÓRIAS/TAREFAS -&gt; Status das tarefas / cores">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Quadro kanbam - ESTÓRIAS/TAREFAS -&gt; Criador e responsavel">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,61 +71,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000000582077" />
-      <entry key="MS500" value="1.0089742058984144" />
-      <entry key="S2" value="1.307786103336229" />
-      <entry key="S5" value="1.6241652744508062" />
-      <entry key="S10" value="1.7900413170075375" />
-      <entry key="S30" value="1.928409739027665" />
-      <entry key="S60" value="2.1447996986883533" />
-      <entry key="M2" value="3.540816493390022" />
-      <entry key="M5" value="8.368150495125466" />
-      <entry key="M10" value="13.213004632454311" />
-      <entry key="M15" value="16.233001391367836" />
-      <entry key="M30" value="22.37251752840396" />
-      <entry key="H1" value="31.673520991961503" />
-      <entry key="H2" value="47.42033326602647" />
-      <entry key="H4" value="75.38848109001687" />
-      <entry key="D1" value="213.00709559061877" />
-      <entry key="W1" value="1047.2831086065114" />
+      <entry key="MS100" value="1.0000000124437798" />
+      <entry key="MS500" value="1.0267132577526121" />
+      <entry key="S2" value="1.5498515599646625" />
+      <entry key="S5" value="2.159765576240666" />
+      <entry key="S10" value="2.516001536820025" />
+      <entry key="S30" value="2.921669227671188" />
+      <entry key="S60" value="3.327946873305579" />
+      <entry key="M2" value="3.853692434563895" />
+      <entry key="M5" value="4.697493848783244" />
+      <entry key="M10" value="7.163072097316813" />
+      <entry key="M15" value="10.334986146670014" />
+      <entry key="M30" value="18.78644095536679" />
+      <entry key="H1" value="31.00331213166967" />
+      <entry key="H2" value="49.109272607931736" />
+      <entry key="H4" value="78.71705549387646" />
+      <entry key="D1" value="219.86743146964756" />
+      <entry key="W1" value="1055.0999356456018" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="1.0073901765532652E-174" />
-      <entry key="S10" value="1.355526001668776E-87" />
-      <entry key="S30" value="1.737249684281287E-29" />
-      <entry key="S60" value="5.886075764899951E-15" />
-      <entry key="M2" value="1.085182147507772E-7" />
-      <entry key="M5" value="0.0025689242540605263" />
-      <entry key="M10" value="0.08518934748601383" />
-      <entry key="M15" value="0.31586574663538475" />
-      <entry key="M30" value="1.519946833695429" />
-      <entry key="H1" value="4.2394440337750465" />
-      <entry key="H2" value="9.76177090035446" />
-      <entry key="H4" value="21.344602765849338" />
-      <entry key="D1" value="72.11781141791212" />
-      <entry key="W1" value="334.7532283738615" />
+      <entry key="MS100" value="7.813724443096445E-278" />
+      <entry key="MS500" value="3.7894101869862335E-56" />
+      <entry key="S2" value="1.3952206811937356E-14" />
+      <entry key="S5" value="2.870866408799169E-6" />
+      <entry key="S10" value="0.0017377812649349642" />
+      <entry key="S30" value="0.17463580681335567" />
+      <entry key="S60" value="0.6778364816928039" />
+      <entry key="M2" value="1.402923596389584" />
+      <entry key="M5" value="2.205207288563532" />
+      <entry key="M10" value="2.580966787701493" />
+      <entry key="M15" value="2.784147004364337" />
+      <entry key="M30" value="3.605133504540659" />
+      <entry key="H1" value="5.913623201431396" />
+      <entry key="H2" value="11.159711861003794" />
+      <entry key="H4" value="22.541350961791654" />
+      <entry key="D1" value="74.07312860360962" />
+      <entry key="W1" value="337.0578584351459" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.4322686156851253" />
-      <entry key="MS500" value="0.853493845813376" />
-      <entry key="S2" value="1.257265657076846" />
-      <entry key="S5" value="1.5997919038703086" />
-      <entry key="S10" value="1.776776115897237" />
-      <entry key="S30" value="1.9235633529793625" />
-      <entry key="S60" value="2.1398969133818255" />
-      <entry key="M2" value="3.5311294666928124" />
-      <entry key="M5" value="8.358468845671128" />
-      <entry key="M10" value="13.288004051977678" />
-      <entry key="M15" value="16.539832153339695" />
-      <entry key="M30" value="23.883810956101946" />
-      <entry key="H1" value="35.90432916705464" />
-      <entry key="H2" value="57.17366632923695" />
-      <entry key="H4" value="96.72483741755622" />
-      <entry key="D1" value="285.12048617130284" />
-      <entry key="W1" value="1382.0337409505396" />
+      <entry key="MS100" value="0.6285066959388557" />
+      <entry key="MS500" value="0.9361517821079398" />
+      <entry key="S2" value="1.5166773387714296" />
+      <entry key="S5" value="2.14168066687337" />
+      <entry key="S10" value="2.5070662679472937" />
+      <entry key="S30" value="3.082068900045262" />
+      <entry key="S60" value="3.9801230976745012" />
+      <entry key="M2" value="5.229180775542046" />
+      <entry key="M5" value="6.884788703199816" />
+      <entry key="M10" value="9.732348599914866" />
+      <entry key="M15" value="13.109546598030667" />
+      <entry key="M30" value="22.38338475291833" />
+      <entry key="H1" value="36.90884679604053" />
+      <entry key="H2" value="60.26088521150881" />
+      <entry key="H4" value="101.25033919798186" />
+      <entry key="D1" value="293.93611756964214" />
+      <entry key="W1" value="1392.1551912122413" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -444,14 +443,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00174" summary="Consultas do backlog/roadmap finalizadas">
-      <option name="closed" value="true" />
-      <created>1787592903076</created>
-      <option name="number" value="00174" />
-      <option name="presentableId" value="LOCAL-00174" />
-      <option name="project" value="LOCAL" />
-      <updated>1787592903076</updated>
     </task>
     <task id="LOCAL-00175" summary="Gravação do backlog">
       <option name="closed" value="true" />
@@ -837,7 +828,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790882160932</updated>
     </task>
-    <option name="localTasksCounter" value="223" />
+    <task id="LOCAL-00223" summary="Quadro kanbam - ESTÓRIAS/TAREFAS -&gt; Criador e responsavel">
+      <option name="closed" value="true" />
+      <created>1790884068384</created>
+      <option name="number" value="00223" />
+      <option name="presentableId" value="LOCAL-00223" />
+      <option name="project" value="LOCAL" />
+      <updated>1790884068384</updated>
+    </task>
+    <option name="localTasksCounter" value="224" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -885,7 +884,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Roadmap/backlog -&gt; OK" />
     <MESSAGE value="Ausencias programadas com cores" />
     <MESSAGE value="Cadastro de papel -&gt; OK" />
     <MESSAGE value="Ajustando ordem do cadastro de Stattus" />
@@ -910,7 +908,8 @@
     <MESSAGE value="Quadro kanbam - ESTÓRIAS/TAREFAS" />
     <MESSAGE value="Quadro kanbam - ESTÓRIAS/TAREFAS -&gt; Status das tarefas" />
     <MESSAGE value="Quadro kanbam - ESTÓRIAS/TAREFAS -&gt; Status das tarefas / cores" />
-    <option name="LAST_COMMIT_MESSAGE" value="Quadro kanbam - ESTÓRIAS/TAREFAS -&gt; Status das tarefas / cores" />
+    <MESSAGE value="Quadro kanbam - ESTÓRIAS/TAREFAS -&gt; Criador e responsavel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Quadro kanbam - ESTÓRIAS/TAREFAS -&gt; Criador e responsavel" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
