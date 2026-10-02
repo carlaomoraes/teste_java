@@ -107,7 +107,7 @@
     const API = 'http://localhost:8080/sprints';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
     const API_TRANSICAO = 'http://localhost:8080/status_transicao';
-
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
 
     let dataInicioSprint = null;
     let dataFimSprint = null;
@@ -230,7 +230,6 @@
     }
     async function montaRoadmap(idSprint) {
         const nomesDias = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
-
         const url = `${API}/DTO/${idSprint}`;
         const response = await fetch(url);
         const data_sp = await response.json();
@@ -239,7 +238,6 @@
         }
         var dataInicioSprint = data_sp.dtiniciosprint;
         var dataFimSprint = data_sp.dtfinalsprint;
-
         const container = document.getElementById("roadmap");
         if (!dataInicioSprint || !dataFimSprint) {
             container.innerHTML = "";
@@ -249,7 +247,6 @@
         // Datas da Sprint
         const inicio = new Date(dataInicioSprint + "T00:00:00");
         const fim = new Date(dataFimSprint + "T00:00:00");
-
         // Data de hoje
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0);
@@ -258,14 +255,11 @@
         // MONTA VETOR COM OS DIAS DA SPRINT
         // =========================================================
         const dias = [];
-
         let data = new Date(inicio);
-
         while (data <= fim) {
             dias.push(new Date(data));
             data.setDate(data.getDate() + 1);
         }
-
         // =========================================================
         // MONTA ROADMAP
         // =========================================================
@@ -276,16 +270,13 @@
             // Verifica se é hoje
             const ehHoje = dataDia.getFullYear() === hoje.getFullYear() && dataDia.getMonth() === hoje.getMonth() && dataDia.getDate() === hoje.getDate();
             const ehFinaldeSemana = dataDia.getDay() === 0 || dataDia.getDay() === 6;
-
             let classe = "";
             if(ehHoje) {
                 classe = "bg-warning"
             } else if (ehFinaldeSemana) {
                 classe = "fim-semana";
             }
-
             html += `<th class="${classe}"><div>${dia}</div><small>${nomesDias[dataDia.getDay()]}</small></th>`;
-
         }
         html += `</tr></table>`;
         container.innerHTML = html;
@@ -294,17 +285,13 @@
         const container = document.getElementById("estorias_tarefas");
         container.innerHTML = "";
         try {
-
             // =====================================================
             // 1. BUSCA AS TAREFAS DA SPRINT
             // =====================================================
-
             const responseQuadro = await fetch(`${API}/${idSprint}/quadro`);
-
             if (!responseQuadro.ok) {
                 throw new Error("Erro ao carregar tarefas");
             }
-
             const tarefas = await responseQuadro.json();
             // =====================================================
             // 2. BUSCA O WORKFLOW DE TAREFA
@@ -314,6 +301,7 @@
                 throw new Error("Erro ao carregar workflow");
             }
             const workflow = await responseWorkflow.json();
+            console.log(workflow);
             // =====================================================
             // 3. EXTRAI OS STATUS DO WORKFLOW
             // =====================================================
@@ -332,8 +320,7 @@
                         <span class="badge bg-secondary"> ${tarefasDaColuna.length} </span>
                     </div>
                     <!-- CORPO DA COLUNA -->
-                    <div class="kanban-body"
-                         data-status="${status.idstatus}">`;
+                    <div class="kanban-body" data-status="${status.idstatus}">`;
                 // =================================================
                 // CARDS
                 // =================================================
@@ -346,8 +333,7 @@
             container.innerHTML = html;
         } catch (error) {
             console.error(error);
-            //mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
-            mostrarMensagemNaTela("resultado", error.message,"error");
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
         }
     }
     function montarStatusDoWorkflow(workflow) {
@@ -358,37 +344,56 @@
                 mapa.set(item.idStatusOrigem, {
                     idstatus: item.idStatusOrigem,
                     descstatus: item.statusOrigem,
-                    cor: item.corOrigem
+                    cor: item.corOrigem,
+                    ordem: item.ordemOrigem
                 });
-
             }
             // STATUS DESTINO
             if (!mapa.has(item.idStatusDestino)) {
                 mapa.set(item.idStatusDestino, {
                     idstatus: item.idStatusDestino,
                     descstatus: item.statusDestino,
-                    cor: item.corDestino
+                    cor: item.corDestino,
+                    ordem: item.ordemDestino
                 });
-
             }
         });
-
-        return Array.from(mapa.values());
+        return Array.from(mapa.values()).sort((a, b) => a.ordem - b.ordem)
     }
+    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
+    async function carregarGestor(combo) {
+        const comboUsuario = document.getElementById(combo);
+        try {
+            const resposta = await fetch(`${API_USUARIOS}/listar`);
+            const usuarios = await resposta.json();
+            usuarios.forEach(usuario => {
+                const opcao = document.createElement('option');
+                opcao.value = usuario.idusuario;
+                opcao.textContent = usuario.nome;
+                comboUsuario.add(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_epico", "Erro ao carregar gestor: "+error.message,"error");
+        }
+    }
+
     function montarCardTarefa(tarefa) {
-        var html;
-        html += ``;
+        var html = ``;
         html += `<div class="kanban-coluna">`;
         html += `<div class="kanban-header">`;
         html += `<div class="kanban-body">`;
         html += tarefa.idtarefa + ` - `+ tarefa.desctarefa;
         html += `<div class="small mt-1">`;
         html += `<i class="bi bi-person-check"></i>`;
-        html += tarefa.nomecriador;
+        html +=  `<select id="comboCriadorlTA"` + tarefa.idtarefa +` >`;
+        html +=  `<option value="">-- Selecione o criador --</option>`;
+        html +=  `</select>`;
         html += `</div>`;
         html += `<div class="small mt-1">`;
         html += `<i class="bi bi-person-check"></i>`;
-        html += tarefa.nomeresponsavel;
+        html +=  `<select id="comboResponsavelTA"` + tarefa.idtarefa +` >`;
+        html +=  `<option value="">-- Selecione o responsável --</option>`;
+        html +=  `</select>`;
         html += `</div>`;
         html += `<div class="small mt-1">`;
         html += `⏱ Horas Estimadas: `+tarefa.horas_estimadas+'<br>';
