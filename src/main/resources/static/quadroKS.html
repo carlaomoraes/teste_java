@@ -331,6 +331,12 @@
             });
             html += `</div>`;
             container.innerHTML = html;
+            tarefas.forEach(tarefa => {
+                const comboCriador = document.getElementById(`comboCriadorTA_${tarefa.idtarefa}`);
+                const comboResponsavel = document.getElementById(`comboResponsavelTA_${tarefa.idtarefa}`);
+
+
+            })
         } catch (error) {
             console.error(error);
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
