@@ -105,12 +105,13 @@
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
-    const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
-    const API_TRANSICAO = 'http://localhost:8080/status_transicao';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_STATUS = 'http://localhost:8080/status_entidades';
+    const API_TRANSICAO = 'http://localhost:8080/status_transicao';
+    const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
 
-    let dataInicioSprint = null;
     let dataFimSprint = null;
+    let dataInicioSprint = null;
 
     const TIPO_ENTIDADE = {
         EPICO: 1,
@@ -301,7 +302,6 @@
                 throw new Error("Erro ao carregar workflow");
             }
             const workflow = await responseWorkflow.json();
-            console.log(workflow);
             // =====================================================
             // 3. EXTRAI OS STATUS DO WORKFLOW
             // =====================================================
@@ -332,13 +332,11 @@
             html += `</div>`;
             container.innerHTML = html;
             tarefas.forEach(tarefa => {
-                const comboCriador = document.getElementById(`comboCriadorTA_${tarefa.idtarefa}`);
-                const comboResponsavel = document.getElementById(`comboResponsavelTA_${tarefa.idtarefa}`);
-
-
+                carregarGestor(document.getElementById(`comboCriadorTA_${tarefa.idtarefa}`));
+                carregarGestor(document.getElementById(`comboResponsavelTA_${tarefa.idtarefa}`));
+                carregarProximosStatusTarefa(tarefa.idstatus, document.getElementById(`comboStatusTA_${tarefa.idtarefa}`));
             })
         } catch (error) {
-            console.error(error);
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
         }
     }
@@ -367,8 +365,7 @@
         return Array.from(mapa.values()).sort((a, b) => a.ordem - b.ordem)
     }
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
-    async function carregarGestor(combo) {
-        const comboUsuario = document.getElementById(combo);
+    async function carregarGestor(comboUsuario, idSelecionado = null) {
         try {
             const resposta = await fetch(`${API_USUARIOS}/listar`);
             const usuarios = await resposta.json();
@@ -376,39 +373,69 @@
                 const opcao = document.createElement('option');
                 opcao.value = usuario.idusuario;
                 opcao.textContent = usuario.nome;
-                comboUsuario.add(opcao);
+                if(Number(usuario.idusuario) === Number(idSelecionado)) {
+                    opcao.selected = true;
+                }
+                comboUsuario.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico", "Erro ao carregar gestor: "+error.message,"error");
         }
     }
-
+    async function carregarProximosStatusTarefa(idStatusAtual, comboStatus) {
+        try {
+            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${TIPO_ENTIDADE.TAREFA}`;
+            const resposta = await fetch(linha);
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
+            const vetor = await resposta.json();
+            const opcaoPadrao = document.createElement("option");
+            opcaoPadrao.value = "";
+            opcaoPadrao.textContent = "Selecione...";
+            vetor.forEach(status => {
+                const opcao = document.createElement("option");
+                opcao.value = status.idstatus;
+                opcao.textContent = status.descstatus;
+                comboStatus.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
+        }
+    }
     function montarCardTarefa(tarefa) {
         var html = ``;
-        html += `<div class="kanban-coluna">`;
-        html += `<div class="kanban-header">`;
-        html += `<div class="kanban-body">`;
-        html += tarefa.idtarefa + ` - `+ tarefa.desctarefa;
-        html += `<div class="small mt-1">`;
-        html += `<i class="bi bi-person-check"></i>`;
-        html +=  `<select id="comboCriadorlTA"` + tarefa.idtarefa +` >`;
-        html +=  `<option value="">-- Selecione o criador --</option>`;
-        html +=  `</select>`;
-        html += `</div>`;
-        html += `<div class="small mt-1">`;
-        html += `<i class="bi bi-person-check"></i>`;
-        html +=  `<select id="comboResponsavelTA"` + tarefa.idtarefa +` >`;
-        html +=  `<option value="">-- Selecione o responsável --</option>`;
-        html +=  `</select>`;
-        html += `</div>`;
-        html += `<div class="small mt-1">`;
-        html += `⏱ Horas Estimadas: `+tarefa.horas_estimadas+'<br>';
-        html += `⏱ Horas Realizadas: `+tarefa.horas_realizadas;
-        html += `</div>`;
-        html += `</div>`;
-        html += `</div>`;
-        html += `</div>`;
-        return html;
+        try {
+            html += `<div class="kanban-coluna">`;
+            html += `<div class="kanban-header">`;
+            html += `<div class="kanban-body">`;
+            html += `<select id=`+"comboStatusTA_" + tarefa.idtarefa + `>`;
+            html += `<option value="">-- Mover para --</option>`;
+            html += `</select><br>`;
+            html += tarefa.idtarefa + ` - ` + tarefa.desctarefa;
+            html += `<div class="small mt-1">`;
+            html += `<i class="bi bi-person-check"></i>`;
+            html += `<select id=` + "comboCriadorTA_" + tarefa.idtarefa + `>`;
+            html += `<option value="">-- Selecione o criador --</option>`;
+            html += `</select>`;
+            html += `</div>`;
+            html += `<div class="small mt-1">`;
+            html += `<i class="bi bi-person-check"></i>`;
+            html += `<select id=` + "comboResponsavelTA_" + tarefa.idtarefa + `>`;
+            html += `<option value="">-- Selecione o responsável --</option>`;
+            html += `</select>`;
+            html += `</div>`;
+            html += `<div class="small mt-1">`;
+            html += `⏱ Horas Estimadas: ` + tarefa.horas_estimadas + '<br>';
+            html += `⏱ Horas Realizadas: ` + tarefa.horas_realizadas;
+            html += `</div>`;
+            html += `</div>`;
+            html += `</div>`;
+            html += `</div>`;
+            return html;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"), "error");
+        }
     }
 </script>
 </body>

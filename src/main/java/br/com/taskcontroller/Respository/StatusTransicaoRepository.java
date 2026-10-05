@@ -78,7 +78,7 @@ public interface StatusTransicaoRepository
     JOIN st.statusOrigem o
     JOIN st.statusDestino d
    WHERE o.tipoentidade.idtipo_entidade = :idTipoEntidade
-    ORDER BY st.idtransicao
+    ORDER BY d.idstatus
 """)
     List<StatusTransicaoListagemDTO> listarWorkflow(Long idTipoEntidade);
 
