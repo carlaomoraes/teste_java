@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Record.Status.StatusDTO;
 import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
@@ -45,4 +46,10 @@ public class StatusEntidadesService {
     public Long achaOrigem(Long idTipoEntidade) {
         return repository.achaOrigem(idTipoEntidade);
     }
+
+    public StatusEntidades buscaStatusEntidades(Long idStatusEntidades) {
+        return repository.findById(idStatusEntidades)
+                .orElseThrow(() -> new ResourceNotFoundException("Status não encontrado!!!"));
+    }
+
 }

@@ -1,22 +1,24 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
-import br.com.taskcontroller.Modelo.Estoria;
+import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
-import br.com.taskcontroller.Respository.EstoriaRepository;
+import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 @Service
 public class TarefaService {
 
     @Autowired
     private TarefaRepository repository;
+
+    @Autowired
+    private StatusEntidadesService statusEntidadesService;
 
     @Transactional
     public Tarefa salvar(Tarefa tarefa) {
@@ -28,11 +30,10 @@ public class TarefaService {
         return repository.buscarTarefaPorEstoria(idEstoria);
     }
 
-    public Tarefa atualizar(Tarefa Tarefa) {
-
-        return repository.save(Tarefa);
+    public Tarefa atualizar(Tarefa tarefa) {
+        alterarStatus(tarefa.getIdtarefa(), tarefa.getStatus().getIdstatus());
+        return repository.save(tarefa);
     }
-
 
     public void excluir(Long idTarefa) {
         repository.deleteById(idTarefa);
@@ -54,14 +55,12 @@ public class TarefaService {
     public void alterarStatus(Long idTarefa, Long idStatus) {
 
         Tarefa tarefa = repository.findById(idTarefa)
-                .orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada"));
-//
-//        StatusEntidades novoStatus = statusRepository.findById(idStatus)
-//                .orElseThrow(() -> new ResourceNotFoundException("Status não encontrado"));
-//
-//        statusEntidadesService.validarTransicao(tarefa.getStatus(), novoStatus);
-//        tarefa.setStatus(novoStatus);
-        repository.save(tarefa);
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Tarefa não encontrada"));
+
+        StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);
+
+        tarefa.setStatus(novoStatus);
     }
 
 }

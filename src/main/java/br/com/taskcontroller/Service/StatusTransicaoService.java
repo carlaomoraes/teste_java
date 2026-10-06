@@ -1,10 +1,10 @@
 package br.com.taskcontroller.Service;
 
 
+import br.com.taskcontroller.Excecoes.BusinessRuleException;
+import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.StatusTransicao;
-import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
 import br.com.taskcontroller.Record.Status.StatusTransicaoListagemDTO;
-import br.com.taskcontroller.Record.Status.TipoEntidadeDTO;
 import br.com.taskcontroller.Respository.StatusTransicaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,17 +33,25 @@ public class StatusTransicaoService {
         return repository.findById(idStatusTransicao).orElseThrow(() -> new RuntimeException("Status Transição não encontrado"));
     }
 
-    public List<StatusTransicaoDTO> montarTransicao(Long idTipoEntidade) {
-        return repository.montaTransicao(idTipoEntidade);
-    }
-
-    public List<StatusTransicaoDTO> mostrarProximosStatus(Long idTipoEntidade,Long idStatus) {
-        return repository.buscarStatusDisponiveis(idTipoEntidade, idStatus);
-    }
-
     public List<StatusTransicaoListagemDTO> listarWorkFlow(Long idTipoEntidade) {
         return repository.listarWorkflow(idTipoEntidade);
     }
 
+    public void validarTransicao(StatusEntidades origem,
+                                 StatusEntidades destino) {
 
+        boolean permitida = repository.existsByStatusOrigemIdstatusAndStatusDestinoIdstatus(
+                                origem.getIdstatus(),
+                                destino.getIdstatus()
+                        );
+
+        if (!permitida) {
+            throw new BusinessRuleException(
+                    "Transição de status não permitida: "
+                            + origem.getDescstatus()
+                            + " → "
+                            + destino.getDescstatus()
+            );
+        }
+    }
 }

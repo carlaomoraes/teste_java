@@ -1,9 +1,11 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Excecoes.BusinessRuleException;
+import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.Empreendimento;
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Modelo.StatusEntidades;
+import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
@@ -160,34 +162,21 @@ public class SprintService {
         return sprintRepository.buscar(idSprint);
     }
 
-    @Transactional
-    public void alterarStatus(Long idSprint, Long idStatusDestino) {
-        Sprint sprint = sprintRepository.findById(idSprint).orElseThrow(() -> new BusinessRuleException("Sprint não encontrada."));
-        Long idStatusOrigem = sprint.getStatus().getIdstatus();
-        boolean transicaoPermitida = statusTransicaoRepository
-                .existsByStatusOrigemIdstatusAndStatusDestinoIdstatus(
-                        idStatusOrigem,
-                        idStatusDestino
-                );
-
-        if (!transicaoPermitida) {
-            throw new BusinessRuleException("Transição de status não permitida.");
-        }
-
-        StatusEntidades destino = statusEntidadesRepository
-                .findById(idStatusDestino)
-                .orElseThrow(() ->
-                        new BusinessRuleException("Status não encontrado."));
-
-        sprint.setStatus(destino);
-
-        sprintRepository.save(sprint);
-    }
 
     public List<TarefaQuadroDTO> montaQuadro(Long idSprint) {
         if (!sprintRepository.existsById(idSprint)) {
             throw new BusinessRuleException("Sprint não encontrada.");
         }
         return tarefaRepository.montaQuadro(idSprint);
+    }
+
+    @Transactional
+    public void alterarStatus(Long idSprint, Long idStatus) {
+
+        Sprint sprint = sprintRepository.findById(idSprint).orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada"));
+
+        StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);
+
+        sprint.setStatus(novoStatus);
     }
 }

@@ -403,13 +403,23 @@
             mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }
     }
+
+    function mudarStatusTarefa(idTarefa) {
+        const combo = document.getElementById(`comboStatusTA_${idTarefa}`);
+
+        const idStatusDestino = combo.value;
+
+        console.log("Tarefa:", idTarefa);
+        console.log("Status destino:", idStatusDestino);
+    }
+
     function montarCardTarefa(tarefa) {
         var html = ``;
         try {
             html += `<div class="kanban-coluna">`;
             html += `<div class="kanban-header">`;
             html += `<div class="kanban-body">`;
-            html += `<select id=`+"comboStatusTA_" + tarefa.idtarefa + `>`;
+            html += `<select id="comboStatusTA_${tarefa.idtarefa}" onchange="mudarStatusTarefa(${tarefa.idtarefa})">`;
             html += `<option value="">-- Mover para --</option>`;
             html += `</select><br>`;
             html += tarefa.idtarefa + ` - ` + tarefa.desctarefa;

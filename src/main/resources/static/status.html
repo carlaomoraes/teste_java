@@ -275,7 +275,6 @@
         document.getElementById('comboStatusW').value = "";
         const container = document.getElementById("listagemworkflow");
         container.innerHTML = "";
-
     }
 
     async function salvarTipostatus() {
@@ -378,8 +377,7 @@
     }
     function montarTabelaWorkflow(dados) {
         const container = document.getElementById("listagemworkflow");
-        let html = `
-        <table class="table align-middle">
+        let html = `<table class="table align-middle">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -388,8 +386,7 @@
                     <th>Ação</th>
                 </tr>
             </thead>
-            <tbody>
-    `;
+            <tbody>`;
         dados.forEach(item => {
             html += `<tr> <td> ${item.idTransicao} </td>
                           <td> <span class="d-inline-flex align-items-center gap-2">
@@ -399,27 +396,13 @@
                           <td> <span class="d-inline-flex align-items-center gap-2">
                                <span style="width: 9px;height: 9px; border-radius: 50%; background-color: ${item.corDestino}; display: inline-block;"> </span>${item.statusDestino}</span>
                 </td>
-
                 <td>
-                    <button type="button"
-                            class="btn btn-excluir"
-                            onclick="
-                                event.stopPropagation();
-                                excluirWorkflow(${item.idTransicao});
-                            ">
-                        Excluir
-                    </button>
+                    <button type="button" class="btn btn-excluir" onclick="event.stopPropagation(); excluirWorkflow(${item.idTransicao});">Excluir </button>
                 </td>
-
             </tr>
         `;
         });
-
-        html += `
-            </tbody>
-        </table>
-    `;
-
+        html += ` </tbody> </table>`;
         container.innerHTML = html;
     }
     async function excluirWorkflow(idTransicao) {

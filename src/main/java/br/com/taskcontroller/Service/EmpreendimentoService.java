@@ -1,9 +1,8 @@
 package br.com.taskcontroller.Service;
 
 import br.com.taskcontroller.Excecoes.BusinessRuleException;
-import br.com.taskcontroller.Modelo.Empreendimento;
-import br.com.taskcontroller.Modelo.Empreendimento_Equipe;
-import br.com.taskcontroller.Modelo.Equipe;
+import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
+import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Empreendimento.EmpreendimentoDTO;
 import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Respository.EmpreendimentoRepository;
@@ -22,6 +21,9 @@ public class EmpreendimentoService {
     private EmpreendimentoRepository empreendimentoRepository;
 
     @Autowired
+    private StatusEntidadesService statusEntidadesService;
+
+    @Autowired
     private EquipeRepository equipeRepository;
 
     @Autowired
@@ -29,6 +31,7 @@ public class EmpreendimentoService {
 
     // CRUD
     public Empreendimento salvar(Empreendimento empreendimento) {
+        alterarStatus(empreendimento.getIdempreendimento(), empreendimento.getStatus().getIdstatus());
         return empreendimentoRepository.save(empreendimento);
     }
 
@@ -99,5 +102,14 @@ public class EmpreendimentoService {
     public List<EmpreendimentoComboDTO> montaComboEmpreendimento() {
         return empreendimentoRepository.montaComboEmpreendimento();
     }
+
+    public void alterarStatus(Long id, Long idStatus) {
+        Empreendimento empreendimento = empreendimentoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Épico não encontrado"));
+
+        StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);
+
+        empreendimento.setStatus(novoStatus);
+    }
+
 
 }
