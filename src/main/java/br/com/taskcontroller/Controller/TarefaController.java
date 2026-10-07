@@ -116,4 +116,13 @@ public class TarefaController {
 
         return ResponseEntity.noContent().build();
     }
+    @PatchMapping("/{idTarefa}/responsavel/{idUsuario}")
+    public ResponseEntity<Void> alterarResponsavel(
+            @PathVariable Long idTarefa,
+            @PathVariable Long idUsuario) {
+
+        service.alterarResponsavel(idTarefa, idUsuario);
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -3,9 +3,11 @@ package br.com.taskcontroller.Service;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Tarefa;
+import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
+import br.com.taskcontroller.Respository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,10 @@ public class TarefaService {
 
     @Autowired
     private StatusEntidadesService statusEntidadesService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
 
     @Transactional
     public Tarefa salvar(Tarefa tarefa) {
@@ -63,5 +69,18 @@ public class TarefaService {
         tarefa.setStatus(novoStatus);
         repository.save(tarefa);
     }
+    @Transactional
+    public void alterarResponsavel(Long idTarefa, Long idUsuario) {
+        Tarefa tarefa = repository.findById(idTarefa)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Tarefa não encontrada"));
 
+        Usuario responsavel = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Usuário não encontrado"));
+
+        tarefa.setResponsavel(responsavel);
+
+        repository.save(tarefa);
+    }
 }

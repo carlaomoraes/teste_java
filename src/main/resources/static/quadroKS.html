@@ -333,8 +333,7 @@
             html += `</div>`;
             container.innerHTML = html;
             tarefas.forEach(tarefa => {
-                carregarGestor(document.getElementById(`comboCriadorTA_${tarefa.idtarefa}`));
-                carregarGestor(document.getElementById(`comboResponsavelTA_${tarefa.idtarefa}`));
+                carregarGestor(document.getElementById(`comboResponsavelTA_${tarefa.idtarefa}`), tarefa.idresponsavel);
                 carregarStatus(tarefa.idstatus, TIPO_ENTIDADE.TAREFA, document.getElementById(`comboStatusTA_${tarefa.idtarefa}`));
             })
         } catch (error) {
@@ -405,6 +404,24 @@
         }
     }
 
+    async function alterarResponsavelTarefa(idTarefa, idUsuario) {
+        if (!idUsuario) return;
+        try {
+            const response = await fetch(`${API_TAREFA}/${idTarefa}/responsavel/${idUsuario}`,
+                {
+                    method: "PATCH"
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Erro ao alterar responsável.");
+            }
+            // Remonta o quadro
+            await montarKAMBAM(document.getElementById("comboSprint").value);
+        } catch (error) {
+            mostrarMensagemNaTela("resultado",error.message, "error");
+        }
+    }
+
     async function carregarStatus(idStatusAtual, ENTIDADE, comboStatus) {
         comboStatus.innerHTML = '<option value="">Selecione...</option>';
         try {
@@ -440,13 +457,11 @@
             html += tarefa.idtarefa + ` - ` + tarefa.desctarefa;
             html += `<div class="small mt-1">`;
             html += `<i class="bi bi-person-check"></i>`;
-            html += `<select id=` + "comboCriadorTA_" + tarefa.idtarefa + `>`;
-            html += `<option value="">-- Selecione o criador --</option>`;
-            html += `</select>`;
+            html += `${tarefa.nomecriador}`;
             html += `</div>`;
             html += `<div class="small mt-1">`;
             html += `<i class="bi bi-person-check"></i>`;
-            html += `<select id=` + "comboResponsavelTA_" + tarefa.idtarefa + `>`;
+            html += `<select id="comboResponsavelTA_${tarefa.idtarefa}" onchange="alterarResponsavelTarefa(${tarefa.idtarefa},this.value)">`;
             html += `<option value="">-- Selecione o responsável --</option>`;
             html += `</select>`;
             html += `</div>`;
