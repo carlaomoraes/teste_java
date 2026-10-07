@@ -105,6 +105,7 @@
 <script>
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API = 'http://localhost:8080/sprints';
+    const API_TAREFA = 'http://localhost:8080/tarefas';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_TRANSICAO = 'http://localhost:8080/status_transicao';
@@ -334,7 +335,7 @@
             tarefas.forEach(tarefa => {
                 carregarGestor(document.getElementById(`comboCriadorTA_${tarefa.idtarefa}`));
                 carregarGestor(document.getElementById(`comboResponsavelTA_${tarefa.idtarefa}`));
-                carregarProximosStatusTarefa(tarefa.idstatus, document.getElementById(`comboStatusTA_${tarefa.idtarefa}`));
+                carregarStatus(tarefa.idstatus, TIPO_ENTIDADE.TAREFA, document.getElementById(`comboStatusTA_${tarefa.idtarefa}`));
             })
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
@@ -382,9 +383,32 @@
             mostrarMensagemNaTela("resultado_epico", "Erro ao carregar gestor: "+error.message,"error");
         }
     }
-    async function carregarProximosStatusTarefa(idStatusAtual, comboStatus) {
+
+    async function mudarStatus(idTarefa, idStatus) {
+        if (!idStatus) return;
         try {
-            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${TIPO_ENTIDADE.TAREFA}`;
+            const linha = `${API_TAREFA}/${idTarefa}/status/${idStatus}`;
+            console.log(linha);
+            const resposta = await fetch(linha,
+                {
+                    method: "PATCH"
+                }
+            );
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
+            // Remonta o quadro
+            await montarKAMBAM(document.getElementById("comboSprint").value);
+
+        } catch (error) {
+            mostrarMensagemNaTela("resultado",error.message,"error");
+        }
+    }
+
+    async function carregarStatus(idStatusAtual, ENTIDADE, comboStatus) {
+        comboStatus.innerHTML = '<option value="">Selecione...</option>';
+        try {
+            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${ENTIDADE}`;
             const resposta = await fetch(linha);
             if (!resposta.ok) {
                 throw new Error(`Erro ${resposta.status}`);
@@ -396,21 +420,12 @@
             vetor.forEach(status => {
                 const opcao = document.createElement("option");
                 opcao.value = status.idstatus;
-                opcao.textContent = status.descstatus;
+                opcao.textContent = status.descstatus + " - "+status.idstatus;
                 comboStatus.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }
-    }
-
-    function mudarStatusTarefa(idTarefa) {
-        const combo = document.getElementById(`comboStatusTA_${idTarefa}`);
-
-        const idStatusDestino = combo.value;
-
-        console.log("Tarefa:", idTarefa);
-        console.log("Status destino:", idStatusDestino);
     }
 
     function montarCardTarefa(tarefa) {
@@ -419,7 +434,7 @@
             html += `<div class="kanban-coluna">`;
             html += `<div class="kanban-header">`;
             html += `<div class="kanban-body">`;
-            html += `<select id="comboStatusTA_${tarefa.idtarefa}" onchange="mudarStatusTarefa(${tarefa.idtarefa})">`;
+            html += `<select id="comboStatusTA_${tarefa.idtarefa}" onload="carregarStatus(${tarefa.idtarefa}, ${tarefa.idstatus})" onchange="mudarStatus(${tarefa.idtarefa},document.getElementById('comboStatusTA_${tarefa.idtarefa}').value)"">`;
             html += `<option value="">-- Mover para --</option>`;
             html += `</select><br>`;
             html += tarefa.idtarefa + ` - ` + tarefa.desctarefa;

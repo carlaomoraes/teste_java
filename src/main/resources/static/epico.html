@@ -393,8 +393,7 @@
                 comboEmpreendimentoEP.appendChild(opcao);
             });
         } catch (error) {
-          //  mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("EMPREENDIMENTO"), "error");
-            mostrarMensagemNaTela("resultado_epico", error.message, "error");
+            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("EMPREENDIMENTO"), "error");
         }
     }
     async function carregarTipoTarefa() {
@@ -409,8 +408,7 @@
                 comboTipoTarefa.appendChild(opcao);
             });
         } catch (error) {
-           // mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("TIPO DE TAREFAS"), "error");
-            mostrarMensagemNaTela("resultado_epico", error.message, "error");
+            mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("TIPO DE TAREFAS"), "error");
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -714,7 +712,6 @@
             document.getElementById('resultado_estoria').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico",MSG.errolistar("ESTÓRIA"),"error");
-
         }
     }
     async function listarTarefas() {
@@ -838,7 +835,6 @@
                      document.getElementById('comboEmpreendimentoEP').value = epico.idempreendimento;
                      document.getElementById('comboPrioridadeEP').value = epico.idprioridade;
                      document.getElementById('comboCriadorEP').value = epico.idcriador;
-
                      document.getElementById('data_inicialEP').value = epico.data_inicialEP;
                      document.getElementById('data_fim_previstaEP').value = epico.data_fim_previstaEP;
                     // Limpa mensagens e monta equipe se o usuário mudar de aba depois
@@ -850,8 +846,7 @@
                     await carregarStatus(statusAtualEpico, TIPO_ENTIDADE.EPICO);
                 }
             } catch (error) {
-              //  mostrarMensagemNaTela("resultado_epico",MSG.erroCarregar("ÉPICO"), "error");
-                mostrarMensagemNaTela("resultado", error.message, "error");
+                mostrarMensagemNaTela("resultado_epico",MSG.erroCarregar("ÉPICO"), "error");
             }
         } else if (ABA === "ESTORIA") {
             configuracao.idestoria = idEstoria;
@@ -922,7 +917,7 @@
                 method: 'DELETE'
             });
             mostrarMensagemNaTela("resultado_epico",MSG.excluido("ÉPICO"), "success");
-            limparFormulario("EP");
+            await limparFormulario("EP");
         } catch (error) {
             mostrarMensagemNaTela("resultado_epico",MSG.erroExcluir("ÉPICO"), "error");
         }

@@ -106,4 +106,14 @@ public class TarefaController {
     public List<TarefaConsultaDTO> listarPorEstoria(@PathVariable Long idEstoria) {
         return service.listarPorEstoria(idEstoria);
     }
+
+    @PatchMapping("/{idTarefa}/status/{idStatus}")
+    public ResponseEntity<Void> alterarStatus(
+            @PathVariable Long idTarefa,
+            @PathVariable Long idStatus) {
+
+        service.alterarStatus(idTarefa, idStatus);
+
+        return ResponseEntity.noContent().build();
+    }
 }

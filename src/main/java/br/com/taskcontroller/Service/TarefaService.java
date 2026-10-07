@@ -61,6 +61,7 @@ public class TarefaService {
         StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);
 
         tarefa.setStatus(novoStatus);
+        repository.save(tarefa);
     }
 
 }
