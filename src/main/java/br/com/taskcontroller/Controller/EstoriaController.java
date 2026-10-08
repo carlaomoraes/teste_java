@@ -5,6 +5,7 @@ import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Record.COMBO.EstoriaComboDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaInclusaoDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EstoriaService;
@@ -90,7 +91,7 @@ public class EstoriaController {
 
     // LISTAR
     @GetMapping("/listar")
-    public List<Estoria> listar() {
+    public List<EstoriaComboDTO> listar() {
         return service.listar();
     }
 

@@ -21,101 +21,21 @@
 <script src="js/funcoes.js"></script>
 <script src="js/mensagens.js"></script>
 <div class="container">
-    <h1>Estória - TaskController 1.0</h1>
+    <h1>Tarefa - TaskController 1.0</h1>
     <div class="abas-container">
-        <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
         <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'apontamentos')">Apontamentos</button>
     </div>
-
-    <!-- EMPREENDIMENTO -->
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <label class="form-label">
-                Épico *
-            </label>
-
-            <select id="comboEpico"
-                    class="form-select"
-                    required>
-            </select>
+    <div id="tarefa" class="conteudo-aba ativo">
+        <!-- ESTÓRIA -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label class="form-label"> Estória * </label>
+                <select id="comboEstoria"  class="form-select"  required>  </select>
+            </div>
         </div>
-    </div>
-    <div id="estoria" class="conteudo-aba ativo">
-        <input type="number" id="idestoria" onblur="buscarPorLinha(document.getElementById('comboEpico').value,document.getElementById('idestoria').value, 0, 'ESTORIA')" placeholder="ID da estoria (Deixe vazio para novo)">
-        <div class="form-grid">
-            <div>
-                <label>Descrição</label>
-                <input type="text" id="descestoria" oninput="converterMaiusculo(this)">
-            </div>
-            <div>
-                <label>Status</label>
-                <select id="comboStatusES">
-                    <option value="">-- Selecione o status --</option>
-                </select>
-            </div>
-            <div>
-                <label>Criador</label>
-                <select id="comboCriadorES">
-                    <option value="">-- Selecione o criador --</option>
-                </select>
-            </div>
-            <div>
-                <label>Responsável</label>
-                <select id="comboResponsavelES">
-                    <option value="">-- Selecione o responsável --</option>
-                </select>
-            </div>
-            <div>
-                <label>Data inicial</label>
-                <input type="date" id="data_inicialES">
-            </div>
-            <div>
-                <label>Data final prevista</label>
-                <input type="date" id="data_fim_previstaES">
-            </div>
-            <div>
-                <label>Resumo</label>
-                <input type="text" id="resumo_estoria" oninput="converterMaiusculo(this)">
-            </div>
-            <div>
-                <label>Horas estimadas</label>
-                <input type="number" id="horas_estimadas" class="form-control text-end" disabled>
-            </div>
-            <div>
-                <label>Horas realizadas</label>
-                <input type="number"  id="horas_realizadas" class="form-control text-end" disabled>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-label">Story Points *</label>
-                <select id="combostorypoints"
-                        class="form-select">
-
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>5</option>
-                    <option>8</option>
-                    <option>13</option>
-                    <option>21</option>
-
-                </select>
-            </div>
-
-            <label class="checkbox-group">
-                <input type="checkbox" id="bloqueada_estoria" value="0"> Estória bloqueada
-            </label>
-        </div>
-        <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-add" onclick="criarEstoria();">Nova</button>
-            <button type="button" class="btn btn-salvar" onclick="salvarEstoria(document.getElementById('comboEpico').value);">Salvar</button>
-            <button type="button" class="btn btn-listar"  onclick="listarEstoria(document.getElementById('comboEpico').value)">Listar</button>
-            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
-        </div>
-        <div id="resultado_estoria"></div>
-    </div>
-    <div id="tarefa" class="conteudo-aba">
-        <input type="number" onblur="buscarPorLinha(document.getElementById('idepico').value,
-                                                    document.getElementById('idestoria').value,
+        <input type="number" onblur="buscarPorLinha(0,
+                                                    document.getElementById('comboEstoria').value,
                                                     document.getElementById('idtarefa').value, 'TAREFA')" id="idtarefa" placeholder="ID da estoria (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
@@ -178,6 +98,14 @@
         </div>
         <div id="resultado_tarefa"></div>
     </div>
+    <div id="apontamentos" class="conteudo-aba">
+        <label for="dataapontamento">Data apontamento:</label>
+        <input type="date" id="dataapontamento" name="dataapontamento">
+        <label for="horaapontamento">Hora apontamento:</label>
+        <input type="time" id="horaapontamento" name="horaapontamento">
+
+
+    </div>
 </div>
 <script>
     //-----------------CARREGAR CONFIGURAÇÃO
@@ -198,7 +126,7 @@
     };
 
     //--------------------- MANIPULAÇÃO DOS DADOS
-    const API_EPICO = 'http://localhost:8080/epicos';
+    const API_ESTORIA = 'http://localhost:8080/estorias';
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_TIPO_TAREFA = 'http://localhost:8080/tipo_tarefa';
@@ -226,9 +154,7 @@
 
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
-        const comboCriadorES = document.getElementById("comboCriadorES");
         const comboCriadorTA = document.getElementById("comboCriadorTA");
-        const comboResponsavelES = document.getElementById("comboResponsavelES");
         const comboResponsavelTA = document.getElementById("comboResponsavelTA");
         try {
             const resposta = await fetch(`${API_USUARIOS}/listar`);
@@ -237,9 +163,7 @@
                 const opcao = document.createElement('option');
                 opcao.value = usuario.idusuario;
                 opcao.textContent = usuario.nome;
-                comboCriadorES.add(opcao.cloneNode(true));
                 comboCriadorTA.add(opcao.cloneNode(true));
-                comboResponsavelES.add(opcao.cloneNode(true));
                 comboResponsavelTA.add(opcao.cloneNode(true));
             });
         } catch (error) {
@@ -247,16 +171,16 @@
         }
     }
     //------------------
-    async function carregarEpico() {
-        const comboEpico = document.getElementById("comboEpico");
+    async function carregarEstoria() {
+        const comboEstoria = document.getElementById("comboEstoria");
         try {
-            const resposta = await fetch(`${API_EPICO}/listar`);
-            const epicos = await resposta.json();
-            epicos.forEach(epico => {
+            const resposta = await fetch(`${API_ESTORIA}/listar`);
+            const estorias = await resposta.json();
+            estorias.forEach(estoria => {
                 const opcao = document.createElement('option');
-                opcao.value = epico.idepico;
-                opcao.textContent = epico.nome;
-                comboEpico.add(opcao.cloneNode(true));
+                opcao.value = estoria.idestoria;
+                opcao.textContent = estoria.descestoria;
+                comboEstoria.add(opcao.cloneNode(true));
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_estoria", "Erro ao carregar gestor: "+error.message,"error");
@@ -337,8 +261,9 @@
     document.addEventListener('DOMContentLoaded', async () => {
         await carregarGestor();
         await carregarTipoTarefa();
-        await carregarEpico();
-        await listarEstoria(document.getElementById("comboEpico").value);
+        await carregarEstoria();
+
+        await listarTarefas(document.getElementById("comboEstoria").value);
         /*
         statusAtualEpico -> Aponta para o próximo status
         idTipoEntidade -> Pega a referencia da tabela tipo_entidade
@@ -433,112 +358,14 @@
             document.getElementById('horas_realizadas_TA').value = 0.00;
         }
     }
-    async function criarEstoria() {
-        await limparFormulario("ES");
-        let ordem = await acharOrdem(TIPO_ENTIDADE.ESTORIA);
-        await carregarStatus(ordem, TIPO_ENTIDADE.ESTORIA);
-    }
-    async function salvarEstoria(idEpico) {
-        const hoje = new Date();
-        const descestoria = document.getElementById('descestoria').value;
-        const resumo = document.getElementById('resumo_estoria').value;
-        const campoBlooqueado = document.getElementById('bloqueada_estoria').checked;
-        const data_inicio = document.getElementById('data_inicialES').value || hoje ;
-        const data_fim = document.getElementById('data_fim_previstaES').value || hoje ;
-        const estoria = {
-            idepico: idEpico || null,
-            descEstoria: descestoria || null,
-            bloqueada: campoBlooqueado,
-            data_inicio: data_inicio || hoje,
-            data_fim: data_fim || hoje,
-            resumo: resumo,
-            criador: {
-                idCriador: document.getElementById('comboCriadorES').value || null,
-            },
-            responsavel: {
-                idresponsavel: document.getElementById('comboResponsavelES').value || null,
-            },
-            status: {
-                idstatus: document.getElementById('comboStatusES').value || null,
-            },
-            pontos: document.getElementById('combostorypoints').value || 0,
-            horas_estimadas: Number(document.getElementById('horas_estimadas').value) || 0.0,
-            horas_realizadas: Number(document.getElementById('horas_realizadas').value) || 0.0,
-        };
-        try {
-            const response = await fetch(`${API_EPICO}/${configuracao.idepico}/adicionarEstoria`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(estoria)
-            });
-            const data = await response.json();
-            mostrarMensagemNaTela("resultado_estoria",MSG.salvo("ESTÓRIA"),"success");
-            setTimeout(() => {
-                limparFormulario("ES");
-                listarEstoria(document.getElementById('comboEpico').value);
-            }, 1000);
-
-        } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria",MSG.erroSalvar("ESTÓRIA"),"error");
-        }
-    }
-    async function listarEstoria(idEpico) {
+    async function listarTarefas(idEstoria) {
         const cor = "6c757d";
-        if(idEpico == null) {
-           mostrarMensagemNaTela("resultado_estoria", "Selecione um épico", "warning");
-           return;
-        }
-        try {
-            const response = await fetch(`${API_EPICO}/${idEpico}/estorias`);
-            const data = await response.json();
-            if(data.length <= 0) {
-                mostrarMensagemNaTela("resultado_estoria",MSG.naoEncontrada("ESTÓRIA"),"warning");
-                return;
-            }
-            let tabela = `
-            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th class="table-header">ID</th>
-                        <th class="table-header">Descrição</th>
-                        <th class="table-header">Status</th>
-                        <th class="table-header">Criador</th>
-                        <th class="table-header">Responsável</th>
-                        <th class="table-header">Data inicial</th>
-                        <th class="table-header">Data final</th>
-                        <th class="table-header">Excluir</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-            data.forEach(estoria => {
-                tabela += `<tr onclick="buscarPorLinha(${estoria.idepico},${estoria.idestoria}, 0,'ESTORIA')" style="cursor:pointer;">
-                                <td>${estoria.idestoria}</td>
-                                <td>${estoria.descestoria}</td>
-                                <td> <span class="badge" style="background-color:${estoria.corstatus}; color:white;">${estoria.descstatus}</span></td>
-                                <td>${estoria.nomecriador}</td>
-                                <td>${estoria.nomeresponsavel}</td>
-                                <td>${formatarData(estoria.data_inicio)}</td>
-                                <td>${formatarData(estoria.data_fim)}</td>
-                                <td><button type="button" class="btn" onclick="excluirEstoria(${estoria.idestoria}); event.stopPropagation();">Excluir</button></td>
-                           </tr>`;
-            });
-            tabela += `</tbody></table>`;
-            document.getElementById('resultado_estoria').innerHTML = tabela;
-        } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria",MSG.errolistar("ESTÓRIA"),"error");
-        }
-    }
-    async function listarTarefas() {
-        const cor = "6c757d";
-        if((configuracao.idepico === null) || (configuracao.idestoria === null)) {
+        if(idEstoria === null) {
             mostrarMensagemNaTela("resultado_tarefa", "Selecione uma estória", "warning");
             return;
         }
         try {
-            const response = await fetch(`${API_TAREFA}/${configuracao.idestoria}/tarefas`);
+            const response = await fetch(`${API_TAREFA}/${idEstoria}/tarefas`);
             const data = await response.json();
             if(data.length <= 0) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.naoEncontrada("TAREFA"),"warning");

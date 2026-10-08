@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskController | Cadastro de Tarefa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="tarefa.css" rel="stylesheet">
+</head>
+<body>
+<main class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4"><div>
+        <div class="eyebrow">TASKCONTROLLER 1.0 / OPERAÇÕES</div>
+        <h1 class="h3 fw-bold mb-1">Cadastro de Tarefa</h1>
+        <p class="text-secondary mb-0" id="subtitulo">Cadastre, acompanhe e registre o esforço da equipe.</p></div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary" id="btnNovo"><i class="bi bi-plus-lg"></i> Novo</button>
+            <button class="btn btn-primary" id="btnSalvar"><i class="bi bi-floppy"></i> Salvar tarefa</button>
+        </div>
+    </div>
+    <div id="resultado" class="alert d-none" role="alert">
+
+    </div>
+<section class="card shadow-sm border-0">
+    <div class="card-header bg-white border-0 pt-4 px-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div><span class="small text-secondary" id="codigoTarefa">NOVA TAREFA</span>
+                <h2 class="h5 fw-bold mb-0" id="tituloTarefa">Dados e acompanhamento</h2>
+            </div><span class="status-pill" id="statusAtual">Aguardando cadastro</span>
+        </div><ul class="nav nav-tabs mt-4" id="abasTarefa" role="tablist">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dados" type="button">
+            <i class="bi bi-card-checklist"></i> Dados da tarefa</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#horas" type="button">
+            <i class="bi bi-clock-history"></i> Apontamento de horas</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#historico" type="button"><i class="bi bi-journal-text"></i> Histórico</button></li></ul></div>
+<div class="card-body p-4"><div class="tab-content"><div class="tab-pane fade show active" id="dados"><form id="formTarefa"><input type="hidden" id="idtarefa"><div class="row g-3"><div class="col-lg-6"><label class="form-label" for="comboEstoria">Estória <span class="text-danger">*</span></label><select class="form-select" id="comboEstoria" required><option value="">Selecione a estória...</option></select></div><div class="col-lg-3"><label class="form-label" for="comboTipoTarefa">Tipo de tarefa</label><select class="form-select" id="comboTipoTarefa"><option value="">Selecione...</option></select></div><div class="col-lg-3"><label class="form-label" for="comboStatusTA">Status</label><select class="form-select" id="comboStatusTA"><option value="">Selecione...</option></select></div><div class="col-12"><label class="form-label" for="desctarefa">Descrição da tarefa <span class="text-danger">*</span></label><input class="form-control" id="desctarefa" maxlength="250" required placeholder="Ex.: Implementar autenticação de usuários"></div><div class="col-md-6"><label class="form-label" for="comboResponsavel">Responsável</label><select class="form-select" id="comboResponsavel"><option value="">Selecione...</option></select></div><div class="col-md-3"><label class="form-label" for="horas_estimadas">Horas estimadas</label><input class="form-control" id="horas_estimadas" type="number" min="0" step="0.25" value="0"></div><div class="col-md-3"><label class="form-label" for="horas_realizadas">Horas realizadas</label><input class="form-control" id="horas_realizadas" type="text" value="0h" readonly></div><div class="col-md-4"><label class="form-label" for="data_inicio">Data inicial</label><input class="form-control" id="data_inicio" type="date"></div><div class="col-md-4"><label class="form-label" for="data_fim_prevista">Previsão de término</label><input class="form-control" id="data_fim_prevista" type="date"></div><div class="col-md-4 d-flex align-items-end"><div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="bloqueada"><label class="form-check-label" for="bloqueada">Tarefa bloqueada</label></div></div></div></form></div>
+<div class="tab-pane fade" id="horas"><div class="row g-3 mb-3"><div class="col-md-4"><div class="metric"><div class="metric-label">Horas estimadas</div><div class="metric-value" id="kpiEstimadas">0h</div></div></div><div class="col-md-4"><div class="metric"><div class="metric-label">Horas realizadas</div><div class="metric-value" id="kpiRealizadas">0h</div></div></div><div class="col-md-4"><div class="metric"><div class="metric-label">Horas restantes</div><div class="metric-value" id="kpiRestantes">0h</div></div></div></div><div class="progress mb-2" style="height:9px"><div class="progress-bar" id="progressoHoras" style="width:0%"></div></div><p class="small text-secondary mb-4" id="textoProgresso">0% das horas estimadas utilizadas</p><hr><h3 class="h6 fw-bold mt-4 mb-3">Novo apontamento</h3><div class="row g-3"><div class="col-md-4"><label class="form-label" for="usuarioApontamento">Usuário logado</label><input class="form-control" id="usuarioApontamento" readonly></div><div class="col-md-4"><label class="form-label" for="dataApontamento">Data</label><input class="form-control" id="dataApontamento" type="date"></div><div class="col-md-4"><label class="form-label" for="horasApontamento">Horas trabalhadas (HH:MM)</label><input class="form-control" id="horasApontamento" placeholder="02:30" inputmode="numeric" pattern="[0-9]+:[0-5][0-9]"></div><div class="col-12"><label class="form-label" for="descricaoApontamento">Descrição da atividade</label><textarea class="form-control" id="descricaoApontamento" rows="3" placeholder="Descreva o trabalho realizado..."></textarea></div><div class="col-12 text-end"><button class="btn btn-primary" id="btnApontar" type="button"><i class="bi bi-plus-circle"></i> Registrar horas</button></div></div><p class="small text-secondary mt-3 mb-0" id="avisoIntegracao">O apontamento depende de uma tarefa salva e da configuração da API.</p></div>
+<div class="tab-pane fade" id="historico"><div class="d-flex justify-content-between align-items-center mb-3"><h3 class="h6 fw-bold mb-0">Histórico de apontamentos</h3><span class="text-secondary small" id="totalRegistros">0 registros</span></div><div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Data</th><th>Usuário</th><th>Atividade</th><th class="text-end">Horas</th></tr></thead><tbody id="tabelaApontamentos"><tr><td colspan="4" class="text-center text-secondary py-4">Nenhum apontamento encontrado.</td></tr></tbody></table></div></div></div></div></section><p class="small text-secondary mt-3">Os combos e os lançamentos são carregados dos endpoints configurados em <code>tarefa.js</code>. Não são usados dados fictícios.</p></main><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script><script src="tarefa.js"></script></body></html>

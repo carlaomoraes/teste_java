@@ -6,6 +6,7 @@ import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Modelo.StatusEntidades;
+import br.com.taskcontroller.Record.COMBO.EstoriaComboDTO;
 import br.com.taskcontroller.Respository.EstoriaRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,9 @@ public class EstoriaService {
         return estoriaRepository.save(estoria);
     }
 
-    public List<Estoria> listar() {
+    public List<EstoriaComboDTO> listar() {
 
-        return estoriaRepository.findAll();
+        return estoriaRepository.listar();
     }
 
     public Estoria atualizar(Estoria Estoria) {
