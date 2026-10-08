@@ -25,9 +25,9 @@
 
     <!-- Cabeçalho -->
     <div class="card shadow-sm mb-4">
-        <label class="form-label"> Empreendimento *</label>
+        <label class="form-label" for="comboEmpreendimento"> Empreendimento *</label>
              <select id="comboEmpreendimento" class="form-select" required></select>
-        <label class="form-label">Sprint *</label>
+        <label class="form-label" for="comboSprint">Sprint *</label>
              <select id="comboSprint" class="form-select" required></select>
     </div>
     <div class="text-end" id="saude"></div>
@@ -444,6 +444,14 @@
             mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }
     }
+    function abrirTempoGasto(idTarefa) {
+
+        document.getElementById("idTarefaTempoGasto").value = idTarefa;
+
+        const modal = new bootstrap.Modal(document.getElementById("modalTempoGasto"));
+
+        modal.show();
+    }
 
     function montarCardTarefa(tarefa) {
         var html = ``;
@@ -467,7 +475,8 @@
             html += `</div>`;
             html += `<div class="small mt-1">`;
             html += `⏱ Horas Estimadas: ` + tarefa.horas_estimadas + '<br>';
-            html += `⏱ Horas Realizadas: ` + tarefa.horas_realizadas;
+            html += `⏱ Horas Realizadas: ` + tarefa.horas_realizadas + '<br>';
+            html += `<button type="button" class="btn btn-sm p-0 ms-1" onclick="abrirTempoGasto(${tarefa.idtarefa})" title="Registrar horas"><i class="bi bi-plus-circle"></i> </button>`;
             html += `</div>`;
             html += `</div>`;
             html += `</div>`;

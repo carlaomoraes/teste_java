@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários - TaskController 1.0</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS específico da tela -->
+    <link rel="stylesheet" href="css/pages/usuario.css">
+    <link rel="stylesheet" href="css/pages/funcoes.css">
+</head>
+<body>
+<script src="js/funcoes.js"></script>
+<script src="js/mensagens.js"></script>
+<div class="container">
+    <h1>Usuários - TaskController 1.0</h1>
+    <div class="modal fade" id="modalTempoGasto" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar tempo gasto</h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" id="idTarefaTempoGasto">
+
+                    <div class="mb-3">
+                        <label class="form-label">Data</label>
+                        <input type="date"
+                               id="dataExecucao"
+                               class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Hora</label>
+                        <input type="time"
+                               id="horaExecucao"
+                               class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Duração</label>
+                        <input type="number"
+                               id="duracao"
+                               class="form-control">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary"
+                            onclick="salvarTempoGasto()">
+                        Registrar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let idusuario = 0;
+    //--------------------- MANIPULAÇÃO DOS DADOS USUARIOS
+    const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_AUSENCIAS = 'http://localhost:8080/ausencias';
+    const API_PAPEL = 'http://localhost:8080/papel';
+
+    function alternarAba(event, idAbaDestino) {
+        // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
+        const conteudos = document.querySelectorAll('.conteudo-aba');
+        conteudos.forEach(conteudo => {
+            conteudo.classList.remove('ativo');
+        });
+
+        // 2. Pega todos os botões e remove a classe 'ativa'
+        const botoes = document.querySelectorAll('.aba-botao');
+        botoes.forEach(botao => {
+            botao.classList.remove('ativa');
+        });
+
+        // 3. Mostra o bloco de conteúdo que o usuário clicou adicionando 'ativo'
+        document.getElementById(idAbaDestino).classList.add('ativo');
+
+        // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
+        event.currentTarget.classList.add('ativa');
+    }
+    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
+    // FUNÇÕES DA ABA AUSENCIAS
+    // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
+    async function carregarTipoAusencia() {
+        const combotipo = document.getElementById("combotipo");
+        try {
+            const resposta = await fetch(`${API_AUSENCIAS}/montaCombo`);
+            console.log(resposta);
+            const ausencias = await resposta.json();
+            ausencias.forEach(ausencia => {
+                const opcao = document.createElement('option');
+                opcao.value = ausencia.idtipoausencia;
+                opcao.textContent = ausencia.descausencia;
+                combotipo.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("TIPO DE AUSÊNCIA"), "error");
+        }
+    }
+    async function carregarPapel() {
+        const comboPapel = document.getElementById("comboPapel");
+        try {
+            const resposta = await fetch(`${API_PAPEL}/montacomboPapel`);
+            const papel = await resposta.json();
+            papel.forEach(u => {
+                // Cria opção para o combo papel
+                const opt1 = document.createElement('option');
+                opt1.value = u.idpapel;
+                opt1.textContent = u.descpapel;
+                comboPapel.appendChild(opt1);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("PAPEL"), "error");
+        }
+    }
+    // Inicializa os seletores assim que o HTML carregar completamente
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarTipoAusencia();
+        carregarPapel();
+    });
+    async function criarUsuario() {
+        await limparFormulario();
+    }
+    async function salvarUsuario() {
+        const idusuario = document.getElementById("idusuario").value;
+        const nome = document.getElementById('nome').value;
+        const login = document.getElementById('login').value;
+        const senha = document.getElementById('senha').value;
+        const email = document.getElementById('email').value;
+        const alterasenha = document.getElementById('alterasenha').checked;
+        const ativo = document.getElementById('ativo').checked;
+        const usuario = {
+            idusuario: idusuario || null,
+            nome: nome || null,
+            login: login || null,
+            senha: senha || null,
+            email: email || null,
+            alterasenha: alterasenha,
+            ativo: ativo,
+            idpapel: document.getElementById('comboPapel').value || null
+        };
+        try {
+            const response = await fetch(`${API_USUARIOS}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(usuario)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("resultado", MSG.salvo("USUÁRIO"), "success");
+            setTimeout(() => {
+                limparFormulario();
+                listarUsuarios();
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroSalvar("USUÁRIO"), "error");
+            //mostrarMensagemNaTela("resultado", error.message,  "error");
+        }
+    }
+    async function limparFormulario() {
+        document.getElementById('idusuario').value = "";
+        document.getElementById('nome').value = "";
+        document.getElementById('login').value = "";
+        document.getElementById('email').value = "";
+        document.getElementById('senha').value = "";
+        document.getElementById('alterasenha').checked = false;
+        document.getElementById('ativo').checked = false;
+        document.getElementById('comboPapel').value = "";
+        mostrarMensagemNaTela("resultado", "", "error");
+    }
+    async function buscarPorLinha(id) {
+        try {
+            const response = await fetch(`${API_USUARIOS}/DTO/${id}`);
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
+                return;
+            }
+            const usuario = await response.json();
+            document.getElementById('idusuario').value = usuario.idusuario;
+            document.getElementById('nome').value = usuario.nome;
+            document.getElementById('login').value = usuario.login;
+            document.getElementById('email').value = usuario.email;
+            document.getElementById('senha').value = usuario.senha;
+            document.getElementById('alterasenha').checked = usuario.alterasenha;
+            document.getElementById('ativo').checked = usuario.ativo;
+            document.getElementById('comboPapel').value = usuario.idpapel;
+            mostrarMensagemNaTela("resultado", "Usuário selecionado: " +  usuario.nome, "success");
+            await listarAusencias();
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("USUÁRIO"), "error");
+        }
+    }
+    async function listarUsuarios() {
+        try {
+            const response = await fetch(`${API_USUARIOS}/listar`);
+            const data = await response.json();
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Nome</th>
+                        <th class="table-header">Login</th>
+                        <th class="table-header" width: "30px">Email</th>
+                        <th class="table-header" width: "30px">Senha</th>
+                        <th class="table-header">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(usuario => {
+                tabela += `<tr onclick="buscarPorLinha(${usuario.idusuario})"
+                                style="cursor:pointer;">
+                                <td>${usuario.idusuario}</td>
+                                <td>${usuario.nome}</td>
+                                <td>${usuario.login}</td>
+                                <td>${usuario.email}</td>
+                                <td style="width: 30px">${usuario.senha ? '•'.repeat(10) : ''}</td>
+                                <td> <button type="button" class="btn btn-excluir"  onclick="event.stopPropagation();excluirUsuario(${usuario.idusuario})">Excluir</button></td>
+            </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultado').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.errolistar("USUÁRIO"), "error");
+        }
+    }
+    async function excluirUsuario(idusuario) {
+        try {
+            const response = await fetch(`${API_USUARIOS}/excluir/${idusuario}`, {
+                method: 'DELETE'
+            });
+            const texto = await response.text();
+            mostrarMensagemNaTela("resultado", MSG.excluido("USUÁRO"), "success");
+        } catch (error) {
+            mostrarMensagemNaTela("resultado", MSG.erroExcluir("USUÁRIO"), "error");
+        }
+    }
+    async function salvarAusencias() {
+        const dataAtual = new Date();
+        if(await validaEntrada(2)) {
+            const id_tipo_ausencia = parseInt(document.getElementById("combotipo").value);
+            const datainicial = document.getElementById('datainicial').value;
+            const datafinal = document.getElementById('datafinal').value;
+            const observacao = document.getElementById('observacao').value;
+            const ausencias = {
+                data_inicio: datainicial || dataAtual.toISOString().split("T")[0],
+                data_fim: datafinal || dataAtual.toISOString().split("T")[0],
+                observacao: observacao || "N/A",
+                idusuario: parseInt(document.getElementById('idusuario').value),
+                id_tipo_ausencia: id_tipo_ausencia
+            };
+            try {
+                const response = await fetch(`${API_AUSENCIAS}/salvar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(ausencias)
+                });
+                const data = await response.json();
+                mostrarMensagemNaTela("resultadoausencias", MSG.salvo("AUSÊNCIA"), "success");
+                setTimeout(() => {
+                    cancelarAusencia();
+                    listarAusencias(document.getElementById('idusuario').value);
+                }, 1000);
+            } catch (error) {
+                mostrarMensagemNaTela("resultadoausencias", MSG.erroSalvar("AUSÊNCIA"), "error");
+            }
+        }
+    }
+    async function listarAusencias() {
+         const container = document.getElementById("resultadoausencias");
+         try {
+             const response = await fetch(`${API_AUSENCIAS}/usuario/${document.getElementById('idusuario').value}`);
+              const data = await response.json();
+                // Se não houver registros
+                if (!data || data.length === 0) {
+                    container.innerHTML = `<table class="table">
+                    <thead>
+                        <tr>
+                            <th>Data inicial</th>
+                            <th>Data final</th>
+                            <th>Tipo ausência</th>
+                            <th>Observação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" style="text-align:center;">
+                                Nenhuma ausência cadastrada
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+                    return;
+                }
+                // Monta tabela com dados
+                let tabela = `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data inicial</th>
+                        <th>Data final</th>
+                        <th>Tipo ausência</th>
+                        <th>Observação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+                data.forEach(a => {
+                    tabela += `
+                <tr style="cursor:pointer;">
+                    <td>${a.idausencia}</td>
+                    <td>${formatarData(a.data_inicio)}</td>
+                    <td>${formatarData(a.data_fim)}</td>
+                    <td> <span class="badge" style="background-color:${a.cor_tipo_ausencia}; color:white;">${a.tipoausencia ?? ''}</span></td>
+                    <td>${a.observacao ?? ''}</td>
+                    <td>
+                        <button type="button"
+                            class="btn"
+                            onclick="event.stopPropagation(); excluirAusencia(${a.idausencia})">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+            `;
+                });
+                tabela += `</tbody> </table>`;
+        container.innerHTML = tabela;
+      } catch (error) {
+          mostrarMensagemNaTela("resultadoausencias", MSG.errolistar("AUSÊNCIA PROGRAMADA"), "error");
+      }
+    }
+    async function excluirAusencia(idausencia) {
+        try {
+            const response = await fetch(`${API_AUSENCIAS}/excluir/${idausencia}`, {
+                method: 'DELETE'
+            });
+            const texto = await response.text();
+            mostrarMensagemNaTela("resultadoausencias", MSG.excluido("AUSÊNCIA PROGRAMADA"), "success");
+            await listarAusencias();
+        } catch (error) {
+            mostrarMensagemNaTela("resultadoausencias", MSG.erroExcluir("AUSÊNCIA PROGRAMADA"), "error");
+        }
+    }
+    async function cancelarAusencia() {
+        document.getElementById('combotipo').value = "";
+        document.getElementById('datainicial').value = "";
+        document.getElementById('datafinal').value = "";
+        document.getElementById('observacao').value = "";
+    }
+    async function validaEntrada(aba) {
+        if (aba === 1) {
+            const invalido =
+                document.getElementById('nome').value === "" ||
+                document.getElementById('login').value === "" ||
+                document.getElementById('email').value === "" ||
+                document.getElementById('senha').value === "" ||
+                document.getElementById('comboPapel').value === "";
+            if (invalido) {
+                mostrarMensagemNaTela("resultado","Todos os campos devem estar preenchidos", "warning");
+                return false;
+            }
+            return true;
+        } else {
+            if (document.getElementById('idusuario').value === "") {
+                mostrarMensagemNaTela("resultadoausencias", "Selecione um usuário", "error");
+                return false;
+            } else {
+                const invalido =
+                    document.getElementById('combotipo').value === "" ||
+                    document.getElementById('datainicial').value === "" ||
+                    document.getElementById('datafinal').value === "";
+                if (invalido) {
+                    mostrarMensagemNaTela("resultado","Todos os campos devem estar preenchidos", "warning");
+                    return false;
+                }
+                // validação adicional das datas
+                const datainicial = document.getElementById('datainicial').value;
+                const datafinal = document.getElementById('datafinal').value;
+                if (new Date(datafinal) < new Date(datainicial)) {
+                    mostrarMensagemNaTela("resultado","Data final não pode ser menor que a data inicial", "warning");
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+</script>
+</body>
+</html>

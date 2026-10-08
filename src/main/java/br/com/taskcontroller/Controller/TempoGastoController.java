@@ -40,11 +40,8 @@ public class TempoGastoController {
     }
     //EXCLUIR
     @DeleteMapping("/{idTempoGasto}")
-    public ResponseEntity<Void> excluir(
-            @PathVariable Long idTempoGasto) {
-
+    public ResponseEntity<Void> excluir(@PathVariable Long idTempoGasto) {
         service.excluir(idTempoGasto);
-
         return ResponseEntity.noContent().build();
     }
 }
