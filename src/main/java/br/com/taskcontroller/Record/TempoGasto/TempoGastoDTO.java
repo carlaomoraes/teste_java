@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Record.TempoGasto;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public record TempoGastoDTO(
     Long idtempogasto,
@@ -9,7 +10,7 @@ public record TempoGastoDTO(
     Long idusuario,
     String nomeusuario,
     LocalDate data_execucao,
-    LocalDate hora_execucao
+    LocalTime hora_execucao
     )
 {
 }

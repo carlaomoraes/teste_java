@@ -34,9 +34,7 @@
                 <select id="comboEstoria"  class="form-select"  required>  </select>
             </div>
         </div>
-        <input type="number" onblur="buscarPorLinha(0,
-                                                    document.getElementById('comboEstoria').value,
-                                                    document.getElementById('idtarefa').value, 'TAREFA')" id="idtarefa" placeholder="ID da estoria (Deixe vazio para novo)">
+        <input type="number" onblur="buscarPorLinha(document.getElementById('idtarefa').value)" id="idtarefa" placeholder="ID da estoria (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
                 <label>Descrição</label>
@@ -99,11 +97,27 @@
         <div id="resultado_tarefa"></div>
     </div>
     <div id="apontamentos" class="conteudo-aba">
-        <label for="dataapontamento">Data apontamento:</label>
-        <input type="date" id="dataapontamento" name="dataapontamento">
-        <label for="horaapontamento">Hora apontamento:</label>
-        <input type="time" id="horaapontamento" name="horaapontamento">
-
+        <div class="form-grid">
+            <div>
+                <label for="dataapontamento">Data apontamento:</label>
+                <input type="date" id="dataapontamento" name="dataapontamento">
+            </div>
+            <div>
+                <label for="horaapontamento">Hora apontamento:</label>
+                <input type="time" id="horaapontamento" name="horaapontamento">
+            </div>
+        </div>
+        <div class="form-grid">
+            <div>
+                <label for="resumo">Descrição:</label>
+                <input type="text" id="resumo" name="resumo">
+            </div>
+        </div>
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn"  onclick="salvarApontamentos();">Salvar</button>
+            <button type="button" class="btn" onclick="cancelarApontamentos();">Cancelar</button>
+        </div>
+        <div id="resultadoapontamento"></div>
 
     </div>
 </div>
@@ -114,7 +128,6 @@
         idestoria: 0,
         idtarefa: 0
     };
-    let statusAtualEstoria = 1;
     let statusAtualTarefa = 1;
 
     const TIPO_ENTIDADE = {
@@ -131,6 +144,7 @@
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_TIPO_TAREFA = 'http://localhost:8080/tipo_tarefa';
     const API_TAREFA = 'http://localhost:8080/tarefas';
+    const API_TEMPOGASTO = 'http://localhost:8080/tempogasto';
 
     function alternarAba(event, idAbaDestino) {
         // 1. Pega todos os blocos de conteúdo e esconde tirando a classe 'ativo'
@@ -199,7 +213,7 @@
             console.log(vetor);
             return vetor;
         } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria","Erro ao carregar status: " + error.message, "error");
+            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }
     }
 
@@ -291,6 +305,40 @@
         document.getElementById('comboResponsavelTA').value = sessionStorage.getItem("usuarioIdUsuario");
     }
 
+    async function salvarApontamentos(IDTAREFA) {
+          const id_tipo_ausencia = parseInt(document.getElementById("combotipo").value);
+          const datainicial = document.getElementById('datainicial').value;
+          const datafinal = document.getElementById('datafinal').value;
+          const observacao = document.getElementById('observacao').value;
+          const apontamento =  {
+               data_inicio: datainicial || dataAtual.toISOString().split("T")[0],
+               data_fim: datafinal || dataAtual.toISOString().split("T")[0],
+               observacao: observacao || "N/A",
+               idusuario: parseInt(document.getElementById('idusuario').value),
+               id_tipo_ausencia: id_tipo_ausencia
+          };
+          try {
+              const response = await fetch(`${API_TEMPOGASTO}/salvar`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(apontamento)
+                    });
+                    const data = await response.json();
+                    mostrarMensagemNaTela("resultadoapontamento", MSG.salvo("APONTAMENTO"), "success");
+                    setTimeout(() => {
+                        cancelarAusencia();
+                        listarApontamentos(IDTAREFA);
+                    }, 1000);
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadoapontamento", MSG.erroSalvar("AUSÊNCIA"), "error");
+                }
+            }
+        }
+
+    }
+
     async function salvarTarefa() {
         const hoje = new Date();
         const bloqueada = document.getElementById("bloqueada_tarefa").checked || 0;
@@ -305,8 +353,6 @@
             idcriador: document.getElementById('comboCriadorTA').value || null,
             idresponsavel: document.getElementById('comboResponsavelTA').value || null,
             idstatus: document.getElementById('comboStatusTA').value || null,
-            horas_estimadas: Number(document.getElementById('horas_estimadas_TA').value) || 0,
-            horas_realizadas: Number(document.getElementById('horas_realizadas_TA').value) || 0,
             data_inicio: data_inicio,
             data_fim_prevista: data_fim_prevista,
             data_conclusao: null,
@@ -354,8 +400,7 @@
             document.getElementById('comboResponsavelTA').value = "";
             document.getElementById('comboStatusTA').value = "";
             document.getElementById('comboTipoTarefa').value = "";
-            document.getElementById('horas_estimadas_TA').value = 0.00;
-            document.getElementById('horas_realizadas_TA').value = 0.00;
+
         }
     }
     async function listarTarefas(idEstoria) {
@@ -390,7 +435,7 @@
         `;
             data.forEach(tarefa => {
                 tabela += `
-        <tr onclick="buscarPorLinha(${configuracao.idepico}, ${configuracao.idestoria}, ${tarefa.idtarefa}, 'TAREFA')" style="cursor:pointer;">
+        <tr onclick="buscarPorLinha(${tarefa.idtarefa}, 'TAREFA')" style="cursor:pointer;">
             <td>${obterIconeTipo(tarefa.tipotarefa)}</td>
             <td>${tarefa.idtarefa}</td>
             <td>${tarefa.desctarefa}</td>
@@ -413,95 +458,93 @@
             mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
         }
     }
-
-    async function buscarPorLinha(idEpico, idEstoria, idTarefa, ABA) {
-         if (ABA === "ESTORIA") {
-            configuracao.idestoria = idEstoria;
-            try {
-                const response = await fetch(`${API_EPICO}/${idEpico}/estorias/${idEstoria}`);
-                const estoria = await response.json();
-                if (!response.ok) {
-                    mostrarMensagemNaTela("resultado_estoria",estoria.mensagem, "error");
-                } else {
-                    document.getElementById('idestoria').value = estoria.idestoria;
-                    document.getElementById('descestoria').value = estoria.descestoria;
-                    // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-                     document.getElementById('bloqueada_estoria').checked = estoria.bloqueada || 0;
-                     document.getElementById('data_inicialES').value = estoria.data_inicio;
-                     document.getElementById('data_fim_previstaES').value = estoria.data_fim;
-                     document.getElementById('resumo_estoria').value = estoria.resumo;
-                     document.getElementById('combostorypoints').value = estoria.pontos;
-                     document.getElementById('horas_estimadas').value = estoria.horas_estimadas;
-                     document.getElementById('horas_realizadas').value = estoria.horas_realizadas;
-                     //CARREGANDO OS COMBOS
-                     document.getElementById('comboStatusES').value = estoria.idstatus;
-                     document.getElementById('comboCriadorES').value = estoria.idcriador;
-                     document.getElementById('comboResponsavelES').value = estoria.idresponsavel;
-                     mostrarMensagemNaTela("resultado_estoria","Estória selecionada: " + estoria.descestoria, "success");
-                     await listarTarefas(idEpico, estoria.idestoria);
-                     // MONTA O COMBO PARA PROXIMO STATUS
-                     statusAtualEstoria = estoria.idstatus;
-                     await carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
-                }
-            } catch (error) {
-                mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
+    async function listarApontamentos(idTarefa){
+        try {
+            const response = await fetch(`${API_TEMPOGASTO}/listar/${idTarefa}`);
+            const data = await response.json();
+            if(data.length <= 0) {
+                return;
             }
-        } else if (ABA === "TAREFA") {
-            configuracao.idtarefa = idTarefa;
-            try {
-                const linha = `${API_TAREFA}/DTO/${idTarefa}`;
-                const response = await fetch(linha);
-                const tarefa = await response.json();
-                if (!response.ok) {
-                    mostrarMensagemNaTela("resultado_tarefa",MSG.naoEncontrada("TAREFA"), "error");
-                } else {
-                    document.getElementById('idtarefa').value = tarefa.idtarefa;
-                    document.getElementById('desctarefa').value = tarefa.desctarefa;
-                    // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
-                    document.getElementById('bloqueada_tarefa').checked = tarefa.bloqueada || 0;
-                    document.getElementById('data_inicio_TA').value = tarefa.data_inicio;
-                    document.getElementById('data_fim_TA').value = tarefa.data_conclusao;
-                    // CARREGANDO OS COMBOS
-                    document.getElementById('comboStatusTA').value = tarefa.idstatus;
-                    document.getElementById('comboCriadorTA').value = tarefa.idcriador;
-                    document.getElementById('comboResponsavelTA').value = tarefa.idresponsavel;
-                    // HORAS
-                    document.getElementById('horas_realizadas').value = tarefa.horas_realizadas;
-                    document.getElementById('horas_estimadas').value = tarefa.horas_estimadas;
-                    // MONTA O COMBO PARA PROXIMO STATUS
-                    statusAtualTarefa = tarefa.idstatus;
-                    await carregarStatus(statusAtualTarefa, TIPO_ENTIDADE.TAREFA);
-                    mostrarMensagemNaTela("resultado_tarefa","Tarefa selecionada: " + tarefa.idtarefa, "success");
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID Tarefa</th>
+                        <th class="table-header">Descrição Tarefa</th>
+                        <th class="table-header">ID Usuário</th>
+                        <th class="table-header">Nome Usuário</th>
+                        <th class="table-header">Data apontamento</th>
+                        <th class="table-header">Horas gastas</th>
+                        <th class="table-header">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(tarefa => {
+                tabela += `
+        <tr>
+            <td>${tarefa.idtarefa}</td>
+            <td>${tarefa.desctarefa}</td>
+            <td>${tarefa.idusuario}</td>
+            <td>${tarefa.nomeusuario}</td>
+            <td>${formatarData(tarefa.data_execucao)}</td>
+            <td>${tarefa.hora_execucao}</td>
+            <td>
+                <button type="button"
+                        class="btn"
+                        onclick="excluirApontamento(${tarefa.idtempogasto}, ${idTarefa}); event.stopPropagation();">
+                    Excluir
+                </button>
+            </td>
+        </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadoapontamento').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
+        }
+    }
+
+    async function buscarPorLinha(idTarefa) {
+         configuracao.idtarefa = idTarefa;
+         try {
+            const linha = `${API_TAREFA}/DTO/${idTarefa}`;
+            const response = await fetch(linha);
+            const tarefa = await response.json();
+            if (!response.ok) {
+                mostrarMensagemNaTela("resultado_tarefa",MSG.naoEncontrada("TAREFA"), "error");
+            } else {
+                document.getElementById('idtarefa').value = tarefa.idtarefa;
+                document.getElementById('desctarefa').value = tarefa.desctarefa;
+                // PREENCHENDO O CHECKBOX: Define como marcado (true) ou desmarcado (false) vindo do banco
+                document.getElementById('bloqueada_tarefa').checked = tarefa.bloqueada || 0;
+                document.getElementById('data_inicio_TA').value = tarefa.data_inicio;
+                document.getElementById('data_fim_TA').value = tarefa.data_conclusao;
+               // CARREGANDO OS COMBOS
+                document.getElementById('comboStatusTA').value = tarefa.idstatus;
+                document.getElementById('comboCriadorTA').value = tarefa.idcriador;
+                document.getElementById('comboResponsavelTA').value = tarefa.idresponsavel;
+
+                // MONTA O COMBO PARA PROXIMO STATUS
+                statusAtualTarefa = tarefa.idstatus;
+                await carregarStatus(statusAtualTarefa, TIPO_ENTIDADE.TAREFA);
+                await listarApontamentos(tarefa.idtarefa);
+                 mostrarMensagemNaTela("resultado_tarefa","Tarefa selecionada: " + tarefa.idtarefa, "success");
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");
             }
-        }
     }
-
-    async function excluirEstoria(idEstoria) {
+    async function excluirApontamento(idTempoGasto, idTarefa) {
+        const linha = `${API_TEMPOGASTO}/${idTempoGasto}`;
         try {
-            const response = await fetch(`${API_EPICO}/remover_estoria/${idEstoria}`, {
-                method: 'DELETE'
-            });
-            mostrarMensagemNaTela("resultado_estoria",MSG.excluido("ÉPICO"), "success");
-            await limparFormulario("EP");
-        } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria",MSG.erroExcluir("ÉPICO"), "error");
-        }
-    }
-
-    async function excluirTarefa(idTarefa) {
-        try {
-            const response = await fetch(`${API_TAREFA}/excluir/${idTarefa}`, {
+            const response = await fetch(linha, {
                 method: 'DELETE'
             });
             const texto = await response.text();
-            mostrarMensagemNaTela("resultado_tarefa",MSG.excluido("TAREFA"), "success");
-            await limparFormulario("TA");
-            await listarTarefas(configuracao.idepico, configuracao.idestoria);
+            mostrarMensagemNaTela("resultadoapontamento",MSG.excluido("APONTAMENTO"), "success");
+            await listarApontamentos(idTarefa)
         } catch (error) {
-            mostrarMensagemNaTela("resultado_tarefa",MSG.erroExcluir("TAREFA"), "error");
+            mostrarMensagemNaTela("resultadoapontamento",MSG.erroExcluir("APONTAMENTO"), "error");
         }
     }
 </script>

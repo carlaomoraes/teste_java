@@ -2,13 +2,14 @@ package br.com.taskcontroller.Modelo;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "tempo_gasto")
 public class TempoGasto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idtempogasto;
+    private Long idtempo_gasto;
 
     // Relacionamento com a classe Tarefa (Chave Estrangeira)
     @ManyToOne
@@ -24,16 +25,16 @@ public class TempoGasto {
     private LocalDate data_execucao;
 
     @Column(name = "hora_execucao")
-    private LocalDate hora_execucao;
+    private LocalTime hora_execucao;
 
-    private Long duracao; // Geralmente guardado em minutos ou horas inteiras
+    private String resumo;
 
-    public Long getIdtempogasto() {
-        return idtempogasto;
+    public Long getIdtempo_gasto() {
+        return idtempo_gasto;
     }
 
-    public void setIdtempogasto(Long idtempogasto) {
-        this.idtempogasto = idtempogasto;
+    public void setIdtempo_gasto(Long idtempo_gasto) {
+        this.idtempo_gasto = idtempo_gasto;
     }
 
     public Tarefa getTarefa() {
@@ -60,19 +61,19 @@ public class TempoGasto {
         this.data_execucao = data_execucao;
     }
 
-    public LocalDate getHora_execucao() {
+    public LocalTime getHora_execucao() {
         return hora_execucao;
     }
 
-    public void setHora_execucao(LocalDate hora_execucao) {
+    public void setHora_execucao(LocalTime hora_execucao) {
         this.hora_execucao = hora_execucao;
     }
 
-    public Long getDuracao() {
-        return duracao;
+    public String getResumo() {
+        return resumo;
     }
 
-    public void setDuracao(Long duracao) {
-        this.duracao = duracao;
+    public void setResumo(String resumo) {
+        this.resumo = resumo;
     }
 }

@@ -2,7 +2,6 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Record.COMBO.EstoriaComboDTO;
-import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -11,7 +11,7 @@ import java.util.List;
 public interface TempoGastoRepository extends JpaRepository<TempoGasto, Long> {
     @Query("""
     SELECT new br.com.taskcontroller.Record.TempoGasto.TempoGastoDTO(
-        tg.idtempogasto,
+        tg.idtempo_gasto,
         tg.tarefa.idtarefa,
         t.desctarefa,
         tg.usuario.idusuario,
@@ -23,7 +23,7 @@ public interface TempoGastoRepository extends JpaRepository<TempoGasto, Long> {
     JOIN tg.tarefa t
     JOIN tg.usuario u
    WHERE tg.tarefa.idtarefa = :idTarefa
-    ORDER BY tg.idtempogasto
+    ORDER BY tg.idtempo_gasto
     """)
     List<TempoGastoDTO> listarTempoGasto(@Param("idTarefa") Long idTarefa);
 }

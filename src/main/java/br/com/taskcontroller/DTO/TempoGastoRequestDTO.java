@@ -1,18 +1,16 @@
 package br.com.taskcontroller.DTO;
 
-import br.com.taskcontroller.Modelo.Tarefa;
-import br.com.taskcontroller.Modelo.Usuario;
-
-import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class TempoGastoRequestDTO {
     private Long idtempo_gasto;
-    private Tarefa tarefa;
-    private Usuario usuario;
+    private Long idtarefa;
+    private Long idusuario;
     private LocalDate data_execucao;
-    private LocalDate hora_execucaoo;
-    private Long duracao; // Geralmente guardado em minutos ou horas inteiras
+    private LocalTime hora_execucaoo;
+    private String resumo;
+
 
     public Long getIdtempo_gasto() {
         return idtempo_gasto;
@@ -22,20 +20,20 @@ public class TempoGastoRequestDTO {
         this.idtempo_gasto = idtempo_gasto;
     }
 
-    public Tarefa getTarefa() {
-        return tarefa;
+    public Long getIdtarefa() {
+        return idtarefa;
     }
 
-    public void setTarefa(Tarefa tarefa) {
-        this.tarefa = tarefa;
+    public void setIdtarefa(Long idtarefa) {
+        this.idtarefa = idtarefa;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Long getIdusuario() {
+        return idusuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdusuario(Long idusuario) {
+        this.idusuario = idusuario;
     }
 
     public LocalDate getData_execucao() {
@@ -46,19 +44,19 @@ public class TempoGastoRequestDTO {
         this.data_execucao = data_execucao;
     }
 
-    public LocalDate getHora_execucaoo() {
+    public LocalTime getHora_execucaoo() {
         return hora_execucaoo;
     }
 
-    public void setHora_execucaoo(LocalDate hora_execucaoo) {
+    public void setHora_execucaoo(LocalTime hora_execucaoo) {
         this.hora_execucaoo = hora_execucaoo;
     }
 
-    public Long getDuracao() {
-        return duracao;
+    public String getResumo() {
+        return resumo;
     }
 
-    public void setDuracao(Long duracao) {
-        this.duracao = duracao;
+    public void setResumo(String resumo) {
+        this.resumo = resumo;
     }
 }
