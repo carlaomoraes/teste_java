@@ -8,7 +8,7 @@ public class TempoGastoRequestDTO {
     private Long idtarefa;
     private Long idusuario;
     private LocalDate data_execucao;
-    private LocalTime hora_execucaoo;
+    private LocalTime hora_execucao;
     private String resumo;
 
 
@@ -44,12 +44,12 @@ public class TempoGastoRequestDTO {
         this.data_execucao = data_execucao;
     }
 
-    public LocalTime getHora_execucaoo() {
-        return hora_execucaoo;
+    public LocalTime getHora_execucao() {
+        return hora_execucao;
     }
 
-    public void setHora_execucaoo(LocalTime hora_execucaoo) {
-        this.hora_execucaoo = hora_execucaoo;
+    public void setHora_execucao(LocalTime hora_execucaoo) {
+        this.hora_execucao = hora_execucaoo;
     }
 
     public String getResumo() {
@@ -58,5 +58,17 @@ public class TempoGastoRequestDTO {
 
     public void setResumo(String resumo) {
         this.resumo = resumo;
+    }
+
+    @Override
+    public String toString() {
+        return "TempoGastoRequestDTO{" +
+                "idtempo_gasto=" + idtempo_gasto +
+                ", idtarefa=" + idtarefa +
+                ", idusuario=" + idusuario +
+                ", data_execucao=" + data_execucao +
+                ", hora_execucao=" + hora_execucao +
+                ", resumo='" + resumo + '\'' +
+                '}';
     }
 }

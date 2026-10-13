@@ -63,7 +63,7 @@ public class Epico {
     private String cor = "#2196F3";
 
     @Column
-    private Long percentual;
+    private BigDecimal percentual;
 
     private int ativo;
 
@@ -163,11 +163,11 @@ public class Epico {
         this.cor = cor;
     }
 
-    public Long getPercentual() {
+    public BigDecimal getPercentual() {
         return percentual;
     }
 
-    public void setPercentual(Long percentual) {
+    public void setPercentual(BigDecimal percentual) {
         this.percentual = percentual;
     }
 

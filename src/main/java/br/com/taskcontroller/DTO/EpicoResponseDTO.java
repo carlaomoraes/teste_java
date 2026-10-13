@@ -21,7 +21,7 @@ public class EpicoResponseDTO {
     private String codepico;
     private String nome;
     private String cor = "#2196F3";
-    private Long percentual;
+    private BigDecimal percentual;
     private int ativo;
 
     public Long getIdepico() {
@@ -120,11 +120,11 @@ public class EpicoResponseDTO {
         this.cor = cor;
     }
 
-    public Long getPercentual() {
+    public BigDecimal getPercentual() {
         return percentual;
     }
 
-    public void setPercentual(Long percentual) {
+    public void setPercentual(BigDecimal percentual) {
         this.percentual = percentual;
     }
 

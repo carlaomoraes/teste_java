@@ -1,18 +1,18 @@
 package br.com.taskcontroller.Service;
 
+
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.Epico;
-import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
-import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
-import br.com.taskcontroller.Respository.EpicoEstoriasRepository;
 import br.com.taskcontroller.Respository.EpicoRepository;
 import br.com.taskcontroller.Respository.EstoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -63,4 +63,22 @@ public class EpicoService {
         epico.setStatus(novoStatus);
     }
 
+    @Transactional
+    public void atualizarPercentual(Long idEpico) {
+
+        long total = estoriaRepository.contarEstorias(idEpico);
+        long concluidas = estoriaRepository.contarEstoriasConcluidas(idEpico);
+
+        BigDecimal percentual = BigDecimal.ZERO;
+
+        if (total > 0) {
+            percentual = BigDecimal.valueOf(concluidas)
+                    .multiply(BigDecimal.valueOf(100))
+                    .divide(BigDecimal.valueOf(total), 2, RoundingMode.HALF_UP);
+        }
+
+        Epico epico = buscarPorId(idEpico);
+        epico.setPercentual(percentual);
+        repository.save(epico);
+    }
 }

@@ -35,7 +35,11 @@ public class EstoriaService {
 
         alterarStatus(estoria.getIdestoria(), estoria.getStatus().getIdstatus());
         estoria.setEpico(epico);
+
+        epicoService.atualizarPercentual(estoria.getEpico().getIdepico());
+
         return estoriaRepository.save(estoria);
+
     }
 
     public List<EstoriaComboDTO> listar() {

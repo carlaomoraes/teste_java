@@ -18,7 +18,7 @@ public class TempoGastoMapper {
         Usuario usuario = new Usuario();
         usuario.setIdusuario(dto.getIdusuario());
         tempoGasto.setUsuario(usuario);
-        tempoGasto.setHora_execucao(dto.getHora_execucaoo());
+        tempoGasto.setHora_execucao(dto.getHora_execucao());
         tempoGasto.setData_execucao(dto.getData_execucao());
         tempoGasto.setResumo(dto.getResumo());
         return tempoGasto;

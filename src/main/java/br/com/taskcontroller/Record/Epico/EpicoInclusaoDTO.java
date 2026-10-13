@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Record.Epico;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record EpicoInclusaoDTO(
@@ -14,7 +15,7 @@ public record EpicoInclusaoDTO(
         LocalDate data_fim_prevista,
         String codepico,
         String cor,
-        Long percentual,
+        BigDecimal percentual,
         int ativo,
         String nome
 ) {

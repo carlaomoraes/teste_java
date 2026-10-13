@@ -118,7 +118,7 @@
             if(response.ok){
                 const usuario = await response.json();
                 sessionStorage.setItem("usuarioNome", usuario.nome);
-                sessionStorage.setItem("usuarioIdUsuario", usuario.idUsuario);
+                sessionStorage.setItem("usuarioIdUsuario", usuario.idusuario);
                 sessionStorage.setItem("usuarioLogin", usuario.login);
                 sessionStorage.setItem("idEmpreendimento",usuario.idEmpreendimento);
                 // Não grave a senha no navegador

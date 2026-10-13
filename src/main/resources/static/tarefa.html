@@ -91,7 +91,7 @@
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn btn-add" onclick="criarTarefa();">Nova</button>
             <button type="button" class="btn btn-salvar" onclick="salvarTarefa();">Salvar</button>
-            <button type="button" class="btn btn-listar"  onclick="listarTarefas()">Listar</button>
+            <button type="button" class="btn btn-listar"  onclick="listarTarefas(document.getElementById('comboEstoria').value)">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultado_tarefa"></div>
@@ -99,12 +99,12 @@
     <div id="apontamentos" class="conteudo-aba">
         <div class="form-grid">
             <div>
-                <label for="dataapontamento">Data apontamento:</label>
-                <input type="date" id="dataapontamento" name="dataapontamento">
+                <label for="data_execucao">Data apontamento:</label>
+                <input type="date" id="data_execucao" name="data_execucao">
             </div>
             <div>
-                <label for="horaapontamento">Hora apontamento:</label>
-                <input type="time" id="horaapontamento" name="horaapontamento">
+                <label for="hora_execucao">Hora apontamento:</label>
+                <input type="time" id="hora_execucao" name="hora_execucao">
             </div>
         </div>
         <div class="form-grid">
@@ -305,40 +305,40 @@
         document.getElementById('comboResponsavelTA').value = sessionStorage.getItem("usuarioIdUsuario");
     }
 
-    async function salvarApontamentos(IDTAREFA) {
-          const id_tipo_ausencia = parseInt(document.getElementById("combotipo").value);
-          const datainicial = document.getElementById('datainicial').value;
-          const datafinal = document.getElementById('datafinal').value;
-          const observacao = document.getElementById('observacao').value;
-          const apontamento =  {
-               data_inicio: datainicial || dataAtual.toISOString().split("T")[0],
-               data_fim: datafinal || dataAtual.toISOString().split("T")[0],
-               observacao: observacao || "N/A",
-               idusuario: parseInt(document.getElementById('idusuario').value),
-               id_tipo_ausencia: id_tipo_ausencia
-          };
-          try {
-              const response = await fetch(`${API_TEMPOGASTO}/salvar`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(apontamento)
-                    });
-                    const data = await response.json();
-                    mostrarMensagemNaTela("resultadoapontamento", MSG.salvo("APONTAMENTO"), "success");
-                    setTimeout(() => {
-                        cancelarAusencia();
-                        listarApontamentos(IDTAREFA);
-                    }, 1000);
-                } catch (error) {
-                    mostrarMensagemNaTela("resultadoapontamento", MSG.erroSalvar("AUSÊNCIA"), "error");
-                }
-            }
+    async function salvarApontamentos() {
+        const data_execucao = document.getElementById('data_execucao').value;
+        const hora_execucao = document.getElementById('hora_execucao').value;
+        const resumo = document.getElementById('resumo').value;
+        const apontamento = {
+            data_execucao: data_execucao || formatarData(new Date()),
+            hora_execucao: hora_execucao || formatarHora(hora_execucao),
+            resumo: resumo || "N/A",
+            idusuario: sessionStorage.getItem("usuarioIdUsuario"),
+            idtarefa: Number(document.getElementById("idtarefa").value)
+        };
+        try {
+            const response = await fetch(`${API_TEMPOGASTO}/salvar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(apontamento)
+            });
+            const data = await response.json();
+            mostrarMensagemNaTela("resultadoapontamento", MSG.salvo("APONTAMENTO"), "success");
+            setTimeout(() => {
+                cancelarApontamentos();
+                listarApontamentos(Number(document.getElementById("idtarefa").value));
+            }, 1000);
+        } catch (error) {
+            mostrarMensagemNaTela("resultadoapontamento", MSG.erroSalvar("APONTAMENTO"), "error");
         }
-
     }
-
+    async function cancelarApontamentos() {
+        document.getElementById("data_excucao").value = "";
+        document.getElementById("hora_excucao").value = "";
+        document.getElementById("resumo").value = "";
+    }
     async function salvarTarefa() {
         const hoje = new Date();
         const bloqueada = document.getElementById("bloqueada_tarefa").checked || 0;
@@ -370,7 +370,7 @@
             mostrarMensagemNaTela("resultado_tarefa", MSG.salvo("TAREFA"), "success");
             setTimeout(() => {
                 limparFormulario("TA");
-                listarTarefas(idEpico, idEstoria);
+                listarTarefas(configuracao.idestoria);
             }, 1000);
         } catch (error) {
             mostrarMensagemNaTela("resultado_tarefa", MSG.erroSalvar("TAREFA"), "error");
@@ -480,15 +480,15 @@
                 </thead>
                 <tbody>
         `;
-            data.forEach(tarefa => {
-                tabela += `
+         data.forEach(tarefa => {
+         tabela += `
         <tr>
             <td>${tarefa.idtarefa}</td>
             <td>${tarefa.desctarefa}</td>
             <td>${tarefa.idusuario}</td>
             <td>${tarefa.nomeusuario}</td>
             <td>${formatarData(tarefa.data_execucao)}</td>
-            <td>${tarefa.hora_execucao}</td>
+            <td>${formatarHora(tarefa.hora_execucao)}</td>
             <td>
                 <button type="button"
                         class="btn"
@@ -497,15 +497,14 @@
                 </button>
             </td>
         </tr>`;});
-            tabela += `</tbody></table>`;
-            document.getElementById('resultadoapontamento').innerHTML = tabela;
+        tabela += `</tbody></table>`;
+        document.getElementById('resultadoapontamento').innerHTML = tabela;
         } catch (error) {
             mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
         }
     }
 
     async function buscarPorLinha(idTarefa) {
-         configuracao.idtarefa = idTarefa;
          try {
             const linha = `${API_TAREFA}/DTO/${idTarefa}`;
             const response = await fetch(linha);
@@ -519,7 +518,10 @@
                 document.getElementById('bloqueada_tarefa').checked = tarefa.bloqueada || 0;
                 document.getElementById('data_inicio_TA').value = tarefa.data_inicio;
                 document.getElementById('data_fim_TA').value = tarefa.data_conclusao;
-               // CARREGANDO OS COMBOS
+                document.getElementById('horas_estimadas_TA').value = tarefa.horas_estimadas;
+                document.getElementById('horas_realizadas_TA').value = tarefa.horas_realizadas;
+
+                // CARREGANDO OS COMBOS
                 document.getElementById('comboStatusTA').value = tarefa.idstatus;
                 document.getElementById('comboCriadorTA').value = tarefa.idcriador;
                 document.getElementById('comboResponsavelTA').value = tarefa.idresponsavel;
@@ -534,7 +536,7 @@
                 mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");
             }
     }
-    async function excluirApontamento(idTempoGasto, idTarefa) {
+    async function excluirApontamento(idTempoGasto) {
         const linha = `${API_TEMPOGASTO}/${idTempoGasto}`;
         try {
             const response = await fetch(linha, {
@@ -542,7 +544,7 @@
             });
             const texto = await response.text();
             mostrarMensagemNaTela("resultadoapontamento",MSG.excluido("APONTAMENTO"), "success");
-            await listarApontamentos(idTarefa)
+            await listarApontamentos(configuracao.idtarefa);
         } catch (error) {
             mostrarMensagemNaTela("resultadoapontamento",MSG.erroExcluir("APONTAMENTO"), "error");
         }
