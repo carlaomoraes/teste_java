@@ -3,6 +3,7 @@ package br.com.taskcontroller.Service;
 import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Modelo.TempoGasto;
 import br.com.taskcontroller.Record.TempoGasto.TempoGastoDTO;
+import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import br.com.taskcontroller.Respository.TempoGastoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,15 @@ public class TempoGastoService {
     @Autowired
     private TarefaRepository tarefaRepository;
 
+    @Autowired
+    private TarefaService tarefaService;
+
     public TempoGasto salvar(TempoGasto tempoGasto) {
-        Tarefa tarefa = tempoGasto.getTarefa();
+        Tarefa tarefa = tarefaService.buscarPorId(tempoGasto.getTarefa().getIdtarefa());
         BigDecimal horas = transformarHoras(tempoGasto.getHora_execucao());
-        BigDecimal total = tarefa.getHoras_realizadas().subtract(horas);
+        BigDecimal total = tarefa.getHoras_realizadas().add(horas);
         tarefa.setHoras_realizadas(total);
+        tarefaService.salvar(tarefa);
 
         return repository.save(tempoGasto);
     }

@@ -26,21 +26,14 @@ public class TempoGastoController {
 
     private final TempoGastoService service;
 
-    private final TarefaService tarefaService;
 
     public TempoGastoController(TempoGastoService service, TarefaService tarefaService) {
         this.service = service;
-        this.tarefaService = tarefaService;
     }
 
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody TempoGastoRequestDTO dto) {
-        Tarefa tarefa = tarefaService.buscarPorId(dto.getIdtarefa());
-        BigDecimal horas_realizadas = service.transformarHoras(dto.getHora_execucao());
-        tarefa.setHoras_realizadas(horas_realizadas);
-
         TempoGasto tempoGasto = TempoGastoMapper.toEntity(dto);
-
         return ResponseEntity.ok(service.salvar(tempoGasto));
     }
 

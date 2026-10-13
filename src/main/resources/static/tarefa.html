@@ -530,7 +530,7 @@
                 statusAtualTarefa = tarefa.idstatus;
                 await carregarStatus(statusAtualTarefa, TIPO_ENTIDADE.TAREFA);
                 await listarApontamentos(tarefa.idtarefa);
-                 mostrarMensagemNaTela("resultado_tarefa","Tarefa selecionada: " + tarefa.idtarefa, "success");
+                 mostrarMensagemNaTela("resultado_tarefa","Tarefa selecionada: " + tarefa.desctarefa, "success");
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");
