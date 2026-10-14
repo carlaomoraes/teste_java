@@ -175,13 +175,16 @@
             const usuarios = await resposta.json();
             usuarios.forEach(usuario => {
                 const opcao = document.createElement('option');
+                if(usuario.idusuario === sessionStorage.getItem("usuarioIdUsuario")) {
+                    opcao.selected = true;
+                }
                 opcao.value = usuario.idusuario;
                 opcao.textContent = usuario.nome;
                 comboCriadorTA.add(opcao.cloneNode(true));
                 comboResponsavelTA.add(opcao.cloneNode(true));
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria", "Erro ao carregar gestor: "+error.message,"error");
+            mostrarMensagemNaTela("resultado_tarefa", "Erro ao carregar gestor: "+error.message,"error");
         }
     }
     //------------------
@@ -193,11 +196,12 @@
             estorias.forEach(estoria => {
                 const opcao = document.createElement('option');
                 opcao.value = estoria.idestoria;
+                configuracao.idestoria = estoria.idestoria;
                 opcao.textContent = estoria.descestoria;
                 comboEstoria.add(opcao.cloneNode(true));
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria", "Erro ao carregar gestor: "+error.message,"error");
+            mostrarMensagemNaTela("resultado_tarefa", "Erro ao carregar gestor: "+error.message,"error");
         }
     }
     //------------------
@@ -252,7 +256,7 @@
                 }
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria","Erro ao carregar status: " + error.message, "error");
+            mostrarMensagemNaTela("resultado_tarefa","Erro ao carregar status: " + error.message, "error");
         }
     }
 
@@ -295,14 +299,11 @@
 
     async function criarTarefa() {
         const hoje = new Date();
-        await limparFormulario("TA");
-        await limparFormulario("ES");
+        await limparFormulario();
         let ordem = await acharOrdem(TIPO_ENTIDADE.TAREFA);
         await carregarStatus(ordem, TIPO_ENTIDADE.TAREFA);
-        document.getElementById("data_inicio_TA").value = hoje;
-        document.getElementById("data_fim_TA").value = hoje;
-        document.getElementById('comboCriadorTA').value = sessionStorage.getItem("usuarioIdUsuario");
-        document.getElementById('comboResponsavelTA').value = sessionStorage.getItem("usuarioIdUsuario");
+        document.getElementById("data_inicio_TA").value = formatarData(hoje);
+        document.getElementById("data_fim_TA").value = formatarData(hoje);
     }
 
     async function salvarApontamentos() {
@@ -369,39 +370,24 @@
             const data = await response.json();
             mostrarMensagemNaTela("resultado_tarefa", MSG.salvo("TAREFA"), "success");
             setTimeout(() => {
-                limparFormulario("TA");
+                limparFormulario();
                 listarTarefas(configuracao.idestoria);
             }, 1000);
         } catch (error) {
             mostrarMensagemNaTela("resultado_tarefa", MSG.erroSalvar("TAREFA"), "error");
         }
     }
-    async function limparFormulario(ABA) {
-        if(ABA === "ES") {
-            document.getElementById('idestoria').value = "";
-            document.getElementById('descestoria').value = "";
-            document.getElementById('resumo_estoria').value = "";
-            document.getElementById('bloqueada_estoria').checked = false;
-            document.getElementById('data_inicialES').value = "";
-            document.getElementById('data_fim_previstaES').value = "";
-            document.getElementById('comboCriadorES').value = "";
-            document.getElementById('comboResponsavelES').value = "";
-            document.getElementById('comboStatusES').value = "";
-            document.getElementById('combostorypoints').value = -1;
-            document.getElementById('horas_estimadas').value = 0.00;
-        } else if(ABA === "TA") {
-            document.getElementById('idtarefa').value = "";
-            document.getElementById('desctarefa').value = "";
-            document.getElementById('resumo_tarefa').value = "";
-            document.getElementById('bloqueada_estoria').checked = false;
-            document.getElementById('data_inicio_TA').value = "";
-            document.getElementById('data_fim_TA').value = "";
-            document.getElementById('comboCriadorTA').value = "";
-            document.getElementById('comboResponsavelTA').value = "";
-            document.getElementById('comboStatusTA').value = "";
-            document.getElementById('comboTipoTarefa').value = "";
-
-        }
+    async function limparFormulario() {
+        document.getElementById('idtarefa').value = "";
+        document.getElementById('desctarefa').value = "";
+        document.getElementById('resumo_tarefa').value = "";
+        document.getElementById('bloqueada_estoria').checked = false;
+        document.getElementById('data_inicio_TA').value = "";
+        document.getElementById('data_fim_TA').value = "";
+        document.getElementById('comboCriadorTA').value = "";
+        document.getElementById('comboResponsavelTA').value = "";
+        document.getElementById('comboStatusTA').value = "";
+        document.getElementById('comboTipoTarefa').value = "";
     }
     async function listarTarefas(idEstoria) {
         const cor = "6c757d";
@@ -413,7 +399,7 @@
             const response = await fetch(`${API_TAREFA}/${idEstoria}/tarefas`);
             const data = await response.json();
             if(data.length <= 0) {
-                mostrarMensagemNaTela("resultado_estoria",MSG.naoEncontrada("TAREFA"),"warning");
+                mostrarMensagemNaTela("resultado_tarefa",MSG.naoEncontrada("TAREFA"),"warning");
                 return;
             }
             let tabela = `
@@ -527,6 +513,7 @@
                 document.getElementById('comboResponsavelTA').value = tarefa.idresponsavel;
 
                 // MONTA O COMBO PARA PROXIMO STATUS
+                configuracao.idtarefa = tarefa.idtarefa;
                 statusAtualTarefa = tarefa.idstatus;
                 await carregarStatus(statusAtualTarefa, TIPO_ENTIDADE.TAREFA);
                 await listarApontamentos(tarefa.idtarefa);

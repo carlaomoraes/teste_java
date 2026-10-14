@@ -8,11 +8,13 @@ import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Record.COMBO.EstoriaComboDTO;
 import br.com.taskcontroller.Respository.EstoriaRepository;
+import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -25,7 +27,7 @@ public class EstoriaService {
     private EpicoService epicoService;
 
     @Autowired
-    private StatusEntidadesService statusEntidadesService;
+    private StatusEntidadesRepository statusEntidadesRepository;
 
     @Autowired
     private StatusTransicaoService statusTransicaoService;
@@ -33,8 +35,11 @@ public class EstoriaService {
     public Estoria salvar(Estoria estoria) {
         Epico epico = epicoService.buscarPorId(estoria.getEpico().getIdepico());
 
+        BigDecimal horas_realizadas = atualizaEstoria(epico.getIdepico());
+
         alterarStatus(estoria.getIdestoria(), estoria.getStatus().getIdstatus());
         estoria.setEpico(epico);
+        estoria.setHoras_realizadas(horas_realizadas);
 
         epicoService.atualizarPercentual(estoria.getEpico().getIdepico());
 
@@ -48,6 +53,7 @@ public class EstoriaService {
     }
 
     public Estoria atualizar(Estoria Estoria) {
+        Long horasEstimadas = 0l;
 
         return estoriaRepository.save(Estoria);
     }
@@ -71,11 +77,23 @@ public class EstoriaService {
     }
 
     @Transactional
-    public void alterarStatus(Long id, Long idStatus) {
-        Estoria estoria = estoriaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada"));
+    public void alterarStatus(Long idEstoria, Long idStatus) {
 
-        StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);
+        Estoria estoria = estoriaRepository.findById(idEstoria)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Estória não encontrada"));
 
-        estoria.setStatus(novoStatus);
+        StatusEntidades status = statusEntidadesRepository.findById(idStatus)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Status não encontrado"));
+
+        estoria.setStatus(status);
+        estoriaRepository.save(estoria);
+
+        epicoService.atualizarPercentual(estoria.getEpico().getIdepico());
+    }
+
+    public BigDecimal atualizaEstoria(Long idEstoria) {
+        return estoriaRepository.atualizaEstoria(idEstoria);
     }
 }

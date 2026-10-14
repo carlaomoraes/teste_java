@@ -1,5 +1,6 @@
 package br.com.taskcontroller.DTO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class SprintEstoriaRequestDTO {
@@ -10,7 +11,7 @@ public class SprintEstoriaRequestDTO {
     private Long idprioridade;
     private Long idepico;
     private int pontos;
-    private Long horasestimadas;
+    private BigDecimal horasestimadas;
     private LocalDate dataplanejamento;
     private int ordem;
 
@@ -46,11 +47,11 @@ public class SprintEstoriaRequestDTO {
         this.pontos = pontos;
     }
 
-    public Long getHorasestimadas() {
+    public BigDecimal getHorasestimadas() {
         return horasestimadas;
     }
 
-    public void setHorasestimadas(Long horasestimadas) {
+    public void setHorasestimadas(BigDecimal horasestimadas) {
         this.horasestimadas = horasestimadas;
     }
 

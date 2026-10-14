@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Record.Estoria;
 
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDate;
 
@@ -20,8 +21,8 @@ public record EstoriaConsultaDTO(
         String descprioridade,
         String corprioridade,
         int pontos,
-        Long horas_estimadas,
-        Long horas_realizadas,
+        BigDecimal horas_estimadas,
+        BigDecimal horas_realizadas,
         LocalDate data_inicio,
         LocalDate data_fim,
         Boolean bloqueada,

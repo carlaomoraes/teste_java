@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Record.Estoria;
 
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDate;
 
@@ -15,8 +16,8 @@ public class EstoriaInclusaoDTO {
     LocalDate data_inicio;
     LocalDate data_fim;
     int pontos;
-    Long horas_estimadas;
-    Long horas_realizadas;
+    BigDecimal horas_estimadas;
+    BigDecimal horas_realizadas;
     boolean ativa;
     Long idempreendiemnto_equipe;
     private String tags;
@@ -112,19 +113,19 @@ public class EstoriaInclusaoDTO {
         this.pontos = pontos;
     }
 
-    public Long getHoras_estimadas() {
+    public BigDecimal getHoras_estimadas() {
         return horas_estimadas;
     }
 
-    public void setHoras_estimadas(Long horas_estimadas) {
+    public void setHoras_estimadas(BigDecimal horas_estimadas) {
         this.horas_estimadas = horas_estimadas;
     }
 
-    public Long getHoras_realizadas() {
+    public BigDecimal getHoras_realizadas() {
         return horas_realizadas;
     }
 
-    public void setHoras_realizadas(Long horas_realizadas) {
+    public void setHoras_realizadas(BigDecimal horas_realizadas) {
         this.horas_realizadas = horas_realizadas;
     }
 

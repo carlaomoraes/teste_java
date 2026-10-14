@@ -1,8 +1,10 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Modelo.TempoGasto;
 import br.com.taskcontroller.Record.TempoGasto.TempoGastoDTO;
+import br.com.taskcontroller.Respository.EstoriaRepository;
 import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import br.com.taskcontroller.Respository.TempoGastoRepository;
@@ -28,12 +30,28 @@ public class TempoGastoService {
     @Autowired
     private TarefaService tarefaService;
 
+    @Autowired
+    private EstoriaService estoriaService;
+
+    @Autowired
+    private EstoriaRepository estoriaRepository;
+
     public TempoGasto salvar(TempoGasto tempoGasto) {
         Tarefa tarefa = tarefaService.buscarPorId(tempoGasto.getTarefa().getIdtarefa());
         BigDecimal horas = transformarHoras(tempoGasto.getHora_execucao());
         BigDecimal total = tarefa.getHoras_realizadas().add(horas);
         tarefa.setHoras_realizadas(total);
         tarefaService.salvar(tarefa);
+
+        //-----------------------
+        //ATUALIZAR ESTORIA
+        Estoria estoria = estoriaService.buscarPorId(tarefa.getEstoria().getIdestoria());
+        BigDecimal total_realizadas = estoriaService.atualizaEstoria(estoria.getIdestoria());
+
+        estoria.setHoras_realizadas(total_realizadas);
+
+        estoriaRepository.save(estoria);
+
 
         return repository.save(tempoGasto);
     }
