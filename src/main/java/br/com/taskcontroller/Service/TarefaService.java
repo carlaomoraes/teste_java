@@ -8,6 +8,7 @@ import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.StatusEntidadesRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;
+import br.com.taskcontroller.Utilidades.ResolveTempo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

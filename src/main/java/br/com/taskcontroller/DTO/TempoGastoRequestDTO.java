@@ -48,8 +48,8 @@ public class TempoGastoRequestDTO {
         return hora_execucao;
     }
 
-    public void setHora_execucao(LocalTime hora_execucaoo) {
-        this.hora_execucao = hora_execucaoo;
+    public void setHora_execucao(LocalTime hora_execucao) {
+        this.hora_execucao = hora_execucao;
     }
 
     public String getResumo() {

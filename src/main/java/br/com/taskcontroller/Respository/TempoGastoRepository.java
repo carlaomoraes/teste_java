@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface TempoGastoRepository extends JpaRepository<TempoGasto, Long> {
@@ -26,4 +29,12 @@ public interface TempoGastoRepository extends JpaRepository<TempoGasto, Long> {
     ORDER BY tg.idtempo_gasto
     """)
     List<TempoGastoDTO> listarTempoGasto(@Param("idTarefa") Long idTarefa);
+
+    @Query("""
+    SELECT COALESCE(sum(tg.hora_execucao),0)
+      FROM TempoGasto tg
+    WHERE tg.tarefa.idtarefa = :idTarefa
+    """)
+    int totalizarTarefa(@Param("idTarefa") Long idTarefa);
+
 }

@@ -8,7 +8,7 @@ public class TempoGastoResponseDTO {
     private Long idusuario;
     private Long idTarefa;
     private LocalDate data_execucao;
-    private LocalTime hora_execucaoo;
+    private int hora_execucao;
     private String resumo;
 
     public Long getIdtempo_gasto() {
@@ -43,12 +43,12 @@ public class TempoGastoResponseDTO {
         this.data_execucao = data_execucao;
     }
 
-    public LocalTime getHora_execucaoo() {
-        return hora_execucaoo;
+    public int getHora_execucao() {
+        return hora_execucao;
     }
 
-    public void setHora_execucaoo(LocalTime hora_execucaoo) {
-        this.hora_execucaoo = hora_execucaoo;
+    public void setHora_execucao(int hora_execucao) {
+        this.hora_execucao = hora_execucao;
     }
 
     public String getResumo() {

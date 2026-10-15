@@ -4,16 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Integração com cadastro de tarefa/estoria/epico">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajuste de horas/percentual de estórias/épicos">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Utilidades/ResolveTempo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/SprintEstoriaRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/SprintEstoriaRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Estoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Estoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaConsultaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaConsultaDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaInclusaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Estoria/EstoriaInclusaoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TarefaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TarefaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TempoGastoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/TempoGastoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TarefaResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TempoGastoRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TempoGastoRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TempoGastoResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/DTO/TempoGastoResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/TempoGastoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Mapper/TempoGastoMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Tarefa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Modelo/Tarefa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/TarefaQuadroDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/TarefaQuadroDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Tarefa/TarefaConsultaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Tarefa/TarefaConsultaDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Tarefa/TarefaInclusaoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Tarefa/TarefaInclusaoDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EstoriaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/EstoriaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EpicoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EpicoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TempoGastoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TempoGastoRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EstoriaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/EstoriaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TarefaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TarefaService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TempoGastoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TempoGastoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/funcoes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/funcoes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/tarefa.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/tarefa.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +37,7 @@
     </colors>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="273" />
+    <option name="cachedIndexableFilesCount" value="271" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -39,8 +49,8 @@
         <option value="Interface" />
         <option value="CSS File" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -83,61 +93,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="2.182447012819111E-112" />
-      <entry key="MS500" value="4.6535966877014715E-23" />
-      <entry key="S2" value="2.611843708590811E-6" />
-      <entry key="S5" value="0.005844924076024492" />
-      <entry key="S10" value="0.0764521031497793" />
-      <entry key="S30" value="0.42442062349419163" />
-      <entry key="S60" value="0.6514757438558538" />
-      <entry key="M2" value="0.807333027002503" />
-      <entry key="M5" value="1.0017881573308336" />
-      <entry key="M10" value="1.8596832813896453" />
-      <entry key="M15" value="3.3416186907472283" />
-      <entry key="M30" value="9.427021024989424" />
-      <entry key="H1" value="20.97030961112204" />
-      <entry key="H2" value="34.59455376451694" />
-      <entry key="H4" value="46.63031415730328" />
-      <entry key="D1" value="122.10290187010145" />
-      <entry key="W1" value="991.4931864802763" />
+      <entry key="MS100" value="1.0000000000000058" />
+      <entry key="MS500" value="1.0014201374544185" />
+      <entry key="S2" value="1.216306396227501" />
+      <entry key="S5" value="1.7370696292099326" />
+      <entry key="S10" value="2.1873695691587356" />
+      <entry key="S30" value="2.6726599947704965" />
+      <entry key="S60" value="2.8600906427208557" />
+      <entry key="M2" value="3.2558900637318944" />
+      <entry key="M5" value="4.861453255277586" />
+      <entry key="M10" value="7.692327259646341" />
+      <entry key="M15" value="10.302998613933871" />
+      <entry key="M30" value="18.076199670620884" />
+      <entry key="H1" value="33.72713890845592" />
+      <entry key="H2" value="61.283937183747966" />
+      <entry key="H4" value="98.31079829662083" />
+      <entry key="D1" value="219.8125774748509" />
+      <entry key="W1" value="1092.830266157616" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000000000002" />
-      <entry key="S2" value="1.0001285395546988" />
-      <entry key="S5" value="1.0277724834358575" />
-      <entry key="S10" value="1.1666507828840218" />
-      <entry key="S30" value="1.5503037252293117" />
-      <entry key="S60" value="1.7418256422000065" />
-      <entry key="M2" value="1.8632108361712607" />
-      <entry key="M5" value="2.29457781564052" />
-      <entry key="M10" value="4.797705257490254" />
-      <entry key="M15" value="8.0751242358541" />
-      <entry key="M30" value="16.27122024882879" />
-      <entry key="H1" value="25.600520654200654" />
-      <entry key="H2" value="33.89953601056778" />
-      <entry key="H4" value="40.673688948808596" />
-      <entry key="D1" value="94.69645392293666" />
-      <entry key="W1" value="471.17739080478816" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="2.449834521446493E-213" />
+      <entry key="S2" value="7.147136317190874E-54" />
+      <entry key="S5" value="6.542690683054705E-22" />
+      <entry key="S10" value="3.570079090524743E-11" />
+      <entry key="S30" value="8.232833082655721E-4" />
+      <entry key="S60" value="0.070280907248718" />
+      <entry key="M2" value="0.6865677952368865" />
+      <entry key="M5" value="2.8622494702771886" />
+      <entry key="M10" value="5.628696961686496" />
+      <entry key="M15" value="8.356017818037664" />
+      <entry key="M30" value="16.359673803507924" />
+      <entry key="H1" value="29.99819611883311" />
+      <entry key="H2" value="51.914277027030195" />
+      <entry key="H4" value="80.19123074993404" />
+      <entry key="D1" value="170.46507779575327" />
+      <entry key="W1" value="556.1324068640955" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.6284468850545834E-7" />
-      <entry key="MS500" value="0.04388890236681244" />
-      <entry key="S2" value="0.4577910852591413" />
-      <entry key="S5" value="0.7603670070642305" />
-      <entry key="S10" value="1.0832873518041117" />
-      <entry key="S30" value="1.9066863283189972" />
-      <entry key="S60" value="2.3558300944848827" />
-      <entry key="M2" value="2.6507217775806575" />
-      <entry key="M5" value="3.2856404137665205" />
-      <entry key="M10" value="6.64147500862088" />
-      <entry key="M15" value="11.39626832816532" />
-      <entry key="M30" value="25.675017316818405" />
-      <entry key="H1" value="46.55114829715504" />
-      <entry key="H2" value="68.48020667968956" />
-      <entry key="H4" value="87.29527666807698" />
-      <entry key="D1" value="216.79566298358552" />
-      <entry key="W1" value="1462.6674840053283" />
+      <entry key="MS100" value="4.992077994599121E-5" />
+      <entry key="MS500" value="0.13929316282989143" />
+      <entry key="S2" value="0.8077580758035443" />
+      <entry key="S5" value="1.4678893316578225" />
+      <entry key="S10" value="1.9861227754099007" />
+      <entry key="S30" value="2.576857155137765" />
+      <entry key="S60" value="2.8738287537140614" />
+      <entry key="M2" value="3.8980693413790513" />
+      <entry key="M5" value="7.681221420671454" />
+      <entry key="M10" value="13.281353117444862" />
+      <entry key="M15" value="18.620874401402233" />
+      <entry key="M30" value="34.40009682037694" />
+      <entry key="H1" value="63.69297462270623" />
+      <entry key="H2" value="113.170704573362" />
+      <entry key="H4" value="178.48119237885828" />
+      <entry key="D1" value="390.27047792657453" />
+      <entry key="W1" value="1648.959037496439" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -239,11 +249,11 @@
       <recent name="br.com.taskboard.demo.DAO" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="br.com.taskcontroller.Record.TempoGasto" />
       <recent name="br.com.taskcontroller.DTO" />
       <recent name="br.com.taskcontroller.Controller" />
       <recent name="br.com.taskcontroller.Service" />
       <recent name="br.com.taskcontroller.Respository" />
-      <recent name="br.com.taskcontroller.Mapper" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.TaskControllerApplication">
@@ -455,14 +465,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00185" summary="Ordem das estórias no backlog">
-      <option name="closed" value="true" />
-      <created>1788122910605</created>
-      <option name="number" value="00185" />
-      <option name="presentableId" value="LOCAL-00185" />
-      <option name="project" value="LOCAL" />
-      <updated>1788122910606</updated>
     </task>
     <task id="LOCAL-00186" summary="Leiaute roadmap -&gt; OK">
       <option name="closed" value="true" />
@@ -848,7 +850,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791922094902</updated>
     </task>
-    <option name="localTasksCounter" value="234" />
+    <task id="LOCAL-00234" summary="Ajuste de horas/percentual de estórias/épicos">
+      <option name="closed" value="true" />
+      <created>1792010201937</created>
+      <option name="number" value="00234" />
+      <option name="presentableId" value="LOCAL-00234" />
+      <option name="project" value="LOCAL" />
+      <updated>1792010201937</updated>
+    </task>
+    <option name="localTasksCounter" value="235" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -896,7 +906,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajustando os status workflow" />
     <MESSAGE value="Ajustando os status workflow - COMBO STATUS ORIGEM - OK" />
     <MESSAGE value="Tela de workflow - OK" />
     <MESSAGE value="Listagem/exclusão workflow - OK" />
@@ -921,7 +930,8 @@
     <MESSAGE value="Separação dos cadastros EPICOS/ESTÓRIAS/TAREFAS" />
     <MESSAGE value="Cadastro de apontamentos" />
     <MESSAGE value="Integração com cadastro de tarefa/estoria/epico" />
-    <option name="LAST_COMMIT_MESSAGE" value="Integração com cadastro de tarefa/estoria/epico" />
+    <MESSAGE value="Ajuste de horas/percentual de estórias/épicos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajuste de horas/percentual de estórias/épicos" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -963,12 +973,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TempoGastoService.java</url>
-          <line>77</line>
-          <option name="timeStamp" value="149" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/TempoGastoService.java</url>
-          <line>39</line>
+          <line>32</line>
           <option name="timeStamp" value="151" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">

@@ -1,9 +1,5 @@
 package br.com.taskcontroller.Record.Sprint;
 
-import jakarta.persistence.Column;
-
-import java.math.BigDecimal;
-
 public record TarefaQuadroDTO(
         Long idestoria,
         String descestoria,
@@ -12,8 +8,8 @@ public record TarefaQuadroDTO(
         String cor,
         Long idtarefa,
         String desctarefa,
-        BigDecimal horas_estimadas,
-        BigDecimal horas_realizadas,
+        int horas_estimadas,
+        int horas_realizadas,
         Long idcriador,
         String nomecriador,
         Long idresponsavel,

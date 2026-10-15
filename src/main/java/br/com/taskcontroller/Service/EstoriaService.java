@@ -4,7 +4,6 @@ package br.com.taskcontroller.Service;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Modelo.Estoria;
-import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Record.COMBO.EstoriaComboDTO;
 import br.com.taskcontroller.Respository.EstoriaRepository;
@@ -30,12 +29,12 @@ public class EstoriaService {
     private StatusEntidadesRepository statusEntidadesRepository;
 
     @Autowired
-    private StatusTransicaoService statusTransicaoService;
+    private TarefaRepository tarefaRepository;
 
     public Estoria salvar(Estoria estoria) {
         Epico epico = epicoService.buscarPorId(estoria.getEpico().getIdepico());
 
-        BigDecimal horas_realizadas = atualizaEstoria(epico.getIdepico());
+        BigDecimal horas_realizadas = BigDecimal.ZERO;
 
         alterarStatus(estoria.getIdestoria(), estoria.getStatus().getIdstatus());
         estoria.setEpico(epico);
@@ -93,7 +92,17 @@ public class EstoriaService {
         epicoService.atualizarPercentual(estoria.getEpico().getIdepico());
     }
 
-    public BigDecimal atualizaEstoria(Long idEstoria) {
-        return estoriaRepository.atualizaEstoria(idEstoria);
+    @Transactional
+    public void atualizarHorasRealizadas(Long idEstoria) {
+
+//        BigDecimal total = tarefaRepository.atualizaEstoria(idEstoria);
+//
+//        Estoria estoria = estoriaRepository.findById(idEstoria)
+//                .orElseThrow(() ->
+//                        new ResourceNotFoundException("Estória não encontrada"));
+//
+//        estoria.setHoras_realizadas(total);
+//
+//        estoriaRepository.save(estoria);
     }
 }

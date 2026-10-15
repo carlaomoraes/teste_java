@@ -28,9 +28,9 @@ public class Tarefa {
     @JoinColumn(name="idresponsavel")
     private Usuario responsavel;
     @Column(name = "horas_estimadas")
-    private BigDecimal horas_estimadas;
+    private int horas_estimadas;
     @Column(name = "horas_realizadas")
-    private BigDecimal horas_realizadas;
+    private int horas_realizadas;
     @Column(name = "bloqueada")
     private boolean bloqueada;
     @Column(name = "data_inicio")
@@ -91,19 +91,19 @@ public class Tarefa {
         this.responsavel = responsavel;
     }
 
-    public BigDecimal getHoras_estimadas() {
+    public int getHoras_estimadas() {
         return horas_estimadas;
     }
 
-    public void setHoras_estimadas(BigDecimal horas_estimadas) {
+    public void setHoras_estimadas(int horas_estimadas) {
         this.horas_estimadas = horas_estimadas;
     }
 
-    public BigDecimal getHoras_realizadas() {
+    public int getHoras_realizadas() {
         return horas_realizadas;
     }
 
-    public void setHoras_realizadas(BigDecimal horas_realizadas) {
+    public void setHoras_realizadas(int horas_realizadas) {
         this.horas_realizadas = horas_realizadas;
     }
 

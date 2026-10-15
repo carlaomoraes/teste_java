@@ -37,15 +37,14 @@ function formatarData(data) {
     return `${dia}/${mes}/${ano}`;
 }
 
-function formatarHora(hora) {
-    if (!hora) return "00:00";
+function formatarHora(horas) {
+    if (!horas) return "00:00";
 
-    const partes = String(hora).split(":");
+    const h = Math.floor(horas / 3600);
+    const m = Math.floor((horas % 3600) / 60);
+    const s = horas % 60;
 
-    const horas = partes[0].padStart(2, "0");
-    const minutos = partes[1].padStart(2, "0");
-
-    return `${horas}:${minutos}`;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 // ==============================================================
 // FORMATAR DATA BR

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -42,6 +43,7 @@ public class TempoGastoController {
     public List<TempoGastoDTO> listar(@PathVariable Long idTarefa) {
         return service.listar(idTarefa);
     }
+
     //EXCLUIR
     @DeleteMapping("/{idTempoGasto}")
     public ResponseEntity<Void> excluir(@PathVariable Long idTempoGasto) {
@@ -50,5 +52,13 @@ public class TempoGastoController {
 
         return ResponseEntity.noContent().build();
     }
+
+    // LISTAR
+    @GetMapping("/totalizar/{idTarefa}")
+    public int totalizar(@PathVariable Long idTarefa) {
+
+        return service.totalizar(idTarefa);
+    }
+
 
 }

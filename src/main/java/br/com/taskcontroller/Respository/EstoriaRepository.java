@@ -37,15 +37,4 @@ public interface EstoriaRepository extends JpaRepository<Estoria, Long> {
 """)
     Long contarEstoriasConcluidas(@Param("idEpico") Long idEpico);
 
-    @Query("""
-    SELECT SUM(tg.hora_execucao)
-    FROM TempoGasto tg
-    JOIN tarefa t
-    WHERE t.estoria.idestoria = :idEstoria
-      AND t.estoria.ativa = true
-      AND t.estoria.status.finalizado = true
-""")
-    BigDecimal atualizaEstoria(@Param("idEstoria") Long idEstoria);
-
-
 }

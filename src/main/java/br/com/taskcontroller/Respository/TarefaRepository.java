@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
@@ -111,4 +112,6 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     WHERE s.idsprint = :idSprint
 """)
     List<TarefaQuadroDTO> montaQuadro(@Param("idSprint") Long idSprint);
+
+
 }

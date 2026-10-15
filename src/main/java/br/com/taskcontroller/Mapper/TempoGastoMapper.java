@@ -6,6 +6,7 @@ import br.com.taskcontroller.DTO.TempoGastoResponseDTO;
 import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Modelo.TempoGasto;
 import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Utilidades.ResolveTempo;
 
 public class TempoGastoMapper {
 
@@ -26,11 +27,13 @@ public class TempoGastoMapper {
 
     public static TempoGastoResponseDTO toDTO(TempoGasto t) {
         TempoGastoResponseDTO dto = new TempoGastoResponseDTO();
+        ResolveTempo resolveTempo = new ResolveTempo();
+
         dto.setIdtempo_gasto(t.getIdtempo_gasto());
         dto.setIdTarefa(t.getTarefa().getIdtarefa());
         dto.setIdusuario(t.getUsuario().getIdusuario());
         dto.setData_execucao(t.getData_execucao());
-        dto.setHora_execucaoo(t.getHora_execucao());
+        dto.setHora_execucao(resolveTempo.transformarToDecimal(t.getHora_execucao()));
         dto.setResumo(t.getResumo());
         return dto;
     }
