@@ -72,11 +72,11 @@
             </div>
             <div>
                 <label>Horas estimadas</label>
-                <input type="number" id="horas_estimadas_TA" class="form-control text-end" disabled>
+                <input type="time" id="horas_estimadas_TA" class="form-control text-end" disabled>
             </div>
             <div>
                 <label>Horas realizadas</label>
-                <input type="number"  id="horas_realizadas_TA" class="form-control text-end" disabled>
+                <input type="time"  id="horas_realizadas_TA" class="form-control text-end" disabled>
             </div>
             <div>
                 <label>Tipo de tarefa</label>
@@ -104,7 +104,7 @@
             </div>
             <div>
                 <label for="hora_execucao">Hora apontamento:</label>
-                <input type="time" id="hora_execucao" name="hora_execucao">
+                <input type="time" id="hora_execucao" name="hora_execucao" value="00:00:00">
             </div>
         </div>
         <div class="form-grid">
@@ -474,7 +474,7 @@
             <td>${tarefa.idusuario}</td>
             <td>${tarefa.nomeusuario}</td>
             <td>${formatarData(tarefa.data_execucao)}</td>
-            <td>${formatarHora(tarefa.hora_execucao)}</td>
+            <td>${tarefa.hora_execucao}</td>
             <td>
                 <button type="button"
                         class="btn"
@@ -504,8 +504,8 @@
                 document.getElementById('bloqueada_tarefa').checked = tarefa.bloqueada || 0;
                 document.getElementById('data_inicio_TA').value = tarefa.data_inicio;
                 document.getElementById('data_fim_TA').value = tarefa.data_conclusao;
-                document.getElementById('horas_estimadas_TA').value = tarefa.horas_estimadas;
-                document.getElementById('horas_realizadas_TA').value = tarefa.horas_realizadas;
+                document.getElementById('horas_estimadas_TA').value = formatarHora(tarefa.horas_estimadas);
+                document.getElementById('horas_realizadas_TA').value = formatarHora(tarefa.horas_realizadas);
 
                 // CARREGANDO OS COMBOS
                 document.getElementById('comboStatusTA').value = tarefa.idstatus;
@@ -520,7 +520,8 @@
                  mostrarMensagemNaTela("resultado_tarefa","Tarefa selecionada: " + tarefa.desctarefa, "success");
                 }
             } catch (error) {
-                mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");
+                // mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");
+             mostrarMensagemNaTela("resultado_tarefa",error.value, "error");
             }
     }
     async function excluirApontamento(idTempoGasto) {

@@ -38,7 +38,7 @@ function formatarData(data) {
 }
 
 function formatarHora(horas) {
-    if (!horas) return "00:00";
+    if (!horas) return "00:00:00";
 
     const h = Math.floor(horas / 3600);
     const m = Math.floor((horas % 3600) / 60);
