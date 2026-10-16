@@ -38,7 +38,7 @@
         <div class="col-md-3">
             <div class="card text-bg-success">
                 <div class="card-body">
-                    <h3>0</h3>
+                    <h3><div id="concluidas"></div></h3>
                     Concluídas
                 </div>
             </div>
@@ -47,7 +47,7 @@
         <div class="col-md-3">
             <div class="card text-bg-primary">
                 <div class="card-body">
-                    <h3>0</h3>
+                    <h3><div id="Em_andamento"></div></h3>
                     Em andamento
                 </div>
             </div>
@@ -56,7 +56,7 @@
         <div class="col-md-3">
             <div class="card text-bg-danger">
                 <div class="card-body">
-                    <h3>0</h3>
+                    <h3><div id="atrasadas"></div></h3>
                     Atrasadas
                 </div>
             </div>
@@ -65,8 +65,7 @@
         <div class="col-md-3">
             <div class="card text-bg-secondary">
                 <div class="card-body">
-                    <h3>0 h</h3>
-                    Capacidade
+                    <h3><div id="capacidade"></div></h3> Capacidade em h
                 </div>
             </div>
         </div>
@@ -171,12 +170,15 @@
         listarAusenciasSprint(event.target.value);
         montaRoadmap(event.target.value);
         montarKAMBAM(event.target.value);
+    //    carregarIndicadores(event.target.value);
     })
 
     // =============================================================
     // MONTAR QUADRO DE AUSÊNCIAS DA SPRINT
     // =============================================================
     async function listarAusenciasSprint(idSprint)    {
+        await carregarIndicadores(idSprint);
+
         const url = `${API}/DTO/${idSprint}`;
         const response = await fetch(url);
         const data = await response.json();
@@ -387,7 +389,6 @@
         if (!idStatus) return;
         try {
             const linha = `${API_TAREFA}/${idTarefa}/status/${idStatus}`;
-            console.log(linha);
             const resposta = await fetch(linha,
                 {
                     method: "PATCH"
@@ -419,6 +420,26 @@
             await montarKAMBAM(document.getElementById("comboSprint").value);
         } catch (error) {
             mostrarMensagemNaTela("resultado",error.message, "error");
+        }
+    }
+    async function carregarIndicadores(idSprint) {
+        const concluidas = document.getElementById("concluidas");
+        const andamento = document.getElementById("Em_andamento");
+        const atrasadas = document.getElementById("atrasadas");
+        const capacidade = document.getElementById("capacidade");
+        try {
+            const linha = `${API}/${encodeURIComponent(idSprint)}/indicadores`;
+            const resposta = await fetch(linha);
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
+            const indicador = await resposta.json();
+            concluidas.innerHTML = '<h3>' + indicador.concluidas + '</h3>';
+            andamento.innerHTML = '<h3>' + indicador.emandamento + '</h3>';
+            atrasadas.innerHTML = '<h3>' + indicador.atrasadas + '</h3>';
+            capacidade.innerHTML = '<h3>' + indicador.capacidade + '</h3>';
+        } catch (error) {
+            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }
     }
 
@@ -474,8 +495,8 @@
             html += `</select>`;
             html += `</div>`;
             html += `<div class="small mt-1">`;
-            html += `⏱ Horas Estimadas: ` + tarefa.horas_estimadas + '<br>';
-            html += `⏱ Horas Realizadas: ` + tarefa.horas_realizadas + '<br>';
+            html += `⏱ Horas Estimadas: ` + formatarHora(tarefa.horas_estimadas) + '<br>';
+            html += `⏱ Horas Realizadas: ` + formatarHora(tarefa.horas_realizadas) + '<br>';
             html += `<button type="button" class="btn btn-sm p-0 ms-1" onclick="abrirTempoGasto(${tarefa.idtarefa})" title="Registrar horas"><i class="bi bi-plus-circle"></i> </button>`;
             html += `</div>`;
             html += `</div>`;

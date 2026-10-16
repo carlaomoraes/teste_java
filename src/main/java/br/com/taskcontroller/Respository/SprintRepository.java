@@ -117,7 +117,8 @@ ORDER BY s.idsprint
     void excluirDoRoadmap(Long idSprint, Long idEstoria);
 
     @Query("""
-    SELECT COUNT(ordem) + 1 FROM SprintEstoria se
+    SELECT COUNT(ordem) + 1
+    FROM SprintEstoria se
     WHERE se.sprint.idsprint = :idSprint
 """)
     int retornaOrdem(Long idSprint);
@@ -143,4 +144,42 @@ ORDER BY s.idsprint
  ORDER BY s.idsprint
 """)
     SprintListagemDTO buscar(@Param("idSprint") Long idSprint);
+
+    @Query("""
+    SELECT COUNT(t)
+    FROM Tarefa t
+    JOIN t.estoria e
+    JOIN SprintEstoria se ON se.estoria = e
+    WHERE se.sprint.idsprint = :idSprint
+      AND t.status.finalizado = true
+""")
+    Long contarConcluidas(@Param("idSprint") Long idSprint);
+
+    @Query("""
+    SELECT COUNT(t)
+    FROM Tarefa t
+    JOIN SprintEstoria se ON se.estoria = t.estoria
+    WHERE se.sprint.idsprint = :idSprint
+      AND t.status.inicial = false
+      AND t.status.finalizado = false
+      AND t.status.cancelado = false
+      AND t.status.ativo = true
+      AND (
+          t.data_fim_prevista IS NULL
+          OR t.data_fim_prevista >= :hoje
+      )
+""")
+    Long contarEmAndamento(Long idSprint, LocalDate hoje);
+
+    @Query("""
+    SELECT COUNT(t)
+    FROM Tarefa t
+    JOIN SprintEstoria se ON se.estoria = t.estoria
+    WHERE se.sprint.idsprint = :idSprint
+      AND t.status.finalizado = false
+      AND t.status.cancelado = false
+      AND t.status.ativo = true
+      AND t.data_fim_prevista < :hoje
+""")
+    Long contarAtrasadas(Long idSprint, LocalDate hoje);
 }

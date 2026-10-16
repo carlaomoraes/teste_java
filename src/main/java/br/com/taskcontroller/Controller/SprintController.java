@@ -6,6 +6,7 @@ import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
+import br.com.taskcontroller.Record.Sprint.SprintIndicadoresDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
@@ -35,6 +36,9 @@ public class SprintController {
 
     @Autowired
     private EmpreendimentoService empreendimentoService;
+
+    @Autowired
+    private SprintIndicadoresService sprintIndicadoresService;
 
     @Autowired
     private AusenciaProgramadaRepository ausenciaProgramadaRepository;
@@ -184,8 +188,12 @@ public class SprintController {
 
     @GetMapping("/{idSprint}/quadro")
     public List<TarefaQuadroDTO> montaQuadro(@PathVariable Long idSprint) {
-
         return service.montaQuadro(idSprint);
+    }
+
+    @GetMapping("/{idSprint}/indicadores")
+    public ResponseEntity<SprintIndicadoresDTO> carregaIndicadores(      @PathVariable Long idSprint) {
+        return ResponseEntity.ok(sprintIndicadoresService.carregaIndicadores(idSprint));
     }
 
 }
