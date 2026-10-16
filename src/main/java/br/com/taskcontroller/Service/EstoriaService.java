@@ -52,8 +52,7 @@ public class EstoriaService {
     }
 
     public Estoria atualizar(Estoria Estoria) {
-        Long horasEstimadas = 0l;
-
+        alterarStatus(Estoria.getIdestoria(), Estoria.getStatus().getIdstatus());
         return estoriaRepository.save(Estoria);
     }
 
@@ -77,7 +76,6 @@ public class EstoriaService {
 
     @Transactional
     public void alterarStatus(Long idEstoria, Long idStatus) {
-
         Estoria estoria = estoriaRepository.findById(idEstoria)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Estória não encontrada"));
@@ -92,17 +90,4 @@ public class EstoriaService {
         epicoService.atualizarPercentual(estoria.getEpico().getIdepico());
     }
 
-    @Transactional
-    public void atualizarHorasRealizadas(Long idEstoria) {
-
-//        BigDecimal total = tarefaRepository.atualizaEstoria(idEstoria);
-//
-//        Estoria estoria = estoriaRepository.findById(idEstoria)
-//                .orElseThrow(() ->
-//                        new ResourceNotFoundException("Estória não encontrada"));
-//
-//        estoria.setHoras_realizadas(total);
-//
-//        estoriaRepository.save(estoria);
-    }
 }
