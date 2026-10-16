@@ -58,12 +58,11 @@ public class EstoriaService {
 
     public void excluir(Long idEstoria) {
         Estoria estoria = estoriaRepository.findById(idEstoria)
-                .orElseThrow(() -> new RuntimeException("Estória não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Estória não encontrada !!!"));
 
-//        if (tarefaRepository.existsByEstoriaAndAtivaTrue(estoria)) {
-//            throw new RuntimeException(
-//                    "Não é possível inativar a estória porque existem tarefas ativas.");
-//        }
+        if (tarefaRepository.contarTarefasPendentes(estoria.getIdestoria()) > 0) {
+            throw new RuntimeException("Não é possível inativar a estória porque existem tarefas ativas !!!");
+        }
 
         estoria.setAtiva(false);
 
@@ -71,18 +70,14 @@ public class EstoriaService {
     }
 
     public Estoria buscarPorId(Long idEstoria) {
-        return estoriaRepository.findById(idEstoria).orElseThrow(() -> new RuntimeException("Estória não encontrada"));
+        return estoriaRepository.findById(idEstoria).orElseThrow(() -> new RuntimeException("Estória não encontrada !"));
     }
 
     @Transactional
     public void alterarStatus(Long idEstoria, Long idStatus) {
-        Estoria estoria = estoriaRepository.findById(idEstoria)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Estória não encontrada"));
+        Estoria estoria = estoriaRepository.findById(idEstoria).orElseThrow(() -> new ResourceNotFoundException("Estória não encontrada !"));
 
-        StatusEntidades status = statusEntidadesRepository.findById(idStatus)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Status não encontrado"));
+        StatusEntidades status = statusEntidadesRepository.findById(idStatus).orElseThrow(() -> new ResourceNotFoundException("Status não encontrado !"));
 
         estoria.setStatus(status);
         estoriaRepository.save(estoria);

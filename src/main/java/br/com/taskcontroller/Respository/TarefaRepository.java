@@ -113,5 +113,14 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 """)
     List<TarefaQuadroDTO> montaQuadro(@Param("idSprint") Long idSprint);
 
+    @Query("""
+    SELECT COUNT(t)
+    FROM Tarefa t
+    WHERE t.estoria.idestoria = :idEstoria
+      AND t.data_conclusao is null
+      AND t.status.finalizado = false
+      AND t.status.cancelado = false
+""")
+    Long contarTarefasPendentes(Long idEstoria);
 
 }
