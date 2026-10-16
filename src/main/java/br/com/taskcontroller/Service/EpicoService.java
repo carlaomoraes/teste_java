@@ -28,6 +28,22 @@ public class EpicoService {
     private EpicoRepository repository;
 
     public Epico salvar(Epico epico) {
+        Long total = estoriaRepository.contarEstorias(epico.getIdepico());
+
+        Long concluidas = estoriaRepository.contarEstoriasConcluidas(epico.getIdepico());
+
+        BigDecimal percentual = BigDecimal.ZERO;
+
+        if(total > 0) {
+            percentual = BigDecimal.valueOf(concluidas)
+                    .multiply(BigDecimal.valueOf(100))
+                    .divide(
+                            BigDecimal.valueOf(total),
+                            2,
+                            RoundingMode.HALF_UP
+                    );
+        }
+        epico.setPercentual(percentual);
         alterarStatus(epico.getIdepico(), epico.getStatus().getIdstatus());
         return repository.save(epico);
     }
