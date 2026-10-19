@@ -1,6 +1,8 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Equipe_Usuario;
+import br.com.taskcontroller.Modelo.Usuario;
+import br.com.taskcontroller.Record.Equipe.EquipeEmpreendimentoDTO;
 import br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -53,4 +55,17 @@ public interface EquipeUsuarioRepository extends JpaRepository<Equipe_Usuario, L
                                 WHERE eu.equipe.idequipe = :idequipe)
   ORDER BY u.nome""")
     List<EquipeUsuarioDTO> buscarUsuariosDisponiveis(@Param("idequipe") Long idequipe);
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Equipe.EquipeEmpreendimentoDTO(
+                eu.usuario.idusuario,
+                eu.usuario.nome,
+                ee.empreendimento.idempreendimento)
+    FROM Equipe_Usuario eu
+    JOIN Empreendimento_Equipe ee ON ee.equipe = eu.equipe
+    WHERE ee.empreendimento.idempreendimento = :idEmpreendimento
+      AND eu.usuario.ativo = true
+      AND eu.equipe.ativa = true
+""")
+    List<EquipeEmpreendimentoDTO> buscarUsuariosEmpreendimento(@Param("idEmpreendimento") Long idEmpreendimento);
 }

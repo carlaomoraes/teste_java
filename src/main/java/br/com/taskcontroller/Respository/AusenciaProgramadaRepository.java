@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Respository;
 
+import br.com.taskcontroller.Record.Ausencia.AusenciaSprintDTO;
 import br.com.taskcontroller.Record.COMBO.AusenciaComboDTO;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
@@ -61,5 +62,25 @@ public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaPro
     ORDER BY a.id_tipo_ausencia
 """)
     List<AusenciaComboDTO> montaComboAusencia();
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaSprintDTO(
+            idausencia,
+            data_inicio,
+            data_fim
+            /*,
+            idusuario,
+            data_cadastro,
+            ,
+            data_fim*/)
+      FROM AusenciaProgramada a
+    WHERE a.data_inicio <= :data_fim
+      AND a.data_fim >= :data_inicio
+      AND a.usuario.idusuario = :idUsuario
+""")
+    List<AusenciaSprintDTO>  buscarAusenciasDaSprintPorUsuario(
+            @Param("data_inicio") LocalDate data_inicio,
+            @Param("data_fim") LocalDate data_fim,
+            @Param("idUsuario")  Long idUsuario);
 
  }

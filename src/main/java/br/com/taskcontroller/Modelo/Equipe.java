@@ -23,5 +23,5 @@ public class Equipe {
     private String descequipe;
 
     @Column(name="ativa")
-    private String ativa;
+    private boolean ativa;
 }

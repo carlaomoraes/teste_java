@@ -4,7 +4,7 @@ public class EquipeRequestDTO {
    private Long idequipe;
    private String nomeequipe;
    private String descequipe;
-   private String ativa;
+   private boolean ativa;
 
     public Long getIdequipe() {
         return idequipe;
@@ -30,11 +30,11 @@ public class EquipeRequestDTO {
         this.descequipe = descequipe;
     }
 
-    public String getAtiva() {
+    public boolean isAtiva() {
         return ativa;
     }
 
-    public void setAtiva(String ativa) {
+    public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
 }

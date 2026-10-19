@@ -95,7 +95,7 @@ public class SprintService {
         return data;
     }
 
-    private boolean ehFimDeSemana(LocalDate data) {
+    public boolean ehFimDeSemana(LocalDate data) {
         DayOfWeek dia = data.getDayOfWeek();
         return dia == DayOfWeek.SATURDAY || dia == DayOfWeek.SUNDAY;
     }

@@ -39,7 +39,6 @@
             <div class="card text-bg-success">
                 <div class="card-body">
                     <h3><div id="concluidas"></div></h3>
-                    Concluídas
                 </div>
             </div>
         </div>
@@ -48,7 +47,6 @@
             <div class="card text-bg-primary">
                 <div class="card-body">
                     <h3><div id="Em_andamento"></div></h3>
-                    Em andamento
                 </div>
             </div>
         </div>
@@ -57,7 +55,6 @@
             <div class="card text-bg-danger">
                 <div class="card-body">
                     <h3><div id="atrasadas"></div></h3>
-                    Atrasadas
                 </div>
             </div>
         </div>
@@ -65,7 +62,7 @@
         <div class="col-md-3">
             <div class="card text-bg-secondary">
                 <div class="card-body">
-                    <h3><div id="capacidade"></div></h3> Capacidade em h
+                    <div id="capacidade"></div> <br>
                 </div>
             </div>
         </div>
@@ -170,7 +167,7 @@
         listarAusenciasSprint(event.target.value);
         montaRoadmap(event.target.value);
         montarKAMBAM(event.target.value);
-    //    carregarIndicadores(event.target.value);
+        carregarIndicadores(event.target.value);
     })
 
     // =============================================================
@@ -434,10 +431,13 @@
                 throw new Error(`Erro ${resposta.status}`);
             }
             const indicador = await resposta.json();
-            concluidas.innerHTML = '<h3>' + indicador.concluidas + '</h3>';
-            andamento.innerHTML = '<h3>' + indicador.emandamento + '</h3>';
-            atrasadas.innerHTML = '<h3>' + indicador.atrasadas + '</h3>';
-            capacidade.innerHTML = '<h3>' + indicador.capacidade + '</h3>';
+            concluidas.innerHTML = '<h4>Concluídas: ' + indicador.concluidas + '</h4>';
+            andamento.innerHTML = '<h4>Em andamento: ' + indicador.emandamento + '</h4>';
+            atrasadas.innerHTML = '<h4>Atrasadas: ' + indicador.atrasadas + '</h4>';
+            capacidade.innerHTML = '<h4>Capacidade(h): ' + indicador.capacidade +
+                                   ' / Bruta(h): ' + indicador.bruta + ' / Líquida(h): '+
+                                    indicador.liquida+' ( '+indicador.porcentagem+' %)'+
+                                   'Ausências: '+indicador.ausencias+'</h4>';
         } catch (error) {
             mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }

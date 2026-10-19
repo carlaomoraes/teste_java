@@ -6,5 +6,9 @@ public record SprintIndicadoresDTO(
         Long concluidas,
         Long emandamento,
         Long atrasadas,
-        BigDecimal capacidade
+        BigDecimal capacidade,
+        BigDecimal bruta,
+        BigDecimal liquida,
+        BigDecimal porcentagem,
+        BigDecimal ausencias
 ) {}

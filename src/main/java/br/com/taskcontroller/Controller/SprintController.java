@@ -192,7 +192,7 @@ public class SprintController {
     }
 
     @GetMapping("/{idSprint}/indicadores")
-    public ResponseEntity<SprintIndicadoresDTO> carregaIndicadores(      @PathVariable Long idSprint) {
+    public ResponseEntity<SprintIndicadoresDTO> carregaIndicadores(@PathVariable Long idSprint) {
         return ResponseEntity.ok(sprintIndicadoresService.carregaIndicadores(idSprint));
     }
 
