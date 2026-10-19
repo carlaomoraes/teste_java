@@ -33,13 +33,14 @@ public class SprintIndicadoresService {
         Long atrasadas =  sprintRepository.contarAtrasadas(idSprint, hoje);
         BigDecimal capacidade = sprintCapacidadeService.calcularDiasUteis(sprint.getDtiniciosprint(), sprint.getDtfinalsprint());
         capacidade = capacidade.multiply(horasDia);
-        BigDecimal bruta = sprintCapacidadeService.calcularCapacidadeBruta(sprint);
-        bruta = bruta.multiply(horasDia);
-        BigDecimal liquida = bruta.subtract(capacidade);
-        liquida = liquida.multiply(horasDia);
-        BigDecimal porcentagem = liquida.divide(bruta, 2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal bruta =sprintCapacidadeService.calcularCapacidadeBruta(sprint);
+        //bruta = BigDecimal.ONE;
+                //bruta.multiply(horasDia);
+        BigDecimal liquida = BigDecimal.ZERO;
+       // liquida = liquida.multiply(horasDia);
+        BigDecimal porcentagem = BigDecimal.ZERO;
+        //liquida.divide(bruta, 2, BigDecimal.ROUND_HALF_UP);
         List<EquipeEmpreendimentoDTO> usuarios = equipeUsuarioRepository.buscarUsuariosEmpreendimento(sprint.getEmpreendimento().getIdempreendimento());
-
         BigDecimal ausencias = sprintCapacidadeService.calcularAusencias(sprint,usuarios);
 
         return new SprintIndicadoresDTO(
