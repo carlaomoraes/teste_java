@@ -575,6 +575,10 @@
         const ausencia = document.getElementById("ausencia");
         const saldo = document.getElementById("saldo");
         const ocupacao = document.getElementById("ocupacao");
+        const totalTarefas = document.getElementById("totalTarefas");
+        const percentualConcluidas = document.getElementById("percentualConcluidas");
+        const percentualAtrasadas = document.getElementById("percentualAtrasadas");
+        var perc;
         try {
             const linha = `${API}/${encodeURIComponent(idSprint)}/indicadores`;
             const resposta = await fetch(linha);
@@ -585,6 +589,22 @@
             concluidas.innerHTML = `<h5 class="mb-1">${indicador.concluidas}</h5> <small>Concluídas</small>`;
             andamento.innerHTML = `<h5 class="mb-1">${indicador.emandamento}</h5><small>Em andamento</small>`;
             atrasadas.innerHTML = `<h5 class="mb-1">${indicador.atrasadas}</h5><small>Atrasadas</small>`;
+            totalTarefas.innerHTML = indicador.concluidas + indicador.emandamento + indicador.atrasadas;
+            if((indicador.concluidas + indicador.emandamento + indicador.atrasadas) > 0) {
+                perc = indicador.concluidas / (indicador.concluidas + indicador.emandamento + indicador.atrasadas);
+            }
+            else {
+                perc = 0;
+            }
+            percentualConcluidas.innerHTML = perc.toString(2) + '% concluídas';
+            if((indicador.concluidas + indicador.emandamento + indicador.atrasadas) > 0) {
+                perc = indicador.atrasadas / (indicador.concluidas + indicador.emandamento + indicador.atrasadas);
+            }
+            else {
+                perc = 0;
+            }
+            percentualAtrasadas.innerHTML = Number(perc*100).toFixed(2)  + '% Atrasadas';
+
             // CAPACIDADE
             const percentual = Number(indicador.porcentagem) * 100;
             const percentualFormatado = percentual.toFixed(2);
@@ -603,18 +623,18 @@
                                 <small>${percentualFormatado}% disponível</small>`;
             // OCUPAÇÃO DA SPRINT
             const percentualOcupacao = Number(indicador.ocupacao ?? 0);
-            const percentualOcupacaoBarra = Math.max(0,Math.min(100, percentualOcupacao));
-            const corOcupacao = percentualOcupacao > 100 ? "bg-danger": percentualOcupacao >= 85 ? "bg-warning" : "bg-success";
+            const percentualOcupacaoBarra = Math.max(0, Math.min(100, percentualOcupacao));
+            const corOcupacao = percentualOcupacao > 100 ? "bg-danger" : percentualOcupacao >= 85 ? "bg-warning" : "bg-success";
             ocupacao.innerHTML = `<small>Ocupação planejada</small> <div class="progress mt-2" style="height: 8px;"><div class="progress-bar ${corOcupacao}"
                                   role="progressbar" style="width: ${percentualOcupacaoBarra}%"  aria-valuenow="${percentualOcupacao}"   aria-valuemin="0" aria-valuemax="100"> </div>
                                    </div> <small> ${percentualOcupacao.toFixed(2)}% ocupada (${indicador.horasEstimadas} h estimadas) </small>`;
             // DESVIO DE ESFORÇO
             const saldoHoras = Number(indicador.saldoHoras ?? 0);
-            const corSaldo = saldoHoras < 0 ? "text-warning": "text-white";
+            const corSaldo = saldoHoras < 0 ? "text-warning" : "text-white";
             saldo.innerHTML = `<small class="${corSaldo}"> Desvio de esforço: ${saldoHoras.toFixed(2)} h</small>`;
             ausencia.innerHTML = `<small>${indicador.ausencias} dias de ausência </small>`;
         } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
+            mostrarMensagemNaTela("resultado", "Erro ao carregar status: " + error.message, "error");
         }
     }
 

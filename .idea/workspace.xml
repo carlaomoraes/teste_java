@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustes nos indicadores - OK">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Ajustes na tabela de ausencias - OK">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" afterDir="false" />
     </list>
@@ -75,61 +75,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="3.8020994051213063E-128" />
-      <entry key="MS500" value="3.403766892729253E-26" />
-      <entry key="S2" value="6.127886919068159E-7" />
-      <entry key="S5" value="0.004865418975675889" />
-      <entry key="S10" value="0.09831563213608954" />
-      <entry key="S30" value="0.7468624033422439" />
-      <entry key="S60" value="1.4509409891676979" />
-      <entry key="M2" value="2.5352096606543855" />
-      <entry key="M5" value="4.089102699888262" />
-      <entry key="M10" value="5.013414427859069" />
-      <entry key="M15" value="5.672171796969109" />
-      <entry key="M30" value="8.226206451201444" />
-      <entry key="H1" value="15.915713273751765" />
-      <entry key="H2" value="41.719600112332905" />
-      <entry key="H4" value="97.13444066915964" />
-      <entry key="D1" value="266.840514043107" />
-      <entry key="W1" value="1077.6696711219308" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="1.914580591214958E-70" />
+      <entry key="S2" value="4.020618769633925E-18" />
+      <entry key="S5" value="1.4573580171114218E-7" />
+      <entry key="S10" value="5.242143627775447E-4" />
+      <entry key="S30" value="0.12712270326499117" />
+      <entry key="S60" value="0.5071694975346589" />
+      <entry key="M2" value="1.068367464880043" />
+      <entry key="M5" value="2.3454446199116417" />
+      <entry key="M10" value="4.914860514029033" />
+      <entry key="M15" value="7.398654044736843" />
+      <entry key="M30" value="13.33160346536424" />
+      <entry key="H1" value="22.701070635641628" />
+      <entry key="H2" value="45.99046840700877" />
+      <entry key="H4" value="98.93191147501065" />
+      <entry key="D1" value="279.34918570831155" />
+      <entry key="W1" value="1094.2506265595207" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.000000000833557" />
-      <entry key="MS500" value="1.0152822419008933" />
-      <entry key="S2" value="1.3549637146646547" />
-      <entry key="S5" value="1.76081380992742" />
-      <entry key="S10" value="2.1315420832962073" />
-      <entry key="S30" value="2.620205241173391" />
-      <entry key="S60" value="2.8511125130237476" />
-      <entry key="M2" value="3.1335119665211084" />
-      <entry key="M5" value="3.525092203626022" />
-      <entry key="M10" value="3.7957142239142025" />
-      <entry key="M15" value="4.032859594545207" />
-      <entry key="M30" value="4.994683991907204" />
-      <entry key="H1" value="8.707305313838482" />
-      <entry key="H2" value="22.320502531720276" />
-      <entry key="H4" value="52.21355697086128" />
-      <entry key="D1" value="149.182227398535" />
-      <entry key="W1" value="568.7121065421569" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000000016080952" />
+      <entry key="S2" value="1.0063397960686662" />
+      <entry key="S5" value="1.1442409658277821" />
+      <entry key="S10" value="1.5282379010354514" />
+      <entry key="S30" value="2.9473385590970533" />
+      <entry key="S60" value="4.201518131297174" />
+      <entry key="M2" value="5.53480672235098" />
+      <entry key="M5" value="8.079563441300316" />
+      <entry key="M10" value="11.395238565775688" />
+      <entry key="M15" value="13.861837561080586" />
+      <entry key="M30" value="18.467188905594337" />
+      <entry key="H1" value="24.089143115879732" />
+      <entry key="H2" value="36.70461780300033" />
+      <entry key="H4" value="65.31010832969798" />
+      <entry key="D1" value="167.8781509863729" />
+      <entry key="W1" value="589.8513201829339" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="2.3097110515761627E-4" />
-      <entry key="MS500" value="0.18739579433966524" />
-      <entry key="S2" value="0.7260488059490449" />
-      <entry key="S5" value="1.2396933026777155" />
-      <entry key="S10" value="1.8117266455267445" />
-      <entry key="S30" value="3.128926714240305" />
-      <entry key="S60" value="4.15341639133363" />
-      <entry key="M2" value="5.578251366806245" />
-      <entry key="M5" value="7.569768148661354" />
-      <entry key="M10" value="8.784202100691797" />
-      <entry key="M15" value="9.68698043871319" />
-      <entry key="M30" value="13.20935710985446" />
-      <entry key="H1" value="24.61304683746061" />
-      <entry key="H2" value="64.02757397948207" />
-      <entry key="H4" value="149.33340089096666" />
-      <entry key="D1" value="416.015925601695" />
-      <entry key="W1" value="1646.3781169118624" />
+      <entry key="MS100" value="6.396810981912559E-9" />
+      <entry key="MS500" value="0.02297167737012355" />
+      <entry key="S2" value="0.39324853475423566" />
+      <entry key="S5" value="0.8041795990504441" />
+      <entry key="S10" value="1.301426215838608" />
+      <entry key="S30" value="2.925397711329599" />
+      <entry key="S60" value="4.5979875099889105" />
+      <entry key="M2" value="6.526128775350841" />
+      <entry key="M5" value="10.375032050150965" />
+      <entry key="M10" value="16.27086674813223" />
+      <entry key="M15" value="21.226718349774814" />
+      <entry key="M30" value="31.77416194175064" />
+      <entry key="H1" value="46.772473946854525" />
+      <entry key="H2" value="82.67946176120064" />
+      <entry key="H4" value="164.22630397556523" />
+      <entry key="D1" value="447.2200802042268" />
+      <entry key="W1" value="1684.098207107112" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -447,14 +447,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00195" summary="Construindo workflow">
-      <option name="closed" value="true" />
-      <created>1788982557403</created>
-      <option name="number" value="00195" />
-      <option name="presentableId" value="LOCAL-00195" />
-      <option name="project" value="LOCAL" />
-      <updated>1788982557403</updated>
     </task>
     <task id="LOCAL-00196" summary="Construindo workflow">
       <option name="closed" value="true" />
@@ -840,7 +832,15 @@
       <option name="project" value="LOCAL" />
       <updated>1792517910265</updated>
     </task>
-    <option name="localTasksCounter" value="244" />
+    <task id="LOCAL-00244" summary="Ajustes na tabela de ausencias - OK">
+      <option name="closed" value="true" />
+      <created>1792523145445</created>
+      <option name="number" value="00244" />
+      <option name="presentableId" value="LOCAL-00244" />
+      <option name="project" value="LOCAL" />
+      <updated>1792523145445</updated>
+    </task>
+    <option name="localTasksCounter" value="245" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -888,7 +888,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajustes no combo STATUS ENTIDADES" />
     <MESSAGE value="Ajustes no combo STATUS ENTIDADES no cadastro de sprint" />
     <MESSAGE value="Ajustes duração da sprint" />
     <MESSAGE value="STATUS DA SPRINT" />
@@ -913,7 +912,8 @@
     <MESSAGE value="Indicadoes" />
     <MESSAGE value="Ajustes nos indicadores - a fazer" />
     <MESSAGE value="Ajustes nos indicadores - OK" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajustes nos indicadores - OK" />
+    <MESSAGE value="Ajustes na tabela de ausencias - OK" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajustes na tabela de ausencias - OK" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
