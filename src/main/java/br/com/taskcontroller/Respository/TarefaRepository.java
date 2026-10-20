@@ -123,4 +123,16 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 """)
     Long contarTarefasPendentes(Long idEstoria);
 
+    @Query("""
+    SELECT COALESCE(SUM(t.horas_estimadas), 0)
+    FROM Tarefa t
+    JOIN SprintEstoria se
+      ON se.estoria = t.estoria
+    WHERE se.sprint.idsprint = :idSprint
+      AND t.data_conclusao is null
+      AND t.status.finalizado = false
+      AND t.status.cancelado = false
+""")
+    BigDecimal somarHorasEstimadasSprint(@Param("idSprint") Long idSprint);
+
 }

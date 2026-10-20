@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Record.Sprint;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
 
 public record SprintIndicadoresDTO(
         Long concluidas,
@@ -10,5 +11,8 @@ public record SprintIndicadoresDTO(
         BigDecimal bruta,
         BigDecimal liquida,
         BigDecimal porcentagem,
-        BigDecimal ausencias
+        BigDecimal ausencias,
+        BigDecimal horasEstimadas,
+        BigDecimal ocupacao,
+        BigDecimal saldoHoras
 ) {}

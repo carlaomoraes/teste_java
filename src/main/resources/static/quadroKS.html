@@ -33,7 +33,7 @@
     <div class="text-end" id="saude"></div>
 
     <!-- Cards -->
-    <div class="row mb-3">
+    <div class="row g-3 align-items-stretch">
 
         <div class="col-md-3">
             <div class="card text-bg-success">
@@ -63,12 +63,17 @@
             <div class="card text-bg-secondary">
                 <div class="card-body">
                     <div id="capacidade"></div> <br>
+                    <div id="bruta"></div> <br>
+                    <div id="liquida"></div> <br>
+                    <div id="saldo"></div> <br>
+                    <div id="ausencia"></div> <br>
+                    <div id="ocupacao"></div> <br>
                 </div>
             </div>
         </div>
 
     </div>
-    <div class="row mb-3" id="ausencia"></div>
+    <div class="row mb-3" id="ausencias"></div>
     <!-- Roadmap -->
     <div class="card">
         <div class="card-body" ></div>
@@ -185,7 +190,7 @@
         dataInicioSprint = data.dtiniciosprint;
         dataFimSprint = data.dtfinalsprint;
         //---------
-        const container = document.getElementById("ausencia");
+        const container = document.getElementById("ausencias");
         // Limpa o quadro
         container.innerHTML = "";
         // Se a sprint ainda não possui período definido
@@ -424,6 +429,11 @@
         const andamento = document.getElementById("Em_andamento");
         const atrasadas = document.getElementById("atrasadas");
         const capacidade = document.getElementById("capacidade");
+        const bruta = document.getElementById("bruta");
+        const liquida = document.getElementById("liquida");
+        const ausencia = document.getElementById("ausencia");
+        const saldo = document.getElementById("saldo");
+        const ocupacao = document.getElementById("ocupacao");
         try {
             const linha = `${API}/${encodeURIComponent(idSprint)}/indicadores`;
             const resposta = await fetch(linha);
@@ -431,13 +441,37 @@
                 throw new Error(`Erro ${resposta.status}`);
             }
             const indicador = await resposta.json();
-            concluidas.innerHTML = '<h4>Concluídas: ' + indicador.concluidas + '</h4>';
-            andamento.innerHTML = '<h4>Em andamento: ' + indicador.emandamento + '</h4>';
-            atrasadas.innerHTML = '<h4>Atrasadas: ' + indicador.atrasadas + '</h4>';
-            capacidade.innerHTML = '<h4>Capacidade(h): ' + indicador.capacidade +
-                                   ' / Bruta(h): ' + indicador.bruta + ' / Líquida(h): '+
-                                    indicador.liquida+' ( '+indicador.porcentagem+' %)'+
-                                   'Ausências: '+indicador.ausencias+'</h4>';
+            concluidas.innerHTML = `<h5 class="mb-1">${indicador.concluidas}</h5> <small>Concluídas</small>`;
+            andamento.innerHTML = `<h5 class="mb-1">${indicador.emandamento}</h5><small>Em andamento</small>`;
+            atrasadas.innerHTML = `<h5 class="mb-1">${indicador.atrasadas}</h5><small>Atrasadas</small>`;
+            // CAPACIDADE
+            const percentual = Number(indicador.porcentagem) * 100;
+            const percentualFormatado = percentual.toFixed(2);
+            const percentualBarra = Math.max(0, Math.min(100, percentual));
+            capacidade.innerHTML = `<small>Capacidade disponível: ${indicador.liquida} h </small>`;
+            bruta.innerHTML = `<small>Capacidade bruta: ${indicador.bruta} h</small>`;
+            liquida.innerHTML = `<div class="progress mt-2" style="height: 8px;">
+                                    <div class="progress-bar bg-success"
+                                        role="progressbar"
+                                        style="width: ${percentualBarra}%"
+                                        aria-valuenow="${percentualBarra}"
+                                        aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <small>${percentualFormatado}% disponível</small>`;
+            // OCUPAÇÃO DA SPRINT
+            const percentualOcupacao = Number(indicador.ocupacao ?? 0);
+            const percentualOcupacaoBarra = Math.max(0,Math.min(100, percentualOcupacao));
+            const corOcupacao = percentualOcupacao > 100 ? "bg-danger": percentualOcupacao >= 85 ? "bg-warning" : "bg-success";
+            ocupacao.innerHTML = `<small>Ocupação planejada</small> <div class="progress mt-2" style="height: 8px;"><div class="progress-bar ${corOcupacao}"
+                                  role="progressbar" style="width: ${percentualOcupacaoBarra}%"  aria-valuenow="${percentualOcupacao}"   aria-valuemin="0" aria-valuemax="100"> </div>
+                                   </div> <small> ${percentualOcupacao.toFixed(2)}% ocupada (${indicador.horasEstimadas} h estimadas) </small>`;
+            // DESVIO DE ESFORÇO
+            const saldoHoras = Number(indicador.saldoHoras ?? 0);
+            const corSaldo = saldoHoras < 0 ? "text-warning": "text-white";
+            saldo.innerHTML = `<small class="${corSaldo}"> Desvio de esforço: ${saldoHoras.toFixed(2)} h</small>`;
+            ausencia.innerHTML = `<small>${indicador.ausencias} dias de ausência </small>`;
         } catch (error) {
             mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
         }

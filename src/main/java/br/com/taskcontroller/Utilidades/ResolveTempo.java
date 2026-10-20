@@ -1,28 +1,47 @@
 package br.com.taskcontroller.Utilidades;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Duration;
 import java.time.LocalTime;
 
 public class ResolveTempo {
+
+    // LocalTime para segundos
     public int transformarToDecimal(LocalTime horas) {
         if (horas == null) {
             return 0;
         }
-        int h = horas.getHour();
-        int m = horas.getMinute();
-        int s = horas.getSecond();
 
-        return (h * 3600) + (m * 60) + s;
+        return horas.toSecondOfDay();
     }
-    public LocalTime transformarToSexagesimal(int horas) {
-        if (horas == 0) {
-            return LocalTime.of(0, 0);
+
+    // Segundos para duração
+    public Duration transformarToDuracao(long segundos) {
+        return Duration.ofSeconds(segundos);
+    }
+
+    // Segundos para HH:mm:ss
+    public String transformarToSexagesimal(long segundos) {
+
+        long h = segundos / 3600;
+        long m = (segundos % 3600) / 60;
+        long s = segundos % 60;
+
+        return String.format("%02d:%02d:%02d", h, m, s);
+    }
+
+    public BigDecimal transformarParaHorasDecimais(
+            BigDecimal segundos) {
+
+        if (segundos == null) {
+            return BigDecimal.ZERO;
         }
-        int h = horas / 3600;
-        int m = horas % 3600 / 60;
-        int s = horas % 60;
 
-        return LocalTime.of(h, m, s);
+        return segundos.divide(
+                BigDecimal.valueOf(3600),
+                2,
+                RoundingMode.HALF_UP
+        );
     }
-
 }
