@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public class TarefaService {
@@ -25,6 +26,9 @@ public class TarefaService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private StatusTransicaoService  statusTransicaoService;
 
 
     @Transactional
@@ -65,9 +69,29 @@ public class TarefaService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Tarefa não encontrada"));
 
+        StatusEntidades statusAtual = tarefa.getStatus();
+
         StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);
 
+        // Evita alteração desnecessária
+        if (statusAtual.getIdstatus().equals(novoStatus.getIdstatus())) {
+            return;
+        }
+
+        // Valida a transição cadastrada no workflow
+        statusTransicaoService.validarTransicao(statusAtual, novoStatus);
+
+        // Atualiza o status
         tarefa.setStatus(novoStatus);
+
+        // Atualiza a data de conclusão
+        if (novoStatus.isFinalizado()) {
+            tarefa.setData_conclusao(LocalDate.now());
+        } else {
+            // Caso a tarefa seja reaberta
+            tarefa.setData_conclusao(null);
+        }
+
         repository.save(tarefa);
     }
     @Transactional

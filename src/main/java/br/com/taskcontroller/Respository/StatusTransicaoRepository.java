@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Respository;
 
+import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.StatusTransicao;
 import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
 import br.com.taskcontroller.Record.Status.StatusTransicaoListagemDTO;
@@ -83,4 +84,6 @@ public interface StatusTransicaoRepository
     List<StatusTransicaoListagemDTO> listarWorkflow(Long idTipoEntidade);
 
     boolean existsByStatusOrigemIdstatusAndStatusDestinoIdstatus(Long idStatusOrigem, Long idStatusDestino);
+
+    boolean existsByStatusOrigemAndStatusDestino(StatusEntidades origem, StatusEntidades destino);
 }
