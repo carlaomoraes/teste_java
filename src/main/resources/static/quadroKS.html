@@ -53,8 +53,6 @@
         </div>
     </div>
 
-    <!-- SAÚDE DA SPRINT -->
-    <div class="text-end mb-3" id="saude"></div>
 
     <!-- INDICADORES -->
     <div class="row g-3 mb-4 align-items-stretch">
@@ -129,6 +127,13 @@
                             0% atrasadas
                         </small>
                     </div>
+
+                </div>
+                <!-- SAÚDE DA SPRINT -->
+                <div class="card-body" id="saude">
+
+                </div>
+                <div class="card-body" id="progressoSprint">
 
                 </div>
             </div>
@@ -265,6 +270,41 @@
         EMPREENDIMENTO: 5,
     };
 
+    // SAÚDE DA SPRINT
+    const configuracaoSaude = {
+        SAUDAVEL: {
+            cor: "success",
+            icone: "bi-check-circle-fill",
+            descricao: "Saudável"
+        },
+        ATENCAO: {
+            cor: "warning",
+            icone: "bi-exclamation-triangle-fill",
+            descricao: "Atenção"
+        },
+        CRITICA: {
+            cor: "danger",
+            icone: "bi-x-circle-fill",
+            descricao: "Crítica"
+        },
+        SEM_PLANEJAMENTO: {
+            cor: "secondary",
+            icone: "bi-calendar-x",
+            descricao: "Sem planejamento"
+        }
+    };
+
+    const coresSaude = {
+        SAUDAVEL: "success",
+        ATENCAO: "warning",
+        CRITICA: "danger"
+    };
+
+    const nomesSaude = {
+        SAUDAVEL: "Saudável",
+        ATENCAO: "Atenção",
+        CRITICA: "Crítica"
+    };
     async function carregaCabecalho(idEmpreendimento) {
         const comboSprint= document.getElementById("comboSprint");
         comboSprint.innerHTML=`SEM SPRINT CADASTRADA!!!`;
@@ -315,6 +355,7 @@
         montaRoadmap(event.target.value);
         montarKAMBAM(event.target.value);
         carregarIndicadores(event.target.value);
+        carregarSaudeSprint(event.target.value);
     })
 
     // =============================================================
@@ -565,7 +606,109 @@
             mostrarMensagemNaTela("resultado",error.message, "error");
         }
     }
+
+    async function carregarSaudeSprint(idSprint) {
+
+        const saude = document.getElementById("saude");
+        const progressoSprint = document.getElementById("progressoSprint");
+
+        try {
+            const linha = `${API}/${encodeURIComponent(idSprint)}/indicadores`;
+
+            const resposta = await fetch(linha);
+
+            if (!resposta.ok) {
+                throw new Error(`Erro ${resposta.status}`);
+            }
+
+            const indicador = await resposta.json();
+
+            // SAÚDE DA SPRINT
+            const estado = indicador.saude;
+
+            const cor = coresSaude[estado] ?? "secondary";
+            const nome = nomesSaude[estado] ?? "Não avaliada";
+            const situacao = configuracaoSaude[estado];
+
+            saude.innerHTML = situacao
+                ? `
+                <span class="badge bg-${cor} p-2">
+                    <i class="bi ${situacao.icone} me-1"></i>
+                    Saúde da Sprint: ${nome}
+                </span>
+              `
+                : `
+                <span class="badge bg-secondary p-2">
+                    Saúde não avaliada
+                </span>
+              `;
+
+            // PROGRESSO DA SPRINT
+            const esperado = Number(indicador.progressoEsperado ?? 0);
+            const real = Number(indicador.progressoReal ?? 0);
+            const desvio = Number(indicador.desvioPercentual ?? 0);
+
+            const barraEsperado = Math.max(0, Math.min(100, esperado));
+            const barraReal = Math.max(0, Math.min(100, real));
+
+            progressoSprint.innerHTML = `
+            <div class="small fw-semibold mb-3">
+                Progresso da Sprint
+            </div>
+
+            <!-- PROGRESSO ESPERADO -->
+            <div class="d-flex justify-content-between mb-1">
+                <small>Esperado</small>
+                <small>${esperado.toFixed(2)}%</small>
+            </div>
+
+            <div class="progress mb-3" style="height: 8px;">
+                <div class="progress-bar bg-primary"
+                     role="progressbar"
+                     style="width: ${barraEsperado}%"
+                     aria-valuenow="${barraEsperado}"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                </div>
+            </div>
+
+            <!-- PROGRESSO REAL -->
+            <div class="d-flex justify-content-between mb-1">
+                <small>Real</small>
+                <small>${real.toFixed(2)}%</small>
+            </div>
+
+            <div class="progress mb-2" style="height: 8px;">
+                <div class="progress-bar bg-success"
+                     role="progressbar"
+                     style="width: ${barraReal}%"
+                     aria-valuenow="${barraReal}"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                </div>
+            </div>
+
+            <!-- DESVIO -->
+            <div class="text-end mt-2">
+                <small class="${desvio < 0 ? 'text-danger' : 'text-success'}">
+                    Desvio: ${desvio.toFixed(2)} p.p.
+                </small>
+            </div>
+        `;
+
+        } catch (error) {
+            mostrarMensagemNaTela(
+                "resultado",
+                "Erro ao carregar saúde da Sprint: " + error.message,
+                "error"
+            );
+        }
+    }
+
+
     async function carregarIndicadores(idSprint) {
+        await carregarSaudeSprint(idSprint);
+
         const concluidas = document.getElementById("concluidas");
         const andamento = document.getElementById("Em_andamento");
         const atrasadas = document.getElementById("atrasadas");

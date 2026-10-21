@@ -14,5 +14,9 @@ public record SprintIndicadoresDTO(
         BigDecimal ausencias,
         BigDecimal horasEstimadas,
         BigDecimal ocupacao,
-        BigDecimal saldoHoras
+        BigDecimal saldoHoras,
+        String saude,
+        BigDecimal progressoEsperado,
+        BigDecimal progressoReeal,
+        BigDecimal desvioPercentual
 ) {}
