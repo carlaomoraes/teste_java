@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Service;
 
 
-import br.com.taskcontroller.DTO.SprintEstoriaRequestDTO;
+import br.com.taskcontroller.DTO.Sprint.SprintEstoriaRequestDTO;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.COMBO.EmpreendimentoComboDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaBacklogDTO;

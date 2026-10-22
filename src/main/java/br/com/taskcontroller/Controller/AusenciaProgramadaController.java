@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.AusenciaProgramadaRequestDTO;
-import br.com.taskcontroller.DTO.AusenciaProgramadaResponseDTO;
+import br.com.taskcontroller.DTO.AusenciaProgramada.AusenciaProgramadaRequestDTO;
+import br.com.taskcontroller.DTO.AusenciaProgramada.AusenciaProgramadaResponseDTO;
 import br.com.taskcontroller.Record.COMBO.AusenciaComboDTO;
 import br.com.taskcontroller.Mapper.AusenciaProgramadaMapper;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;

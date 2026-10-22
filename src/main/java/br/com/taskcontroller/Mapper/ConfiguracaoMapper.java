@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Mapper;
 
-import br.com.taskcontroller.DTO.ConfiguracaoRequestDTO;
-import br.com.taskcontroller.DTO.ConfiguracaoResponseDTO;
+import br.com.taskcontroller.DTO.Configuracao.ConfiguracaoRequestDTO;
+import br.com.taskcontroller.DTO.Configuracao.ConfiguracaoResponseDTO;
 import br.com.taskcontroller.Modelo.Configuracao;
 
 public class ConfiguracaoMapper {

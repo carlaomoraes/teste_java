@@ -1,8 +1,8 @@
 package br.com.taskcontroller.Mapper;
 
 
-import br.com.taskcontroller.DTO.SprintRequestDTO;
-import br.com.taskcontroller.DTO.SprintResponseDTO;
+import br.com.taskcontroller.DTO.Sprint.SprintRequestDTO;
+import br.com.taskcontroller.DTO.Sprint.SprintResponseDTO;
 import br.com.taskcontroller.Modelo.Sprint;
 
 public class SprintMapper {

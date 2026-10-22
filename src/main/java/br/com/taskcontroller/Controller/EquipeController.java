@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.EquipeRequestDTO;
+import br.com.taskcontroller.DTO.Equipe.EquipeRequestDTO;
 import br.com.taskcontroller.Mapper.EquipeMapper;
 import br.com.taskcontroller.Modelo.Equipe;
 import br.com.taskcontroller.Modelo.Equipe_Usuario;

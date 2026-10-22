@@ -1,8 +1,8 @@
 package br.com.taskcontroller.Mapper;
 
 
-import br.com.taskcontroller.DTO.PapelRequestDTO;
-import br.com.taskcontroller.DTO.PapelResponseDTO;
+import br.com.taskcontroller.DTO.Papel.PapelRequestDTO;
+import br.com.taskcontroller.DTO.Papel.PapelResponseDTO;
 import br.com.taskcontroller.Modelo.Papel;
 
 public class PapelMapper {

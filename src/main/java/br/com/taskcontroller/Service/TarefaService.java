@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.Enums.TipoAlteracao;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Tarefa;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class TarefaService {
 
@@ -28,7 +31,13 @@ public class TarefaService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
     private StatusTransicaoService  statusTransicaoService;
+
+    @Autowired
+    private TarefaHistoricoService tarefaHistoricoService;
 
 
     @Transactional
@@ -41,8 +50,8 @@ public class TarefaService {
         return repository.buscarTarefaPorEstoria(idEstoria);
     }
 
-    public Tarefa atualizar(Tarefa tarefa) {
-        alterarStatus(tarefa.getIdtarefa(), tarefa.getStatus().getIdstatus());
+    public Tarefa atualizar(Tarefa tarefa, Long idUsuario) {
+        alterarStatus(tarefa.getIdtarefa(), tarefa.getStatus().getIdstatus(), idUsuario);
         return repository.save(tarefa);
     }
 
@@ -63,23 +72,23 @@ public class TarefaService {
     }
 
     @Transactional
-    public void alterarStatus(Long idTarefa, Long idStatus) {
+    public void alterarStatus(Long idTarefa, Long idStatus, Long idUsuario) {
 
         Tarefa tarefa = repository.findById(idTarefa)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Tarefa não encontrada"));
 
-        StatusEntidades statusAtual = tarefa.getStatus();
+        StatusEntidades statusAnterior = tarefa.getStatus();
 
         StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);
 
         // Evita alteração desnecessária
-        if (statusAtual.getIdstatus().equals(novoStatus.getIdstatus())) {
+        if (statusAnterior.getIdstatus().equals(novoStatus.getIdstatus())) {
             return;
         }
 
         // Valida a transição cadastrada no workflow
-        statusTransicaoService.validarTransicao(statusAtual, novoStatus);
+        statusTransicaoService.validarTransicao(statusAnterior, novoStatus);
 
         // Atualiza o status
         tarefa.setStatus(novoStatus);
@@ -88,11 +97,22 @@ public class TarefaService {
         if (novoStatus.isFinalizado()) {
             tarefa.setData_conclusao(LocalDate.now());
         } else {
-            // Caso a tarefa seja reaberta
             tarefa.setData_conclusao(null);
         }
 
         repository.save(tarefa);
+
+        // Usuário autenticado, obtido no backend
+        Usuario usuario = usuarioService.buscarPorId(idUsuario);
+
+        tarefaHistoricoService.registrar(
+                tarefa,
+                usuario,
+                TipoAlteracao.STATUS,
+                statusAnterior.getDescstatus(),
+                novoStatus.getDescstatus(),
+                "Alteração de status da tarefa"
+        );
     }
     @Transactional
     public void alterarResponsavel(Long idTarefa, Long idUsuario) {

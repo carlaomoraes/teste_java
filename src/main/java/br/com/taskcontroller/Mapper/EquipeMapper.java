@@ -1,8 +1,8 @@
 package br.com.taskcontroller.Mapper;
 
 
-import br.com.taskcontroller.DTO.EquipeRequestDTO;
-import br.com.taskcontroller.DTO.EquipeResponseDTO;
+import br.com.taskcontroller.DTO.Equipe.EquipeRequestDTO;
+import br.com.taskcontroller.DTO.Equipe.EquipeResponseDTO;
 import br.com.taskcontroller.Modelo.Equipe;
 
 public class EquipeMapper {

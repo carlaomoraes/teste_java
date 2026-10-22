@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.SprintEstoriaRequestDTO;
+import br.com.taskcontroller.DTO.Sprint.SprintEstoriaRequestDTO;
 import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.*;

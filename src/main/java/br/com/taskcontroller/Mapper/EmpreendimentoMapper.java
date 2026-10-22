@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Mapper;
 
-import br.com.taskcontroller.DTO.EmpreendimentoRequestDTO;
-import br.com.taskcontroller.DTO.EmpreendimentoResponseDTO;
+import br.com.taskcontroller.DTO.Empreendimento.EmpreendimentoRequestDTO;
+import br.com.taskcontroller.DTO.Empreendimento.EmpreendimentoResponseDTO;
 import br.com.taskcontroller.Modelo.Empreendimento;
 
 public class EmpreendimentoMapper {

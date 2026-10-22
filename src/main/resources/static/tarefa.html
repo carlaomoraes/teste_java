@@ -537,6 +537,30 @@
             mostrarMensagemNaTela("resultadoapontamento",MSG.erroExcluir("APONTAMENTO"), "error");
         }
     }
+    async function mudarStatusTarefa(idTarefa) {
+        const idUsuario = Number(
+            sessionStorage.getItem("usuarioIdUsuario")
+        );
+
+        const idStatus = Number(
+            document.getElementById(`comboStatusTA_${idTarefa}`).value
+        );
+
+        const resposta = await fetch(
+            `${API_TAREFAS}/${idTarefa}/status/${idStatus}`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ idUsuario })
+            }
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao alterar status da tarefa");
+        }
+    }
 </script>
 </body>
 </html>

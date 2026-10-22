@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Mapper;
 
-import br.com.taskcontroller.DTO.TipoAusenciaRequestDTO;
-import br.com.taskcontroller.DTO.TipoAusenciaResponseDTO;
+import br.com.taskcontroller.DTO.TipoAusencia.TipoAusenciaRequestDTO;
+import br.com.taskcontroller.DTO.TipoAusencia.TipoAusenciaResponseDTO;
 import br.com.taskcontroller.Modelo.Tipo_Ausencia;
 
 public class Tipo_AusenciaMapper {

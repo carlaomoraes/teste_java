@@ -1,9 +1,7 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.PapelRequestDTO;
+import br.com.taskcontroller.DTO.Papel.PapelRequestDTO;
 import br.com.taskcontroller.Mapper.PapelMapper;
-import br.com.taskcontroller.Mapper.UsuarioMapper;
-import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Record.Papel.PapelComboDTO;
 import br.com.taskcontroller.Modelo.Papel;
 import br.com.taskcontroller.Record.Papel.PapelListagemDTO;
@@ -14,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.List;
 
 @RestController

@@ -1,8 +1,8 @@
 package br.com.taskcontroller.Mapper;
 
 
-import br.com.taskcontroller.DTO.StatusEntidadesRequestDTO;
-import br.com.taskcontroller.DTO.StatusEntidadesResponseDTO;
+import br.com.taskcontroller.DTO.Status.StatusEntidadesRequestDTO;
+import br.com.taskcontroller.DTO.Status.StatusEntidadesResponseDTO;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.TipoEntidade;
 

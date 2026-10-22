@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Mapper;
 
-import br.com.taskcontroller.DTO.SprintEstoriaRequestDTO;
-import br.com.taskcontroller.DTO.SprintEstoriaResponseDTO;
+import br.com.taskcontroller.DTO.Sprint.SprintEstoriaRequestDTO;
+import br.com.taskcontroller.DTO.Sprint.SprintEstoriaResponseDTO;
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Modelo.SprintEstoria;

@@ -1,7 +1,7 @@
 package br.com.taskcontroller.Mapper;
 
-import br.com.taskcontroller.DTO.StatusTransicaoRequestDTO;
-import br.com.taskcontroller.DTO.StatusTransicaoResponseDTO;
+import br.com.taskcontroller.DTO.Status.StatusTransicaoRequestDTO;
+import br.com.taskcontroller.DTO.Status.StatusTransicaoResponseDTO;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.StatusTransicao;
 import br.com.taskcontroller.Service.StatusEntidadesService;

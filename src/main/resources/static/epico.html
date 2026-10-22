@@ -226,8 +226,6 @@
         <div id="resultado_tarefa"></div>
     </div>
     <div id="equipes" class="conteudo-aba">
-
-
         <div id="cardsEquipes"></div>
     </div>
 </div>
@@ -769,51 +767,134 @@
             mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
         }
     }
+
     async function listarEquipes(idEmpreendimento) {
+        const container = document.getElementById("cardsEquipes");
+        container.innerHTML = "";
+
         try {
-            const response = await fetch(`${API_DASHBOARD}/${idEmpreendimento}/dashboard_equipes`);
+            const response = await fetch(
+                `${API_DASHBOARD}/${idEmpreendimento}/dashboard_equipes`
+            );
+
             if (!response.ok) {
-                mostrarMensagemNaTela("resultado_epico", MSG.erroCarregar("EQUIPE"), "error");
+                throw new Error("Erro ao carregar equipes");
             }
+
             const data = await response.json();
+
             if (data.length === 0) {
-                    mostrarMensagemNaTela("resultado_epico", MSG.naoEncontrada("EQUIPE"), "warning");
-                    return;
+                mostrarMensagemNaTela(
+                    "resultado_epico",
+                    MSG.naoEncontrada("EQUIPE"),
+                    "warning"
+                );
+                return;
             }
-            const container = document.getElementById("cardsEquipes");
-            container.innerHTML = "";
+
+            const moeda = valor =>
+                Number(valor ?? 0).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
+
+            const numero = valor =>
+                Number(valor ?? 0).toLocaleString("pt-BR", {
+                    maximumFractionDigits: 2
+                });
+
             data.forEach(equipe => {
-               const percentual = equipe.horasEstimadas > 0 ? Math.min((equipe.horasRealizadas / equipe.horasEstimadas) * 100, 100) : 0;
-               container.innerHTML += `<div class="col-md-4 mb-3">
-                                                <div class="card shadow-sm">
-                                                <div class="card-body">
-                                                <h5>${equipe.nomeEquipe}</h5>
-                                                <hr>
-                                                <p>📖 Nº Estórias: <strong>${equipe.totalEstorias}</strong></p>
-                                                <p>📋 Nº Tarefas:  <strong>${equipe.totalTarefas}</strong> </p>
-                                                <p>⏱ Horas Estimadas: <strong>${equipe.horasEstimadas}</strong></p>
-                                                <p>✔ Horas Realizadas: <strong>${equipe.horasRealizadas}</strong> </p>
-                                                <p>💰 Custo Estimado: <strong>${equipe.custoEstimado}</strong></p>
-                                                <p>💰 Custo Realizado:<strong>${equipe.custoRealizado}</strong></p>
+                const estimadas = Number(equipe.horasEstimadas ?? 0);
+                const realizadas = Number(equipe.horasRealizadas ?? 0);
+
+                const consumo = estimadas > 0
+                    ? (realizadas / estimadas) * 100
+                    : 0;
+
+                const percentualConsumo = Math.max(
+                    0, Math.min(consumo, 100)
+                );
+
+                const progresso = Math.max(
+                    0,
+                    Math.min(Number(equipe.percentualProgresso ?? 0), 100)
+                );
+
+                container.innerHTML += `
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+
+                            <h5 class="fw-bold">
+                                ${equipe.nomeEquipe}
+                            </h5>
+                            <hr>
+
+                            <p>📖 Nº Estórias:
+                                <strong>${equipe.totalEstorias ?? 0}</strong>
+                            </p>
+
+                            <p>📋 Nº Tarefas:
+                                <strong>${equipe.totalTarefas ?? 0}</strong>
+                            </p>
+
+                            <p>⏱ Horas Estimadas:
+                                <strong>${numero(estimadas)}</strong>
+                            </p>
+
+                            <p>✔ Horas Realizadas:
+                                <strong>${numero(realizadas)}</strong>
+                            </p>
+
+                            <p>💰 Custo Estimado:
+                                <strong>${moeda(equipe.custoEstimado)}</strong>
+                            </p>
+
+                            <p>💰 Custo Realizado:
+                                <strong>${moeda(equipe.custoRealizado)}</strong>
+                            </p>
+
                             <div class="mt-3">
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" style="width:${percentual}%"></div>
+                                <div class="d-flex justify-content-between">
+                                    <small>Consumo de horas</small>
+                                    <small>${consumo.toFixed(1)}%</small>
                                 </div>
+
+                                <div class="progress mb-3" style="height:10px">
+                                    <div class="progress-bar bg-info"
+                                         style="width:${percentualConsumo}%">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <small>Conclusão das tarefas</small>
+                                    <small>${progresso.toFixed(1)}%</small>
+                                </div>
+
                                 <div class="progress" style="height:10px">
-                                    <div class="progress-bar"
-                                         style="width:${equipe.percentualProgresso}%">
+                                    <div class="progress-bar bg-success"
+                                         style="width:${progresso}%">
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             `;
             });
+
         } catch (error) {
-            mostrarMensagemNaTela("resultado_epico", MSG.errolistar("EQUIPES"), "error");
+            console.error(error);
+
+            mostrarMensagemNaTela(
+                "resultado_epico",
+                MSG.errolistar("EQUIPES"),
+                "error"
+            );
         }
     }
+
 
     async function buscarPorLinha(idEpico, idEstoria, idTarefa, ABA) {
         if(ABA === "EPICO") {

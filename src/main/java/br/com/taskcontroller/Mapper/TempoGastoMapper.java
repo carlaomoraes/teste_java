@@ -1,8 +1,8 @@
 package br.com.taskcontroller.Mapper;
 
 
-import br.com.taskcontroller.DTO.TempoGastoRequestDTO;
-import br.com.taskcontroller.DTO.TempoGastoResponseDTO;
+import br.com.taskcontroller.DTO.TempoGasto.TempoGastoRequestDTO;
+import br.com.taskcontroller.DTO.TempoGasto.TempoGastoResponseDTO;
 import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Modelo.TempoGasto;
 import br.com.taskcontroller.Modelo.Usuario;

@@ -1,12 +1,12 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.Status.AlteraStatusRequestDTO;
 import br.com.taskcontroller.Mapper.TarefaMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Record.Tarefa.TarefaInclusaoDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.*;
-import br.com.taskcontroller.Utilidades.ResolveTempo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -108,12 +108,13 @@ public class TarefaController {
         return service.listarPorEstoria(idEstoria);
     }
 
-    @PatchMapping("/{idTarefa}/status/{idStatus}")
+    @PatchMapping("/{idTarefa}/status/{idStatus}/usuario/{idUsuario}")
     public ResponseEntity<Void> alterarStatus(
             @PathVariable Long idTarefa,
-            @PathVariable Long idStatus) {
+            @PathVariable Long idStatus,
+            @PathVariable Long idUsuario) {
 
-        service.alterarStatus(idTarefa, idStatus);
+        service.alterarStatus(idTarefa, idStatus, idUsuario);
 
         return ResponseEntity.noContent().build();
     }
@@ -123,6 +124,21 @@ public class TarefaController {
             @PathVariable Long idUsuario) {
 
         service.alterarResponsavel(idTarefa, idUsuario);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{idTarefa}/status/{idStatus}")
+    public ResponseEntity<Void> alterarStatus(
+            @PathVariable Long idTarefa,
+            @PathVariable Long idStatus,
+            @RequestBody AlteraStatusRequestDTO dto) {
+
+        service.alterarStatus(
+                idTarefa,
+                idStatus,
+                dto.idUsuario()
+        );
 
         return ResponseEntity.noContent().build();
     }

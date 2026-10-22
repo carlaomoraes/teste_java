@@ -1,10 +1,8 @@
 package br.com.taskcontroller.Controller;
 
 
-import br.com.taskcontroller.DTO.TempoGastoRequestDTO;
+import br.com.taskcontroller.DTO.TempoGasto.TempoGastoRequestDTO;
 import br.com.taskcontroller.Mapper.TempoGastoMapper;
-import br.com.taskcontroller.Modelo.Sistema;
-import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Modelo.TempoGasto;
 import br.com.taskcontroller.Record.TempoGasto.TempoGastoDTO;
 import br.com.taskcontroller.Respository.TempoGastoRepository;
@@ -14,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController

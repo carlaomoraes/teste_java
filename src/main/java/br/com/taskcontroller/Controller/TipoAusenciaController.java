@@ -1,12 +1,8 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.TipoAusenciaRequestDTO;
-import br.com.taskcontroller.DTO.UsuarioRequestDTO;
+import br.com.taskcontroller.DTO.TipoAusencia.TipoAusenciaRequestDTO;
 import br.com.taskcontroller.Mapper.Tipo_AusenciaMapper;
-import br.com.taskcontroller.Mapper.UsuarioMapper;
-import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.Tipo_Ausencia;
-import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Respository.TipoAusenciaRepository;
 import br.com.taskcontroller.Service.TipoAusenciaService;
 import org.springframework.beans.factory.annotation.Autowired;

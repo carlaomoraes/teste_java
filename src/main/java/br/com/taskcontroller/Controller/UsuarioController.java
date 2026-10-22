@@ -1,6 +1,6 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.UsuarioRequestDTO;
+import br.com.taskcontroller.DTO.Usuario.UsuarioRequestDTO;
 import br.com.taskcontroller.Mapper.UsuarioMapper;
 import br.com.taskcontroller.Record.COMBO.UsuarioComboDTO;
 import br.com.taskcontroller.Record.Usuario.UsuarioListagemDTO;
