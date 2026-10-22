@@ -105,283 +105,281 @@
          ============================================================ -->
     <div id="ausencias" class="conteudo-aba">
         <div id="resultadoausencia"></div>
-    </div>
-</div>
-<script>
-    //--------------------- MANIPULAÇÃO DOS DADOS
-    const API = 'http://localhost:8080/sprints';
-    const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
-    const API_STATUS = 'http://localhost:8080/status_entidades';
-    // ==============================================================
-    // CONFIGURAÇÃO
-    // ==============================================================
+        <script>
+            //--------------------- MANIPULAÇÃO DOS DADOS
+            const API = 'http://localhost:8080/sprints';
+            const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
+            const API_STATUS = 'http://localhost:8080/status_entidades';
+            // ==============================================================
+            // CONFIGURAÇÃO
+            // ==============================================================
 
-    let configuracaoSprint = {
-        idconfiguracao: 0,
-        idempreendimento: 0,
-        duracao_sprint: 0,
-        horas_trabalho_dia: 0,
-        considerar_feriados: false,
-        permitir_sprint_sobreposta: false,
-        permitir_multiplas_sprint_ativas: false
+            let configuracaoSprint = {
+                idconfiguracao: 0,
+                idempreendimento: 0,
+                duracao_sprint: 0,
+                horas_trabalho_dia: 0,
+                considerar_feriados: false,
+                permitir_sprint_sobreposta: false,
+                permitir_multiplas_sprint_ativas: false
 
-    };
+            };
 
-    const TIPO_ENTIDADE = {
-        EPICO: 1,
-        ESTORIA: 2,
-        TAREFA: 3,
-        SPRINT: 4,
-        EMPREENDIMENTO: 5,
-    };
+            const TIPO_ENTIDADE = {
+                EPICO: 1,
+                ESTORIA: 2,
+                TAREFA: 3,
+                SPRINT: 4,
+                EMPREENDIMENTO: 5,
+            };
 
 
-    let statusAtual = 1;
-    // ==============================================================
-    // ALTERNAR ABAS
-    // ==============================================================
+            let statusAtual = 1;
+            // ==============================================================
+            // ALTERNAR ABAS
+            // ==============================================================
 
-    function alternarAba(event, idAbaDestino) {
-        const conteudos = document.querySelectorAll('.conteudo-aba');
+            function alternarAba(event, idAbaDestino) {
+                const conteudos = document.querySelectorAll('.conteudo-aba');
 
-        conteudos.forEach(conteudo =>
-            conteudo.classList.remove('ativo')
-        );
-        const botoes = document.querySelectorAll('.aba-botao');
-
-        botoes.forEach(botao =>
-            botao.classList.remove('ativa')
-        );
-
-        document.getElementById(idAbaDestino).classList.add('ativo');
-        event.currentTarget.classList.add('ativa');
-    }
-    // ==============================================================
-    // CARREGAR CONFIGURAÇÃO DO EMPREENDIMENTO
-    // ==============================================================
-    async function carregarConfiguracao() {
-        const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
-        if (!idEmpreendimento) {
-           configuracaoSprint.idempreendimento = 0;
-            document.getElementById('dtiniciosprint').value = '';
-            document.getElementById('dtfinalsprint').value = '';
-            document.getElementById('duracaosprint').value = '';
-            document.getElementById('ultimaSprint').style.display = 'none';
-            return;
-        }
-        try {
-            const response = await fetch(`${API_EMPREENDIMENTO}/DTO/${idEmpreendimento}`);
-            if (!response.ok) {
-                mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
-                return;
-            }
-            const data = await response.json();
-            configuracaoSprint.idconfiguracao = data.idconfiguracao;
-            configuracaoSprint.idempreendimento = data.idempreendimento;
-            configuracaoSprint.duracao_sprint = data.duracao_sprint || 0;
-            configuracaoSprint.horas_trabalho_dia =  data.horas_trabalho_dia || 0;
-            configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
-            configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
-            configuracaoSprint.considerar_feriados = data.considerar_feriados;
-            /*
-             * NOVO FLUXO:
-             *
-             * Primeiro busca a última Sprint.
-             * Depois calcula as datas da nova Sprint.
-             */
-            await carregarUltimaSprint(idEmpreendimento);
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", error.message,"error");
-        }
-    }
-    async function carregarStatus(idStatusAtual) {
-        const comboStatus = document.getElementById("comboStatus");
-        const idTipoEntidade = 4;
-        try {
-            comboStatus.innerHTML = "";
-            const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipoEntidade}`;
-            const resposta = await fetch(linha);
-            if (!resposta.ok) {
-                throw new Error(`Erro ${resposta.status}`);
-            }
-            const vetor = await resposta.json();
-            const opcaoPadrao = document.createElement("option");
-            opcaoPadrao.value = "";
-            opcaoPadrao.textContent = "Selecione...";
-            comboStatus.appendChild(opcaoPadrao);
-            vetor.forEach(status => {
-                const opcao = document.createElement("option");
-                opcao.value = status.idstatus;
-                opcao.textContent = status.descstatus;
-                opcao.dataset.cor = status.cor;
-                comboStatus.appendChild(opcao);
-            });
-        } catch (error) {
-            mostrarMensagemNaTela("resultado",MSG.erroCarregar("STATUS"), "error");
-        }
-    }
-    // ==============================================================
-    // BUSCAR ÚLTIMA SPRINT DO EMPREENDIMENTO
-    // ==============================================================
-    async function carregarUltimaSprint(idEmpreendimento) {
-        try {
-            const response = await fetch(`${API}/valida_ultima/${idEmpreendimento}`);
-            /*
-             * Se o backend ainda não possuir esse endpoint,
-             * consideramos que não existe Sprint anterior.
-            */
-            const sprint = await response.json();
-            /*
-             * Mostra informações da última Sprint
-             */
-            document.getElementById("idsprint").value = sprint.idsprint;
-            document.getElementById("dtiniciosprint").value = sprint.dtiniciosprint;
-            document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
-            document.getElementById("visivel").checked = sprint.visivel;
-            document.getElementById("descsprint").value = sprint.descsprint;
-            await listarAusencias(document.getElementById("dtiniciosprint").value,
-                                  document.getElementById("dtfinalsprint").value);
-
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", "Erro ao buscar a última Sprint: " + error.message, "error");
-        }
-    }
-
-   // ==============================================================
-    // CARREGAR EMPREENDIMENTOS
-    // ==============================================================
-   async function carregarEmpreendimento() {
-        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
-        try {
-            const resposta = await fetch(`${API_EMPREENDIMENTO}/montaComboEmpreendimento`);
-            const empreendimentos = await resposta.json();
-            comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
-            empreendimentos.forEach(e => {
-                const opcao = document.createElement('option');
-                opcao.value = e.idempreendimento;
-                opcao.textContent = e.descempreendimento;
-                comboEmpreendimento.appendChild(opcao);
-            });
-        } catch (error) {
-            mostrarMensagemNaTela( "resultadogeral",MSG.erroCarregar("EMPREENDIMENTO"), "error");
-        }
-    }
-    // ==============================================================
-    // INICIALIZAÇÃO
-    // ==============================================================
-    document.addEventListener('DOMContentLoaded',async () => {
-            await carregarEmpreendimento();
-        }
-    );
-    // ==============================================================
-    // ALTERAÇÃO DO EMPREENDIMENTO
-    // ==============================================================
-    document.getElementById('comboEmpreendimento').addEventListener('change',() => {
-                carregarConfiguracao();
-                listarSprints(document.getElementById('comboEmpreendimento').value)
-            }
-        );
-    // Inicializa os seletores assim que o HTML carregar completamente
-    document.addEventListener('DOMContentLoaded', async () => {
-    });
-
-   async function acharOrdem(ENTIDADE) {
-        try {
-            const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
-            console.log(linha);
-            const resposta = await fetch(linha);
-            if (!resposta.ok) {
-                throw new Error(`Erro ${resposta.status}`);
-            }
-            const vetor = await resposta.json();
-            console.log(vetor);
-            return vetor;
-        } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
-        }
-    }
-    // ==============================================================
-    // NOVA SPRINT
-    // ==============================================================
-    async function criarSprint(idempreendimento) {
-        ordem = await acharOrdem(TIPO_ENTIDADE.SPRINT);
-        await carregarStatus(ordem, TIPO_ENTIDADE.SPRINT);
-        if(idempreendimento === ""){
-            mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
-            return false;
-        }
-        limpaFormulario();
-        try {
-            const response = await fetch(`${API}/valida_ultima/${idempreendimento}`);
-            if (!response.ok) {
-                const msg = await response.text();
-                mostrarMensagemNaTela("resultadogeral", msg || "Erro ao criar sprint!", "error");
-                return false;
-            }
-            const sprint = await response.json();
-            document.getElementById("idsprint").value = sprint.idsprint;
-            document.getElementById("dtiniciosprint").value = sprint.dtiniciosprint;
-            document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
-            document.getElementById("visivel").checked = sprint.visivel;
-            document.getElementById("descsprint").value = sprint.descsprint;
-            document.getElementById("duracaosprint").value = sprint.duracao;
-            await listarAusencias(document.getElementById("dtiniciosprint").value,
-                                  document.getElementById("dtfinalsprint").value);
-
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao criar sprints", "error");
-            return false;
-        }
-    }
-
-    // ==============================================================
-    // SALVAR SPRINT
-    // ==============================================================
-    async function salvarSprint() {
-        const eValido = await validaEntrada();
-        if (!eValido) return;
-        // Leitura dos campos
-        const descsprint = document.getElementById('descsprint').value;
-        const dtiniciosprint = document.getElementById('dtiniciosprint').value;
-        const dtfinalsprint = document.getElementById('dtfinalsprint').value;
-        const visivel = document.getElementById('visivel').checked;
-
-        const sprint = {
-            descsprint: descsprint || null,
-            dtiniciosprint: dtiniciosprint,
-            dtfinalsprint: dtfinalsprint,
-            visivel: visivel || true,
-            empreendimento: {
-                idEmpreendimento: document.getElementById("comboEmpreendimento").value,
-            }
-        };
-        try {
-            const response = await fetch(`${API}/salvar`, {
-                method: 'POST',
-                headers: {
-                            'Content-Type':'application/json'
-                         },
-                body: JSON.stringify(sprint)
-                    }
+                conteudos.forEach(conteudo =>
+                    conteudo.classList.remove('ativo')
                 );
-            if (!response.ok) {
-                throw new Error(await response.text());
+                const botoes = document.querySelectorAll('.aba-botao');
+
+                botoes.forEach(botao =>
+                    botao.classList.remove('ativa')
+                );
+
+                document.getElementById(idAbaDestino).classList.add('ativo');
+                event.currentTarget.classList.add('ativa');
             }
-            mostrarMensagemNaTela("resultadogeral",MSG.salvo("SPRINT"),"success");
-            limpaFormulario();
-            await listarSprints();
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message,"error");
-        }
-    }
-    // ==============================================================
-    // LISTAR SPRINTS
-    // ==============================================================
-    async function listarSprints(idEmpreendimento) {
-        try {
-            const response = await fetch(`${API}/listar/DTO/${idEmpreendimento}`);
-            const data = await response.json();
-            let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+            // ==============================================================
+            // CARREGAR CONFIGURAÇÃO DO EMPREENDIMENTO
+            // ==============================================================
+            async function carregarConfiguracao() {
+                const idEmpreendimento = document.getElementById('comboEmpreendimento').value;
+                if (!idEmpreendimento) {
+                    configuracaoSprint.idempreendimento = 0;
+                    document.getElementById('dtiniciosprint').value = '';
+                    document.getElementById('dtfinalsprint').value = '';
+                    document.getElementById('duracaosprint').value = '';
+                    document.getElementById('ultimaSprint').style.display = 'none';
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_EMPREENDIMENTO}/DTO/${idEmpreendimento}`);
+                    if (!response.ok) {
+                        mostrarMensagemNaTela("resultadogeral","Configuração não encontrada","error");
+                        return;
+                    }
+                    const data = await response.json();
+                    configuracaoSprint.idconfiguracao = data.idconfiguracao;
+                    configuracaoSprint.idempreendimento = data.idempreendimento;
+                    configuracaoSprint.duracao_sprint = data.duracao_sprint || 0;
+                    configuracaoSprint.horas_trabalho_dia =  data.horas_trabalho_dia || 0;
+                    configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
+                    configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
+                    configuracaoSprint.considerar_feriados = data.considerar_feriados;
+                    /*
+                     * NOVO FLUXO:
+                     *
+                     * Primeiro busca a última Sprint.
+                     * Depois calcula as datas da nova Sprint.
+                     */
+                    await carregarUltimaSprint(idEmpreendimento);
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadogeral", error.message,"error");
+                }
+            }
+            async function carregarStatus(idStatusAtual) {
+                const comboStatus = document.getElementById("comboStatus");
+                const idTipoEntidade = 4;
+                try {
+                    comboStatus.innerHTML = "";
+                    const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${idTipoEntidade}`;
+                    const resposta = await fetch(linha);
+                    if (!resposta.ok) {
+                        throw new Error(`Erro ${resposta.status}`);
+                    }
+                    const vetor = await resposta.json();
+                    const opcaoPadrao = document.createElement("option");
+                    opcaoPadrao.value = "";
+                    opcaoPadrao.textContent = "Selecione...";
+                    comboStatus.appendChild(opcaoPadrao);
+                    vetor.forEach(status => {
+                        const opcao = document.createElement("option");
+                        opcao.value = status.idstatus;
+                        opcao.textContent = status.descstatus;
+                        opcao.dataset.cor = status.cor;
+                        comboStatus.appendChild(opcao);
+                    });
+                } catch (error) {
+                    mostrarMensagemNaTela("resultado",MSG.erroCarregar("STATUS"), "error");
+                }
+            }
+            // ==============================================================
+            // BUSCAR ÚLTIMA SPRINT DO EMPREENDIMENTO
+            // ==============================================================
+            async function carregarUltimaSprint(idEmpreendimento) {
+                try {
+                    const response = await fetch(`${API}/valida_ultima/${idEmpreendimento}`);
+                    /*
+                     * Se o backend ainda não possuir esse endpoint,
+                     * consideramos que não existe Sprint anterior.
+                    */
+                    const sprint = await response.json();
+                    /*
+                     * Mostra informações da última Sprint
+                     */
+                    document.getElementById("idsprint").value = sprint.idsprint;
+                    document.getElementById("dtiniciosprint").value = sprint.dtiniciosprint;
+                    document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
+                    document.getElementById("visivel").checked = sprint.visivel;
+                    document.getElementById("descsprint").value = sprint.descsprint;
+                    await listarAusencias(document.getElementById("dtiniciosprint").value,
+                        document.getElementById("dtfinalsprint").value);
+
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadogeral", "Erro ao buscar a última Sprint: " + error.message, "error");
+                }
+            }
+
+            // ==============================================================
+            // CARREGAR EMPREENDIMENTOS
+            // ==============================================================
+            async function carregarEmpreendimento() {
+                const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+                try {
+                    const resposta = await fetch(`${API_EMPREENDIMENTO}/montaComboEmpreendimento`);
+                    const empreendimentos = await resposta.json();
+                    comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
+                    empreendimentos.forEach(e => {
+                        const opcao = document.createElement('option');
+                        opcao.value = e.idempreendimento;
+                        opcao.textContent = e.descempreendimento;
+                        comboEmpreendimento.appendChild(opcao);
+                    });
+                } catch (error) {
+                    mostrarMensagemNaTela( "resultadogeral",MSG.erroCarregar("EMPREENDIMENTO"), "error");
+                }
+            }
+            // ==============================================================
+            // INICIALIZAÇÃO
+            // ==============================================================
+            document.addEventListener('DOMContentLoaded',async () => {
+                    await carregarEmpreendimento();
+                }
+            );
+            // ==============================================================
+            // ALTERAÇÃO DO EMPREENDIMENTO
+            // ==============================================================
+            document.getElementById('comboEmpreendimento').addEventListener('change',() => {
+                    carregarConfiguracao();
+                    listarSprints(document.getElementById('comboEmpreendimento').value)
+                }
+            );
+            // Inicializa os seletores assim que o HTML carregar completamente
+            document.addEventListener('DOMContentLoaded', async () => {
+            });
+
+            async function acharOrdem(ENTIDADE) {
+                try {
+                    const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
+                    console.log(linha);
+                    const resposta = await fetch(linha);
+                    if (!resposta.ok) {
+                        throw new Error(`Erro ${resposta.status}`);
+                    }
+                    const vetor = await resposta.json();
+                    console.log(vetor);
+                    return vetor;
+                } catch (error) {
+                    mostrarMensagemNaTela("resultado","Erro ao carregar status: " + error.message, "error");
+                }
+            }
+            // ==============================================================
+            // NOVA SPRINT
+            // ==============================================================
+            async function criarSprint(idempreendimento) {
+                ordem = await acharOrdem(TIPO_ENTIDADE.SPRINT);
+                await carregarStatus(ordem, TIPO_ENTIDADE.SPRINT);
+                if(idempreendimento === ""){
+                    mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
+                    return false;
+                }
+                limpaFormulario();
+                try {
+                    const response = await fetch(`${API}/valida_ultima/${idempreendimento}`);
+                    if (!response.ok) {
+                        const msg = await response.text();
+                        mostrarMensagemNaTela("resultadogeral", msg || "Erro ao criar sprint!", "error");
+                        return false;
+                    }
+                    const sprint = await response.json();
+                    document.getElementById("idsprint").value = sprint.idsprint;
+                    document.getElementById("dtiniciosprint").value = sprint.dtiniciosprint;
+                    document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
+                    document.getElementById("visivel").checked = sprint.visivel;
+                    document.getElementById("descsprint").value = sprint.descsprint;
+                    document.getElementById("duracaosprint").value = sprint.duracao;
+                    await listarAusencias(document.getElementById("dtiniciosprint").value,
+                        document.getElementById("dtfinalsprint").value);
+
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao criar sprints", "error");
+                    return false;
+                }
+            }
+
+            // ==============================================================
+            // SALVAR SPRINT
+            // ==============================================================
+            async function salvarSprint() {
+                const eValido = await validaEntrada();
+                if (!eValido) return;
+                // Leitura dos campos
+                const descsprint = document.getElementById('descsprint').value;
+                const dtiniciosprint = document.getElementById('dtiniciosprint').value;
+                const dtfinalsprint = document.getElementById('dtfinalsprint').value;
+                const visivel = document.getElementById('visivel').checked;
+
+                const sprint = {
+                    descsprint: descsprint || null,
+                    dtiniciosprint: dtiniciosprint,
+                    dtfinalsprint: dtfinalsprint,
+                    visivel: visivel || true,
+                    empreendimento: {
+                        idEmpreendimento: document.getElementById("comboEmpreendimento").value,
+                    }
+                };
+                try {
+                    const response = await fetch(`${API}/salvar`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type':'application/json'
+                            },
+                            body: JSON.stringify(sprint)
+                        }
+                    );
+                    if (!response.ok) {
+                        throw new Error(await response.text());
+                    }
+                    mostrarMensagemNaTela("resultadogeral",MSG.salvo("SPRINT"),"success");
+                    limpaFormulario();
+                    await listarSprints();
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message,"error");
+                }
+            }
+            // ==============================================================
+            // LISTAR SPRINTS
+            // ==============================================================
+            async function listarSprints(idEmpreendimento) {
+                try {
+                    const response = await fetch(`${API}/listar/DTO/${idEmpreendimento}`);
+                    const data = await response.json();
+                    let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                           <thead> <tr style="cursor:pointer;">
                                 <th>ID</th>
                                 <th>Descrição</th>
@@ -395,8 +393,8 @@
                         </tr>
                     </thead>
                     <tbody>`;
-            data.forEach(sprint => {
-                tabela += `<tr onclick="buscarPorLinha(${sprint.idsprint})" style="cursor:pointer;">
+                    data.forEach(sprint => {
+                        tabela += `<tr onclick="buscarPorLinha(${sprint.idsprint})" style="cursor:pointer;">
                         <td>${sprint.idsprint}</td>
                         <td>${sprint.descsprint || ''}</td>
                         <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
@@ -408,98 +406,98 @@
                         <td style="text-align:center;"> <button type="button" class="btn btn-add" onclick=" event.stopPropagation(); duplicarSprint(${sprint.idsprint})"> Duplicar Sprint </button></td>
                     </tr>
                 `;
-            });
-            tabela += `</tbody></table>`;
-            document.getElementById('resultadogeral').innerHTML = tabela;
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral",MSG.erroCarregar("SPRINT"),"error");
-        }
-    }
-
-    async function buscarPorLinha(id) {
-        try {
-            const response = await fetch(`${API}/DTO/${id}`);
-            if (!response.ok) {
-                mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
-                return;
+                    });
+                    tabela += `</tbody></table>`;
+                    document.getElementById('resultadogeral').innerHTML = tabela;
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadogeral",MSG.erroCarregar("SPRINT"),"error");
+                }
             }
-            const sprint = await response.json();
-            document.getElementById('idsprint').value = sprint.idsprint;
-            document.getElementById('descsprint').value = sprint.descsprint;
-            document.getElementById('dtiniciosprint').value = sprint.dtiniciosprint;
-            document.getElementById('dtfinalsprint').value = sprint.dtfinalsprint;
-            document.getElementById('duracaosprint').value = sprint.duracao;
-            document.getElementById('visivel').checked = sprint.visivel;
-            mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " +  sprint.descsprint, "success");
-            await listarAusencias(document.getElementById("dtiniciosprint").value,document.getElementById("dtfinalsprint").value);
-            statusAtual = sprint.idstatus;
-            await carregarStatus(statusAtual);
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
-        }
-    }
-    // ==============================================================
-    // DUPLICAR SPRINT
-    // ==============================================================
-    async function duplicarSprint(idsprint) {
-        return true;
-    }
-    // ==============================================================
-    // ENCERRAR SPRINT
-    // ==============================================================
-    async function encerrarSprint(idsprint) {
-        if (!confirm("Tem certeza que deseja encerrar esta Sprint?")) {
-            return;
-        }
-        try {
-            const response = await fetch(`${API}/encerrar/${idsprint}`, {
-                        method: 'POST'
+
+            async function buscarPorLinha(id) {
+                try {
+                    const response = await fetch(`${API}/DTO/${id}`);
+                    if (!response.ok) {
+                        mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
+                        return;
                     }
-                );
-            if (!response.ok) {
-                throw new Error(await response.text());
+                    const sprint = await response.json();
+                    document.getElementById('idsprint').value = sprint.idsprint;
+                    document.getElementById('descsprint').value = sprint.descsprint;
+                    document.getElementById('dtiniciosprint').value = sprint.dtiniciosprint;
+                    document.getElementById('dtfinalsprint').value = sprint.dtfinalsprint;
+                    document.getElementById('duracaosprint').value = sprint.duracao;
+                    document.getElementById('visivel').checked = sprint.visivel;
+                    mostrarMensagemNaTela("resultadogeral", "Sprint selecionada: " +  sprint.descsprint, "success");
+                    await listarAusencias(document.getElementById("dtiniciosprint").value,document.getElementById("dtfinalsprint").value);
+                    statusAtual = sprint.idstatus;
+                    await carregarStatus(statusAtual);
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
+                }
             }
-            mostrarMensagemNaTela("resultadogeral",MSG.alterado("SPRINT"), "success");
-            limpaFormulario();
-            await listarSprints();
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral", MSG.erroSalvar("SPRINT"),"error");
-        }
-    }
-    // ==============================================================
-    // LIMPAR FORMULÁRIO
-    // ==============================================================
-    function limpaFormulario() {
-        document.getElementById('idsprint').value = "";
-        document.getElementById('descsprint').value = "";
-        document.getElementById('dtiniciosprint').value = "";
-        document.getElementById('dtfinalsprint').value = "";
-        document.getElementById('duracaosprint').value = "";
-        document.getElementById('visivel').checked = false;
-        //document.getElementById('ultimaSprint').style.display = 'none';
-        /*
-         * Mantém o empreendimento selecionado.
-         *
-         * Isso é proposital: ao criar uma nova Sprint,
-         * o contexto do empreendimento não deve ser perdido.
-         */
-
-    }
-
-    // ==============================================================
-    // LISTAR AUSÊNCIAS
-    // ==============================================================
-    async function listarAusencias(data_inicio, data_fim) {
-        const container = document.getElementById("resultadoausencia");
-        try {
-            const response = await fetch(`${API}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
-            if (!response.ok) {
-                mostrarMensagemNaTela("resultadoausencia", MSG.erroCarregar("AUSÊNCIAS"), "error");
-                return;
+            // ==============================================================
+            // DUPLICAR SPRINT
+            // ==============================================================
+            async function duplicarSprint(idsprint) {
+                return true;
             }
-            const data = await response.json();
-            if (!data || data.length === 0) {
-                container.innerHTML = `
+            // ==============================================================
+            // ENCERRAR SPRINT
+            // ==============================================================
+            async function encerrarSprint(idsprint) {
+                if (!confirm("Tem certeza que deseja encerrar esta Sprint?")) {
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API}/encerrar/${idsprint}`, {
+                            method: 'POST'
+                        }
+                    );
+                    if (!response.ok) {
+                        throw new Error(await response.text());
+                    }
+                    mostrarMensagemNaTela("resultadogeral",MSG.alterado("SPRINT"), "success");
+                    limpaFormulario();
+                    await listarSprints();
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadogeral", MSG.erroSalvar("SPRINT"),"error");
+                }
+            }
+            // ==============================================================
+            // LIMPAR FORMULÁRIO
+            // ==============================================================
+            function limpaFormulario() {
+                document.getElementById('idsprint').value = "";
+                document.getElementById('descsprint').value = "";
+                document.getElementById('dtiniciosprint').value = "";
+                document.getElementById('dtfinalsprint').value = "";
+                document.getElementById('duracaosprint').value = "";
+                document.getElementById('visivel').checked = false;
+                //document.getElementById('ultimaSprint').style.display = 'none';
+                /*
+                 * Mantém o empreendimento selecionado.
+                 *
+                 * Isso é proposital: ao criar uma nova Sprint,
+                 * o contexto do empreendimento não deve ser perdido.
+                 */
+
+            }
+
+            // ==============================================================
+            // LISTAR AUSÊNCIAS
+            // ==============================================================
+            async function listarAusencias(data_inicio, data_fim) {
+                const container = document.getElementById("resultadoausencia");
+                try {
+                    const response = await fetch(`${API}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
+                    if (!response.ok) {
+                        mostrarMensagemNaTela("resultadoausencia", MSG.erroCarregar("AUSÊNCIAS"), "error");
+                        return;
+                    }
+                    const data = await response.json();
+                    if (!data || data.length === 0) {
+                        container.innerHTML = `
                     <table class="table">
                         <thead>
                             <tr>
@@ -521,9 +519,9 @@
                             </tr>
                         </tbody>
                     </table>`;
-                return;
-            }
-            let tabela = ` <table class="table">
+                        return;
+                    }
+                    let tabela = ` <table class="table">
                     <thead>
                         <tr>
                             <th>Usuário</th>
@@ -535,8 +533,8 @@
                     </thead>
                     <tbody>
             `;
-            data.forEach(a => {
-                tabela += `
+                    data.forEach(a => {
+                        tabela += `
                     <tr style="cursor:pointer;">
                       <td>${a.nome}</td>
                       <td>${formatarDataBR(a.data_inicio)}</td>
@@ -544,82 +542,84 @@
                       <td> <span class="badge" style="background-color:${a.cor_tipo_ausencia}; color:white;">${a.tipoausencia ?? ''}</span></td>
                       <td>${a.observacao ??''}</td>
                     </tr>`;
-            });
-            tabela += `</tbody> </table>`;
-            container.innerHTML = tabela;
-        } catch (error) {
-           mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
-        }
-    }
-    // ==============================================================
-    // VALIDAÇÃO DE ENTRADA
-    // ==============================================================
-    async function validaEntrada() {
-        if (!validarDuracaoSprint()) {
-            return false;
-        }
-        const parametrosValidos = await validaParametros();
-        if (!parametrosValidos) {
-            return false;
-        }
-        return true;
-    }
-    // ==============================================================
-    // VALIDAR DURAÇÃO
-    // ==============================================================
-    function validarDuracaoSprint() {
-        const dtInicio = document.getElementById("dtiniciosprint").value;
-        const dtFim =document.getElementById("dtfinalsprint").value;
-        if (!dtInicio || !dtFim) {
-            mostrarMensagemNaTela("resultadogeral","As datas da Sprint ainda não foram calculadas.","warning");
-            return false;
-        }
-        const inicio = new Date(dtInicio);
-        const fim = new Date(dtFim);
-        const dias = Math.ceil((fim - inicio) / (1000 * 60 * 60 * 24)) + 1;
-        if (dias < configuracaoSprint.duracao_min_sprint) {
-            mostrarMensagemNaTela("resultadogeral",`A sprint deve ter no mínimo ${configuracaoSprint.duracao_min_sprint} dias.`,"warning");
-            return false;
-        }
-        if (dias > configuracaoSprint.duracao_max_sprint) {
-            mostrarMensagemNaTela("resultadogeral",`A sprint deve ter no máximo ${configuracaoSprint.duracao_max_sprint} dias.`,"warning" );
-            return false;
-        }
-        return true;
-    }
-    // ==============================================================
-    // VALIDAR PARÂMETROS
-    // ==============================================================
-    async function validaParametros() {
-        const data_inicio = document.getElementById("dtiniciosprint").value;
-        const data_fim = document.getElementById("dtfinalsprint").value;
-        const idempreendimento = document.getElementById("comboEmpreendimento").value;
-        const inputSprint = document.getElementById("idsprint");
-        const idSprint = inputSprint && inputSprint.value !== "" ? Number(inputSprint.value): -1;
-        if (!idempreendimento) {
-            mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!","warning");
-            return false;
-        }
-        try {
-            const linha = `${API}/sprint_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}&idSprint=${idSprint}`;
-            console.log(linha);
-            const response = await fetch(linha);
-            if (!response.ok) {
-                const msg = await response.text();
-                mostrarMensagemNaTela("resultadogeral",msg ||"Erro ao buscar sprint!", "error");
-                return false;
+                    });
+                    tabela += `</tbody> </table>`;
+                    container.innerHTML = tabela;
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadoausencia",MSG.erroCarregar("AUSÊNCIAS"),"error");
+                }
             }
-            const existeSobreposicao = await response.json();
-            if (existeSobreposicao && !configuracaoSprint.permitir_sprint_sobreposta) {
-                mostrarMensagemNaTela("resultadogeral", "Já existem sprints abertas nesse período!", "warning");
-                return false;
+            // ==============================================================
+            // VALIDAÇÃO DE ENTRADA
+            // ==============================================================
+            async function validaEntrada() {
+                if (!validarDuracaoSprint()) {
+                    return false;
+                }
+                const parametrosValidos = await validaParametros();
+                if (!parametrosValidos) {
+                    return false;
+                }
+                return true;
             }
-            return true;
-        } catch (error) {
-            mostrarMensagemNaTela("resultadogeral",error.message || "Erro ao buscar sprints", "error");
-            return false;
-        }
-    }
-</script>
+            // ==============================================================
+            // VALIDAR DURAÇÃO
+            // ==============================================================
+            function validarDuracaoSprint() {
+                const dtInicio = document.getElementById("dtiniciosprint").value;
+                const dtFim =document.getElementById("dtfinalsprint").value;
+                if (!dtInicio || !dtFim) {
+                    mostrarMensagemNaTela("resultadogeral","As datas da Sprint ainda não foram calculadas.","warning");
+                    return false;
+                }
+                const inicio = new Date(dtInicio);
+                const fim = new Date(dtFim);
+                const dias = Math.ceil((fim - inicio) / (1000 * 60 * 60 * 24)) + 1;
+                if (dias < configuracaoSprint.duracao_min_sprint) {
+                    mostrarMensagemNaTela("resultadogeral",`A sprint deve ter no mínimo ${configuracaoSprint.duracao_min_sprint} dias.`,"warning");
+                    return false;
+                }
+                if (dias > configuracaoSprint.duracao_max_sprint) {
+                    mostrarMensagemNaTela("resultadogeral",`A sprint deve ter no máximo ${configuracaoSprint.duracao_max_sprint} dias.`,"warning" );
+                    return false;
+                }
+                return true;
+            }
+            // ==============================================================
+            // VALIDAR PARÂMETROS
+            // ==============================================================
+            async function validaParametros() {
+                const data_inicio = document.getElementById("dtiniciosprint").value;
+                const data_fim = document.getElementById("dtfinalsprint").value;
+                const idempreendimento = document.getElementById("comboEmpreendimento").value;
+                const inputSprint = document.getElementById("idsprint");
+                const idSprint = inputSprint && inputSprint.value !== "" ? Number(inputSprint.value): -1;
+                if (!idempreendimento) {
+                    mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!","warning");
+                    return false;
+                }
+                try {
+                    const linha = `${API}/sprint_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}&idSprint=${idSprint}`;
+                    console.log(linha);
+                    const response = await fetch(linha);
+                    if (!response.ok) {
+                        const msg = await response.text();
+                        mostrarMensagemNaTela("resultadogeral",msg ||"Erro ao buscar sprint!", "error");
+                        return false;
+                    }
+                    const existeSobreposicao = await response.json();
+                    if (existeSobreposicao && !configuracaoSprint.permitir_sprint_sobreposta) {
+                        mostrarMensagemNaTela("resultadogeral", "Já existem sprints abertas nesse período!", "warning");
+                        return false;
+                    }
+                    return true;
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadogeral",error.message || "Erro ao buscar sprints", "error");
+                    return false;
+                }
+            }
+        </script>
+    </div>
+</div>
 </body>
 </html>

@@ -4,6 +4,7 @@ import br.com.taskcontroller.DTO.Status.AlteraStatusRequestDTO;
 import br.com.taskcontroller.Mapper.TarefaMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaHistoricoDTO;
 import br.com.taskcontroller.Record.Tarefa.TarefaInclusaoDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.*;
@@ -25,6 +26,9 @@ public class TarefaController {
     private TarefaRepository tarefaRepository;
 
     @Autowired
+    private TarefaHistoricoRepository tarefaHistoricoRepository;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
@@ -35,6 +39,9 @@ public class TarefaController {
 
     @Autowired
     private StatusEntidadesRepository statusEntidadesRepository;
+
+    @Autowired
+    private TarefaHistoricoService tarefaHistoricoService;
 
 
     // BUSCAR POR ID
@@ -141,5 +148,12 @@ public class TarefaController {
         );
 
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/{idTarefa}/historico")
+
+    public List<TarefaHistorico> listarHistorico(
+            @PathVariable Long idTarefa) {
+
+        return tarefaHistoricoRepository.findByTarefaIdtarefaOrderByDataAlteracaoDescIdhistoricoDesc(idTarefa);
     }
 }

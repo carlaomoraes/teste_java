@@ -25,6 +25,7 @@
     <div class="abas-container">
         <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
         <button class="aba-botao" onclick="alternarAba(event, 'apontamentos')">Apontamentos</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'historico')">Histórico</button>
     </div>
     <div id="tarefa" class="conteudo-aba ativo">
         <!-- ESTÓRIA -->
@@ -118,7 +119,10 @@
             <button type="button" class="btn" onclick="cancelarApontamentos();">Cancelar</button>
         </div>
         <div id="resultadoapontamento"></div>
-
+    </div>
+    <div id="historico" class="conteudo-aba">
+        <div id="resultadohistorico">
+        </div>
     </div>
 </div>
 <script>
@@ -368,6 +372,7 @@
                 body: JSON.stringify(tarefa)
             });
             const data = await response.json();
+            await mudarStatusTarefa(Number(document.getElementById("idtarefa").value));
             mostrarMensagemNaTela("resultado_tarefa", MSG.salvo("TAREFA"), "success");
             setTimeout(() => {
                 limparFormulario();
@@ -381,7 +386,6 @@
         document.getElementById('idtarefa').value = "";
         document.getElementById('desctarefa').value = "";
         document.getElementById('resumo_tarefa').value = "";
-        document.getElementById('bloqueada_estoria').checked = false;
         document.getElementById('data_inicio_TA').value = "";
         document.getElementById('data_fim_TA').value = "";
         document.getElementById('comboCriadorTA').value = "";
@@ -517,11 +521,11 @@
                 statusAtualTarefa = tarefa.idstatus;
                 await carregarStatus(statusAtualTarefa, TIPO_ENTIDADE.TAREFA);
                 await listarApontamentos(tarefa.idtarefa);
+                await listarHistorico(tarefa.idtarefa);
                  mostrarMensagemNaTela("resultado_tarefa","Tarefa selecionada: " + tarefa.desctarefa, "success");
                 }
             } catch (error) {
-                // mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");
-             mostrarMensagemNaTela("resultado_tarefa",error.value, "error");
+                 mostrarMensagemNaTela("resultado_tarefa",MSG.erroCarregar("TAREFAS"), "error");
             }
     }
     async function excluirApontamento(idTempoGasto) {
@@ -538,17 +542,9 @@
         }
     }
     async function mudarStatusTarefa(idTarefa) {
-        const idUsuario = Number(
-            sessionStorage.getItem("usuarioIdUsuario")
-        );
-
-        const idStatus = Number(
-            document.getElementById(`comboStatusTA_${idTarefa}`).value
-        );
-
-        const resposta = await fetch(
-            `${API_TAREFAS}/${idTarefa}/status/${idStatus}`,
-            {
+        const idUsuario = Number(sessionStorage.getItem("usuarioIdUsuario"));
+        const idStatus = Number(document.getElementById(`comboStatusTA`).value);
+        const resposta = await fetch(`${API_TAREFA}/${idTarefa}/status/${idStatus}`,{
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
@@ -559,6 +555,58 @@
 
         if (!resposta.ok) {
             throw new Error("Erro ao alterar status da tarefa");
+        }
+    }
+    async function listarHistorico(idTarefa) {
+        const tbody = document.getElementById("resultadohistorico");
+        tbody.innerHTML = "";
+        try {
+            const response = await fetch(`${API_TAREFA}/${idTarefa}/historico`);
+
+            if (!response.ok) {
+                throw new Error("Erro ao carregar histórico");
+            }
+
+            const historico = await response.json();
+
+            if (historico.length === 0) {
+                tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        <p style="color:red">
+                            Nenhuma alteração registrada.
+                        </p>
+                    </td>
+                </tr>
+            `;
+                return;
+            }
+
+            historico.forEach(item => {
+                const data = new Date(item.dataAlteracao).toLocaleString("pt-BR");
+
+                const tr = document.createElement("tr");
+
+                [
+                    item.idhistorico,
+                    item.idusuario,
+                    item.nomeUsuario,
+                    data,
+                    item.tipoAlteracao,
+                    item.valorAnterior ?? "-",
+                    item.valorNovo ?? "-",
+                    item.descricao ?? "-"
+                ].forEach(valor => {
+                    const td = document.createElement("td");
+                    td.textContent = valor ?? "-";
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+
+        } catch (error) {
+            mostrarMensagemNaTela("resultado","Erro ao carregar histórico da tarefa.","error");
         }
     }
 </script>

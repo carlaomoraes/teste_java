@@ -16,6 +16,7 @@ public record TarefaInclusaoDTO(
      LocalDate data_inicio,
      LocalDate data_fim_prevista,
      LocalDate data_conclusao,
-     Long  idtipotarefa
+     Long  idtipotarefa,
+     Long idusuario
 ) {
 }

@@ -4,9 +4,12 @@ import br.com.taskcontroller.Enums.TipoAlteracao;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Tarefa;
+import br.com.taskcontroller.Modelo.TarefaHistorico;
 import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
+import br.com.taskcontroller.Record.Tarefa.TarefaHistoricoDTO;
 import br.com.taskcontroller.Respository.StatusEntidadesRepository;
+import br.com.taskcontroller.Respository.TarefaHistoricoRepository;
 import br.com.taskcontroller.Respository.TarefaRepository;
 import br.com.taskcontroller.Respository.UsuarioRepository;
 import br.com.taskcontroller.Utilidades.ResolveTempo;
@@ -23,6 +26,10 @@ public class TarefaService {
 
     @Autowired
     private TarefaRepository repository;
+
+    @Autowired
+    private TarefaHistoricoRepository historicoRepository;
+
 
     @Autowired
     private StatusEntidadesService statusEntidadesService;
@@ -45,13 +52,13 @@ public class TarefaService {
         return repository.save(tarefa);
     }
 
-    public List<TarefaConsultaDTO> listar(Long idEstoria) {
 
+
+    public List<TarefaConsultaDTO> listar(Long idEstoria) {
         return repository.buscarTarefaPorEstoria(idEstoria);
     }
 
-    public Tarefa atualizar(Tarefa tarefa, Long idUsuario) {
-        alterarStatus(tarefa.getIdtarefa(), tarefa.getStatus().getIdstatus(), idUsuario);
+    public Tarefa atualizar(Tarefa tarefa) {
         return repository.save(tarefa);
     }
 
@@ -127,5 +134,9 @@ public class TarefaService {
         tarefa.setResponsavel(responsavel);
 
         repository.save(tarefa);
+    }
+
+    public List<TarefaHistorico> buscarHistorica(Long idTarefa) {
+        return  historicoRepository.findByTarefaIdtarefaOrderByDataAlteracaoDescIdhistoricoDesc(idTarefa);
     }
 }
