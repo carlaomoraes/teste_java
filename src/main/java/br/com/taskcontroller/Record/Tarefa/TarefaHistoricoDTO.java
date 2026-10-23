@@ -8,10 +8,10 @@ public record TarefaHistoricoDTO(
         Long idhistorico,
         Long idtarefa,
         Long idusuario,
-        String nomeUsuario,
-        LocalDateTime dataAlteracao,
-        TipoAlteracao tipoAlteracao,
-        String valorAnterior,
-        String valorNovo,
+        String nomeusuario,
+        LocalDateTime data_alteracao,
+        TipoAlteracao tipoalteracao,
+        String valoranterior,
+        String valornovo,
         String descricao
 ) {}

@@ -127,16 +127,35 @@ public class TarefaService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Tarefa não encontrada"));
 
-        Usuario responsavel = usuarioRepository.findById(idUsuario)
+        Usuario responsavelAnterior = usuarioService.buscarPorId(tarefa.getResponsavel().getIdusuario());
+
+        Usuario novoResponsavel = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Usuário não encontrado"));
 
-        tarefa.setResponsavel(responsavel);
+        if (responsavelAnterior != null &&
+                responsavelAnterior.getIdusuario().equals(novoResponsavel.getIdusuario())) {
+            return;
+        }
+
+        String nomeAnterior = responsavelAnterior != null ? responsavelAnterior.getNome() : "Sem responsável";
+
+
+        tarefa.setResponsavel(novoResponsavel);
+
+        tarefaHistoricoService.registrar(
+                tarefa,
+                novoResponsavel,
+                TipoAlteracao.RESPONSAVEL,
+                nomeAnterior,
+                novoResponsavel.getNome(),
+                "Alteração de responsável da tarefa"
+        );
 
         repository.save(tarefa);
     }
 
-    public List<TarefaHistorico> buscarHistorica(Long idTarefa) {
-        return  historicoRepository.findByTarefaIdtarefaOrderByDataAlteracaoDescIdhistoricoDesc(idTarefa);
+    public List<TarefaHistoricoDTO> buscarHistorico(Long idTarefa) {
+        return  historicoRepository.listaHistorico(idTarefa);
     }
 }

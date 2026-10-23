@@ -11,6 +11,7 @@ import br.com.taskcontroller.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -70,7 +71,7 @@ public class TarefaController {
 
     // SALVAR
     @PostMapping("/salvar")
-    public ResponseEntity<Tarefa> salvar_tarefa(@RequestBody TarefaInclusaoDTO dto) {
+    public ResponseEntity<Tarefa> salvar_tarefa(@NonNull @RequestBody TarefaInclusaoDTO dto) {
         Tarefa tarefa;
         if(dto.idtarefa() == null) {
             tarefa = TarefaMapper.toEntity(dto);
@@ -99,6 +100,10 @@ public class TarefaController {
         tarefa.setCriador(criador);
         tarefa.setResponsavel(responsavel);
         tarefa.setTipotarefa(tipoTarefa);
+
+        service.alterarStatus(tarefa.getIdtarefa(),status.getIdstatus(), dto.idusuario());
+        service.alterarResponsavel(tarefa.getIdtarefa(),dto.idusuario());
+
 
         return ResponseEntity.ok().body(service.salvar(tarefa));
     }
@@ -150,10 +155,7 @@ public class TarefaController {
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/{idTarefa}/historico")
-
-    public List<TarefaHistorico> listarHistorico(
-            @PathVariable Long idTarefa) {
-
-        return tarefaHistoricoRepository.findByTarefaIdtarefaOrderByDataAlteracaoDescIdhistoricoDesc(idTarefa);
+    public List<TarefaHistoricoDTO> listarHistorico(@PathVariable Long idTarefa) {
+        return service.buscarHistorico(idTarefa);
     }
 }

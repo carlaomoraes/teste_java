@@ -29,13 +29,13 @@ public class TarefaHistorico {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private TipoAlteracao tipoAlteracao;
+    private TipoAlteracao tipo_alteracao;
 
     @Column(length = 500)
-    private String valorAnterior;
+    private String valor_anterior;
 
     @Column(length = 500)
-    private String valorNovo;
+    private String valor_novo;
 
     @Column(length = 1000)
     private String descricao;

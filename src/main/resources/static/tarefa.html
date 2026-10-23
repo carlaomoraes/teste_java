@@ -226,16 +226,8 @@
     }
 
     async function carregarStatus(idStatusAtual, ENTIDADE) {
-        const comboStatusES = document.getElementById("comboStatusES");
         const comboStatusTA = document.getElementById("comboStatusTA");
-        switch (ENTIDADE) {
-            case TIPO_ENTIDADE.ESTORIA:
-                comboStatusES.innerHTML = '<option value="">Selecione...</option>';
-                break;
-            case TIPO_ENTIDADE.TAREFA:
-                comboStatusTA.innerHTML = '<option value="">Selecione...</option>';
-                break;
-        }
+        comboStatusTA.innerHTML = '<option value="">Selecione...</option>';
         try {
             const linha = `${API_STATUS}/${encodeURIComponent(idStatusAtual)}/proximo/${ENTIDADE}`;
             const resposta = await fetch(linha);
@@ -250,14 +242,7 @@
                 const opcao = document.createElement("option");
                 opcao.value = status.idstatus;
                 opcao.textContent = status.descstatus;
-                switch (ENTIDADE) {
-                    case TIPO_ENTIDADE.ESTORIA:
-                        comboStatusES.appendChild(opcao);
-                        break;
-                    case TIPO_ENTIDADE.TAREFA:
-                        comboStatusTA.appendChild(opcao);
-                        break;
-                }
+                comboStatusTA.appendChild(opcao);
             });
         } catch (error) {
             mostrarMensagemNaTela("resultado_tarefa","Erro ao carregar status: " + error.message, "error");
@@ -357,12 +342,16 @@
             bloqueada: bloqueada || false,
             idcriador: document.getElementById('comboCriadorTA').value || null,
             idresponsavel: document.getElementById('comboResponsavelTA').value || null,
-            idstatus: document.getElementById('comboStatusTA').value || null,
+            idstatus: document.getElementById('comboStatusTA').value || statusAtualTarefa,
             data_inicio: data_inicio,
             data_fim_prevista: data_fim_prevista,
             data_conclusao: null,
-            idtipotarefa: document.getElementById('comboTipoTarefa').value
+            idtipotarefa: document.getElementById('comboTipoTarefa').value || null
         };
+        if((document.getElementById('comboStatusTA').value !== "") &&
+            (document.getElementById('comboStatusTA').value !== statusAtualTarefa)) {
+            statusAtualTarefa = document.getElementById('comboStatusTA').value;
+        }
         try {
             const response = await fetch(`${API_TAREFA}/salvar`, {
                 method: 'POST',
@@ -372,14 +361,30 @@
                 body: JSON.stringify(tarefa)
             });
             const data = await response.json();
-            await mudarStatusTarefa(Number(document.getElementById("idtarefa").value));
+            await mudarStatusTarefa(Number(document.getElementById("idtarefa").value), statusAtualTarefa);
             mostrarMensagemNaTela("resultado_tarefa", MSG.salvo("TAREFA"), "success");
+            await alterarResponsavelTarefa(Number(document.getElementById("idtarefa").value), Number(sessionStorage.getItem("usuarioIdUsuario")));
             setTimeout(() => {
                 limparFormulario();
-                listarTarefas(configuracao.idestoria);
+                listarTarefas(Number(document.getElementById("comboEstoria").value));
             }, 1000);
         } catch (error) {
             mostrarMensagemNaTela("resultado_tarefa", MSG.erroSalvar("TAREFA"), "error");
+        }
+    }
+    async function alterarResponsavelTarefa(idTarefa, idUsuario) {
+        if (!idUsuario) return;
+        try {
+            const response = await fetch(`${API_TAREFA}/${idTarefa}/responsavel/${idUsuario}`,
+                {
+                    method: "PATCH"
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Erro ao alterar responsável.");
+            }
+        } catch (error) {
+            mostrarMensagemNaTela("resultado",error.message, "error");
         }
     }
     async function limparFormulario() {
@@ -402,10 +407,6 @@
         try {
             const response = await fetch(`${API_TAREFA}/${idEstoria}/tarefas`);
             const data = await response.json();
-            if(data.length <= 0) {
-                mostrarMensagemNaTela("resultado_tarefa",MSG.naoEncontrada("TAREFA"),"warning");
-                return;
-            }
             let tabela = `
             <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                 <thead>
@@ -424,8 +425,7 @@
                 <tbody>
         `;
             data.forEach(tarefa => {
-                tabela += `
-        <tr onclick="buscarPorLinha(${tarefa.idtarefa}, 'TAREFA')" style="cursor:pointer;">
+                tabela += `<tr onclick="buscarPorLinha(${tarefa.idtarefa}, 'TAREFA')" style="cursor:pointer;">
             <td>${obterIconeTipo(tarefa.tipotarefa)}</td>
             <td>${tarefa.idtarefa}</td>
             <td>${tarefa.desctarefa}</td>
@@ -445,7 +445,7 @@
             tabela += `</tbody></table>`;
             document.getElementById('resultado_tarefa').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
+           mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
         }
     }
     async function listarApontamentos(idTarefa){
@@ -490,7 +490,7 @@
         tabela += `</tbody></table>`;
         document.getElementById('resultadoapontamento').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("TAREFAS"),"error");
+            mostrarMensagemNaTela("resultado_tarefa",MSG.errolistar("APONTAMENTO"),"error");
         }
     }
 
@@ -541,9 +541,8 @@
             mostrarMensagemNaTela("resultadoapontamento",MSG.erroExcluir("APONTAMENTO"), "error");
         }
     }
-    async function mudarStatusTarefa(idTarefa) {
+    async function mudarStatusTarefa(idTarefa,idStatus) {
         const idUsuario = Number(sessionStorage.getItem("usuarioIdUsuario"));
-        const idStatus = Number(document.getElementById(`comboStatusTA`).value);
         const resposta = await fetch(`${API_TAREFA}/${idTarefa}/status/${idStatus}`,{
                 method: "PATCH",
                 headers: {
@@ -559,54 +558,46 @@
     }
     async function listarHistorico(idTarefa) {
         const tbody = document.getElementById("resultadohistorico");
-        tbody.innerHTML = "";
         try {
             const response = await fetch(`${API_TAREFA}/${idTarefa}/historico`);
-
-            if (!response.ok) {
-                throw new Error("Erro ao carregar histórico");
-            }
-
-            const historico = await response.json();
-
-            if (historico.length === 0) {
-                tbody.innerHTML = `
-                <tr>
-                    <td colspan="8" class="text-center text-muted py-4">
-                        <p style="color:red">
-                            Nenhuma alteração registrada.
-                        </p>
-                    </td>
-                </tr>
-            `;
+            const data = await response.json();
+            if(data.length <= 0) {
                 return;
             }
-
-            historico.forEach(item => {
-                const data = new Date(item.dataAlteracao).toLocaleString("pt-BR");
-
-                const tr = document.createElement("tr");
-
-                [
-                    item.idhistorico,
-                    item.idusuario,
-                    item.nomeUsuario,
-                    data,
-                    item.tipoAlteracao,
-                    item.valorAnterior ?? "-",
-                    item.valorNovo ?? "-",
-                    item.descricao ?? "-"
-                ].forEach(valor => {
-                    const td = document.createElement("td");
-                    td.textContent = valor ?? "-";
-                    tr.appendChild(td);
-                });
-
-                tbody.appendChild(tr);
-            });
-
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID Histórico</th>
+                        <th class="table-header">ID Tarefa</th>
+                        <th class="table-header">ID Usuário</th>
+                        <th class="table-header">Nome Usuário</th>
+                        <th class="table-header">Data alteração</th>
+                        <th class="table-header">Tipo de operação</th>
+                        <th class="table-header">Valor anterior</th>
+                        <th class="table-header">Valor atual</th>
+                        <th class="table-header">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(historico => {
+                tabela += `
+        <tr>
+            <td>${historico.idhistorico}</td>
+            <td>${historico.idtarefa}</td>
+            <td>${historico.idusuario}</td>
+            <td>${historico.nomeusuario}</td>
+            <td>${formatarDataHora(historico.data_alteracao)}</td>
+            <td>${historico.tipoalteracao}</td>
+            <td>${historico.valoranterior}</td>
+            <td>${historico.valornovo}</td>
+            <td>${historico.descricao}</td>
+        </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadohistorico').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela("resultado","Erro ao carregar histórico da tarefa.","error");
+            mostrarMensagemNaTela("resultadohistorico",MSG.errolistar("HISTÓRICO"),"error");
         }
     }
 </script>

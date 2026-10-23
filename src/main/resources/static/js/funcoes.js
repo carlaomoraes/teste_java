@@ -57,7 +57,14 @@ function formatarDataBR(dataString) {
     }
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
+function formatarDataHora(data) {
+    if (!data) return "-";
 
+    const [dataParte, horaParte] = data.split("T");
+    const [ano, mes, dia] = dataParte.split("-");
+
+    return `${dia}/${mes}/${ano} ${horaParte.substring(0, 8)}`;
+}
 
 function converterMaiusculo(campo) {
     campo.value = campo.value.toUpperCase();

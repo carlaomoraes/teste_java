@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -32,9 +34,9 @@ public class TarefaHistoricoService {
 
         historico.setTarefa(tarefa);
         historico.setUsuario(usuario);
-        historico.setTipoAlteracao(tipo);
-        historico.setValorAnterior(valorAnterior);
-        historico.setValorNovo(valorNovo);
+        historico.setTipo_alteracao(tipo);
+        historico.setValor_anterior(valorAnterior);
+        historico.setValor_novo(valorNovo);
         historico.setDescricao(descricao);
 
         repository.save(historico);
@@ -43,17 +45,17 @@ public class TarefaHistoricoService {
     public List<TarefaHistoricoDTO> listar(Long idTarefa) {
 
         return repository
-                .findByTarefaIdtarefaOrderByDataAlteracaoDescIdhistoricoDesc(idTarefa)
+                .findByTarefaIdtarefaOrderByIdhistoricoDesc(idTarefa)
                 .stream()
                 .map(h -> new TarefaHistoricoDTO(
                         h.getIdhistorico(),
                         h.getTarefa().getIdtarefa(),
                         h.getUsuario().getIdusuario(),
                         h.getUsuario().getNome(),
-                        h.getDataAlteracao(),
-                        h.getTipoAlteracao(),
-                        h.getValorAnterior(),
-                        h.getValorNovo(),
+                        LocalDateTime.parse(h.getDataAlteracao().format(DateTimeFormatter.ofPattern("DD/MM/YYYY"))),
+                        h.getTipo_alteracao(),
+                        h.getValor_anterior(),
+                        h.getValor_novo(),
                         h.getDescricao()
                 ))
                 .toList();
