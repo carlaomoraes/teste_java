@@ -25,22 +25,23 @@
     <div class="abas-container">
         <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
         <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
-    </div>
-
-    <!-- EMPREENDIMENTO -->
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <label class="form-label">
-                Épico *
-            </label>
-
-            <select id="comboEpico"
-                    class="form-select"
-                    required>
-            </select>
-        </div>
+        <button class="aba-botao" onclick="alternarAba(event, 'historico')">Histórico</button>
     </div>
     <div id="estoria" class="conteudo-aba ativo">
+        <!-- EMPREENDIMENTO -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label class="form-label">
+                    Épico *
+                </label>
+
+                <select id="comboEpico"
+                        class="form-select"
+                        required>
+                </select>
+            </div>
+        </div>
+
         <input type="number" id="idestoria" onblur="buscarPorLinha(document.getElementById('comboEpico').value,document.getElementById('idestoria').value, 0, 'ESTORIA')" placeholder="ID da estoria (Deixe vazio para novo)">
         <div class="form-grid">
             <div>
@@ -178,6 +179,10 @@
         </div>
         <div id="resultado_tarefa"></div>
     </div>
+    <div id="historico" class="conteudo-aba">
+        <div id="resultadohistorico">
+        </div>
+    </div>
 </div>
 <script>
     //-----------------CARREGAR CONFIGURAÇÃO
@@ -199,6 +204,7 @@
 
     //--------------------- MANIPULAÇÃO DOS DADOS
     const API_EPICO = 'http://localhost:8080/epicos';
+    const API_ESTORIA = 'http://localhost:8080/estorias';
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
     const API_TIPO_TAREFA = 'http://localhost:8080/tipo_tarefa';
@@ -445,6 +451,10 @@
         const campoBlooqueado = document.getElementById('bloqueada_estoria').checked;
         const data_inicio = document.getElementById('data_inicialES').value || hoje ;
         const data_fim = document.getElementById('data_fim_previstaES').value || hoje ;
+        if((document.getElementById('comboStatusES').value !== "") &&
+            (document.getElementById('comboStatusES').value !== statusAtualEstoria)) {
+            statusAtualEstoria = document.getElementById('comboStatusES').value;
+        }
         const estoria = {
             idepico: idEpico || null,
             descEstoria: descestoria || null,
@@ -459,12 +469,13 @@
                 idresponsavel: document.getElementById('comboResponsavelES').value || null,
             },
             status: {
-                idstatus: document.getElementById('comboStatusES').value || null,
+                idstatus: statusAtualEstoria || null,
             },
             pontos: document.getElementById('combostorypoints').value || 0,
             horas_estimadas: Number(document.getElementById('horas_estimadas').value) || 0.0,
             horas_realizadas: Number(document.getElementById('horas_realizadas').value) || 0.0,
         };
+
         try {
             const response = await fetch(`${API_EPICO}/${configuracao.idepico}/adicionarEstoria`, {
                 method: 'POST',
@@ -475,13 +486,47 @@
             });
             const data = await response.json();
             mostrarMensagemNaTela("resultado_estoria",MSG.salvo("ESTÓRIA"),"success");
+            await alterarResponsavelEstoria(Number(document.getElementById("idestoria").value), Number(sessionStorage.getItem("usuarioIdUsuario")));
+            await mudarStatusEstoria(Number(document.getElementById("idestoria").value),statusAtualEstoria);
             setTimeout(() => {
                 limparFormulario("ES");
                 listarEstoria(document.getElementById('comboEpico').value);
             }, 1000);
 
         } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria",MSG.erroSalvar("ESTÓRIA"),"error");
+            mostrarMensagemNaTela("resultado_estoria",error.value,"error");
+//            mostrarMensagemNaTela("resultado_estoria",MSG.erroSalvar("ESTÓRIA"),"error");
+
+        }
+    }
+    async function alterarResponsavelEstoria(idEstoria, idUsuario) {
+        if (!idUsuario) return;
+        try {
+            const response = await fetch(`${API_ESTORIA}/${idEstoria}/responsavel/${idUsuario}`,
+                {
+                    method: "PATCH"
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Erro ao alterar responsável.");
+            }
+        } catch (error) {
+            mostrarMensagemNaTela("resultado",error.message, "error");
+        }
+    }
+    async function mudarStatusEstoria(idEstoria,idStatus) {
+        const idUsuario = Number(sessionStorage.getItem("usuarioIdUsuario"));
+        const resposta = await fetch(`${API_ESTORIA}/${idEstoria}/status/${idStatus}`,{
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ idUsuario })
+            }
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao alterar status da estória");
         }
     }
     async function listarEstoria(idEpico) {
@@ -570,8 +615,8 @@
             <td> <span class="badge" style="background-color:${tarefa.corstatus}; color:white;">${tarefa.descstatus}</span></td>
             <td>${formatarData(tarefa.data_inicio)}</td>
             <td>${formatarData(tarefa.data_conclusao)}</td>
-            <td>${tarefa.horas_estimadas ?? 0}</td>
-            <td>${tarefa.horas_realizadas ?? 0}</td>
+            <td>${formatarHora(tarefa.horas_estimadas)}</td>
+            <td>${formatarHora(tarefa.horas_realizadas)}</td>
             <td>
                 <button type="button"
                         class="btn"
@@ -615,6 +660,7 @@
                      // MONTA O COMBO PARA PROXIMO STATUS
                      statusAtualEstoria = estoria.idstatus;
                      await carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
+                    await listarHistorico(idEstoria);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");
@@ -639,8 +685,8 @@
                     document.getElementById('comboCriadorTA').value = tarefa.idcriador;
                     document.getElementById('comboResponsavelTA').value = tarefa.idresponsavel;
                     // HORAS
-                    document.getElementById('horas_realizadas').value = tarefa.horas_realizadas;
-                    document.getElementById('horas_estimadas').value = tarefa.horas_estimadas;
+                    document.getElementById('horas_realizadas').value = formatarHora(tarefa.horas_realizadas);
+                    document.getElementById('horas_estimadas').value = formatarHora(tarefa.horas_estimadas);
                     // MONTA O COMBO PARA PROXIMO STATUS
                     statusAtualTarefa = tarefa.idstatus;
                     await carregarStatus(statusAtualTarefa, TIPO_ENTIDADE.TAREFA);
@@ -675,6 +721,50 @@
             await listarTarefas(configuracao.idepico, configuracao.idestoria);
         } catch (error) {
             mostrarMensagemNaTela("resultado_tarefa",MSG.erroExcluir("TAREFA"), "error");
+        }
+    }
+    async function listarHistorico(idEstoria) {
+        try {
+            const response = await fetch(`${API_ESTORIA}/${idEstoria}/historico`);
+            const data = await response.json();
+            if(data.length <= 0) {
+                return;
+            }
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID Histórico</th>
+                        <th class="table-header">ID Estoria</th>
+                        <th class="table-header">ID Usuário</th>
+                        <th class="table-header">Nome Usuário</th>
+                        <th class="table-header">Data alteração</th>
+                        <th class="table-header">Tipo de operação</th>
+                        <th class="table-header">Valor anterior</th>
+                        <th class="table-header">Valor atual</th>
+                        <th class="table-header">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(historico => {
+                tabela += `
+        <tr>
+            <td>${historico.idhistorico}</td>
+            <td>${historico.idestoria}</td>
+            <td>${historico.idusuario}</td>
+            <td>${historico.nomeusuario}</td>
+            <td>${formatarDataHora(historico.data_alteracao)}</td>
+            <td>${historico.tipoalteracao}</td>
+            <td>${historico.valoranterior}</td>
+            <td>${historico.valornovo}</td>
+            <td>${historico.descricao}</td>
+        </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadohistorico').innerHTML = tabela;
+        } catch (error) {
+          //  mostrarMensagemNaTela("resultadohistorico",MSG.errolistar("HISTÓRICO"),"error");
+            mostrarMensagemNaTela("resultadohistorico",error.value,"error");
         }
     }
 </script>

@@ -1,14 +1,12 @@
 package br.com.taskcontroller.Service;
 
 
+import br.com.taskcontroller.Enums.TipoAlteracao;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
-import br.com.taskcontroller.Modelo.Epico;
-import br.com.taskcontroller.Modelo.Estoria;
-import br.com.taskcontroller.Modelo.StatusEntidades;
+import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.COMBO.EstoriaComboDTO;
-import br.com.taskcontroller.Respository.EstoriaRepository;
-import br.com.taskcontroller.Respository.StatusEntidadesRepository;
-import br.com.taskcontroller.Respository.TarefaRepository;
+import br.com.taskcontroller.Record.Estoria.EstoriaHistoricoDTO;
+import br.com.taskcontroller.Respository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,12 +29,24 @@ public class EstoriaService {
     @Autowired
     private TarefaRepository tarefaRepository;
 
+    @Autowired
+    private EstoriaHistoricoRepository historicoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private EstoriaHistoricoService estoriaHistoricoService;
+
     public Estoria salvar(Estoria estoria) {
         Epico epico = epicoService.buscarPorId(estoria.getEpico().getIdepico());
 
         BigDecimal horas_realizadas = BigDecimal.ZERO;
 
-        alterarStatus(estoria.getIdestoria(), estoria.getStatus().getIdstatus());
+        alterarStatus(estoria.getIdestoria(), estoria.getStatus().getIdstatus(),estoria.getResponsavel().getIdusuario());
         estoria.setEpico(epico);
         estoria.setHoras_realizadas(horas_realizadas);
 
@@ -52,7 +62,7 @@ public class EstoriaService {
     }
 
     public Estoria atualizar(Estoria Estoria) {
-        alterarStatus(Estoria.getIdestoria(), Estoria.getStatus().getIdstatus());
+        alterarStatus(Estoria.getIdestoria(), Estoria.getStatus().getIdstatus(), Estoria.getResponsavel().getIdusuario());
         return estoriaRepository.save(Estoria);
     }
 
@@ -74,15 +84,76 @@ public class EstoriaService {
     }
 
     @Transactional
-    public void alterarStatus(Long idEstoria, Long idStatus) {
-        Estoria estoria = estoriaRepository.findById(idEstoria).orElseThrow(() -> new ResourceNotFoundException("Estória não encontrada !"));
+    public void alterarResponsavel(Long idEstoria, Long idUsuario) {
+        try {
+            Estoria estoria = estoriaRepository.findById(idEstoria)
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException("Estória não encontrada"));
 
-        StatusEntidades status = statusEntidadesRepository.findById(idStatus).orElseThrow(() -> new ResourceNotFoundException("Status não encontrado !"));
+            Usuario responsavelAnterior = usuarioService.buscarPorId(estoria.getResponsavel().getIdusuario());
 
-        estoria.setStatus(status);
-        estoriaRepository.save(estoria);
+            Usuario novoResponsavel = usuarioRepository.findById(idUsuario)
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException("Usuário não encontrado"));
 
-        epicoService.atualizarPercentual(estoria.getEpico().getIdepico());
+            if (responsavelAnterior != null &&
+                    responsavelAnterior.getIdusuario().equals(novoResponsavel.getIdusuario())) {
+                return;
+            }
+
+            String nomeAnterior = responsavelAnterior != null ? responsavelAnterior.getNome() : "Sem responsável";
+
+            estoria.setResponsavel(novoResponsavel);
+
+            estoriaHistoricoService.registrar(
+                    estoria,
+                    novoResponsavel,
+                    TipoAlteracao.RESPONSAVEL,
+                    nomeAnterior,
+                    novoResponsavel.getNome(),
+                    "Alteração de responsável da estória"
+            );
+
+            estoriaRepository.save(estoria);
+        } catch (Exception e) {
+            throw e;
+        }
+
     }
 
+    @Transactional
+    public void alterarStatus(Long idEstoria, Long idStatus, Long idUsuario) {
+        Usuario responsavel = usuarioService.buscarPorId(idUsuario);
+
+        Estoria estoria = estoriaRepository.findById(idEstoria)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Estória não encontrada"));
+
+        StatusEntidades statusAnterior = estoria.getStatus();
+
+        StatusEntidades statusEntidades = statusEntidadesRepository.findById(idStatus)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Status não encontrado"));
+
+        if (statusAnterior != null &&
+                estoria.getStatus().getIdstatus().equals(statusEntidades.getIdstatus())) {
+            return;
+        }
+
+        String nomeAnterior = statusAnterior.getDescstatus() != null ? estoria.getStatus().getDescstatus() : "Sem Status";
+
+
+        estoriaHistoricoService.registrar(
+                estoria,
+                responsavel,
+                TipoAlteracao.STATUS,
+                nomeAnterior,
+                statusEntidades.getDescstatus(),
+                "Alteração de status da estória"
+        );
+
+    }
+    public List<EstoriaHistoricoDTO> buscarHistorico(Long idEstoria) {
+        return  historicoRepository.listaHistorico(idEstoria);
+    }
 }

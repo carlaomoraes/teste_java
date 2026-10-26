@@ -364,6 +364,7 @@
             await mudarStatusTarefa(Number(document.getElementById("idtarefa").value), statusAtualTarefa);
             mostrarMensagemNaTela("resultado_tarefa", MSG.salvo("TAREFA"), "success");
             await alterarResponsavelTarefa(Number(document.getElementById("idtarefa").value), Number(sessionStorage.getItem("usuarioIdUsuario")));
+            await mudarStatusTarefa(Number(document.getElementById("idtarefa").value),statusAtualTarefa);
             setTimeout(() => {
                 limparFormulario();
                 listarTarefas(Number(document.getElementById("comboEstoria").value));
@@ -557,7 +558,6 @@
         }
     }
     async function listarHistorico(idTarefa) {
-        const tbody = document.getElementById("resultadohistorico");
         try {
             const response = await fetch(`${API_TAREFA}/${idTarefa}/historico`);
             const data = await response.json();

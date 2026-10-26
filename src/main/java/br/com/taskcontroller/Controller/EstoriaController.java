@@ -1,11 +1,13 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.Status.AlteraStatusRequestDTO;
 import br.com.taskcontroller.Mapper.EstoriaMapper;
 import br.com.taskcontroller.Modelo.Epico;
 import br.com.taskcontroller.Modelo.Estoria;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Usuario;
 import br.com.taskcontroller.Record.COMBO.EstoriaComboDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaHistoricoDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaInclusaoDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EstoriaService;
@@ -100,5 +102,45 @@ public class EstoriaController {
     public ResponseEntity<String> excluir(@PathVariable Long idEstoria) {
         service.excluir(idEstoria);
         return ResponseEntity.ok().body("Estoria excluída com sucesso!");
+    }
+
+    @PatchMapping("/{idEstoria}/status/{idStatus}/usuario/{idUsuario}")
+    public ResponseEntity<Void> alterarStatus(
+            @PathVariable Long idEstoria,
+            @PathVariable Long idStatus,
+            @PathVariable Long idUsuario) {
+
+        service.alterarStatus(idEstoria, idStatus, idUsuario);
+
+        return ResponseEntity.noContent().build();
+    }
+    @PatchMapping("/{idEstoria}/responsavel/{idUsuario}")
+    public ResponseEntity<Void> alterarResponsavel(
+            @PathVariable Long idEstoria,
+            @PathVariable Long idUsuario) {
+
+        service.alterarResponsavel(idEstoria, idUsuario);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{idEstoria}/status/{idStatus}")
+    public ResponseEntity<Void> alterarStatus(
+            @PathVariable Long idEstoria,
+            @PathVariable Long idStatus,
+            @RequestBody AlteraStatusRequestDTO dto) {
+
+        service.alterarStatus(
+                idEstoria,
+                idStatus,
+                dto.idUsuario()
+        );
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{idEstoria}/historico")
+    public List<EstoriaHistoricoDTO> listarHistorico(@PathVariable Long idEstoria) {
+        return service.buscarHistorico(idEstoria);
     }
 }
