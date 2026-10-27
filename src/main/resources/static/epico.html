@@ -27,6 +27,7 @@
         <button class="aba-botao" onclick="alternarAba(event, 'estoria')">Estórias</button>
         <button class="aba-botao" onclick="alternarAba(event, 'tarefa')">Tarefas</button>
         <button class="aba-botao" onclick="alternarAba(event, 'equipes')">Equipes</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'historico')">Histórico</button>
     </div>
     <div id="epico" class="conteudo-aba ativo">
         <input type="number" id="idepico" onblur="buscarPorLinha(document.getElementById('idepico').value,0,0, 'EPICO')" name="idepico" placeholder="ID do épico (Deixe vazio para novo)">
@@ -227,6 +228,10 @@
     </div>
     <div id="equipes" class="conteudo-aba">
         <div id="cardsEquipes"></div>
+    </div>
+    <div id="historico" class="conteudo-aba">
+        <div id="resultadohistorico">
+        </div>
     </div>
 </div>
 <script>
@@ -518,6 +523,8 @@
             });
             const data = await response.json();
             mostrarMensagemNaTela("resultado_epico", MSG.salvo("ÉPICO"), "success");
+            await alterarResponsavelEpico(Number(document.getElementById("idepico").value), Number(sessionStorage.getItem("usuarioIdUsuario")));
+            await mudarStatusEpico(Number(document.getElementById("idepico").value),statusAtualEpico);
             setTimeout(() => {
                 limparFormulario("EP");
                 listarEpicos();
@@ -885,17 +892,9 @@
             });
 
         } catch (error) {
-            console.error(error);
-
-            mostrarMensagemNaTela(
-                "resultado_epico",
-                MSG.errolistar("EQUIPES"),
-                "error"
-            );
+            mostrarMensagemNaTela("resultado_epico",MSG.errolistar("EQUIPES"), "error" );
         }
     }
-
-
     async function buscarPorLinha(idEpico, idEstoria, idTarefa, ABA) {
         if(ABA === "EPICO") {
             configuracao.idepico = idEpico;
@@ -922,6 +921,7 @@
                     mostrarMensagemNaTela("resultado_epico","Épico selecionado: " + epico.nome, "success");
                     await listarEstoria();
                     await listarEquipes(epico.idempreendimento);
+                    await listarHistorico(epico.idepico);
                     // MONTA O COMBO PARA PROXIMO STATUS
                     statusAtualEpico = epico.idstatus;
                     await carregarStatus(statusAtualEpico, TIPO_ENTIDADE.EPICO);
@@ -1052,6 +1052,81 @@
             <span>${percentual}%</span>
         </div>
     `;
+    }
+    async function alterarResponsavelEpico(idEpico, idUsuario) {
+        if (!idUsuario) return;
+        try {
+            const response = await fetch(`${API_EPICO}/${idEpico}/responsavel/${idUsuario}`,
+                {
+                    method: "PATCH"
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Erro ao alterar responsável.");
+            }
+        } catch (error) {
+            mostrarMensagemNaTela("resultado",error.message, "error");
+        }
+    }
+    async function mudarStatusEpico(idEpico,idStatus) {
+        const idUsuario = Number(sessionStorage.getItem("usuarioIdUsuario"));
+        const resposta = await fetch(`${API_EPICO}/${idEpico}/status/${idStatus}`,{
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ idUsuario })
+            }
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao alterar status do épico");
+        }
+    }
+    async function listarHistorico(idEpico) {
+        try {
+            const linha = `${API_EPICO}/${idEpico}/historico`;
+            console.log(linha);
+            const response = await fetch(linha);
+            const data = await response.json();
+            if(data.length <= 0) {
+                return;
+            }
+            let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID Histórico</th>
+                        <th class="table-header">ID Épico</th>
+                        <th class="table-header">ID Usuário</th>
+                        <th class="table-header">Nome Usuário</th>
+                        <th class="table-header">Data alteração</th>
+                        <th class="table-header">Tipo de operação</th>
+                        <th class="table-header">Valor anterior</th>
+                        <th class="table-header">Valor atual</th>
+                        <th class="table-header">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+            data.forEach(historico => {
+                tabela += `
+        <tr>
+            <td>${historico.idhistorico}</td>
+            <td>${historico.idepico}</td>
+            <td>${historico.idusuario}</td>
+            <td>${historico.nomeusuario}</td>
+            <td>${formatarDataHora(historico.data_alteracao)}</td>
+            <td>${historico.tipoalteracao}</td>
+            <td>${historico.valoranterior}</td>
+            <td>${historico.valornovo}</td>
+            <td>${historico.descricao}</td>
+        </tr>`;});
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadohistorico').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadohistorico",MSG.errolistar("HISTÓRICO"),"error");
+        }
     }
 </script>
 </body>

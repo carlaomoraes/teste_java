@@ -5,10 +5,8 @@ import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
-import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
-import br.com.taskcontroller.Record.Sprint.SprintIndicadoresDTO;
-import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
-import br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO;
+import br.com.taskcontroller.Record.Epico.EpicoHistoricoDTO;
+import br.com.taskcontroller.Record.Sprint.*;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.SprintEstoriaRepository;
 import br.com.taskcontroller.Respository.SprintRepository;
@@ -194,6 +192,10 @@ public class SprintController {
     @GetMapping("/{idSprint}/indicadores")
     public ResponseEntity<SprintIndicadoresDTO> carregaIndicadores(@PathVariable Long idSprint) {
         return ResponseEntity.ok(sprintIndicadoresService.carregaIndicadores(idSprint));
+    }
+    @GetMapping("/{idSprint}/historico")
+    public List<SprintHistoricoDTO> listarHistorico(@PathVariable Long idSprint) {
+        return service.buscarHistorico(idSprint);
     }
 
 }

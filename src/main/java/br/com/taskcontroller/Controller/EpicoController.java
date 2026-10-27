@@ -1,12 +1,15 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.Status.AlteraStatusRequestDTO;
 import br.com.taskcontroller.Mapper.EpicoMapper;
 import br.com.taskcontroller.Mapper.EstoriaMapper;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Epico.EpicoConsultaDTO;
+import br.com.taskcontroller.Record.Epico.EpicoHistoricoDTO;
 import br.com.taskcontroller.Record.Epico.EpicoInclusaoDTO;
 import br.com.taskcontroller.Record.Epico.EpicoListagemDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaConsultaDTO;
+import br.com.taskcontroller.Record.Estoria.EstoriaHistoricoDTO;
 import br.com.taskcontroller.Record.Estoria.EstoriaInclusaoDTO;
 import br.com.taskcontroller.Respository.*;
 import br.com.taskcontroller.Service.EpicoService;
@@ -134,5 +137,43 @@ public class EpicoController {
         epicoEstoriasRepository.apagarEstoria(idEstoria);
         return ResponseEntity.noContent().build();
     }
+    @PatchMapping("/{idEpico}/status/{idStatus}/usuario/{idUsuario}")
+    public ResponseEntity<Void> alterarStatus(
+            @PathVariable Long idEpico,
+            @PathVariable Long idStatus,
+            @PathVariable Long idUsuario) {
 
+        service.alterarStatus(idEpico, idStatus, idUsuario);
+
+        return ResponseEntity.noContent().build();
+    }
+    @PatchMapping("/{idEpico}/responsavel/{idUsuario}")
+    public ResponseEntity<Void> alterarResponsavel(
+            @PathVariable Long idEpico,
+            @PathVariable Long idUsuario) {
+
+        service.alterarResponsavel(idEpico, idUsuario);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{idEpico}/status/{idStatus}")
+    public ResponseEntity<Void> alterarStatus(
+            @PathVariable Long idEpico,
+            @PathVariable Long idStatus,
+            @RequestBody AlteraStatusRequestDTO dto) {
+
+        service.alterarStatus(
+                idEpico,
+                idStatus,
+                dto.idUsuario()
+        );
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{idEpico}/historico")
+    public List<EpicoHistoricoDTO> listarHistorico(@PathVariable Long idEpico) {
+        return service.buscarHistorico(idEpico);
+    }
 }

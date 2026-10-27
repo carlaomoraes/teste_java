@@ -7,14 +7,13 @@ import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Modelo.StatusEntidades;
 import br.com.taskcontroller.Modelo.Tarefa;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
+import br.com.taskcontroller.Record.Estoria.EstoriaHistoricoDTO;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
+import br.com.taskcontroller.Record.Sprint.SprintHistoricoDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
-import br.com.taskcontroller.Respository.SprintRepository;
-import br.com.taskcontroller.Respository.StatusEntidadesRepository;
-import br.com.taskcontroller.Respository.StatusTransicaoRepository;
-import br.com.taskcontroller.Respository.TarefaRepository;
+import br.com.taskcontroller.Respository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,28 +32,28 @@ public class SprintService {
     private final StatusEntidadesRepository statusEntidadesRepository;
     private final StatusTransicaoRepository statusTransicaoRepository;
     private final TarefaRepository tarefaRepository;
+    private final SprintHistoricoRepository sprintHistoricoRepository;
 
     public SprintService(
                         TarefaRepository tarefaRepository,
-                         SprintRepository sprintRepository,
-                         EmpreendimentoService empreendimentoService,
-                         StatusEntidadesService statusEntidadesService,
-                         StatusEntidadesRepository statusEntidadesRepository,
-                         StatusTransicaoRepository statusTransicaoRepository
-                         ) {
+                        SprintRepository sprintRepository,
+                        EmpreendimentoService empreendimentoService,
+                        StatusEntidadesService statusEntidadesService,
+                        StatusEntidadesRepository statusEntidadesRepository,
+                        StatusTransicaoRepository statusTransicaoRepository,
+                        SprintHistoricoRepository sprintHistoricoRepository ) {
         this.tarefaRepository = tarefaRepository;
         this.sprintRepository = sprintRepository;
         this.empreendimentoService = empreendimentoService;
         this.statusEntidadesService = statusEntidadesService;
         this.statusEntidadesRepository = statusEntidadesRepository;
         this.statusTransicaoRepository = statusTransicaoRepository;
-
+        this.sprintHistoricoRepository = sprintHistoricoRepository;
     }
 
     public Sprint salvar(Sprint sprint) {
         return sprintRepository.save(sprint);
     }
-
 
     public List<SprintListagemDTO> listar(Long idempreendimento) {
        return sprintRepository.listar(idempreendimento);
@@ -179,4 +178,8 @@ public class SprintService {
 
         sprint.setStatus(novoStatus);
     }
+    public List<SprintHistoricoDTO> buscarHistorico(Long idSprint) {
+        return  sprintHistoricoRepository.listaHistorico(idSprint);
+    }
+
 }

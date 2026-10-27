@@ -229,7 +229,6 @@
         // 4. Adiciona a classe 'ativa' no botão específico que sofreu o clique
         event.currentTarget.classList.add('ativa');
     }
-
     // --- CARREGAMENTO ASSÍNCRONO DOS COMBOS ---
     async function carregarGestor() {
         const comboCriadorES = document.getElementById("comboCriadorES");
@@ -252,7 +251,6 @@
             mostrarMensagemNaTela("resultado_estoria", "Erro ao carregar gestor: "+error.message,"error");
         }
     }
-    //------------------
     async function carregarEpico() {
         const comboEpico = document.getElementById("comboEpico");
         try {
@@ -268,7 +266,6 @@
             mostrarMensagemNaTela("resultado_estoria", "Erro ao carregar gestor: "+error.message,"error");
         }
     }
-    //------------------
     async function acharOrdem(ENTIDADE) {
         try {
             const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
@@ -494,9 +491,7 @@
             }, 1000);
 
         } catch (error) {
-            mostrarMensagemNaTela("resultado_estoria",error.value,"error");
-//            mostrarMensagemNaTela("resultado_estoria",MSG.erroSalvar("ESTÓRIA"),"error");
-
+          mostrarMensagemNaTela("resultado_estoria",MSG.erroSalvar("ESTÓRIA"),"error");
         }
     }
     async function alterarResponsavelEstoria(idEstoria, idUsuario) {
@@ -660,7 +655,7 @@
                      // MONTA O COMBO PARA PROXIMO STATUS
                      statusAtualEstoria = estoria.idstatus;
                      await carregarStatus(statusAtualEstoria, TIPO_ENTIDADE.ESTORIA);
-                    await listarHistorico(idEstoria);
+                     await listarHistorico(idEstoria);
                 }
             } catch (error) {
                 mostrarMensagemNaTela("resultado_estoria",MSG.erroCarregar("ESTORIAS"), "error");

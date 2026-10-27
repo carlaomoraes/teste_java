@@ -118,7 +118,6 @@ public class EstoriaService {
         } catch (Exception e) {
             throw e;
         }
-
     }
 
     @Transactional
@@ -141,7 +140,6 @@ public class EstoriaService {
         }
 
         String nomeAnterior = statusAnterior.getDescstatus() != null ? estoria.getStatus().getDescstatus() : "Sem Status";
-
 
         estoriaHistoricoService.registrar(
                 estoria,
