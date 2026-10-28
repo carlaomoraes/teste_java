@@ -4,17 +4,28 @@ package br.com.taskcontroller.Mapper;
 import br.com.taskcontroller.DTO.Sprint.SprintRequestDTO;
 import br.com.taskcontroller.DTO.Sprint.SprintResponseDTO;
 import br.com.taskcontroller.Modelo.Sprint;
+import br.com.taskcontroller.Modelo.StatusEntidades;
+import br.com.taskcontroller.Service.SprintService;
+import br.com.taskcontroller.Service.StatusEntidadesService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 public class SprintMapper {
 
+    @Autowired
+    private static StatusEntidadesService statusEntidadesService;
+
+
     public static Sprint toEntity(SprintRequestDTO dto) {
         Sprint s = new Sprint();
-        s.setIdsprint(dto.getIdsprint());
-        s.setDescsprint(dto.getDescsprint());
-        s.setDtiniciosprint(dto.getDtiniciosprint());
-        s.setDtfinalsprint(dto.getDtfinalsprint());
-        s.setVisivel(dto.isVisivel());
-        s.setStatus(dto.getStatus());
+        StatusEntidades status = statusEntidadesService.buscarPorId(dto.idstatus());
+
+        s.setIdsprint(dto.idsprint());
+        s.setDescsprint(dto.descsprint());
+        s.setDtiniciosprint(dto.dtiniciosprint());
+        s.setDtfinalsprint(dto.dtfinalsprint());
+        s.setVisivel(dto.visivel());
+        s.setStatus(status);
         return s;
     }
 

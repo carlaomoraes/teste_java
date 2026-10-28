@@ -1,11 +1,11 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.DTO.Sprint.SprintEstoriaRequestDTO;
+import br.com.taskcontroller.DTO.Sprint.SprintRequestDTO;
 import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
-import br.com.taskcontroller.Record.Epico.EpicoHistoricoDTO;
 import br.com.taskcontroller.Record.Sprint.*;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.SprintEstoriaRepository;
@@ -41,8 +41,6 @@ public class SprintController {
     @Autowired
     private AusenciaProgramadaRepository ausenciaProgramadaRepository;
 
-    @Autowired
-    private SprintRepository sprintRepository;
 
     @Autowired
     private SprintEstoriaRepository sprintEstoriaRepository;
@@ -60,43 +58,14 @@ public class SprintController {
     // BUSCAR POR ID - DTO
     @GetMapping("/DTO/{idSprint}")
     public SprintListagemDTO buscarPorIdDTO(@PathVariable Long idSprint) {
-
         return service.buscar(idSprint);
     }
 
 
     // SALVAR
     @PostMapping("/salvar")
-    public ResponseEntity<?> salvar(@RequestBody Sprint sprint) {
-        // 1. Valida se o Empreendimento existe
-        Long idEmpreendimento = sprint.getEmpreendimento().getIdempreendimento();
-        Empreendimento empreendimento = empreendimentoService.buscarPorId(idEmpreendimento);
-
-        if (empreendimento == null) {
-            throw new ResourceNotFoundException("Empreendimento não encontrado com ID: " + idEmpreendimento);
-        }
-        sprint.setEmpreendimento(empreendimento);
-
-        // 2. Regra de Negócio: Trata/Valida Fim de Semana (Opcional, mas recomendado)
-        if (isWeekend(sprint.getDtiniciosprint()) || isWeekend(sprint.getDtfinalsprint())) {
-            throw new BusinessRuleException("A Sprint não pode iniciar ou terminar em um final de semana.");
-        }
-
-        // 3. Regra de Negócio: Checa Sobreposição no Banco
-        int numSprint = sprintRepository.buscaSprintPorIntervalo(
-                sprint.getDtiniciosprint(),
-                sprint.getDtfinalsprint(),
-                idEmpreendimento,
-                sprint.getIdsprint()
-        );
-
-        if (numSprint > 0) {
-            throw new BusinessRuleException("Já existe uma Sprint cadastrada para este empreendimento no período informado.");
-        }
-
-        // 4. Salva a Sprint
-        return ResponseEntity.ok(sprintRepository.save(sprint));
-
+    public ResponseEntity<?> salvar(@RequestBody SprintRequestDTO dto) {
+        return ResponseEntity.ok(service.salvar(dto));
     }
 
     // ATUALIZAR
@@ -155,12 +124,6 @@ public class SprintController {
         return service.carregarValida(idempreendimento, 4l);
     }
 
-    private boolean isWeekend(LocalDate date) {
-        if (date == null)
-            return false;
-        DayOfWeek day = date.getDayOfWeek();
-        return day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY;
-    }
     // Todas as funções da sprint atual
     @GetMapping("/carregaSprint/DTO/{idEmpreendimento}")
     public List<SprintDataDTO> carregarSprints(@PathVariable Long idEmpreendimento) {
@@ -178,9 +141,10 @@ public class SprintController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{idSprint}/status/{idStatus}")
-    public ResponseEntity<?> alterarStatus(@PathVariable Long idSprint, @PathVariable Long idStatus) {
-        service.alterarStatus(idSprint, idStatus);
+    @PatchMapping("/{idSprint}/status/{idStatus}/{idUsuario}")
+    public ResponseEntity<?> alterarStatus(@PathVariable Long idSprint, @PathVariable Long idStatus,
+                                           @PathVariable Long idUsuario) {
+        service.alterarStatus(idSprint, idStatus, idUsuario);
         return ResponseEntity.noContent().build();
     }
 

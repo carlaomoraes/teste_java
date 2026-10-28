@@ -32,7 +32,7 @@
     <div class="abas-container">
         <button class="aba-botao ativa" onclick="alternarAba(event, 'geral')"> Cadastro de sprint </button>
         <button class="aba-botao" onclick="alternarAba(event, 'ausencias')"> Ausências programadas</button>
-        <button class="aba-botao" onclick="alternarAba(event, 'historico')"> Histótico</button>
+        <button class="aba-botao" onclick="alternarAba(event, 'historico')"> Histórico</button>
     </div>
     <!-- ============================================================
          ABA GERAL
@@ -97,6 +97,7 @@
         <div class="btn-group" data-toggle="buttons-radio">
             <button type="button" class="btn btn-add" onclick="criarSprint(comboEmpreendimento.value)"> Novo </button>
             <button type="button" class="btn btn-salvar" onclick="salvarSprint()">Salvar </button>
+            <button type="button" class="btn btn-listar"  onclick="listarSprints(comboEmpreendimento.value)">Listar</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
         <div id="resultadogeral"></div>
@@ -107,10 +108,13 @@
     <div id="ausencias" class="conteudo-aba">
         <div id="resultadoausencia"></div>
     </div>
+    <div id="historico" class="conteudo-aba">
+        <div id="resultadohistorico"></div>
+    </div>
 </div>
         <script>
             //--------------------- MANIPULAÇÃO DOS DADOS
-            const API = 'http://localhost:8080/sprints';
+            const API_SPRINT = 'http://localhost:8080/sprints';
             const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
             const API_STATUS = 'http://localhost:8080/status_entidades';
             // ==============================================================
@@ -136,6 +140,7 @@
 
 
             let statusAtual = 1;
+            let Operacao = "C"; // C-Consulta; I-Inclusao
             // ==============================================================
             // ALTERNAR ABAS
             // ==============================================================
@@ -224,7 +229,7 @@
             // ==============================================================
             async function carregarUltimaSprint(idEmpreendimento) {
                 try {
-                    const response = await fetch(`${API}/valida_ultima/${idEmpreendimento}`);
+                    const response = await fetch(`${API_SPRINT}/valida_ultima/${idEmpreendimento}`);
                     /*
                      * Se o backend ainda não possuir esse endpoint,
                      * consideramos que não existe Sprint anterior.
@@ -238,8 +243,7 @@
                     document.getElementById("dtfinalsprint").value = sprint.dtfinalsprint;
                     document.getElementById("visivel").checked = sprint.visivel;
                     document.getElementById("descsprint").value = sprint.descsprint;
-                    await listarAusencias(document.getElementById("dtiniciosprint").value,
-                        document.getElementById("dtfinalsprint").value);
+                    await listarAusencias(document.getElementById("dtiniciosprint").value, document.getElementById("dtfinalsprint").value);
 
                 } catch (error) {
                     mostrarMensagemNaTela("resultadogeral", "Erro ao buscar a última Sprint: " + error.message, "error");
@@ -303,7 +307,7 @@
             // NOVA SPRINT
             // ==============================================================
             async function criarSprint(idempreendimento) {
-                ordem = await acharOrdem(TIPO_ENTIDADE.SPRINT);
+                var ordem = await acharOrdem(TIPO_ENTIDADE.SPRINT);
                 await carregarStatus(ordem, TIPO_ENTIDADE.SPRINT);
                 if(idempreendimento === ""){
                     mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
@@ -311,7 +315,7 @@
                 }
                 limpaFormulario();
                 try {
-                    const response = await fetch(`${API}/valida_ultima/${idempreendimento}`);
+                    const response = await fetch(`${API_SPRINT}/valida_ultima/${idempreendimento}`);
                     if (!response.ok) {
                         const msg = await response.text();
                         mostrarMensagemNaTela("resultadogeral", msg || "Erro ao criar sprint!", "error");
@@ -326,7 +330,7 @@
                     document.getElementById("duracaosprint").value = sprint.duracao;
                     await listarAusencias(document.getElementById("dtiniciosprint").value,
                         document.getElementById("dtfinalsprint").value);
-
+                    Operacao = "I";
                 } catch (error) {
                     mostrarMensagemNaTela("resultadogeral", error.message || "Erro ao criar sprints", "error");
                     return false;
@@ -340,22 +344,24 @@
                 const eValido = await validaEntrada();
                 if (!eValido) return;
                 // Leitura dos campos
+                const idsprint = document.getElementById('idsprint').value;
                 const descsprint = document.getElementById('descsprint').value;
                 const dtiniciosprint = document.getElementById('dtiniciosprint').value;
                 const dtfinalsprint = document.getElementById('dtfinalsprint').value;
                 const visivel = document.getElementById('visivel').checked;
+                const idEmpreendimento = document.getElementById("comboEmpreendimento").value;
 
                 const sprint = {
+                    idsprint: idsprint || 0,
                     descsprint: descsprint || null,
                     dtiniciosprint: dtiniciosprint,
                     dtfinalsprint: dtfinalsprint,
                     visivel: visivel || true,
-                    empreendimento: {
-                        idEmpreendimento: document.getElementById("comboEmpreendimento").value,
-                    }
+                    idstatus: document.getElementById('comboStatus').value,
+                    idempreendimento: idEmpreendimento
                 };
                 try {
-                    const response = await fetch(`${API}/salvar`, {
+                    const response = await fetch(`${API_SPRINT}/salvar`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type':'application/json'
@@ -366,9 +372,14 @@
                     if (!response.ok) {
                         throw new Error(await response.text());
                     }
+                    if(Operacao === "E") {
+                        await mudarStatusSprint(document.getElementById('idsprint').value, statusAtual);
+                    }
+
                     mostrarMensagemNaTela("resultadogeral",MSG.salvo("SPRINT"),"success");
+                    await listarSprints(idEmpreendimento);
                     limpaFormulario();
-                    await listarSprints();
+
                 } catch (error) {
                     mostrarMensagemNaTela("resultadogeral", "Erro ao salvar: " + error.message,"error");
                 }
@@ -378,7 +389,7 @@
             // ==============================================================
             async function listarSprints(idEmpreendimento) {
                 try {
-                    const response = await fetch(`${API}/listar/DTO/${idEmpreendimento}`);
+                    const response = await fetch(`${API_SPRINT}/listar/DTO/${idEmpreendimento}`);
                     const data = await response.json();
                     let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                           <thead> <tr style="cursor:pointer;">
@@ -403,7 +414,6 @@
                         <td>${sprint.duracao}</td>
                         <td>${sprint.visivel ? '✅ Sim' : '❌ Não'} </td>
                         <td> <span class="badge" style="background-color:${sprint.cor}; color:white;">${sprint.descstatus}</span></td>
-                        <td style="text-align:center;"> <button type="button" class="btn btn-excluir" onclick="event.stopPropagation();encerrarSprint(${sprint.idsprint})">Encerrar Sprint</button></td>
                         <td style="text-align:center;"> <button type="button" class="btn btn-add" onclick=" event.stopPropagation(); duplicarSprint(${sprint.idsprint})"> Duplicar Sprint </button></td>
                     </tr>
                 `;
@@ -417,7 +427,7 @@
 
             async function buscarPorLinha(id) {
                 try {
-                    const response = await fetch(`${API}/DTO/${id}`);
+                    const response = await fetch(`${API_SPRINT}/DTO/${id}`);
                     if (!response.ok) {
                         mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
                         return;
@@ -433,6 +443,8 @@
                     await listarAusencias(document.getElementById("dtiniciosprint").value,document.getElementById("dtfinalsprint").value);
                     statusAtual = sprint.idstatus;
                     await carregarStatus(statusAtual);
+                    await listarHistorico(sprint.idsprint);
+                    Operacao = "E";
                 } catch (error) {
                     mostrarMensagemNaTela("resultadogeral", MSG.erroCarregar("SPRINT"), "error");
                 }
@@ -442,28 +454,6 @@
             // ==============================================================
             async function duplicarSprint(idsprint) {
                 return true;
-            }
-            // ==============================================================
-            // ENCERRAR SPRINT
-            // ==============================================================
-            async function encerrarSprint(idsprint) {
-                if (!confirm("Tem certeza que deseja encerrar esta Sprint?")) {
-                    return;
-                }
-                try {
-                    const response = await fetch(`${API}/encerrar/${idsprint}`, {
-                            method: 'POST'
-                        }
-                    );
-                    if (!response.ok) {
-                        throw new Error(await response.text());
-                    }
-                    mostrarMensagemNaTela("resultadogeral",MSG.alterado("SPRINT"), "success");
-                    limpaFormulario();
-                    await listarSprints();
-                } catch (error) {
-                    mostrarMensagemNaTela("resultadogeral", MSG.erroSalvar("SPRINT"),"error");
-                }
             }
             // ==============================================================
             // LIMPAR FORMULÁRIO
@@ -491,7 +481,7 @@
             async function listarAusencias(data_inicio, data_fim) {
                 const container = document.getElementById("resultadoausencia");
                 try {
-                    const response = await fetch(`${API}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
+                    const response = await fetch(`${API_SPRINT}/listar_ausencias?data_inicio=${data_inicio}&data_fim=${data_fim}`);
                     if (!response.ok) {
                         mostrarMensagemNaTela("resultadoausencia", MSG.erroCarregar("AUSÊNCIAS"), "error");
                         return;
@@ -594,14 +584,23 @@
                 const data_fim = document.getElementById("dtfinalsprint").value;
                 const idempreendimento = document.getElementById("comboEmpreendimento").value;
                 const inputSprint = document.getElementById("idsprint");
-                const idSprint = inputSprint && inputSprint.value !== "" ? Number(inputSprint.value): -1;
+                const idSprint = inputSprint?.value ? Number(inputSprint.value) : null;
+                const params = new URLSearchParams({
+                    data_inicio,
+                    data_fim,
+                    idempreendimento
+                });
+
+                if (idSprint !== null) {
+                    params.append("idsprint", idSprint);
+                }
+
                 if (!idempreendimento) {
                     mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!","warning");
                     return false;
                 }
                 try {
-                    const linha = `${API}/sprint_sobreposta?data_inicio=${data_inicio}&data_fim=${data_fim}&idempreendimento=${idempreendimento}&idSprint=${idSprint}`;
-                    console.log(linha);
+                    const linha = `${API_SPRINT}/sprint_sobreposta?${params}`;
                     const response = await fetch(linha);
                     if (!response.ok) {
                         const msg = await response.text();
@@ -619,6 +618,65 @@
                     return false;
                 }
             }
+            async function mudarStatusSprint(idSprint, idStatus) {
+                const idUsuario = Number(sessionStorage.getItem("usuarioIdUsuario"));
+
+                const resposta = await fetch(
+                    `${API_SPRINT}/${idSprint}/status/${idStatus}/${idUsuario}`,
+                    {
+                        method: "PATCH"
+                    }
+                );
+
+                if (!resposta.ok) {
+                    throw new Error("Erro ao alterar status da Sprint");
+                }
+            }
+
+            async function listarHistorico(idsprint) {
+                try {
+                    const response = await fetch(`${API_SPRINT}/${idsprint}/historico`);
+                    const data = await response.json();
+                    if(data.length <= 0) {
+                        return;
+                    }
+                    let tabela = `
+            <table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID Histórico</th>
+                        <th class="table-header">ID Sprint</th>
+                        <th class="table-header">ID Usuário</th>
+                        <th class="table-header">Nome Usuário</th>
+                        <th class="table-header">Data alteração</th>
+                        <th class="table-header">Tipo de operação</th>
+                        <th class="table-header">Valor anterior</th>
+                        <th class="table-header">Valor atual</th>
+                        <th class="table-header">Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+                    data.forEach(historico => {
+                        tabela += `
+        <tr>
+            <td>${historico.idhistorico}</td>
+            <td>${historico.idsprint}</td>
+            <td>${historico.idusuario}</td>
+            <td>${historico.nomeusuario}</td>
+            <td>${formatarDataHora(historico.data_alteracao)}</td>
+            <td>${historico.tipoalteracao}</td>
+            <td>${historico.valoranterior}</td>
+            <td>${historico.valornovo}</td>
+            <td>${historico.descricao}</td>
+        </tr>`;});
+                    tabela += `</tbody></table>`;
+                    document.getElementById('resultadohistorico').innerHTML = tabela;
+                } catch (error) {
+                    mostrarMensagemNaTela("resultadohistorico",error.message,"error");
+                }
+            }
+
         </script>
 </body>
 </html>
