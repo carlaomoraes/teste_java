@@ -66,13 +66,6 @@ public class SprintService {
     @Transactional
     public Sprint salvar(SprintRequestDTO dto) {
         Sprint sprint;
-        StatusEntidades statusEntidades = statusEntidadesService.buscarPorId(dto.idstatus());
-
-        if (statusEntidades == null) {
-            throw new ResourceNotFoundException(
-                    "Status não permitido: " + dto.idstatus()
-            );
-        }
         if (dto.idsprint() != null && dto.idsprint() > 0) {
             sprint = sprintRepository.findById(dto.idsprint())
                     .orElseThrow(() ->
@@ -133,8 +126,6 @@ public class SprintService {
         sprint.setDtfinalsprint(dto.dtfinalsprint());
         sprint.setVisivel(dto.visivel());
         sprint.setEmpreendimento(empreendimento);
-        sprint.setStatus(statusEntidades);
-
         return sprintRepository.save(sprint);
     }
 
@@ -265,7 +256,7 @@ public class SprintService {
 
     @Transactional
     public void alterarStatus(Long idSprint, Long idStatus, Long idUsuario) {
-        Sprint sprint = sprintRepository.findById(idSprint).orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada"));
+        Sprint sprint = sprintRepository.findById(idSprint).orElseThrow(() -> new ResourceNotFoundException("Sprint não encontrada"));
 
         StatusEntidades statusAnterior = sprint.getStatus();
         StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);

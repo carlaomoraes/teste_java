@@ -146,7 +146,7 @@ public class EpicoService {
                     TipoAlteracao.RESPONSAVEL,
                     nomeAnterior,
                     novoResponsavel.getNome(),
-                    "Alteração de responsável da estória"
+                    "Alteração de responsável da épico"
             );
 
             repository.save(epico);

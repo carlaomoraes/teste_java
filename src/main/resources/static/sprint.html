@@ -350,6 +350,7 @@
                 const dtfinalsprint = document.getElementById('dtfinalsprint').value;
                 const visivel = document.getElementById('visivel').checked;
                 const idEmpreendimento = document.getElementById("comboEmpreendimento").value;
+                const idStatus = document.getElementById('comboStatus').value;
 
                 const sprint = {
                     idsprint: idsprint || 0,
@@ -357,7 +358,6 @@
                     dtiniciosprint: dtiniciosprint,
                     dtfinalsprint: dtfinalsprint,
                     visivel: visivel || true,
-                    idstatus: document.getElementById('comboStatus').value,
                     idempreendimento: idEmpreendimento
                 };
                 try {
@@ -372,12 +372,13 @@
                     if (!response.ok) {
                         throw new Error(await response.text());
                     }
-                    if(Operacao === "E") {
-                        await mudarStatusSprint(document.getElementById('idsprint').value, statusAtual);
+                    if (Operacao === "E" && Number(idStatus) !== Number(statusAtual)) {
+                        await mudarStatusSprint(idsprint, idStatus);
                     }
 
                     mostrarMensagemNaTela("resultadogeral",MSG.salvo("SPRINT"),"success");
                     await listarSprints(idEmpreendimento);
+                    await listarHistorico(idsprint);
                     limpaFormulario();
 
                 } catch (error) {

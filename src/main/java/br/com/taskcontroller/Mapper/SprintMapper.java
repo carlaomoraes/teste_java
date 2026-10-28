@@ -18,14 +18,11 @@ public class SprintMapper {
 
     public static Sprint toEntity(SprintRequestDTO dto) {
         Sprint s = new Sprint();
-        StatusEntidades status = statusEntidadesService.buscarPorId(dto.idstatus());
-
         s.setIdsprint(dto.idsprint());
         s.setDescsprint(dto.descsprint());
         s.setDtiniciosprint(dto.dtiniciosprint());
         s.setDtfinalsprint(dto.dtfinalsprint());
         s.setVisivel(dto.visivel());
-        s.setStatus(status);
         return s;
     }
 

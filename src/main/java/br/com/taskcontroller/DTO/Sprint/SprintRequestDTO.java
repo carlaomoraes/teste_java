@@ -8,6 +8,5 @@ public record SprintRequestDTO(
         LocalDate dtiniciosprint,
         LocalDate dtfinalsprint,
         Boolean visivel,
-        Long idstatus,
         Long idempreendimento
 ) {}
