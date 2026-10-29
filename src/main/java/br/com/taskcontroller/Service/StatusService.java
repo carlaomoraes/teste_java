@@ -25,10 +25,6 @@ public class StatusService {
         return statusEntidadesRepository.findById(idStatus).orElseThrow(() -> new RuntimeException("Status não encontrado"));
     }
 
-    public List<StatusEntidades> listarStatusEntidades() {
-        List<StatusEntidades> statusEntidades = statusEntidadesRepository.findAll();
-        return statusEntidades;
-    }
     public Integer proximaOrdem(Long idTipoEntidade) {
         Integer maiorOrdem = statusEntidadesRepository.buscarMaiorOrdem(idTipoEntidade);
 

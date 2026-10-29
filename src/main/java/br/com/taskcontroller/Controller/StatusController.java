@@ -62,8 +62,10 @@ public class StatusController {
 
     @GetMapping("/DTO/montaComboTipoEntidades")
     public List<TipoEntidadeDTO> montaComboTipoEntidade() {
+
         return tipoEntidadeService.montaComboTipoEntidade();
     }
+
     @GetMapping("/DTO/{idStatus}")
     public StatusEntidadesListagemDTO buscarPorLinha(@PathVariable Long idStatus) {
         return tipoEntidadeService.buscarPorLinha(idStatus);
