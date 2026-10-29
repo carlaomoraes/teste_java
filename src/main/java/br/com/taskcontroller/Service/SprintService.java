@@ -11,6 +11,7 @@ import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintHistoricoDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO;
+import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
 import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -286,6 +287,11 @@ public class SprintService {
     }
     public List<SprintHistoricoDTO> buscarHistorico(Long idSprint) {
         return  sprintHistoricoRepository.listaHistorico(idSprint);
+    }
+
+    public List<StatusTransicaoDTO> buscarStatusDisponiveis(Long idTipoEntidade,
+                                                              Long idStatusOrigem) {
+        return statusTransicaoRepository.buscarStatusDisponiveis(idTipoEntidade, idStatusOrigem);
     }
 
 

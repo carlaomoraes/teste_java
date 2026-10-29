@@ -818,6 +818,7 @@
             html += `<div class="kanban-coluna">`;
             html += `<div class="kanban-header">`;
             html += `<div class="kanban-body">`;
+            html += montaComboEstoria(tarefa.idestoria);
             html += `<select id="comboStatusTA_${tarefa.idtarefa}" onload="carregarStatus(${tarefa.idtarefa}, ${tarefa.idstatus})" onchange="mudarStatus(${tarefa.idtarefa},document.getElementById('comboStatusTA_${tarefa.idtarefa}').value)"">`;
             html += `<option value="">-- Mover para --</option>`;
             html += `</select><br>`;
@@ -844,6 +845,9 @@
         } catch (error) {
             mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"), "error");
         }
+    }
+    function montaComboEstoria(idEstoria){
+
     }
 </script>
 </body>

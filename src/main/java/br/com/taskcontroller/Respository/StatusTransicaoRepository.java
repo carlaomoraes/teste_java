@@ -30,19 +30,6 @@ public interface StatusTransicaoRepository
 """)
     List<StatusTransicaoDTO> buscarProximoStatus(Long idStatus, Long idTipoEntidade);
 
-
-    @Query("""
-        SELECT new br.com.taskcontroller.Record.Status.StatusTransicaoDTO(
-                    idstatus,
-                    descstatus,
-                    ativo,
-                    ordem,
-                    cor)
-        FROM StatusEntidades s
-       WHERE s.tipoentidade.idtipo_entidade = :idTipoEntidade
-""")
-    List<StatusTransicaoDTO> montaTransicao(Long idTipoEntidade);
-
     @Query("""
     SELECT new br.com.taskcontroller.Record.Status.StatusTransicaoDTO(
                     idstatus,
@@ -79,7 +66,7 @@ public interface StatusTransicaoRepository
     JOIN st.statusOrigem o
     JOIN st.statusDestino d
    WHERE o.tipoentidade.idtipo_entidade = :idTipoEntidade
-    ORDER BY d.idstatus
+    ORDER BY o.idstatus,d.idstatus
 """)
     List<StatusTransicaoListagemDTO> listarWorkflow(Long idTipoEntidade);
 

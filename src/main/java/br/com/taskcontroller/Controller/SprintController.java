@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Modelo.*;
+import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
 import br.com.taskcontroller.Service.*;
 import org.springframework.http.HttpStatus;
 import br.com.taskcontroller.Record.Sprint.*;
@@ -155,6 +156,11 @@ public class SprintController {
     @GetMapping("/{idSprint}/historico")
     public List<SprintHistoricoDTO> listarHistorico(@PathVariable Long idSprint) {
         return service.buscarHistorico(idSprint);
+    }
+    @GetMapping("/{idTipoEntidade}/proximo/{idStatusOrigem}")
+    public List<StatusTransicaoDTO> buscarStatusDisponiveis(@PathVariable Long idTipoEntidade,
+                                                            @PathVariable Long idStatusOrigem) {
+        return service.buscarStatusDisponiveis(idTipoEntidade, idStatusOrigem);
     }
 
 }
