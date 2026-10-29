@@ -1,11 +1,12 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.Record.COMBO.AusenciaComboDTO;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import br.com.taskcontroller.Modelo.AusenciaProgramada;
+import br.com.taskcontroller.Record.COMBO.AusenciaComboDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -21,7 +22,9 @@ public class AusenciaProgramadaService {
     }
 
     public List<AusenciaProgramada> listar() {
-        return repository.findAll();
+        return repository.findAll(
+                Sort.by(Sort.Direction.ASC, "data_cadastro")
+        );
     }
 
     public AusenciaProgramada atualizar(Long id, AusenciaProgramada novaAusenciaProgramada) {

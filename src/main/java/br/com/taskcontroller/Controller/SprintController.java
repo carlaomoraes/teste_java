@@ -1,26 +1,23 @@
 package br.com.taskcontroller.Controller;
 
-import br.com.taskcontroller.DTO.Sprint.SprintEstoriaRequestDTO;
-import br.com.taskcontroller.DTO.Sprint.SprintRequestDTO;
-import br.com.taskcontroller.Excecoes.BusinessRuleException;
-import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.*;
-import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
-import br.com.taskcontroller.Record.Sprint.*;
-import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
-import br.com.taskcontroller.Respository.SprintEstoriaRepository;
-import br.com.taskcontroller.Respository.SprintRepository;
 import br.com.taskcontroller.Service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import br.com.taskcontroller.Record.Sprint.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import br.com.taskcontroller.DTO.Sprint.SprintRequestDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import br.com.taskcontroller.DTO.Sprint.SprintEstoriaRequestDTO;
+import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
+import br.com.taskcontroller.Respository.SprintEstoriaRepository;
+import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/sprints")
@@ -60,8 +57,6 @@ public class SprintController {
     public SprintListagemDTO buscarPorIdDTO(@PathVariable Long idSprint) {
         return service.buscar(idSprint);
     }
-
-
     // SALVAR
     @PostMapping("/salvar")
     public ResponseEntity<?> salvar(@RequestBody SprintRequestDTO dto) {

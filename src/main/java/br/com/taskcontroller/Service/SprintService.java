@@ -288,4 +288,5 @@ public class SprintService {
         return  sprintHistoricoRepository.listaHistorico(idSprint);
     }
 
+
 }

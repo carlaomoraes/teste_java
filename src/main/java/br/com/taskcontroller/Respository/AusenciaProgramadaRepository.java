@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface AusenciaProgramadaRepository  extends JpaRepository<AusenciaProgramada, Long> {
+
     @Query("""
     SELECT new br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO(
         a.idausencia,

@@ -1,19 +1,19 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.Enums.TipoAlteracao;
-import br.com.taskcontroller.Modelo.Epico;
-import br.com.taskcontroller.Modelo.EpicoHistorico;
-import br.com.taskcontroller.Modelo.Usuario;
-import br.com.taskcontroller.Record.Epico.EpicoHistoricoDTO;
-import br.com.taskcontroller.Respository.EpicoHistoricoRepository;
 import lombok.RequiredArgsConstructor;
+import br.com.taskcontroller.Modelo.Epico;
+import br.com.taskcontroller.Modelo.Usuario;
 import org.springframework.stereotype.Service;
+import br.com.taskcontroller.Enums.TipoAlteracao;
+import br.com.taskcontroller.Modelo.EpicoHistorico;
+import br.com.taskcontroller.Record.Epico.EpicoHistoricoDTO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import br.com.taskcontroller.Respository.EpicoHistoricoRepository;
 
+import java.util.List;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
