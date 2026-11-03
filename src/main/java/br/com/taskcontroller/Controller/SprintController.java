@@ -144,9 +144,9 @@ public class SprintController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{idSprint}/quadro")
-    public List<TarefaQuadroDTO> montaQuadro(@PathVariable Long idSprint) {
-        return service.montaQuadro(idSprint);
+    @GetMapping("/quadro")
+    public ResponseEntity<?> montaQuadro(@RequestParam List<Long> idsSprint) {
+        return ResponseEntity.ok(service.montaQuadro(idsSprint));
     }
 
     @GetMapping("/{idSprint}/indicadores")

@@ -84,6 +84,8 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     @Query("""
     SELECT new br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO(
+        s.idsprint,
+        s.descsprint,
         es.idestoria,
         es.descestoria,
         ep.idepico,
@@ -100,18 +102,19 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
         sen.idstatus,
         sen.descstatus,
         sen.cor
-        )
+    )
     FROM Sprint s
     JOIN SprintEstoria se ON se.sprint.idsprint = s.idsprint
     JOIN Estoria es ON es.idestoria = se.estoria.idestoria
     JOIN Epico ep ON ep.idepico = es.epico.idepico
-    JOIN Tarefa t on t.estoria.idestoria = es.idestoria
-    JOIN Usuario c on t.criador.idusuario = c.idusuario
-    JOIN Usuario r on t.responsavel.idusuario = r.idusuario
-    JOIN StatusEntidades sen on sen.idstatus = t.status.idstatus
-    WHERE s.idsprint = :idSprint
+    JOIN Tarefa t ON t.estoria.idestoria = es.idestoria
+    JOIN Usuario c ON t.criador.idusuario = c.idusuario
+    JOIN Usuario r ON t.responsavel.idusuario = r.idusuario
+    JOIN StatusEntidades sen ON sen.idstatus = t.status.idstatus
+    WHERE s.idsprint IN :idsSprints
+    ORDER BY s.dtiniciosprint, es.idestoria, t.idtarefa
 """)
-    List<TarefaQuadroDTO> montaQuadro(@Param("idSprint") Long idSprint);
+    List<TarefaQuadroDTO> montaQuadro(@Param("idsSprints") List<Long> idsSprints);
 
     @Query("""
     SELECT COUNT(t)

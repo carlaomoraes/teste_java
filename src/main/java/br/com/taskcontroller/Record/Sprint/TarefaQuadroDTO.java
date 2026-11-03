@@ -1,6 +1,8 @@
 package br.com.taskcontroller.Record.Sprint;
 
 public record TarefaQuadroDTO(
+        Long idsprint,
+        String descsprint,
         Long idestoria,
         String descestoria,
         Long idespico,

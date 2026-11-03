@@ -4,6 +4,7 @@ import br.com.taskcontroller.Modelo.Sprint;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
+import br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,40 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SprintRepository extends JpaRepository<Sprint, Long> {
+
+    @Query("""
+    SELECT new br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO(
+        s.idsprint,
+        s.descsprint,
+        es.idestoria,
+        es.descestoria,
+        ep.idepico,
+        ep.nome,
+        ep.cor,
+        t.idtarefa,
+        t.desctarefa,
+        COALESCE(t.horas_estimadas, 0),
+        COALESCE(t.horas_realizadas, 0),
+        c.idusuario,
+        c.nome,
+        r.idusuario,
+        r.nome,
+        sen.idstatus,
+        sen.descstatus,
+        sen.cor
+    )
+    FROM Sprint s
+    JOIN SprintEstoria se ON se.sprint.idsprint = s.idsprint
+    JOIN Estoria es ON es.idestoria = se.estoria.idestoria
+    JOIN Epico ep ON ep.idepico = es.epico.idepico
+    JOIN Tarefa t ON t.estoria.idestoria = es.idestoria
+    JOIN Usuario c ON t.criador.idusuario = c.idusuario
+    JOIN Usuario r ON t.responsavel.idusuario = r.idusuario
+    JOIN StatusEntidades sen ON sen.idstatus = t.status.idstatus
+    WHERE s.idsprint IN :idsSprints
+    ORDER BY s.dtiniciosprint, es.idestoria, t.idtarefa
+""")
+    List<TarefaQuadroDTO> montaQuadro(@Param("idsSprints") List<Long> idsSprints);
 
     @Query("""
     select count(s)

@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Manutenção do quadro sprint">
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Manutenção do quadro sprint para mostras multiplas sprints">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/SprintController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/TarefaQuadroDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Sprint/TarefaQuadroDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/SprintRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/LoginService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/sprint.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/sprint.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/TarefaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,61 +80,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000012316272842" />
-      <entry key="S5" value="1.0048329900983421" />
-      <entry key="S10" value="1.1010044078587087" />
-      <entry key="S30" value="2.069504341133648" />
-      <entry key="S60" value="3.0614352605855206" />
-      <entry key="M2" value="3.9828489501035222" />
-      <entry key="M5" value="4.935461928574075" />
-      <entry key="M10" value="5.457731248635454" />
-      <entry key="M15" value="5.955362179913517" />
-      <entry key="M30" value="8.352102957580245" />
-      <entry key="H1" value="13.581110208485013" />
-      <entry key="H2" value="23.563195782137804" />
-      <entry key="H4" value="46.11853413231864" />
-      <entry key="D1" value="376.7482834831841" />
-      <entry key="W1" value="1497.7946246234164" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="2.0079677542614882E-254" />
+      <entry key="S2" value="3.764342967917729E-64" />
+      <entry key="S5" value="4.270221078337834E-26" />
+      <entry key="S10" value="2.1075192480221988E-13" />
+      <entry key="S30" value="7.91040357437937E-5" />
+      <entry key="S60" value="0.015634327931504863" />
+      <entry key="M2" value="0.27717998552949347" />
+      <entry key="M5" value="1.9374158523097775" />
+      <entry key="M10" value="4.821861367809459" />
+      <entry key="M15" value="7.242239346144795" />
+      <entry key="M30" value="12.52329826229433" />
+      <entry key="H1" value="19.85126362055451" />
+      <entry key="H2" value="31.25931933217206" />
+      <entry key="H4" value="54.33871279553336" />
+      <entry key="D1" value="383.4274797580405" />
+      <entry key="W1" value="1507.6569502715893" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="6.172482551847584E-283" />
-      <entry key="S10" value="7.856591572941793E-142" />
-      <entry key="S30" value="9.530559076908079E-48" />
-      <entry key="S60" value="3.866499477372685E-24" />
-      <entry key="M2" value="3.26438413306837E-12" />
-      <entry key="M5" value="6.344164778854034E-5" />
-      <entry key="M10" value="0.019735127962137403" />
-      <entry key="M15" value="0.1379931079753045" />
-      <entry key="M30" value="1.038417682776432" />
-      <entry key="H1" value="3.508185564399385" />
-      <entry key="H2" value="9.444103640789344" />
-      <entry key="H4" value="26.518371764810194" />
-      <entry key="D1" value="257.3708259179914" />
-      <entry key="W1" value="891.5944050720193" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.000000125953976" />
+      <entry key="S10" value="1.0003548999520697" />
+      <entry key="S30" value="1.0708271207046776" />
+      <entry key="S60" value="1.2760768784783685" />
+      <entry key="M2" value="1.713903365997259" />
+      <entry key="M5" value="2.9667588585619846" />
+      <entry key="M10" value="4.066705694302021" />
+      <entry key="M15" value="4.613552309803643" />
+      <entry key="M30" value="5.640204305388424" />
+      <entry key="H1" value="7.804448749684624" />
+      <entry key="H2" value="13.28656147520344" />
+      <entry key="H4" value="29.516924275698507" />
+      <entry key="D1" value="258.43890208021674" />
+      <entry key="W1" value="895.1397011299915" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.8705505632961241" />
-      <entry key="MS500" value="0.9726549474122855" />
-      <entry key="S2" value="0.9930937172919017" />
-      <entry key="S5" value="1.0020492265071548" />
-      <entry key="S10" value="1.0994692807868987" />
-      <entry key="S30" value="2.068534771339359" />
-      <entry key="S60" value="3.060709468303964" />
-      <entry key="M2" value="3.9823466394807485" />
-      <entry key="M5" value="4.9352442223772925" />
-      <entry key="M10" value="5.477206698112227" />
-      <entry key="M15" value="6.092802383519693" />
-      <entry key="M30" value="9.38886855875206" />
-      <entry key="H1" value="17.086589280020128" />
-      <entry key="H2" value="33.00316926903219" />
-      <entry key="H4" value="72.63002986573872" />
-      <entry key="D1" value="634.1075132484992" />
-      <entry key="W1" value="2389.3833547100517" />
+      <entry key="MS100" value="8.166061735755073E-5" />
+      <entry key="MS500" value="0.15219575233287327" />
+      <entry key="S2" value="0.6245980628266884" />
+      <entry key="S5" value="0.8284004127428991" />
+      <entry key="S10" value="0.9104842245671297" />
+      <entry key="S30" value="1.0375588255271129" />
+      <entry key="S60" value="1.2710947406392414" />
+      <entry key="M2" value="1.974541685993281" />
+      <entry key="M5" value="4.887394547957118" />
+      <entry key="M10" value="8.875053513365769" />
+      <entry key="M15" value="11.844970010422033" />
+      <entry key="M30" value="18.156383414797084" />
+      <entry key="H1" value="27.650447683799207" />
+      <entry key="H2" value="44.540733090162384" />
+      <entry key="H4" value="83.84855317574926" />
+      <entry key="D1" value="641.8548438926567" />
+      <entry key="W1" value="2402.790968624021" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -449,14 +452,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00205" summary="Ajustes duração da sprint">
-      <option name="closed" value="true" />
-      <created>1789751515542</created>
-      <option name="number" value="00205" />
-      <option name="presentableId" value="LOCAL-00205" />
-      <option name="project" value="LOCAL" />
-      <updated>1789751515543</updated>
     </task>
     <task id="LOCAL-00206" summary="STATUS DA SPRINT">
       <option name="closed" value="true" />
@@ -842,7 +837,15 @@
       <option name="project" value="LOCAL" />
       <updated>1793301691150</updated>
     </task>
-    <option name="localTasksCounter" value="254" />
+    <task id="LOCAL-00254" summary="Manutenção do quadro sprint para mostras multiplas sprints">
+      <option name="closed" value="true" />
+      <created>1793730460654</created>
+      <option name="number" value="00254" />
+      <option name="presentableId" value="LOCAL-00254" />
+      <option name="project" value="LOCAL" />
+      <updated>1793730460656</updated>
+    </task>
+    <option name="localTasksCounter" value="255" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -896,7 +899,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajustes na transição da sprint" />
     <MESSAGE value="Ajustes na ordem das estórias na sprint" />
     <MESSAGE value="Começando quadro kamban" />
     <MESSAGE value="Quadro kanbam - Ausencia ok" />
@@ -921,7 +923,8 @@
     <MESSAGE value="Montagem do histórico e refatoração dos DTOS" />
     <MESSAGE value="Montagem do histórico da Sprint" />
     <MESSAGE value="Manutenção do quadro sprint" />
-    <option name="LAST_COMMIT_MESSAGE" value="Manutenção do quadro sprint" />
+    <MESSAGE value="Manutenção do quadro sprint para mostras multiplas sprints" />
+    <option name="LAST_COMMIT_MESSAGE" value="Manutenção do quadro sprint para mostras multiplas sprints" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

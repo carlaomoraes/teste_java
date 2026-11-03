@@ -247,12 +247,13 @@ public class SprintService {
         return sprintRepository.buscar(idSprint);
     }
 
+    public List<TarefaQuadroDTO> montaQuadro(List<Long> idsSprints) {
 
-    public List<TarefaQuadroDTO> montaQuadro(Long idSprint) {
-        if (!sprintRepository.existsById(idSprint)) {
-            throw new BusinessRuleException("Sprint não encontrada.");
+        if (idsSprints == null || idsSprints.isEmpty()) {
+            return List.of();
         }
-        return tarefaRepository.montaQuadro(idSprint);
+
+        return sprintRepository.montaQuadro(idsSprints);
     }
 
     @Transactional
