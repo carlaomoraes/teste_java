@@ -77,7 +77,7 @@ ORDER BY s.idsprint
         s.status.descstatus,
         s.status.cor)
     FROM Sprint s
-    JOIN StatusEntidades se on s.status.idstatus = se.idstatus
+    JOIN StatusEntidades se on s.status.idstatus = se.idstatus and se.inicial = true
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
       AND :hoje BETWEEN s.dtiniciosprint AND s.dtfinalsprint
  ORDER BY s.idsprint

@@ -60,11 +60,11 @@
         <div class="row mt-3">
             <div class="col-md-4">
                 <label for="dtiniciosprint"> Data de Início: </label>
-                <input type="date" id="dtiniciosprint" readonly>
+                <input type="date" id="dtiniciosprint">
             </div>
             <div class="col-md-4">
                 <label for="dtfinalsprint"> Data de Término: </label>
-                <input type="date" id="dtfinalsprint" readonly>
+                <input type="date" id="dtfinalsprint">
             </div>
             <!-- DURAÇÃO -->
 
@@ -187,13 +187,6 @@
                     configuracaoSprint.permitir_sprint_sobreposta = data.permitir_sprint_sobreposta;
                     configuracaoSprint.permitir_multiplas_sprint_ativas = data.permitir_multiplas_sprint_ativas;
                     configuracaoSprint.considerar_feriados = data.considerar_feriados;
-                    /*
-                     * NOVO FLUXO:
-                     *
-                     * Primeiro busca a última Sprint.
-                     * Depois calcula as datas da nova Sprint.
-                     */
-                    await carregarUltimaSprint(idEmpreendimento);
                 } catch (error) {
                     mostrarMensagemNaTela("resultadogeral", error.message,"error");
                 }
@@ -291,7 +284,6 @@
             async function acharOrdem(ENTIDADE) {
                 try {
                     const linha = `${API_STATUS}/acharOrigem?idTipoEntidade=${ENTIDADE}`;
-                    console.log(linha);
                     const resposta = await fetch(linha);
                     if (!resposta.ok) {
                         throw new Error(`Erro ${resposta.status}`);
@@ -313,7 +305,6 @@
                     mostrarMensagemNaTela("resultadogeral", "Selecione um empreendimento!", "warning");
                     return false;
                 }
-                limpaFormulario();
                 try {
                     const response = await fetch(`${API_SPRINT}/valida_ultima/${idempreendimento}`);
                     if (!response.ok) {
