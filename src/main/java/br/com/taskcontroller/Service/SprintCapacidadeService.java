@@ -1,11 +1,8 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.Modelo.AusenciaProgramada;
 import br.com.taskcontroller.Modelo.Sprint;
-import br.com.taskcontroller.Record.Ausencia.AusenciaListagemDTO;
 import br.com.taskcontroller.Record.Ausencia.AusenciaSprintDTO;
 import br.com.taskcontroller.Record.Equipe.EquipeEmpreendimentoDTO;
-import br.com.taskcontroller.Record.Equipe.EquipeUsuarioDTO;
 import br.com.taskcontroller.Respository.AusenciaProgramadaRepository;
 import br.com.taskcontroller.Respository.EquipeUsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,7 @@ public class SprintCapacidadeService {
     public BigDecimal calcularDiasUteis(LocalDate inicio,LocalDate fim) {
         BigDecimal dias = BigDecimal.ZERO;
         for (LocalDate data = inicio; !data.isAfter(fim); data = data.plusDays(1)) {
-            if (!sprintService.ehFimDeSemana(data)) {
+            if (sprintService.ehFimDeSemana(data)) {
                 dias = dias.add(BigDecimal.valueOf(1));
             }
         }
@@ -39,7 +36,7 @@ public class SprintCapacidadeService {
     public BigDecimal calcularFimdeSemana(LocalDate inicio,LocalDate fim) {
         BigDecimal dias = BigDecimal.ZERO;
         for (LocalDate data = inicio; !data.isAfter(fim); data = data.plusDays(1)) {
-            if (!sprintService.ehFimDeSemana(data)) {
+            if (sprintService.ehFimDeSemana(data)) {
                 dias = dias.add(BigDecimal.valueOf(1));
             }
         }

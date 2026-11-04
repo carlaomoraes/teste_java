@@ -88,7 +88,7 @@ public class SprintController {
     // EXCLUIR
     @DeleteMapping("/excluir/{idSprint}")
     public ResponseEntity<String> excluir(@PathVariable Long idSprint) {
-        String Messagem = String.format("Não é possível finalizar esta %s ");
+        String Messagem = String.format("Não é possível finalizar esta %s ", idSprint);
         try {
             Sprint Sprint = service.buscarPorId(idSprint);
             Sprint.setDtfinalsprint(LocalDate.now());

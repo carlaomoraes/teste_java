@@ -41,7 +41,6 @@ public class SprintService {
 
 
     public SprintService(
-                        TarefaRepository tarefaRepository,
                         SprintRepository sprintRepository,
                         EmpreendimentoService empreendimentoService,
                         StatusEntidadesService statusEntidadesService,
@@ -159,7 +158,7 @@ public class SprintService {
         LocalDate data = inicio;
         int dias = 0;
         while (dias < duracao) {
-            if (!ehFimDeSemana(data)) {
+            if (ehFimDeSemana(data)) {
                 dias++;
             }
             if (dias < duracao) {
@@ -171,7 +170,7 @@ public class SprintService {
 
     public boolean ehFimDeSemana(LocalDate data) {
         DayOfWeek dia = data.getDayOfWeek();
-        return dia == DayOfWeek.SATURDAY || dia == DayOfWeek.SUNDAY;
+        return dia != DayOfWeek.SATURDAY && dia != DayOfWeek.SUNDAY;
     }
 
     /*
