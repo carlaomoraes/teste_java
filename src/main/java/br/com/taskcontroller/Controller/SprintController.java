@@ -117,7 +117,7 @@ public class SprintController {
     // RETORNA A ULTIMA SPRINT VALIDA DO EMPREENDIMENTO
     @GetMapping("/valida_ultima/{idempreendimento}")
     public Optional<SprintDataDTO> carregarValida(@PathVariable Long idempreendimento) {
-        return service.carregarValida(idempreendimento, 4l);
+        return service.carregarValida(idempreendimento, 4L);
     }
 
     // Todas as funções da sprint atual
@@ -145,8 +145,8 @@ public class SprintController {
     }
 
     @GetMapping("/quadro")
-    public ResponseEntity<?> montaQuadro(@RequestParam List<Long> idsSprint) {
-        return ResponseEntity.ok(service.montaQuadro(idsSprint));
+    public ResponseEntity<?> montaQuadro(@RequestParam List<Long> idsSprints) {
+        return ResponseEntity.ok(service.montaQuadro(idsSprints));
     }
 
     @GetMapping("/{idSprint}/indicadores")

@@ -36,17 +36,20 @@
                     </label>
                     <select id="comboEmpreendimento"
                             class="form-select"
-                            required></select>
+                            required onchange=""></select>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label"
-                           for="comboSprint">
-                        Sprint *
-                    </label>
-                    <select id="comboSprint"
-                            class="form-select"
-                            required></select>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            data-bs-auto-close="outside">
+                        Selecionar Sprints
+                    </button>
+
+                    <div class="dropdown-menu p-3 w-100"
+                         id="listaSprints" onchange="atualizarQuadro()">
+                    </div>
                 </div>
 
             </div>
@@ -305,28 +308,94 @@
         ATENCAO: "Atenção",
         CRITICA: "Crítica"
     };
+    function obterSprintsSelecionadas() {
+        return Array.from(
+            document.querySelectorAll(".sprint-check:checked")
+        ).map(item => Number(item.value));
+    }
+    function carregarCheckboxSprints(sprints) {
+        const container = document.getElementById("listaSprints");
+        container.innerHTML = "";
 
+        sprints.forEach(sprint => {
+            container.innerHTML += `
+            <div class="form-check mb-2">
+                <input
+                    class="form-check-input sprint-check"
+                    type="checkbox"
+                    value="${sprint.idsprint}"
+                    id="sprint_${sprint.idsprint}">
 
+                <label class="form-check-label"
+                       for="sprint_${sprint.idsprint}">
+                    ${sprint.idsprint} - ${sprint.descsprint}
+                </label>
+            </div>
+        `;
+        });
+    }
     async function carregaCabecalho(idEmpreendimento) {
-        const comboSprint= document.getElementById("comboSprint");
-        comboSprint.innerHTML=`SEM SPRINT CADASTRADA!!!`;
+        const listaSprints = document.getElementById("listaSprints");
+
+        listaSprints.innerHTML = "SEM SPRINT CADASTRADA!!!";
+
         try {
             const response = await fetch(`${API}/carregaSprint/DTO/${idEmpreendimento}`);
+            if (!response.ok) {
+                throw new Error("Erro ao carregar Sprints");
+            }
             const data = await response.json();
-            data.forEach(a => {
-                const opcao = document.createElement('option');
-                opcao.value = a.idsprint;
-                opcao.textContent = a.idsprint + " - "+ a.descsprint+" - Período: "+formatarData(a.dtiniciosprint) + " - "+formatarData(a.dtfinalsprint);
-                comboSprint.appendChild(opcao);
-                document.getElementById("comboSprint");
-                listarAusenciasSprint(a.idsprint);
-                montaRoadmap(a.idsprint);
-                montarKAMBAM(a.idsprint);
+            listaSprints.innerHTML = "";
+
+            if (data.length === 0) {
+                listaSprints.innerHTML = "SEM SPRINT CADASTRADA!!!";
+                return;
+            }
+
+            data.forEach((a, index) => {
+
+                const div = document.createElement("div");
+                div.className = "form-check mb-2";
+
+                div.innerHTML = `
+                <input
+                    class="form-check-input sprint-check"
+                    type="checkbox"
+                    id="sprint_${a.idsprint}"
+                    value="${a.idsprint}"
+                    ${index === 0 ? "checked" : ""}
+                    onchange="atualizarQuadro()">
+
+                <label class="form-check-label"
+                       for="sprint_${a.idsprint}">
+                    ${a.idsprint} - ${a.descsprint}
+                    - Período:
+                    ${formatarData(a.dtiniciosprint)}
+                    -
+                    ${formatarData(a.dtfinalsprint)}
+                </label>
+            `;
+
+                listaSprints.appendChild(div);
             });
+
+            await atualizarQuadro();
+
         } catch (error) {
             mostrarMensagemNaTela("resultado", error.message, "error");
         }
     }
+    async function atualizarQuadro() {
+        const idsSprints = obterSprintsSelecionadas();
+
+        if (idsSprints.length === 0) {
+            document.getElementById("estorias_tarefas").innerHTML = "";
+            return;
+        }
+
+        await montarKAMBAM(idsSprints);
+    }
+
     async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         try {
@@ -339,7 +408,7 @@
                 comboEmpreendimento.appendChild(opcao);
             });
         } catch (error) {
-              mostrarMensagemNaTela("resultado", MSG.erroCarregar("EMPREENDIMENTO"), "error");
+            mostrarMensagemNaTela("resultado", MSG.erroCarregar("EMPREENDIMENTO"), "error");
         }
     }
     // Inicializa os seletores assim que o HTML carregar completamente
@@ -352,13 +421,7 @@
         const selectedValue = event.target.value;
         carregaCabecalho(selectedValue);
     });
-    comboSprint.addEventListener('change', (event) => {
-        listarAusenciasSprint(event.target.value);
-        montaRoadmap(event.target.value);
-        montarKAMBAM(event.target.value);
-        carregarIndicadores(event.target.value);
-        carregarSaudeSprint(event.target.value);
-    })
+
 
     // =============================================================
     // MONTAR QUADRO DE AUSÊNCIAS DA SPRINT
@@ -471,16 +534,18 @@
         html += `</tr></table>`;
         container.innerHTML = html;
     }
-    async function montarKAMBAM(idSprint) {
+    async function montarKAMBAM(idsSprints) {
         const container = document.getElementById("estorias_tarefas");
         container.innerHTML = "";
         try {
             // =====================================================
             // 1. BUSCA AS TAREFAS DA SPRINT
             // =====================================================
-            const responseQuadro = await fetch(`${API}/${idSprint}/quadro`);
+            const linha = `${API}/quadro?idsSprints=${idsSprints.join(",")}`;
+            const responseQuadro = await fetch(linha);
+
             if (!responseQuadro.ok) {
-                throw new Error("Erro ao carregar tarefas");
+                throw new Error(responseQuadro.message);
             }
             const tarefas = await responseQuadro.json();
             // =====================================================
@@ -525,7 +590,8 @@
                 carregarStatus(tarefa.idstatus, TIPO_ENTIDADE.TAREFA, document.getElementById(`comboStatusTA_${tarefa.idtarefa}`));
             })
         } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
+            //mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
+            mostrarMensagemNaTela("resultado", error.toString(), "error");
         }
     }
     function montarStatusDoWorkflow(workflow) {
@@ -845,7 +911,8 @@
             html += `</div>`;
             return html;
         } catch (error) {
-            mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"), "error");
+//            mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"), "error");
+            mostrarMensagemNaTela("resultado", error.toString(), "error");
         }
     }
     function montaComboEstoria(idEstoria){

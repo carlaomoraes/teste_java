@@ -248,23 +248,19 @@ public class SprintService {
     }
 
     public List<TarefaQuadroDTO> montaQuadro(List<Long> idsSprints) {
-
         if (idsSprints == null || idsSprints.isEmpty()) {
             return List.of();
         }
-
         return sprintRepository.montaQuadro(idsSprints);
     }
 
     @Transactional
     public void alterarStatus(Long idSprint, Long idStatus, Long idUsuario) {
         Sprint sprint = sprintRepository.findById(idSprint).orElseThrow(() -> new ResourceNotFoundException("Sprint não encontrada"));
-
         StatusEntidades statusAnterior = sprint.getStatus();
         StatusEntidades novoStatus = statusEntidadesService.buscaStatusEntidades(idStatus);
 
         Usuario usuario = usuarioService.buscarPorId(idUsuario);
-
         // Evita alteração desnecessária
         if (statusAnterior.getIdstatus().equals(novoStatus.getIdstatus())) {
             return;

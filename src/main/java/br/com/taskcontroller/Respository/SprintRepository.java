@@ -45,7 +45,7 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
     JOIN Usuario c ON t.criador.idusuario = c.idusuario
     JOIN Usuario r ON t.responsavel.idusuario = r.idusuario
     JOIN StatusEntidades sen ON sen.idstatus = t.status.idstatus
-    WHERE s.idsprint IN :idsSprints
+    WHERE s.idsprint IN (:idsSprints)
     ORDER BY s.dtiniciosprint, es.idestoria, t.idtarefa
 """)
     List<TarefaQuadroDTO> montaQuadro(@Param("idsSprints") List<Long> idsSprints);
@@ -138,7 +138,6 @@ ORDER BY s.idsprint
     WHERE s.empreendimento.idempreendimento = :idEmpreendimento
       and se.ativo = true
       AND s.visivel = true
-     
  ORDER BY s.dtiniciosprint asc
 """)
     List<SprintDataDTO> buscarSprintAtiva(@Param("idEmpreendimento") Long idEmpreendimento);
