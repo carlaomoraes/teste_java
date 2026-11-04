@@ -45,11 +45,9 @@ public class SprintService {
                         SprintRepository sprintRepository,
                         EmpreendimentoService empreendimentoService,
                         StatusEntidadesService statusEntidadesService,
-                        StatusEntidadesRepository statusEntidadesRepository,
                         StatusTransicaoRepository statusTransicaoRepository,
                         SprintHistoricoRepository sprintHistoricoRepository,
-                        SprintHistoricoService sprintHistoricoService,
-                        UsuarioService usuarioServicee) {
+                        SprintHistoricoService sprintHistoricoService) {
         this.sprintRepository = sprintRepository;
         this.empreendimentoService = empreendimentoService;
         this.statusEntidadesService = statusEntidadesService;
