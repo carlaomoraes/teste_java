@@ -6,13 +6,11 @@ import br.com.taskcontroller.Excecoes.BusinessRuleException;
 import br.com.taskcontroller.Excecoes.ResourceNotFoundException;
 import br.com.taskcontroller.Modelo.*;
 import br.com.taskcontroller.Projection.CabecalhoProjection;
-import br.com.taskcontroller.Record.Estoria.EstoriaHistoricoDTO;
 import br.com.taskcontroller.Record.Sprint.SprintDataDTO;
 import br.com.taskcontroller.Record.Sprint.SprintHistoricoDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Record.Sprint.TarefaQuadroDTO;
 import br.com.taskcontroller.Record.Status.StatusTransicaoDTO;
-import br.com.taskcontroller.Record.Tarefa.TarefaConsultaDTO;
 import br.com.taskcontroller.Respository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -37,9 +35,7 @@ public class SprintService {
     private final SprintRepository sprintRepository;
     private final EmpreendimentoService empreendimentoService;
     private final StatusEntidadesService statusEntidadesService;
-    private final StatusEntidadesRepository statusEntidadesRepository;
     private final StatusTransicaoRepository statusTransicaoRepository;
-    private final TarefaRepository tarefaRepository;
     private final SprintHistoricoRepository sprintHistoricoRepository;
     private final SprintHistoricoService sprintHistoricoService;
 
@@ -54,11 +50,9 @@ public class SprintService {
                         SprintHistoricoRepository sprintHistoricoRepository,
                         SprintHistoricoService sprintHistoricoService,
                         UsuarioService usuarioServicee) {
-        this.tarefaRepository = tarefaRepository;
         this.sprintRepository = sprintRepository;
         this.empreendimentoService = empreendimentoService;
         this.statusEntidadesService = statusEntidadesService;
-        this.statusEntidadesRepository = statusEntidadesRepository;
         this.statusTransicaoRepository = statusTransicaoRepository;
         this.sprintHistoricoRepository = sprintHistoricoRepository;
         this.sprintHistoricoService = sprintHistoricoService;
