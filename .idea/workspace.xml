@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Manutenção do quadro sprint para mostras multiplas sprints">
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,61 +75,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000011952834" />
-      <entry key="MS500" value="1.0164245767044955" />
-      <entry key="S2" value="1.3579921853002859" />
-      <entry key="S5" value="1.6630547926903119" />
-      <entry key="S10" value="1.8142817649255765" />
-      <entry key="S30" value="1.9338093894117874" />
-      <entry key="S60" value="1.966338134097889" />
-      <entry key="M2" value="1.9830250595206567" />
-      <entry key="M5" value="1.99656232320033" />
-      <entry key="M10" value="2.13614635021599" />
-      <entry key="M15" value="2.508259247395701" />
-      <entry key="M30" value="4.270391867133595" />
-      <entry key="H1" value="9.204441755874823" />
-      <entry key="H2" value="20.440354491915198" />
-      <entry key="H4" value="43.64115119688548" />
-      <entry key="D1" value="365.90214342220224" />
-      <entry key="W1" value="1502.241739084596" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000000132953777" />
+      <entry key="S5" value="1.0007070990786846" />
+      <entry key="S10" value="1.0265913346540658" />
+      <entry key="S30" value="1.2984787234092985" />
+      <entry key="S60" value="1.5463320633179958" />
+      <entry key="M2" value="1.7391427895325748" />
+      <entry key="M5" value="1.886118634467852" />
+      <entry key="M10" value="1.9434618472992549" />
+      <entry key="M15" value="1.988135515338246" />
+      <entry key="M30" value="2.3520567915969366" />
+      <entry key="H1" value="3.6318805097678717" />
+      <entry key="H2" value="8.190562609889424" />
+      <entry key="H4" value="23.868125858196844" />
+      <entry key="D1" value="322.82598774048324" />
+      <entry key="W1" value="1478.527552015511" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="3.292904941002082E-185" />
-      <entry key="S10" value="8.404940436155908E-93" />
-      <entry key="S30" value="4.683465965961127E-31" />
-      <entry key="S60" value="1.4549316076193565E-15" />
-      <entry key="M2" value="8.425004477546335E-8" />
-      <entry key="M5" value="0.0040147415512783525" />
-      <entry key="M10" value="0.15448601861680852" />
-      <entry key="M15" value="0.5441949732005325" />
-      <entry key="M30" value="2.2833913488535593" />
-      <entry key="H1" value="6.262975089607488" />
-      <entry key="H2" value="13.676419783099217" />
-      <entry key="H4" value="29.758515204372948" />
-      <entry key="D1" value="253.6719687857285" />
-      <entry key="W1" value="900.3103389769151" />
+      <entry key="MS100" value="1.2611758585235817E-184" />
+      <entry key="MS500" value="1.6601798169497017E-37" />
+      <entry key="S2" value="6.383204855861611E-10" />
+      <entry key="S5" value="2.0990148589917167E-4" />
+      <entry key="S10" value="0.01448797728805411" />
+      <entry key="S30" value="0.24378253314923237" />
+      <entry key="S60" value="0.49374338795495015" />
+      <entry key="M2" value="0.7026687612904975" />
+      <entry key="M5" value="0.8685123070364553" />
+      <entry key="M10" value="0.9509335980416947" />
+      <entry key="M15" value="1.0625519094563716" />
+      <entry key="M30" value="1.7343483704906062" />
+      <entry key="H1" value="3.411049642514109" />
+      <entry key="H2" value="7.364055872323459" />
+      <entry key="H4" value="18.804385759794506" />
+      <entry key="D1" value="227.06841177759432" />
+      <entry key="W1" value="890.2696582272166" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.16957554153275764" />
-      <entry key="MS500" value="0.7155678853942529" />
-      <entry key="S2" value="1.2610166904860942" />
-      <entry key="S5" value="1.6191502008666372" />
-      <entry key="S10" value="1.7911251036342302" />
-      <entry key="S30" value="1.9257784505993587" />
-      <entry key="S60" value="1.962280512757386" />
-      <entry key="M2" value="1.9809855421997413" />
-      <entry key="M5" value="1.9997154006057576" />
-      <entry key="M10" value="2.2885779987081682" />
-      <entry key="M15" value="3.04511067160512" />
-      <entry key="M30" value="6.5244193099638945" />
-      <entry key="H1" value="15.42203513015702" />
-      <entry key="H2" value="34.075294601947284" />
-      <entry key="H4" value="73.36888875114158" />
-      <entry key="D1" value="619.5578418148781" />
-      <entry key="W1" value="2402.5456258314784" />
+      <entry key="MS100" value="2.6560475022262455E-10" />
+      <entry key="MS500" value="0.012157580883678415" />
+      <entry key="S2" value="0.3320563650352622" />
+      <entry key="S5" value="0.6442793473770195" />
+      <entry key="S10" value="0.8417455601142139" />
+      <entry key="S30" value="1.4631689982519203" />
+      <entry key="S60" value="1.995633232320959" />
+      <entry key="M2" value="2.417645614217898" />
+      <entry key="M5" value="2.7443581499754526" />
+      <entry key="M10" value="2.8890797653313083" />
+      <entry key="M15" value="3.0468829397431536" />
+      <entry key="M30" value="4.083434490314247" />
+      <entry key="H1" value="7.03885683724385" />
+      <entry key="H2" value="15.545444605050845" />
+      <entry key="H4" value="42.65845883917909" />
+      <entry key="D1" value="549.8800688994211" />
+      <entry key="W1" value="2368.790847130092" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -446,22 +447,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00208" summary="Ajustes no fluxo do status dos cadastros">
-      <option name="closed" value="true" />
-      <created>1790105232776</created>
-      <option name="number" value="00208" />
-      <option name="presentableId" value="LOCAL-00208" />
-      <option name="project" value="LOCAL" />
-      <updated>1790105232776</updated>
-    </task>
-    <task id="LOCAL-00209" summary="Ajustes na exclusão de equipes">
-      <option name="closed" value="true" />
-      <created>1790175639191</created>
-      <option name="number" value="00209" />
-      <option name="presentableId" value="LOCAL-00209" />
-      <option name="project" value="LOCAL" />
-      <updated>1790175639191</updated>
     </task>
     <task id="LOCAL-00210" summary="Ajustes na transição da sprint">
       <option name="closed" value="true" />
@@ -839,7 +824,23 @@
       <option name="project" value="LOCAL" />
       <updated>1793820095205</updated>
     </task>
-    <option name="localTasksCounter" value="257" />
+    <task id="LOCAL-00257" summary="Manutenção do quadro sprint para mostras multiplas sprints">
+      <option name="closed" value="true" />
+      <created>1793820176441</created>
+      <option name="number" value="00257" />
+      <option name="presentableId" value="LOCAL-00257" />
+      <option name="project" value="LOCAL" />
+      <updated>1793820176442</updated>
+    </task>
+    <task id="LOCAL-00258" summary="Manutenção do quadro sprint para mostras multiplas sprints">
+      <option name="closed" value="true" />
+      <created>1793820350553</created>
+      <option name="number" value="00258" />
+      <option name="presentableId" value="LOCAL-00258" />
+      <option name="project" value="LOCAL" />
+      <updated>1793820350553</updated>
+    </task>
+    <option name="localTasksCounter" value="259" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1010,13 +1011,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java</url>
-          <line>183</line>
+          <line>182</line>
           <option name="timeStamp" value="182" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java</url>
-          <line>242</line>
-          <option name="timeStamp" value="183" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/br/com/taskboard/demo/DTO/EquipeUsuarioDTO.java</url>

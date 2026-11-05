@@ -36,7 +36,7 @@
                     </label>
                     <select id="comboEmpreendimento"
                             class="form-select"
-                            required onchange=""></select>
+                            required onchange="carregaSprint(document.getElementById('comboEmpreendimento').value)"></select>
                 </div>
 
                 <div class="dropdown">
@@ -258,6 +258,7 @@
     const API = 'http://localhost:8080/sprints';
     const API_TAREFA = 'http://localhost:8080/tarefas';
     const API_USUARIOS = 'http://localhost:8080/usuarios';
+    const API_ESTORIA = 'http://localhost:8080/estoria';
     const API_STATUS = 'http://localhost:8080/status_entidades';
     const API_TRANSICAO = 'http://localhost:8080/status_transicao';
     const API_EMPREENDIMENTO ='http://localhost:8080/empreendimento';
@@ -334,13 +335,13 @@
         `;
         });
     }
-    async function carregaCabecalho(idEmpreendimento) {
+    async function carregaSprint(idEmpreendimento) {
         const listaSprints = document.getElementById("listaSprints");
-
         listaSprints.innerHTML = "SEM SPRINT CADASTRADA!!!";
-
         try {
-            const response = await fetch(`${API}/carregaSprint/DTO/${idEmpreendimento}`);
+            const linha = `${API}/carregaSprint/DTO/${idEmpreendimento}`;
+//            const response = await fetch(`${API}/carregaSprint/DTO/${idEmpreendimento}`);
+            const response = await fetch(linha);
             if (!response.ok) {
                 throw new Error("Erro ao carregar Sprints");
             }
@@ -351,12 +352,9 @@
                 listaSprints.innerHTML = "SEM SPRINT CADASTRADA!!!";
                 return;
             }
-
             data.forEach((a, index) => {
-
                 const div = document.createElement("div");
                 div.className = "form-check mb-2";
-
                 div.innerHTML = `
                 <input
                     class="form-check-input sprint-check"
@@ -379,13 +377,11 @@
                 listaSprints.appendChild(div);
             });
 
-            await atualizarQuadro();
-
         } catch (error) {
             mostrarMensagemNaTela("resultado", error.message, "error");
         }
     }
-    async function atualizarQuadro() {
+    function atualizarQuadro() {
         const idsSprints = obterSprintsSelecionadas();
 
         if (idsSprints.length === 0) {
@@ -393,7 +389,7 @@
             return;
         }
 
-        await montarKAMBAM(idsSprints);
+        montarKAMBAM(idsSprints);
     }
 
     async function carregarEmpreendimento() {
@@ -419,7 +415,7 @@
     comboEmpreendimento.addEventListener('change', (event) => {
         // Get the selected option's value
         const selectedValue = event.target.value;
-        carregaCabecalho(selectedValue);
+        carregaSprint(selectedValue);
     });
 
 
@@ -534,64 +530,155 @@
         html += `</tr></table>`;
         container.innerHTML = html;
     }
+
     async function montarKAMBAM(idsSprints) {
         const container = document.getElementById("estorias_tarefas");
         container.innerHTML = "";
-        try {
-            // =====================================================
-            // 1. BUSCA AS TAREFAS DA SPRINT
-            // =====================================================
-            const linha = `${API}/quadro?idsSprints=${idsSprints.join(",")}`;
-            const responseQuadro = await fetch(linha);
 
+        try {
+            const responseQuadro = await fetch(`${API}/quadro?idsSprints=${idsSprints.join(",")}`);
             if (!responseQuadro.ok) {
-                throw new Error(responseQuadro.message);
+                throw new Error("Erro ao carregar tarefas");
             }
             const tarefas = await responseQuadro.json();
-            // =====================================================
-            // 2. BUSCA O WORKFLOW DE TAREFA
-            // =====================================================
             const responseWorkflow = await fetch(`${API_TRANSICAO}/listar/${TIPO_ENTIDADE.TAREFA}`);
             if (!responseWorkflow.ok) {
                 throw new Error("Erro ao carregar workflow");
             }
             const workflow = await responseWorkflow.json();
-            // =====================================================
-            // 3. EXTRAI OS STATUS DO WORKFLOW
-            // =====================================================
             const statusTarefa = montarStatusDoWorkflow(workflow);
-            // =====================================================
-            // 4. MONTA O KANBAN
-            // =====================================================
             let html = `<div class="d-flex gap-3 overflow-auto w-100">`;
             statusTarefa.forEach(status => {
-                // Tarefas que pertencem ao status atual
-                const tarefasDaColuna = tarefas.filter(tarefa => Number(tarefa.idstatus) === Number(status.idstatus));
-                html += `<div class="kanban-coluna">
-                    <!-- CABEÇALHO -->
-                    <div class="kanban-header" style="border-top:4px solid ${status.cor}">
-                        <span class="badge" style="background-color:${status.cor}; color:white;">${status.descstatus}</span>
-                        <span class="badge bg-secondary"> ${tarefasDaColuna.length} </span>
+                const tarefasDaColuna = tarefas.filter(
+                    tarefa => Number(tarefa.idstatus) === Number(status.idstatus)
+                );
+                html += `
+                <div class="kanban-coluna">
+                    <div class="kanban-header"
+                         style="border-top:4px solid ${status.cor}">
+                        <span class="badge"
+                              style="background-color:${status.cor};color:white;">
+                            ${status.descstatus}
+                        </span>
+                        <span class="badge bg-secondary">
+                            ${tarefasDaColuna.length}
+                        </span>
                     </div>
-                    <!-- CORPO DA COLUNA -->
-                    <div class="kanban-body" data-status="${status.idstatus}">`;
-                // =================================================
-                // CARDS
-                // =================================================
-                tarefasDaColuna.forEach(tarefa => {
-                    html += montarCardTarefa(tarefa);
+                    <div class="kanban-body"
+                         data-status="${status.idstatus}">
+            `;
+           // AGRUPA POR SPRINT + ESTÓRIA
+            const grupos = new Map();
+            tarefasDaColuna.forEach(tarefa => {
+                const chave = `${tarefa.idsprint}_${tarefa.idestoria}`;
+                    if (!grupos.has(chave)) {
+                        grupos.set(chave, {
+                            idsprint: tarefa.idsprint,
+                            descsprint: tarefa.descsprint,
+                            idestoria: tarefa.idestoria,
+                            descestoria: tarefa.descestoria,
+                            tarefas: []
+                        });
+                    }
+
+                    grupos.get(chave).tarefas.push(tarefa);
                 });
-                html += `</div></div> `;
+
+                // MONTA OS GRUPOS
+                grupos.forEach(grupo => {
+                    html += `<div class="card shadow-sm mb-3">
+
+                        <div class="card-header bg-light">
+
+                            <span class="badge bg-secondary mb-2">
+                                ${grupo.idsprint} - ${grupo.descsprint}
+                            </span>
+
+                            <div class="fw-bold mb-2">
+                                #${grupo.idestoria} - ${grupo.descestoria}
+                            </div>
+
+                            <select
+                                class="form-select form-select-sm combo-status-estoria"
+                                data-idestoria="${grupo.idestoria}"
+                                onchange="mudarStatusEstoria(${grupo.idestoria}, this.value)">
+                            </select>
+
+                        </div>
+
+                        <div class="card-body p-2">
+                `;
+
+                    grupo.tarefas.forEach(tarefa => {
+                        html += montarCardTarefa(tarefa);
+                    });
+
+                    html += `
+                        </div>
+                    </div>
+                `;
+                });
+
+                html += `</div></div>`;
             });
+
             html += `</div>`;
+
             container.innerHTML = html;
-            tarefas.forEach(tarefa => {
-                carregarGestor(document.getElementById(`comboResponsavelTA_${tarefa.idtarefa}`), tarefa.idresponsavel);
-                carregarStatus(tarefa.idstatus, TIPO_ENTIDADE.TAREFA, document.getElementById(`comboStatusTA_${tarefa.idtarefa}`));
-            })
+
+            // CARREGA COMBOS DAS TAREFAS
+            for (const tarefa of tarefas) {
+                await carregarGestor(document.getElementById(`comboResponsavelTA_${tarefa.idtarefa}`),tarefa.idresponsavel);
+                await carregarStatus(tarefa.idstatus,TIPO_ENTIDADE.TAREFA, document.getElementById(`comboStatusTA_${tarefa.idtarefa}`));
+            }
+
+            // CARREGA COMBOS DAS ESTÓRIAS
+            const combosEstorias = container.querySelectorAll(".combo-status-estoria");
+            const statusEstorias = new Map();
+            for (const combo of combosEstorias) {
+                const idEstoria = Number(combo.dataset.idestoria);
+                if (!statusEstorias.has(idEstoria)) {
+                    const response = await fetch(`${API_ESTORIA}/${idEstoria}`);
+                    if (!response.ok) {
+                        throw new Error("Erro ao carregar Estória");
+                    }
+
+                    statusEstorias.set(
+                        idEstoria,
+                        await response.json()
+                    );
+                }
+
+                const estoria = statusEstorias.get(idEstoria);
+
+                await carregarStatus(
+                    estoria.idstatus,
+                    TIPO_ENTIDADE.ESTORIA,
+                    combo
+                );
+            }
+
         } catch (error) {
-            //mostrarMensagemNaTela("resultado", MSG.erroCarregar("ESTÓRIAS/TAREFAS"),"error");
-            mostrarMensagemNaTela("resultado", error.toString(), "error");
+            mostrarMensagemNaTela("resultado",error.message,"error");
+        }
+    }
+    async function mudarStatusEstoria(idEstoria, idStatus) {
+        if ((!idStatus) || (!idEstoria)) {
+            return;
+        }
+        try {
+            const idUsuario = sessionStorage.getItem("usuarioIdUsuario");
+            const response = await fetch(`${API_ESTORIA}/${idEstoria}/status/${idStatus}/${idUsuario}`,{
+                method: "PATCH"
+            }
+            );
+            if (!response.ok) {
+                throw new Error("Erro ao alterar status da Estória");
+            }
+            await atualizarQuadro();
+        } catch (error) {
+            mostrarMensagemNaTela("resultado",error.message,"error");
+            await atualizarQuadro();
         }
     }
     function montarStatusDoWorkflow(workflow) {
@@ -772,8 +859,6 @@
             );
         }
     }
-
-
     async function carregarIndicadores(idSprint) {
         await carregarSaudeSprint(idSprint);
 
@@ -886,7 +971,6 @@
             html += `<div class="kanban-coluna">`;
             html += `<div class="kanban-header">`;
             html += `<div class="kanban-body">`;
-            html += montaComboEstoria(tarefa.idestoria);
             html += `<select id="comboStatusTA_${tarefa.idtarefa}" onload="carregarStatus(${tarefa.idtarefa}, ${tarefa.idstatus})" onchange="mudarStatus(${tarefa.idtarefa},document.getElementById('comboStatusTA_${tarefa.idtarefa}').value)"">`;
             html += `<option value="">-- Mover para --</option>`;
             html += `</select><br>`;
