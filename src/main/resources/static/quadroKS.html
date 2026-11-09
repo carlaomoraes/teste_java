@@ -46,8 +46,7 @@
                         Selecionar Sprints
                     </button>
 
-                    <div class="dropdown-menu p-3 w-100"
-                         id="listaSprints" >
+                    <div class="dropdown-menu p-3 w-100" id="listaSprints" >
                     </div>
                 </div>
 
@@ -114,7 +113,7 @@
                         <div id="barraAtrasadas"
                              class="progress-bar bg-danger"
                              role="progressbar"
-                             style="width: 0%">
+                             style="width: 0">
                         </div>
                     </div>
 
@@ -196,18 +195,13 @@
                                 <div id="ausencia"></div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
-
     <!-- AUSÊNCIAS PROGRAMADAS -->
     <div class="card shadow-sm mb-4">
-
         <div class="card-header bg-white">
             <h6 class="mb-0 fw-bold">
                 <i class="bi bi-calendar-x me-2"></i>
@@ -247,7 +241,6 @@
     <div id="resultado"></div>
 
 </div>
-
 <!-- BOTÕES -->
 <div class="btn-group">
     <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
@@ -313,11 +306,15 @@
             document.querySelectorAll(".sprint-check:checked")
         ).map(item => Number(item.value));
     }
-    function carregarCheckboxSprints(sprints) {
+    async function carregarCheckboxSprints(sprints) {
         const container = document.getElementById("listaSprints");
         container.innerHTML = "";
-
-        sprints.forEach(sprint => {
+        const response = await fetch(`${API}/DTO/${sprints.idsprint}`);
+        if (!response.ok) {
+            throw new Error("Erro ao carregar Sprints");
+        }
+        const data = await response.json();
+        data.forEach(sprint => {
             container.innerHTML += `
             <div class="form-check mb-2">
                 <input
@@ -344,30 +341,42 @@
             }
             const data = await response.json();
             listaSprints.innerHTML = "";
-
             if (data.length === 0) {
                 listaSprints.innerHTML = "SEM SPRINT CADASTRADA!!!";
                 return;
             }
-            console.log("Dados recebidos: ", data);
             data.forEach(a => {
-                alert(a.idsprint);
+                alert(a.descsprint);
+                const div = document.createElement("div");
+                div.className = "form-check mb-2";
+                // Identifica a Sprint corrente pelo período
+                const hoje = new Date().toISOString().slice(0, 10);
+                alert("hoje: " + hoje);
+                const sprintCorrente = hoje >= a.dtiniciosprint && hoje <= a.dtfinalsprint;
+                alert("sprintCorrente: " + sprintCorrente);
+                div.innerHTML = `<input
+                     class="form-check-input sprint-check"
+                     type="checkbox"
+                     id="sprint_${a.idsprint}"
+                     value="${a.idsprint}"
+                     ${sprintCorrente ? "checked" : ""}
+                     onchange="montarKAMBAM(${a.idsprint})">
+
+                <label class="form-check-label"
+                        for="sprint_${a.idsprint}">
+                     ${a.idsprint} - ${a.descsprint}
+                     - Período:
+                     ${formatarData(a.dtiniciosprint)}
+                     -
+                     ${formatarData(a.dtfinalsprint)}
+                </label>`;
+              listaSprints.appendChild(div);
+              carregarCheckboxSprints(a.idsprint);
             });
         } catch (error) {
-            mostrarMensagemNaTela("resultado", error.message, "error");
+            mostrarMensagemNaTela("resultado",error.message,"error");
         }
     }
-    function atualizarQuadro() {
-        const idsSprints = obterSprintsSelecionadas();
-
-        if (idsSprints.length === 0) {
-            document.getElementById("estorias_tarefas").innerHTML = "";
-            return;
-        }
-
-        montarKAMBAM(idsSprints);
-    }
-
     async function carregarEmpreendimento() {
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         try {
@@ -461,8 +470,8 @@
         if(!data_sp) {
             return;
         }
-        var dataInicioSprint = data_sp.dtiniciosprint;
-        var dataFimSprint = data_sp.dtfinalsprint;
+        let dataInicioSprint = data_sp.dtiniciosprint;
+        let dataFimSprint = data_sp.dtfinalsprint;
         const container = document.getElementById("roadmap");
         if (!dataInicioSprint || !dataFimSprint) {
             container.innerHTML = "";
@@ -651,10 +660,10 @@
             if (!response.ok) {
                 throw new Error("Erro ao alterar status da Estória");
             }
-            await atualizarQuadro();
+
         } catch (error) {
             mostrarMensagemNaTela("resultado",error.message,"error");
-            await atualizarQuadro();
+
         }
     }
     function montarStatusDoWorkflow(workflow) {
@@ -850,7 +859,7 @@
         const totalTarefas = document.getElementById("totalTarefas");
         const percentualConcluidas = document.getElementById("percentualConcluidas");
         const percentualAtrasadas = document.getElementById("percentualAtrasadas");
-        var perc;
+        let perc;
         try {
             const linha = `${API}/${encodeURIComponent(idSprint)}/indicadores`;
             const resposta = await fetch(linha);
@@ -942,7 +951,7 @@
     }
 
     function montarCardTarefa(tarefa) {
-        var html = ``;
+        let html = ``;
         try {
             html += `<div class="kanban-coluna">`;
             html += `<div class="kanban-header">`;
