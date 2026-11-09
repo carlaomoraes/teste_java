@@ -30,8 +30,7 @@
             <div class="row g-3">
 
                 <div class="col-md-6">
-                    <label class="form-label"
-                           for="comboEmpreendimento">
+                    <label class="form-label" for="comboEmpreendimento">
                         Empreendimento *
                     </label>
                     <select id="comboEmpreendimento"
@@ -48,7 +47,7 @@
                     </button>
 
                     <div class="dropdown-menu p-3 w-100"
-                         id="listaSprints" onchange="atualizarQuadro()">
+                         id="listaSprints" >
                     </div>
                 </div>
 
@@ -339,9 +338,7 @@
         const listaSprints = document.getElementById("listaSprints");
         listaSprints.innerHTML = "SEM SPRINT CADASTRADA!!!";
         try {
-            const linha = `${API}/carregaSprint/DTO/${idEmpreendimento}`;
-//            const response = await fetch(`${API}/carregaSprint/DTO/${idEmpreendimento}`);
-            const response = await fetch(linha);
+            const response = await fetch(`${API}/carregaSprint/DTO/${idEmpreendimento}`);
             if (!response.ok) {
                 throw new Error("Erro ao carregar Sprints");
             }
@@ -352,31 +349,10 @@
                 listaSprints.innerHTML = "SEM SPRINT CADASTRADA!!!";
                 return;
             }
-            data.forEach((a, index) => {
-                const div = document.createElement("div");
-                div.className = "form-check mb-2";
-                div.innerHTML = `
-                <input
-                    class="form-check-input sprint-check"
-                    type="checkbox"
-                    id="sprint_${a.idsprint}"
-                    value="${a.idsprint}"
-                    ${index === 0 ? "checked" : ""}
-                    onchange="atualizarQuadro()">
-
-                <label class="form-check-label"
-                       for="sprint_${a.idsprint}">
-                    ${a.idsprint} - ${a.descsprint}
-                    - Período:
-                    ${formatarData(a.dtiniciosprint)}
-                    -
-                    ${formatarData(a.dtfinalsprint)}
-                </label>
-            `;
-
-                listaSprints.appendChild(div);
+            console.log("Dados recebidos: ", data);
+            data.forEach(a => {
+                alert(a.idsprint);
             });
-
         } catch (error) {
             mostrarMensagemNaTela("resultado", error.message, "error");
         }
