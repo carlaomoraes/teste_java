@@ -39,7 +39,6 @@ public class SprintService {
     private final SprintHistoricoRepository sprintHistoricoRepository;
     private final SprintHistoricoService sprintHistoricoService;
 
-
     public SprintService(
                         SprintRepository sprintRepository,
                         EmpreendimentoService empreendimentoService,
