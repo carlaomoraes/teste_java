@@ -59,7 +59,7 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
                 SUM(t.horas_realizadas),
                 "",
                 "",
-                COALESCE(sum(t.horas_estimadas / t.horas_realizadas),0)                 
+                COALESCE(sum(t.horas_estimadas / t.horas_realizadas),0)
     )
     FROM Sprint s
     JOIN SprintEstoria se on se.sprint.idsprint = s.idsprint
@@ -93,7 +93,7 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
                 SUM(t.horas_realizadas),
                 "",
                 "",
-                COALESCE(sum(t.horas_estimadas / t.horas_realizadas),0)                 
+                COALESCE(sum(t.horas_estimadas / t.horas_realizadas),0)
     )
     FROM Sprint s
     JOIN SprintEstoria se on se.sprint.idsprint = s.idsprint

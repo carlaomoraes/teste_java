@@ -1,7 +1,6 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Record.Relatorios.RelatorioSprintDTO;
-import br.com.taskcontroller.Service.EstoriaService;
 import br.com.taskcontroller.Service.RelatoriosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
