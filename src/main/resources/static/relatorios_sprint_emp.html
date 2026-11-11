@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskController 1.0</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS específico da tela -->
+    <link rel="stylesheet" href="css/pages/backlog.css">
+    <link rel="stylesheet" href="css/pages/funcoes.css">
+</head>
+
+<body>
+<script src="js/funcoes.js"></script>
+<script src="js/mensagens.js"></script>
+
+
+<div class="card shadow-sm mb-3">
+    <div class="card-header bg-secondary text-white">
+        <strong>Relatórios Gerenciais - Empreendimento X Sprints</strong>
+    </div>
+
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+
+            <!-- EMPREENDIMENTO -->
+            <div class="col-md-7">
+                <label for="comboEmpreendimento"
+                       class="form-label fw-semibold">
+                    Empreendimento *
+                </label>
+
+                <select id="comboEmpreendimento"
+                        class="form-select"
+                        onchange="carregarSprintsRelatorio(document.getElementById('comboEmpreendimento').value)">
+                    <option value="">Selecione...</option>
+                </select>
+            </div>
+
+            <!-- SPRINTS -->
+            <div class="col-md-7">
+                <label class="form-label fw-semibold">
+                    Sprints *
+                </label>
+
+                <div class="dropdown">
+                    <button id="btnSelecionarSprints"
+                            class="btn btn-outline-secondary dropdown-toggle w-100 text-start"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            data-bs-auto-close="outside"
+                            aria-expanded="false">
+                        Selecione as Sprints...
+                    </button>
+
+                    <div id="listaSprints"
+                         class="dropdown-menu p-3 w-100"
+                         style="max-height: 260px; overflow-y: auto;">
+                        <span class="text-muted">
+                            Selecione um empreendimento.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-group" data-toggle="buttons-radio">
+           <button type="button" class="btn btn-listar" onclick="listarTipoPapel()">Imprimir</button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+        </div>
+
+    </div>
+</div>
+
+<div id="resultadoRelatorio"></div>
+</body>
+</html>
+<script>
+    const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+    const API_SPRINT = 'http://localhost:8080/sprints';
+
+
+    // ==============================================================
+    // CARREGAR COMBOS
+    // ==============================================================
+    async function carregarEmpreendimento() {
+        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+        try {
+            const resposta = await fetch(`${API_EMPREENDIMENTO}/montaComboEmpreendimento`);
+            const empreendimentos = await resposta.json();
+            comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
+            empreendimentos.forEach(e => {
+                const opcao = document.createElement('option');
+                opcao.value = e.idempreendimento;
+                opcao.textContent = e.descempreendimento;
+                comboEmpreendimento.appendChild(opcao);
+            });
+        } catch (error) {
+            mostrarMensagemNaTela( "resultadoRelatorio",MSG.erroCarregar("EMPREENDIMENTO"), "error");
+        }
+    }
+    // ==============================================================
+    // INICIALIZAÇÃO
+    // ==============================================================
+    document.addEventListener('DOMContentLoaded',() => {
+            carregarEmpreendimento();
+        }
+    );
+    // 2. Attach the 'change' event listener
+    async function carregarSprintsRelatorio(idEmpreendimento) {
+        const lista = document.getElementById("listaSprints");
+        lista.innerHTML = "";
+
+        if (!idEmpreendimento) {
+            lista.innerHTML = `<span class="text-muted">Selecione um empreendimento.</span>`;
+            atualizarSelecaoSprints();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_SPRINT}/listar/DTO/${idEmpreendimento}`);
+            if (!response.ok) {
+                throw new Error(`Erro ao carregar Sprints: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Dados recebidos da API:", data);
+
+            // Como o dado é um array direto, garantimos que ele existe
+            const sprintsArray = Array.isArray(data) ? data : [];
+
+            if (sprintsArray.length === 0) {
+                lista.innerHTML = `<span class="text-muted">Nenhuma Sprint encontrada.</span>`;
+                atualizarSelecaoSprints();
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+
+            sprintsArray.forEach(sprint => {
+                const div = document.createElement("div");
+                div.className = "form-check mb-3";
+
+                // ATENÇÃO: As chaves aqui usam letras minúsculas idênticas ao seu console.log
+                div.innerHTML = `
+                <input class="form-check-input sprint-check"
+                       type="checkbox"
+                       id="sprint_${sprint.idsprint}"
+                       value="${sprint.idsprint}">
+
+                <label class="form-check-label" for="sprint_${sprint.idsprint}">
+                    <strong>${sprint.descsprint}</strong>
+                    <small class="d-block text-muted">
+                        ${formatarData(sprint.dtiniciosprint)} até ${formatarData(sprint.dtfinalsprint)}
+                    </small>
+                    <small style="color: ${sprint.cor || '#6c757d'}">
+                        ${sprint.descstatus}
+                    </small>
+                </label>
+            `;
+                fragment.appendChild(div);
+            });
+
+            lista.appendChild(fragment);
+
+            // Adiciona os eventos de mudança após os elementos existirem no DOM
+            document.querySelectorAll(".sprint-check").forEach(checkbox => {
+                checkbox.addEventListener("change", atualizarSelecaoSprints);
+            });
+
+            atualizarSelecaoSprints();
+
+        } catch (error) {
+            console.error("Erro no carregamento:", error);
+            mostrarMensagemNaTela("resultadoRelatorio", error.message, "error");
+        }
+    }
+    function atualizarSelecaoSprints() {
+        const selecionadas = document.querySelectorAll(
+            ".sprint-check:checked"
+        );
+
+        const botao = document.getElementById("btnSelecionarSprints");
+
+        const quantidade = selecionadas.length;
+
+        botao.textContent = quantidade === 0
+            ? "Selecione as Sprints..."
+            : `${quantidade} Sprint${quantidade > 1 ? "s" : ""} selecionada${quantidade > 1 ? "s" : ""}`;
+    }
+</script>

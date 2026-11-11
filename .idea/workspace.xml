@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Manutenção do quadro sprint para mostras multiplas sprints">
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/RelatoriosController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Relatorios/RelatorioSprintDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/RelatoriosSprintRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/RelatoriosService.java" afterDir="false" />
+    <list default="true" id="a0dad436-ba0f-496f-9dbe-baea63249fd2" name="Changes" comment="Começando os relatórios gerenciais">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/relatorios_sprint_emp.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/relatorios_sprint_periodo.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/SprintService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/quadroKS.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/RelatoriosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Controller/RelatoriosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Relatorios/RelatorioSprintDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Record/Relatorios/RelatorioSprintDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/RelatoriosSprintRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Respository/RelatoriosSprintRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/RelatoriosService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/taskcontroller/Service/RelatoriosService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +25,7 @@
     </colors>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="290" />
+    <option name="cachedIndexableFilesCount" value="295" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -80,61 +81,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="5.819315713121944E-16" />
-      <entry key="MS500" value="8.973758627730552E-4" />
-      <entry key="S2" value="0.17323154876863509" />
-      <entry key="S5" value="0.5255554572078491" />
-      <entry key="S10" value="0.876833487366957" />
-      <entry key="S30" value="1.5373446688690355" />
-      <entry key="S60" value="2.167228320539021" />
-      <entry key="M2" value="3.151897148515981" />
-      <entry key="M5" value="4.935131277552728" />
-      <entry key="M10" value="7.905012337682642" />
-      <entry key="M15" value="12.28030866630643" />
-      <entry key="M30" value="27.958802948847772" />
-      <entry key="H1" value="56.02157374779916" />
-      <entry key="H2" value="100.51662034921304" />
-      <entry key="H4" value="158.7761210496665" />
-      <entry key="D1" value="484.0708361879953" />
-      <entry key="W1" value="1694.9136518611078" />
+      <entry key="MS100" value="1.000000000014961" />
+      <entry key="MS500" value="1.0068389947643075" />
+      <entry key="S2" value="1.2885907280321203" />
+      <entry key="S5" value="1.6743119843448429" />
+      <entry key="S10" value="2.107549593116385" />
+      <entry key="S30" value="3.2123377409472473" />
+      <entry key="S60" value="3.900588467197956" />
+      <entry key="M2" value="4.388488668192036" />
+      <entry key="M5" value="5.172499141368431" />
+      <entry key="M10" value="7.448094784832937" />
+      <entry key="M15" value="10.188581379732797" />
+      <entry key="M30" value="17.805517643736586" />
+      <entry key="H1" value="29.02985804126422" />
+      <entry key="H2" value="53.04016737463295" />
+      <entry key="H4" value="110.84658857960397" />
+      <entry key="D1" value="489.98640829283147" />
+      <entry key="W1" value="1746.5482621410374" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000017225771474" />
-      <entry key="S5" value="1.0049533442604697" />
-      <entry key="S10" value="1.073284055883133" />
-      <entry key="S30" value="1.659459117855476" />
-      <entry key="S60" value="2.468165908076999" />
-      <entry key="M2" value="3.480438288084642" />
-      <entry key="M5" value="5.493135241347512" />
-      <entry key="M10" value="9.0587586335916" />
-      <entry key="M15" value="12.394944101722144" />
-      <entry key="M30" value="19.40015863582933" />
-      <entry key="H1" value="26.763974855446637" />
-      <entry key="H2" value="35.16034493984002" />
-      <entry key="H4" value="48.040865244341084" />
-      <entry key="D1" value="228.013462146935" />
-      <entry key="W1" value="925.0817936717302" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="4.858464311308932E-299" />
+      <entry key="S2" value="2.643821140289777E-75" />
+      <entry key="S5" value="1.5809375200802826E-30" />
+      <entry key="S10" value="1.5405180492119362E-15" />
+      <entry key="S30" value="1.755256921751386E-5" />
+      <entry key="S60" value="0.005892272639977228" />
+      <entry key="M2" value="0.11036938538241867" />
+      <entry key="M5" value="0.7689453863118733" />
+      <entry key="M10" value="1.809654450089168" />
+      <entry key="M15" value="2.597191280626779" />
+      <entry key="M30" value="4.525465830772227" />
+      <entry key="H1" value="8.79765402922143" />
+      <entry key="H2" value="19.465892011110565" />
+      <entry key="H4" value="40.359377857045914" />
+      <entry key="D1" value="228.5329037194923" />
+      <entry key="W1" value="943.8664392099827" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="4.3702396041404905E-4" />
-      <entry key="MS500" value="0.21293909269040684" />
-      <entry key="S2" value="0.7726600226293212" />
-      <entry key="S5" value="1.2772355283326222" />
-      <entry key="S10" value="1.7838809034455254" />
-      <entry key="S30" value="3.081237727308608" />
-      <entry key="S60" value="4.523897902976639" />
-      <entry key="M2" value="6.521666649496039" />
-      <entry key="M5" value="10.324823967782653" />
-      <entry key="M10" value="16.873933399569943" />
-      <entry key="M15" value="24.596765995290028" />
-      <entry key="M30" value="47.30358070498703" />
-      <entry key="H1" value="82.7505792419896" />
-      <entry key="H2" value="135.6552550796543" />
-      <entry key="H4" value="206.80173092886596" />
-      <entry key="D1" value="712.0708462008104" />
-      <entry key="W1" value="2619.9888263479975" />
+      <entry key="MS100" value="0.8645372313208896" />
+      <entry key="MS500" value="0.977959477634458" />
+      <entry key="S2" value="1.2793440745184477" />
+      <entry key="S5" value="1.6689069429807122" />
+      <entry key="S10" value="2.098529345767542" />
+      <entry key="S30" value="3.196129036608031" />
+      <entry key="S60" value="3.893333710054574" />
+      <entry key="M2" value="4.489443128741638" />
+      <entry key="M5" value="5.933370293961949" />
+      <entry key="M10" value="9.249059545345649" />
+      <entry key="M15" value="12.777034235959905" />
+      <entry key="M30" value="22.32176265072187" />
+      <entry key="H1" value="37.81713595326458" />
+      <entry key="H2" value="72.4944579037102" />
+      <entry key="H4" value="151.19391809950204" />
+      <entry key="D1" value="718.5063459050689" />
+      <entry key="W1" value="2690.4079752847547" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -193,6 +194,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
@@ -452,14 +454,6 @@
       <workItem from="1782153515768" duration="921000" />
       <workItem from="1782154908664" duration="43037000" />
       <workItem from="1782394785478" duration="38663000" />
-    </task>
-    <task id="LOCAL-00212" summary="Ajustes na transição da sprint">
-      <option name="closed" value="true" />
-      <created>1790270108315</created>
-      <option name="number" value="00212" />
-      <option name="presentableId" value="LOCAL-00212" />
-      <option name="project" value="LOCAL" />
-      <updated>1790270108315</updated>
     </task>
     <task id="LOCAL-00213" summary="Ajustes na ordem das estórias na sprint">
       <option name="closed" value="true" />
@@ -845,7 +839,15 @@
       <option name="project" value="LOCAL" />
       <updated>1794231174590</updated>
     </task>
-    <option name="localTasksCounter" value="261" />
+    <task id="LOCAL-00261" summary="Começando os relatórios gerenciais">
+      <option name="closed" value="true" />
+      <created>1794339440269</created>
+      <option name="number" value="00261" />
+      <option name="presentableId" value="LOCAL-00261" />
+      <option name="project" value="LOCAL" />
+      <updated>1794339440270</updated>
+    </task>
+    <option name="localTasksCounter" value="262" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -899,7 +901,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ajustes na ordem das estórias na sprint" />
     <MESSAGE value="Começando quadro kamban" />
     <MESSAGE value="Quadro kanbam - Ausencia ok" />
     <MESSAGE value="Quadro kanbam - Roadmad / Ausencia -&gt; OK" />
@@ -924,7 +925,8 @@
     <MESSAGE value="Montagem do histórico da Sprint" />
     <MESSAGE value="Manutenção do quadro sprint" />
     <MESSAGE value="Manutenção do quadro sprint para mostras multiplas sprints" />
-    <option name="LAST_COMMIT_MESSAGE" value="Manutenção do quadro sprint para mostras multiplas sprints" />
+    <MESSAGE value="Começando os relatórios gerenciais" />
+    <option name="LAST_COMMIT_MESSAGE" value="Começando os relatórios gerenciais" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

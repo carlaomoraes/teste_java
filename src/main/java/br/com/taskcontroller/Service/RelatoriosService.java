@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.com.taskcontroller.Record.Relatorios.RelatorioSprintDTO;
 import br.com.taskcontroller.Respository.RelatoriosSprintRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,7 +30,8 @@ public class RelatoriosService {
                     Long estimadas = r.totalHorasEstimadas();
                     Long realizadas = r.totalHorasRealizadas();
 
-                    Long progresso = 0L;
+                    long progresso = 0L;
+
 
                     if (estimadas != null &&
                             estimadas> 0 &&
@@ -41,6 +43,7 @@ public class RelatoriosService {
                     return new RelatorioSprintDTO(
                             r.idempreendimento(),
                             r.descempreendimento(),
+                            r.idsprint(),
                             r.descsprint(),
                             r.dtiniciosprint(),
                             r.dtfinalsprint(),
@@ -49,8 +52,94 @@ public class RelatoriosService {
                             r.contTarefas(),
                             r.totalHorasEstimadas(),
                             r.totalHorasRealizadas(),
-                            resolveTempo.transformarToSexagesimal(r.totalHorasEstimadas()),
-                            resolveTempo.transformarToSexagesimal(r.totalHorasRealizadas()),
+                            resolveTempo.transformarToSexagesimal(estimadas),
+                            resolveTempo.transformarToSexagesimal(realizadas),
+                            progresso
+                    );
+                })
+                .toList();
+    }
+    public List<RelatorioSprintDTO> relatorioSprintPorID(
+            List<Long> idSprint) {
+
+        ResolveTempo resolveTempo = new ResolveTempo();
+
+        List<RelatorioSprintDTO> relatorios =
+                repository.relatorioSprintPorID(idSprint);
+
+        return relatorios.stream()
+                .map(r -> {
+
+                    Long estimadas = r.totalHorasEstimadas();
+                    Long realizadas = r.totalHorasRealizadas();
+
+                    long progresso = 0L;
+
+
+                    if (estimadas != null &&
+                            estimadas> 0 &&
+                            realizadas != null) {
+
+                        progresso = (realizadas * 100 / estimadas);
+                    }
+
+                    return new RelatorioSprintDTO(
+                            r.idempreendimento(),
+                            r.descempreendimento(),
+                            r.idsprint(),
+                            r.descsprint(),
+                            r.dtiniciosprint(),
+                            r.dtfinalsprint(),
+                            r.descstatus(),
+                            r.contEstorias(),
+                            r.contTarefas(),
+                            r.totalHorasEstimadas(),
+                            r.totalHorasRealizadas(),
+                            resolveTempo.transformarToSexagesimal(estimadas),
+                            resolveTempo.transformarToSexagesimal(realizadas),
+                            progresso
+                    );
+                })
+                .toList();
+    }
+    public List<RelatorioSprintDTO> relatorioSprintPorPeriodo(
+            LocalDate dataInicio, LocalDate dataFim) {
+
+        ResolveTempo resolveTempo = new ResolveTempo();
+
+        List<RelatorioSprintDTO> relatorios =
+                repository.relatorioSprintPorPeriodo(dataInicio, dataFim);
+
+        return relatorios.stream()
+                .map(r -> {
+
+                    Long estimadas = r.totalHorasEstimadas();
+                    Long realizadas = r.totalHorasRealizadas();
+
+                    long progresso = 0L;
+
+
+                    if (estimadas != null &&
+                            estimadas> 0 &&
+                            realizadas != null) {
+
+                        progresso = (realizadas * 100 / estimadas);
+                    }
+
+                    return new RelatorioSprintDTO(
+                            r.idempreendimento(),
+                            r.descempreendimento(),
+                            r.idsprint(),
+                            r.descsprint(),
+                            r.dtiniciosprint(),
+                            r.dtfinalsprint(),
+                            r.descstatus(),
+                            r.contEstorias(),
+                            r.contTarefas(),
+                            r.totalHorasEstimadas(),
+                            r.totalHorasRealizadas(),
+                            resolveTempo.transformarToSexagesimal(estimadas),
+                            resolveTempo.transformarToSexagesimal(realizadas),
                             progresso
                     );
                 })
