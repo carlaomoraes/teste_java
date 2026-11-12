@@ -216,4 +216,6 @@ ORDER BY s.idsprint
       AND t.data_fim_prevista < :hoje
 """)
     Long contarAtrasadas(Long idSprint, LocalDate hoje);
+
+
 }

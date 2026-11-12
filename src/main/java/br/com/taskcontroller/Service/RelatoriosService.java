@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Service;
 
 
+import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Utilidades.ResolveTempo;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,12 +104,12 @@ public class RelatoriosService {
                 .toList();
     }
     public List<RelatorioSprintDTO> relatorioSprintPorPeriodo(
-            LocalDate dataInicio, LocalDate dataFim) {
+            LocalDate data_inicial,
+            LocalDate data_final) {
 
         ResolveTempo resolveTempo = new ResolveTempo();
 
-        List<RelatorioSprintDTO> relatorios =
-                repository.relatorioSprintPorPeriodo(dataInicio, dataFim);
+        List<RelatorioSprintDTO> relatorios = repository.relatorioSprintPorPeriodo(data_inicial, data_final);
 
         return relatorios.stream()
                 .map(r -> {
@@ -144,5 +145,9 @@ public class RelatoriosService {
                     );
                 })
                 .toList();
+    }
+
+    public List<SprintListagemDTO> listarSprints() {
+        return repository.listarSprints();
     }
 }

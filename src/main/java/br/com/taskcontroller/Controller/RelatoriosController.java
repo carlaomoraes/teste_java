@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Controller;
 
 import br.com.taskcontroller.Record.Relatorios.RelatorioSprintDTO;
+import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Service.RelatoriosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,16 @@ public class RelatoriosController {
 
     @GetMapping("/sprints/periodo")
     public ResponseEntity<List<RelatorioSprintDTO>> listarSprintsPorPeriodo(
-            @RequestParam LocalDate data_inicio,
-            @RequestParam LocalDate data_fim) {
-        return ResponseEntity.ok(service.relatorioSprintPorPeriodo(data_inicio, data_fim));
+            @RequestParam LocalDate data_inicial,
+            @RequestParam LocalDate data_final) {
+        return ResponseEntity.ok(service.relatorioSprintPorPeriodo(data_inicial, data_final));
     }
+
+    // LISTAR TODAS AS SPRINTS
+    @GetMapping("/listar/DTO/Sprints")
+    public List<SprintListagemDTO> listarSrints() {
+        return service.listarSprints();
+    }
+
 
 }

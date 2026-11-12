@@ -1,6 +1,7 @@
 package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.Modelo.Sprint;
+import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -114,4 +115,23 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
     List<RelatorioSprintDTO> relatorioSprintPorPeriodo(@Param("data_inicial") LocalDate data_inicial,
                                                        @Param("data_final") LocalDate data_final);
 
+    @Query("""
+    select new br.com.taskcontroller.Record.Sprint.SprintListagemDTO(
+            s.empreendimento.idempreendimento,
+            s.idsprint,
+            s.descsprint,
+            s.dtiniciosprint,
+            s.dtfinalsprint,
+            s.visivel,
+            s.status.idstatus,
+            s.status.descstatus,
+            s.status.cor,
+            DATEDIFF(s.dtfinalsprint,s.dtiniciosprint))
+    from Sprint s
+    JOIN StatusEntidades se on s.status.idstatus = se.idstatus
+     AND se.cancelado = true
+     AND se.finalizado = true
+ORDER BY s.idsprint
+""")
+    List<SprintListagemDTO> listarSprints();
 }

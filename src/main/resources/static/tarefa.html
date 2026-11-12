@@ -543,18 +543,18 @@
         }
     }
     async function mudarStatusTarefa(idTarefa,idStatus) {
-        const idUsuario = Number(sessionStorage.getItem("usuarioIdUsuario"));
-        const resposta = await fetch(`${API_TAREFA}/${idTarefa}/status/${idStatus}`,{
+        try {
+            const idUsuario = Number(sessionStorage.getItem("usuarioIdUsuario"));
+            const resposta = await fetch(`${API_TAREFA}/${idTarefa}/status/${idStatus}`,{
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ idUsuario })
             }
-        );
-
-        if (!resposta.ok) {
-            throw new Error("Erro ao alterar status da tarefa");
+            );
+        } catch (error) {
+            mostrarMensagemNaTela("resultado_tarefa",error.message, "error");
         }
     }
     async function listarHistorico(idTarefa) {

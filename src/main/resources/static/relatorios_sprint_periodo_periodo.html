@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskController 1.0</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS específico da tela -->
+    <link rel="stylesheet" href="css/pages/backlog.css">
+    <link rel="stylesheet" href="css/pages/funcoes.css">
+</head>
+
+<body>
+<script src="js/funcoes.js"></script>
+<script src="js/mensagens.js"></script>
+
+
+<div class="card shadow-sm mb-3">
+    <div class="card-header bg-secondary text-white">
+        <strong>Relatórios Gerenciais - Por período</strong>
+    </div>
+
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <h1>Período</h1>
+            <label for="datainicial">Data início:</label> <input type="date" id="datainicial" name="datainicial">
+            <label for="datafinal">Data Final:</label> <input type="date" id="datafinal" name="datafinal">
+        </div>
+        <div class="btn-group" data-toggle="buttons-radio">
+            <button type="button" class="btn btn-salvar" onclick="filtarSprint(document.getElementById('datainicial').value,document.getElementById('datafinal').value)">Filtrar</button>
+            <button type="button" class="btn btn-listar" onclick="imprimirSprint()">Imprimir</button>
+            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+        </div>
+    </div>
+</div>
+
+<div id="resultadoRelatorio"></div>
+</body>
+</html>
+<script>
+    const API_SPRINT = 'http://localhost:8080/relatorios';
+
+    // ==============================================================
+    // INICIALIZAÇÃO
+    // ==============================================================
+    document.addEventListener('DOMContentLoaded',() => {
+        }
+    );
+    async function filtarSprint(datainicial, datafinal) {
+        try {
+            const resposta = await fetch(`${API_SPRINT}/sprints/periodo?data_inicial=${datainicial}&data_final=${datafinal}`);
+            const sprint = await resposta.json();
+
+
+        } catch (error) {
+            mostrarMensagemNaTela( "resultadoRelatorio",MSG.erroCarregar("SPRINTS"), "error");
+        }
+    }
+
+</script>
