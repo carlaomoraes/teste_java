@@ -10,6 +10,7 @@ public record RelatorioSprintDTO(
     LocalDate dtiniciosprint,
     LocalDate dtfinalsprint,
     String descstatus,
+    String corstatus,
     Long contEstorias,
     Long contTarefas,
     Long totalHorasEstimadas,

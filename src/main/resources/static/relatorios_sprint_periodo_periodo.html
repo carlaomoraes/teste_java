@@ -40,9 +40,9 @@
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
     </div>
-</div>
 
-<div id="resultadoRelatorio"></div>
+    <div id="resultadoRelatorio"></div>
+</div>
 </body>
 </html>
 <script>
@@ -57,11 +57,41 @@
     async function filtarSprint(datainicial, datafinal) {
         try {
             const resposta = await fetch(`${API_SPRINT}/sprints/periodo?data_inicial=${datainicial}&data_final=${datafinal}`);
-            const sprint = await resposta.json();
+            const data = await resposta.json();
+            let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                          <thead> <tr style="cursor:pointer;">
+                                <th>ID</th>
+                                <th>Descrição</th>
+                                <th>Data Início</th>
+                                <th>Data Fim</th>
+                                <th>Quantidade de estórias</th>
+                                <th>Quantidade de tarefas</th>
+                                <th>Status</th>
+                                <th>Horas estimadas</th>
+                                <th>Horas realizadas</th>
+                                <th>Progresso</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            data.forEach(sprint => {
+                tabela += `<tr style="cursor:pointer;">
+                        <td>${sprint.idsprint}</td>
+                        <td>${sprint.descsprint || ''}</td>
+                        <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
+                        <td>${formatarDataBR(sprint.dtfinalsprint)}</td>
+                        <td>${sprint.contEstorias}</td>
+                        <td>${sprint.contTarefas}</td>
+                        <td> <span class="badge" style="background-color:${sprint.corstatus}; color:white;">${sprint.descstatus}</span></td>
+                        <td>${sprint.totalHorasEstimadas60}</td>
+                        <td>${sprint.totalHorasRealizadas60}</td>
 
-
+                    </tr>
+                `;
+            });
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadoRelatorio').innerHTML = tabela;
         } catch (error) {
-            mostrarMensagemNaTela( "resultadoRelatorio",MSG.erroCarregar("SPRINTS"), "error");
+            mostrarMensagemNaTela("resultadoRelatorio",MSG.erroCarregar("SPRINT"),"error");
         }
     }
 
