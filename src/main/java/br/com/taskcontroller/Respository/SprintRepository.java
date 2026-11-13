@@ -216,6 +216,25 @@ ORDER BY s.idsprint
       AND t.data_fim_prevista < :hoje
 """)
     Long contarAtrasadas(Long idSprint, LocalDate hoje);
+    @Query("""
+    select new br.com.taskcontroller.Record.Sprint.SprintListagemDTO(
+            s.empreendimento.idempreendimento,
+            s.idsprint,
+            s.descsprint,
+            s.dtiniciosprint,
+            s.dtfinalsprint,
+            s.visivel,
+            s.status.idstatus,
+            s.status.descstatus,
+            s.status.cor,
+            DATEDIFF(s.dtfinalsprint,s.dtiniciosprint))
+    from Sprint s
+    JOIN StatusEntidades se on s.status.idstatus = se.idstatus
+   where s.status.finalizado = false
+     and s.status.cancelado = false
+ORDER BY s.idsprint
+""")
+    List<SprintListagemDTO> listarTodas();
 
 
 }

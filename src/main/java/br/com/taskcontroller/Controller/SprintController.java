@@ -80,7 +80,7 @@ public class SprintController {
         return ResponseEntity.ok().body(service.atualizar(Sprint));
     }
 
-    // LISTAR
+    // LISTAR POR EMPREENDIMENTO
     @GetMapping("/listar/DTO/{idEmpreendimento}")
     public List<SprintListagemDTO> listar(@PathVariable Long idEmpreendimento) {
         return service.listar(idEmpreendimento);
@@ -163,5 +163,9 @@ public class SprintController {
                                                             @PathVariable Long idStatusOrigem) {
         return service.buscarStatusDisponiveis(idTipoEntidade, idStatusOrigem);
     }
-
+    // LISTAR TODAS SPRINT
+    @GetMapping("/listar/DTO/")
+    public List<SprintListagemDTO> listarTodas() {
+        return service.listarTodas();
+    }
 }

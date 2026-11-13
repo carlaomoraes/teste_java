@@ -1,0 +1,947 @@
+/* Reset básico e tipografia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.05);
+    width: 100%;
+    max-width: 1000px;   /* antes era 1500 */
+    margin: auto;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   ESTRUTURA DAS ABAS (CSS)
+   ========================================================================== */
+
+/* Container dos botões das abas */
+.abas-container {
+    display: flex;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 20px;
+}
+
+/* Estilo de cada botão de aba */
+.aba-botao {
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #64748b;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent; /* Reserva o espaço para a borda ativa */
+    margin-bottom: -2px; /* Joga a borda por cima da linha do container */
+    transition: all 0.2s ease-in-out;
+}
+
+.aba-botao:hover {
+    color: #1e293b;
+    background-color: #f8fafc;
+}
+
+/* Estado da Aba Ativa (Selecionada) */
+.aba-botao.ativa {
+    color: #2563eb; /* Azul padrão do sistema */
+    border-bottom: 2px solid #2563eb;
+}
+
+/* Container do conteúdo */
+.conteudo-aba {
+    display: none; /* 🌟 ESCONDE TODAS AS ABAS POR PADRÃO */
+    padding: 10px 5px;
+    animation: surgir 0.3s ease-in-out; /* Efeito visual suave */
+}
+
+/* Estado do Conteúdo Ativo */
+.conteudo-aba.ativo {
+    display: block; /* 🌟 MOSTRA APENAS A ABA ATIVA */
+}
+
+/* Pequena animação para o conteúdo aparecer suavemente */
+@keyframes surgir {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   Botões (Grupo)
+   ========================================================================== */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Ajusta em telas menores */
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Botão Principal (Salvar) */
+.btn-group .btn:nth-child(1) {
+    background-color: #2563eb;
+    color: white;
+}
+.btn-group .btn:nth-child(1):hover { background-color: #1d4ed8; }
+
+/* Botão Secundário (Listar) */
+.btn-group .btn:nth-child(2) {
+    background-color: #10b981;
+    color: white;
+}
+.btn-group .btn:nth-child(2):hover { background-color: #059669; }
+
+/* Botão Buscar */
+.btn-group .btn:nth-child(3) {
+    background-color: #64748b;
+    color: white;
+}
+.btn-group .btn:nth-child(3):hover { background-color: #475569; }
+
+/* Botão Voltar */
+.btn-group .btn:nth-child(4) {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+.btn-group .btn:nth-child(4):hover { background-color: #cbd5e1; }
+
+.btn:active { transform: scale(0.98); }
+/* ==========================================================================
+   Tabela de Resultados Dinâmica
+   ========================================================================== */
+table.table {
+    width: 100%;
+    border-collapse: collapse; /* Remove aquelas bordas duplas antigas */
+    margin-top: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden; /* Garante o arredondamento dos cantos */
+    border: 1px solid #e2e8f0;
+}
+
+table.table th {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 14px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+table.table td {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Efeito Zebrado nas linhas da tabela */
+table.table tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+/* Efeito de Hover ao passar o mouse na linha */
+table.table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}
+
+/* Botão de Excluir específico dentro da tabela */
+table.table .btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    background-color: #ef4444;
+    color: white;
+}
+table.table .btn:hover { background-color: #dc2626; }
+/*********************************/
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+    margin-top: 16px;
+    text-align: left;
+}
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+}
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 4px;
+}
+
+/* Efeito de foco azul nos inputs */
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 12px;
+    cursor: pointer;
+    appearance: none; /* Remove a seta feia padrão do navegador */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+}
+
+select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+/* ==========================================================================
+   Checkboxes Alinhados
+   ========================================================================== */
+.checkbox-container {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #3b82f6; /* Deixa o check azul padrão */
+}
+
+.checkbox-group label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Botões (Grupo)
+   ========================================================================== */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Ajusta em telas menores */
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form-grid > div{
+    display:flex;
+    flex-direction:column;
+}
+
+.btn-salvar { background-color: var(--primary-color); color: white; }
+.btn-salvar:hover { background-color: #112d55; }
+
+.btn-listar { background-color: var(--status-green); color: white; }
+.btn-listar:hover { background-color: #059669; }
+
+.btn-voltar { background-color: #e2e8f0; color: #475569; }
+.btn-voltar:hover { background-color: #cbd5e1; }
+
+.btn-add { background-color: var(--primary-color); color: white; width: 100%; }
+.btn-remove { background-color: #8c97a5; color: white; width: 100%; }
+
+.btn:active { transform: scale(0.98); }
+
+
+/* =========================================================
+   ROADMAP
+   ========================================================= */
+
+.roadmap {
+    position: relative;
+    padding: 10px 5px 10px 35px;
+}
+
+
+/* =========================================================
+   SPRINT
+   ========================================================= */
+
+.roadmap-sprint {
+    position: relative;
+    margin-bottom: 28px;
+}
+
+
+/* =========================================================
+   CABEÇALHO DA SPRINT
+   ========================================================= */
+
+.roadmap-sprint-header {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+
+    padding: 8px 12px;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    font-size: 14px;
+}
+
+
+.roadmap-sprint-header::before {
+    content: "";
+
+    position: absolute;
+
+    left: -31px;
+    top: 13px;
+
+    width: 14px;
+    height: 14px;
+
+    background-color: #6c757d;
+
+    border-radius: 50%;
+
+    border: 3px solid #fff;
+
+    box-shadow: 0 0 0 2px #dee2e6;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   SPRINT ATUAL
+   ========================================================= */
+
+.roadmap-sprint.atual .roadmap-sprint-header::before {
+    background-color: #198754;
+    box-shadow: 0 0 0 2px #198754;
+}
+
+
+.roadmap-sprint-nome {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-right: 20px;
+}
+
+
+.roadmap-sprint-datas {
+    font-size: 13px;
+    color: #64748b;
+}
+
+
+/* =========================================================
+   BADGE ATUAL
+   ========================================================= */
+
+.roadmap-atual {
+    margin-left: auto;
+
+    padding: 4px 9px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #198754;
+    background-color: #d1e7dd;
+
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   ESTÓRIAS
+   ========================================================= */
+
+.roadmap-stories {
+    padding-top: 4px;
+}
+
+
+.roadmap-story {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 42px;
+
+    padding: 6px 8px 6px 0;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+
+.roadmap-story:hover {
+    background-color: #f8fafc;
+}
+
+
+/* =========================================================
+   LINHA DA TIMELINE
+   ========================================================= */
+
+.roadmap-story-linha {
+    width: 25px;
+    height: 1px;
+
+    margin-right: 8px;
+
+    background-color: #cbd5e1;
+}
+
+
+.roadmap-story-linha::before {
+    content: "";
+
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    margin-left: -1px;
+
+    border-radius: 50%;
+
+    background-color: #94a3b8;
+}
+
+
+/* Última estória */
+.roadmap-story.ultima .roadmap-story-linha {
+    background: transparent;
+}
+
+
+/* =========================================================
+   CONTEÚDO DA ESTÓRIA
+   ========================================================= */
+
+.roadmap-story-conteudo {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    min-width: 0;
+}
+
+
+.roadmap-story-nome {
+    flex: 1;
+
+    min-width: 0;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #334155;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   ÉPICO
+   ========================================================= */
+
+.roadmap-story-epico {
+    display: flex;
+    align-items: center;
+
+    width: 220px;
+
+    font-size: 13px;
+
+    color: #64748b;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.roadmap-epico-cor {
+    display: inline-block;
+
+    flex-shrink: 0;
+
+    width: 4px;
+    height: 20px;
+
+    margin-right: 8px;
+
+    border-radius: 2px;
+}
+
+
+/* =========================================================
+   BOTÃO EXCLUIR
+   ========================================================= */
+
+.roadmap-btn-excluir {
+    flex-shrink: 0;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    margin-left: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #94a3b8;
+    background-color: transparent;
+
+    border: none;
+
+    opacity: 0;
+
+    transition:
+            opacity 0.15s ease,
+            color 0.15s ease,
+            background-color 0.15s ease;
+}
+
+
+.roadmap-story:hover .roadmap-btn-excluir {
+    opacity: 1;
+}
+
+
+.roadmap-btn-excluir:hover {
+    color: #dc2626;
+    background-color: #fee2e2;
+}
+
+
+/* =========================================================
+   LINHA VERTICAL
+   ========================================================= */
+
+.roadmap::before {
+    content: "";
+
+    position: absolute;
+
+    left: 10px;
+    top: 20px;
+    bottom: 20px;
+
+    width: 2px;
+
+    background-color: #dee2e6;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .roadmap {
+        padding-left: 28px;
+    }
+
+    .roadmap::before {
+        left: 7px;
+    }
+
+    .roadmap-sprint-header::before {
+        left: -27px;
+    }
+
+    .roadmap-sprint-nome {
+        margin-right: 10px;
+    }
+
+    .roadmap-story-epico {
+        width: 150px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .roadmap-story-epico {
+        display: none;
+    }
+
+    .roadmap-sprint-datas {
+        display: block;
+    }
+
+    .roadmap-atual {
+        margin-left: 8px;
+    }
+
+}
+
+/* =========================================================
+   ITEM DA SPRINT
+   ========================================================= */
+
+.roadmap-item {
+    position: relative;
+}
+
+
+/* Marcador da Sprint */
+.roadmap-marker {
+    position: absolute;
+
+    left: -31px;
+    top: 20px;
+
+    width: 14px;
+    height: 14px;
+
+    background-color: #6c757d;
+
+    border-radius: 50%;
+
+    border: 3px solid #fff;
+
+    box-shadow: 0 0 0 2px #dee2e6;
+
+    z-index: 2;
+}
+
+
+/* Sprint atual */
+.roadmap-item.atual .roadmap-marker {
+    background-color: #198754;
+
+    box-shadow: 0 0 0 2px #198754;
+}
+
+
+/* =========================================================
+   CARD DA SPRINT
+   ========================================================= */
+
+.roadmap .card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+
+.roadmap .card-header {
+    padding: 14px 16px;
+}
+
+
+.roadmap .card-body {
+    padding: 12px 16px;
+}
+
+
+/* =========================================================
+   ESTÓRIA
+   ========================================================= */
+
+.roadmap-estoria {
+    display: flex;
+    align-items: center;
+
+    min-height: 42px;
+
+    padding: 8px 12px;
+    margin-bottom: 6px;
+
+    border-radius: 6px;
+
+    background-color: #f8f9fa;
+
+    transition: background-color 0.15s ease;
+}
+
+
+.roadmap-estoria:last-child {
+    margin-bottom: 0;
+}
+
+
+.roadmap-estoria:hover {
+    background-color: #e9ecef;
+}
+
+
+/* =========================================================
+   COR DO ÉPICO
+   ========================================================= */
+
+.epico-cor {
+    display: inline-block;
+
+    flex-shrink: 0;
+
+    width: 4px;
+    height: 22px;
+
+    margin-right: 10px;
+
+    border-radius: 2px;
+}
+
+
+/* =========================================================
+   SPRINT ATUAL
+   ========================================================= */
+
+.roadmap-item.atual .card {
+    border-left: 4px solid #198754;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .roadmap {
+        padding-left: 28px;
+    }
+
+    .roadmap::before {
+        left: 7px;
+    }
+
+    .roadmap-marker {
+        left: -27px;
+    }
+
+    .roadmap .card-header {
+        padding: 12px;
+    }
+
+    .roadmap .card-body {
+        padding: 10px;
+    }
+
+}
+/* =========================================================
+   ROADMAP - TABELA
+   ========================================================= */
+
+.roadmap-table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.roadmap-table thead th {
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    padding: 8px 12px;
+}
+
+.roadmap-table tbody tr {
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.roadmap-table tbody td {
+    border: none;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.roadmap-table tbody td:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+.roadmap-table tbody td:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+
+/* =========================================================
+   SPRINT
+   ========================================================= */
+
+.sprint-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sprint-info strong {
+    font-size: 14px;
+    color: #212529;
+}
+
+.sprint-info span {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+
+/* =========================================================
+   PERÍODO
+   ========================================================= */
+
+.periodo-sprint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-size: 13px;
+    color: #495057;
+}
+
+.periodo-sprint i {
+    color: #adb5bd;
+}
+
+
+/* =========================================================
+   ÉPICO
+   ========================================================= */
+
+.epico-roadmap {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* =========================================================
+   ORDENAÇÃO
+   ========================================================= */
+
+.ordem-header {
+    width: 35px;
+}
+
+.ordem-coluna {
+    width: 35px;
+    text-align: center;
+}
+
+.ordem-icon {
+    font-size: 20px;
+    color: #adb5bd;
+    cursor: grab;
+}
+
+.ordem-icon:hover {
+    color: #6c757d;
+}
+
+.ordem-icon:active {
+    cursor: grabbing;
+}
+
+/* =========================================================
+   ESTÓRIA
+   ========================================================= */
+
+.estoria-roadmap {
+    font-size: 14px;
+    color: #343a40;
+    line-height: 1.4;
+}
+
+#listaSprints {
+    max-height: 300px;
+    overflow-y: auto;
+}

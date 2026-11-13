@@ -132,6 +132,10 @@ public class SprintService {
        return sprintRepository.listar(idempreendimento);
     }
 
+    public List<SprintListagemDTO> listarTodas() {
+        return sprintRepository.listarTodas();
+    }
+
     public Sprint atualizar(Sprint Sprint) {
         return sprintRepository.save(Sprint);
     }

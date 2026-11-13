@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- CSS específico da tela -->
-    <link rel="stylesheet" href="css/pages/backlog.css">
+    <link rel="stylesheet" href="css/pages/relatorios.css">
     <link rel="stylesheet" href="css/pages/funcoes.css">
 </head>
 
@@ -30,13 +30,13 @@
 
     <div class="card-body">
         <div class="row g-3 align-items-end">
-            <h1>Período</h1>
-            <label for="datainicial">Data início:</label> <input type="date" id="datainicial" name="datainicial">
-            <label for="datafinal">Data Final:</label> <input type="date" id="datafinal" name="datafinal">
+            <h1>Sprints</h1>
+
+            <div id="listaSprints"></div>
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="listarTipoPapel()">Filtrar</button>
-            <button type="button" class="btn btn-listar" onclick="listarTipoPapel()">Imprimir</button>
+            <button type="button" class="btn btn-salvar" onclick="await filtrarSprints()">Filtrar</button>
+            <button type="button" class="btn btn-listar" onclick="imprimirSprints()">Imprimir</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
 
@@ -52,89 +52,147 @@
     // ==============================================================
     // INICIALIZAÇÃO
     // ==============================================================
-    document.addEventListener('DOMContentLoaded',() => {
-        }
-    );
+    document.addEventListener("DOMContentLoaded", () => {
+        carregarSprintsRelatorio();
+    });
     // 2. Attach the 'change' event listener
-    async function carregarSprintsRelatorio(idEmpreendimento) {
-        const lista = document.getElementById("listaSprints");
-        lista.innerHTML = "";
+    async function filtrarSprints() {
+        const ids = obterSprintsSelecionadas();
 
-        if (!idEmpreendimento) {
-            lista.innerHTML = `<span class="text-muted">Selecione um empreendimento.</span>`;
-            atualizarSelecaoSprints();
+        if (ids.length === 0) {
+            alert("Selecione pelo menos uma Sprint.");
             return;
         }
 
+        const params = new URLSearchParams();
+        ids.forEach(id => params.append("idSprint", id));
+
+        const response = await fetch(
+            `${API_SPRINT}/sprints/id?${params}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Erro ao consultar Sprints.");
+        }
+
+        const dados = await response.json();
+
+        await montarTabelaRelatorio(dados);
+    }
+    async function montarTabelaRelatorio(dados) {
         try {
-            const response = await fetch(`${API_SPRINT}/listar/DTO/${idEmpreendimento}`);
+                let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                          <thead> <tr style="cursor:pointer;">
+                                <th>ID</th>
+                                <th>Descrição</th>
+                                <th>Data Início</th>
+                                <th>Data Fim</th>
+                                <th>Quantidade de estórias</th>
+                                <th>Quantidade de tarefas</th>
+                                <th>Status</th>
+                                <th>Horas estimadas</th>
+                                <th>Horas realizadas</th>
+                                <th>Progresso</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                dados.forEach(sprint => {
+                    tabela += `<tr style="cursor:pointer;">
+                        <td>${sprint.idsprint}</td>
+                        <td>${sprint.descsprint || ''}</td>
+                        <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
+                        <td>${formatarDataBR(sprint.dtfinalsprint)}</td>
+                        <td>${sprint.contEstorias}</td>
+                        <td>${sprint.contTarefas}</td>
+                        <td> <span class="badge" style="background-color:${sprint.corstatus}; color:white;">${sprint.descstatus}</span></td>
+                        <td align="right">${sprint.totalHorasEstimadas60}</td>
+                        <td align="right">${sprint.totalHorasRealizadas60}</td>
+                        <td>${sprint.progresso} %</td>
+                  </tr>
+                `;
+                });
+                tabela += `</tbody></table>`;
+                document.getElementById('resultadoRelatorio').innerHTML = tabela;
+            } catch (error) {
+                mostrarMensagemNaTela("resultadoRelatorio", MSG.erroCarregar("SPRINT"), "error");
+            }
+    }
+
+    async function carregarSprintsRelatorio() {
+        const lista = document.getElementById("listaSprints");
+        lista.innerHTML = "";
+        try {
+            const response = await fetch(`${API_SPRINT}/listar/DTO/`);
             if (!response.ok) {
-                throw new Error(`Erro ao carregar Sprints: ${response.status}`);
+                throw new Error("Erro ao carregar Sprints");
             }
 
-            const data = await response.json();
-            console.log("Dados recebidos da API:", data);
+            const sprints = await response.json();
 
-            // Como o dado é um array direto, garantimos que ele existe
-            const sprintsArray = Array.isArray(data) ? data : [];
-
-            if (sprintsArray.length === 0) {
-                lista.innerHTML = `<span class="text-muted">Nenhuma Sprint encontrada.</span>`;
-                atualizarSelecaoSprints();
-                return;
-            }
-
-            const fragment = document.createDocumentFragment();
-
-            sprintsArray.forEach(sprint => {
+            sprints.forEach(sprint => {
                 const div = document.createElement("div");
-                div.className = "form-check mb-3";
+                div.className = "form-check mb-2";
 
-                // ATENÇÃO: As chaves aqui usam letras minúsculas idênticas ao seu console.log
                 div.innerHTML = `
                 <input class="form-check-input sprint-check"
                        type="checkbox"
                        id="sprint_${sprint.idsprint}"
-                       value="${sprint.idsprint}">
+                       value="${sprint.idsprint}"
+                       onchange="atualizarSelecaoSprints()">
 
-                <label class="form-check-label" for="sprint_${sprint.idsprint}">
+                <label class="form-check-label"
+                       for="sprint_${sprint.idsprint}">
                     <strong>${sprint.descsprint}</strong>
-                    <small class="d-block text-muted">
-                        ${formatarData(sprint.dtiniciosprint)} até ${formatarData(sprint.dtfinalsprint)}
-                    </small>
-                    <small style="color: ${sprint.cor || '#6c757d'}">
-                        ${sprint.descstatus}
-                    </small>
+                    (${formatarData(sprint.dtiniciosprint)}
+                     a ${formatarData(sprint.dtfinalsprint)})
                 </label>
             `;
-                fragment.appendChild(div);
+
+                lista.appendChild(div);
             });
-
-            lista.appendChild(fragment);
-
-            // Adiciona os eventos de mudança após os elementos existirem no DOM
-            document.querySelectorAll(".sprint-check").forEach(checkbox => {
-                checkbox.addEventListener("change", atualizarSelecaoSprints);
-            });
-
-            atualizarSelecaoSprints();
 
         } catch (error) {
-            console.error("Erro no carregamento:", error);
-            mostrarMensagemNaTela("resultadoRelatorio", error.message, "error");
+            console.error(error);
         }
     }
+
+    function formatarData(data) {
+        if (!data) return "";
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
+
     function atualizarSelecaoSprints() {
         const selecionadas = document.querySelectorAll(
             ".sprint-check:checked"
         );
-
-        const botao = document.getElementById("btnSelecionarSprints");
 
         const quantidade = selecionadas.length;
 
         botao.textContent = quantidade === 0
             ? "Selecione as Sprints..."
             : `${quantidade} Sprint${quantidade > 1 ? "s" : ""} selecionada${quantidade > 1 ? "s" : ""}`;
+    }
+
+    function imprimirSprints() {
+        const ids = obterSprintsSelecionadas();
+
+        if (ids.length === 0) {
+            alert("Selecione pelo menos uma Sprint.");
+            return;
+        }
+
+        const params = new URLSearchParams();
+        ids.forEach(id => params.append("idSprint", id));
+
+        window.open(
+            `${API_SPRINT}/sprints/id/pdf?${params}`,
+            "_blank"
+        );
+    }
+    function obterSprintsSelecionadas() {
+        return Array.from(
+            document.querySelectorAll(".sprint-check:checked")
+        ).map(item => Number(item.value));
     }
 </script>
