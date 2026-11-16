@@ -70,5 +70,25 @@ public class RelatoriosController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdf);
     }
+    @GetMapping(
+            value = "/sprints/id/pdf",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
+    public ResponseEntity<byte[]> gerarPDFPorID(
+            @RequestParam List<Long> idSprint) {
+
+        List<RelatorioSprintDTO> sprints =
+                service.relatorioSprintPorID(idSprint);
+
+        byte[] pdf = relatorioSprintPDFService.gerarPDF(sprints);
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=relatorio_sprints.pdf"
+                )
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
+    }
 
 }

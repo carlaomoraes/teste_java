@@ -35,19 +35,21 @@
             <div id="listaSprints"></div>
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="await filtrarSprints()">Filtrar</button>
+            <button type="button" class="btn btn-salvar" onclick="filtrarSprints()">Filtrar</button>
             <button type="button" class="btn btn-listar" onclick="imprimirSprints()">Imprimir</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
 
     </div>
+
+    <div id="resultadoRelatorio"></div>
 </div>
 
-<div id="resultadoRelatorio"></div>
 </body>
 </html>
 <script>
     const API_SPRINT = 'http://localhost:8080/sprints';
+    const API_RELATORIOS = 'http://localhost:8080/relatorios';
 
     // ==============================================================
     // INICIALIZAÇÃO
@@ -66,10 +68,9 @@
 
         const params = new URLSearchParams();
         ids.forEach(id => params.append("idSprint", id));
+        const linha = `${API_RELATORIOS}/sprints/id?${params}`;
 
-        const response = await fetch(
-            `${API_SPRINT}/sprints/id?${params}`
-        );
+        const response = await fetch(linha);
 
         if (!response.ok) {
             throw new Error("Erro ao consultar Sprints.");
@@ -137,12 +138,11 @@
                 <input class="form-check-input sprint-check"
                        type="checkbox"
                        id="sprint_${sprint.idsprint}"
-                       value="${sprint.idsprint}"
-                       onchange="atualizarSelecaoSprints()">
+                       value="${sprint.idsprint}">
 
                 <label class="form-check-label"
                        for="sprint_${sprint.idsprint}">
-                    <strong>${sprint.descsprint}</strong>
+                    <strong>${sprint.idsprint} - ${sprint.descsprint}</strong>
                     (${formatarData(sprint.dtiniciosprint)}
                      a ${formatarData(sprint.dtfinalsprint)})
                 </label>
@@ -162,17 +162,6 @@
         return `${dia}/${mes}/${ano}`;
     }
 
-    function atualizarSelecaoSprints() {
-        const selecionadas = document.querySelectorAll(
-            ".sprint-check:checked"
-        );
-
-        const quantidade = selecionadas.length;
-
-        botao.textContent = quantidade === 0
-            ? "Selecione as Sprints..."
-            : `${quantidade} Sprint${quantidade > 1 ? "s" : ""} selecionada${quantidade > 1 ? "s" : ""}`;
-    }
 
     function imprimirSprints() {
         const ids = obterSprintsSelecionadas();
@@ -183,13 +172,14 @@
         }
 
         const params = new URLSearchParams();
+
         ids.forEach(id => params.append("idSprint", id));
 
-        window.open(
-            `${API_SPRINT}/sprints/id/pdf?${params}`,
-            "_blank"
-        );
+        const url = `${API_RELATORIOS}/sprints/id/pdf?${params}`;
+
+        window.open(url, "_blank");
     }
+
     function obterSprintsSelecionadas() {
         return Array.from(
             document.querySelectorAll(".sprint-check:checked")

@@ -39,13 +39,13 @@ public class RelatorioSprintPDFService {
 
             document.add(cabecalho);
 
-            PdfPTable tabela = new PdfPTable(9);
+            PdfPTable tabela = new PdfPTable(10);
             tabela.setWidthPercentage(100);
 
             String[] colunas = {
                     "ID", "Sprint", "Início", "Fim",
                     "Estórias", "Tarefas", "Status",
-                    "Estimadas", "Realizadas"
+                    "Estimadas", "Realizadas", "Progresso"
             };
 
             for (String coluna : colunas) {
@@ -58,6 +58,7 @@ public class RelatorioSprintPDFService {
             }
 
             for (RelatorioSprintDTO sprint : sprints) {
+
                 tabela.addCell(String.valueOf(sprint.idsprint()));
                 tabela.addCell(sprint.descsprint());
                 tabela.addCell(sprint.dtiniciosprint().format(formato));
@@ -67,6 +68,7 @@ public class RelatorioSprintPDFService {
                 tabela.addCell(sprint.descstatus());
                 tabela.addCell(sprint.totalHorasEstimadas60());
                 tabela.addCell(sprint.totalHorasRealizadas60());
+                tabela.addCell(String.valueOf(sprint.progresso()) + "%");
             }
 
             document.add(tabela);
