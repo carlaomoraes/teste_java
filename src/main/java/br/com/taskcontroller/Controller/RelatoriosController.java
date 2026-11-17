@@ -75,7 +75,7 @@ public class RelatoriosController {
             produces = MediaType.APPLICATION_PDF_VALUE
     )
     public ResponseEntity<byte[]> gerarPDFPorID(
-            @RequestParam List<Long> idSprint) {
+            @RequestParam("idSprint") List<Long> idSprint) {
 
         List<RelatorioSprintDTO> sprints =
                 service.relatorioSprintPorID(idSprint);

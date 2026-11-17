@@ -124,7 +124,6 @@
     // 2. Attach the 'change' event listener
     async function carregarSprintsRelatorio(idEmpreendimento) {
         const lista = document.getElementById("listaSprints");
-        lista.innerHTML = "";
 
         if (!idEmpreendimento) {
             lista.innerHTML = `<span class="text-muted">Selecione um empreendimento.</span>`;
@@ -132,27 +131,48 @@
             return;
         }
 
+        // Exibe um indicativo de carregamento opcional
+        lista.innerHTML = `<span class="text-muted">Carregando sprints...</span>`;
+
         try {
             const linha = `${API_SPRINT}/listar/DTO/${idEmpreendimento}`;
             const response = await fetch(linha);
+
             if (!response.ok) {
                 throw new Error(`Erro ao carregar Sprints: ${response.status}`);
             }
 
-            const data = await response.json();
+            const dados = await response.json();
             console.log("Dados recebidos da API:", data);
 
-            if (data.length === 0) {
+            // Limpa o container antes de popular
+            lista.innerHTML = "";
+
+            // Valida se a lista veio vazia
+            if (!dados || dados.length === 0) {
                 lista.innerHTML = `<span class="text-muted">Nenhuma Sprint encontrada.</span>`;
                 atualizarSelecaoSprints();
                 return;
             }
-            data.forEach(sprint => {
-                const div = document.createElement("div");
-                div.className = "form-check mb-3";
+            await montarTabelaRelatorio(dados);
 
-                // ATENÇÃO: As chaves aqui usam letras minúsculas idênticas ao seu console.log
-                div.innerHTML = `
+
+            atualizarSelecaoSprints();
+
+        } catch (error) {
+            console.error("Erro no carregamento:", error);
+            lista.innerHTML = `<span class="text-danger">Não foi possível carregar as Sprints.</span>`;
+            atualizarSelecaoSprints();
+            mostrarMensagemNaTela("resultadoRelatorio", error.message, "error");
+        }
+    }
+
+    async function montarTabelaRelatorio(dados) {
+        dados.forEach(sprint => {
+            const div = document.createElement("div");
+            div.className = "form-check mb-3";
+
+            div.innerHTML = `
                 <input class="form-check-input sprint-check"
                        type="checkbox"
                        id="sprint_${sprint.idsprint}"
@@ -160,29 +180,19 @@
 
                 <label class="form-check-label" for="sprint_${sprint.idsprint}">
                     <strong>${sprint.descsprint}</strong>
-                    <small class="d-block text-muted">
-                        ${formatarData(sprint.dtiniciosprint)} até ${formatarData(sprint.dtfinalsprint)}
-                    </small>
-                    <small style="color: ${sprint.cor || '#6c757d'}">
-                        ${sprint.descstatus}
-                    </small>
+                    <small class="d-block text-muted">${formatarData(sprint.dtiniciosprint)} até ${formatarData(sprint.dtfinalsprint)}</small>
+                    <small style="color: ${sprint.cor || '#6c757d'}">${sprint.descstatus}</small>
                 </label>
             `;
-                lista.appendChild(div);
-            });
-            // Adiciona os eventos de mudança após os elementos existirem no DOM
-            document.querySelectorAll(".sprint-check").forEach(checkbox => {
-                checkbox.addEventListener("change", atualizarSelecaoSprints);
-            });
+            fragment.appendChild(div);
+        });
 
-            atualizarSelecaoSprints();
+        lista.appendChild(fragment);
 
-        } catch (error) {
-            console.error("Erro no carregamento:", error);
-            lista.innerHTML = `<span class="text-danger">Não foi possível carregar as Sprints. </span>`;
-            atualizarSelecaoSprints();
-            mostrarMensagemNaTela("resultadoRelatorio", error.message, "error");
-        }
+        // Adiciona os eventos de mudança nos checkboxes criados
+        lista.querySelectorAll(".sprint-check").forEach(checkbox => {
+            checkbox.addEventListener("change", atualizarSelecaoSprints);
+        });
     }
     function atualizarSelecaoSprints() {
         const selecionadas = document.querySelectorAll(

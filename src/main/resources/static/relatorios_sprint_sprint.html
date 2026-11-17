@@ -175,7 +175,9 @@
 
         ids.forEach(id => params.append("idSprint", id));
 
-        const url = `${API_RELATORIOS}/sprints/id/pdf?${params}`;
+        const url = `${API_RELATORIOS}/sprints/id/pdf?${params.toString()}`;
+
+        console.log("URL do relatório:", url);
 
         window.open(url, "_blank");
     }
