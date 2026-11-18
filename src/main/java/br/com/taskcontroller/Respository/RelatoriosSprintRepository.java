@@ -23,11 +23,11 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
                 s.status.cor,
                 COUNT(DISTINCT(e.idestoria)),
                 COUNT(DISTINCT(t.idtarefa)),
-                SUM(t.horas_estimadas),
-                SUM(t.horas_realizadas),
+                SUM(COALESCE(t.horas_estimadas,0)),
+                SUM(COALESCE(t.horas_realizadas,0)),
                 "",
                 "",
-                COALESCE(sum(t.horas_estimadas / t.horas_realizadas),0)                 
+                COALESCE(sum(t.horas_estimadas / t.horas_realizadas),0)
     )
     FROM Sprint s
     JOIN SprintEstoria se on se.sprint.idsprint = s.idsprint
@@ -58,8 +58,8 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
                 s.status.cor,
                 COUNT(DISTINCT(e.idestoria)),
                 COUNT(DISTINCT(t.idtarefa)),
-                SUM(t.horas_estimadas),
-                SUM(t.horas_realizadas),
+                SUM(COALESCE(t.horas_estimadas,0)),
+                SUM(COALESCE(t.horas_realizadas,0)),
                 "",
                 "",
                 COALESCE(sum(t.horas_estimadas / t.horas_realizadas),0)
@@ -93,8 +93,8 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
                 s.status.cor,
                 COUNT(DISTINCT(e.idestoria)),
                 COUNT(DISTINCT(t.idtarefa)),
-                SUM(t.horas_estimadas),
-                SUM(t.horas_realizadas),
+                SUM(COALESCE(t.horas_estimadas,0)),
+                SUM(COALESCE(t.horas_realizadas,0)),
                 "",
                 "",
                 COALESCE(sum(t.horas_estimadas / t.horas_realizadas),0)

@@ -22,7 +22,6 @@
 <script src="js/funcoes.js"></script>
 <script src="js/mensagens.js"></script>
 
-
 <div class="card shadow-sm mb-3">
     <div class="card-header bg-secondary text-white">
         <strong>Relatórios Gerenciais - Empreendimento X Sprints</strong>
@@ -33,14 +32,12 @@
 
             <!-- EMPREENDIMENTO -->
             <div class="col-md-7">
-                <label for="comboEmpreendimento"
-                       class="form-label fw-semibold">
+                <label for="comboEmpreendimento" class="form-label fw-semibold">
                     Empreendimento *
                 </label>
 
-                <select id="comboEmpreendimento"
-                        class="form-select"
-                        onchange="carregarSprintsRelatorio(document.getElementById('comboEmpreendimento').value)">
+                <!-- Removido o onchange inline daqui para evitar conflito -->
+                <select id="comboEmpreendimento" class="form-select">
                     <option value="">Selecione...</option>
                 </select>
             </div>
@@ -71,22 +68,19 @@
                 </div>
             </div>
         </div>
-        <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="carregarSprintsRelatorio()">Filtrar</button>
+        <div class="btn-group mt-3" data-toggle="buttons-radio">
+            <button type="button" class="btn btn-salvar" onclick="filtrarRelatorio()">Filtrar</button>
             <button type="button" class="btn btn-listar" onclick="imprimirSprints()">Imprimir</button>
             <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
         </div>
-
     </div>
 </div>
 
 <div id="resultadoRelatorio"></div>
-</body>
-</html>
+
 <script>
     const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_SPRINT = 'http://localhost:8080/sprints';
-
 
     // ==============================================================
     // CARREGAR COMBOS
@@ -104,24 +98,24 @@
                 comboEmpreendimento.appendChild(opcao);
             });
         } catch (error) {
-            mostrarMensagemNaTela( "resultadoRelatorio",MSG.erroCarregar("EMPREENDIMENTO"), "error");
+            mostrarMensagemNaTela("resultadoRelatorio", MSG.erroCarregar("EMPREENDIMENTO"), "error");
         }
     }
+
     // ==============================================================
     // INICIALIZAÇÃO
     // ==============================================================
-    document.addEventListener('DOMContentLoaded',() => {
-            carregarEmpreendimento();
-        }
-    );
-    // 2. Attach the 'change' event listener
-    comboEmpreendimento.addEventListener('change', (event) => {
-        // Get the selected option's value
-        const selectedValue = event.target.value;
-        carregarSprintsRelatorio(selectedValue);
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarEmpreendimento();
+
+        // Configuração única do evento de mudança do combo
+        const comboEmpreendimento = document.getElementById("comboEmpreendimento");
+        comboEmpreendimento.addEventListener('change', (event) => {
+            const selectedValue = event.target.value;
+            carregarSprintsRelatorio(selectedValue);
+        });
     });
 
-    // 2. Attach the 'change' event listener
     async function carregarSprintsRelatorio(idEmpreendimento) {
         const lista = document.getElementById("listaSprints");
 
@@ -131,7 +125,6 @@
             return;
         }
 
-        // Exibe um indicativo de carregamento opcional
         lista.innerHTML = `<span class="text-muted">Carregando sprints...</span>`;
 
         try {
@@ -143,22 +136,18 @@
             }
 
             const dados = await response.json();
-            console.log("Dados recebidos da API:", data);
 
-            // Limpa o container antes de popular
-            lista.innerHTML = "";
-
-            // Valida se a lista veio vazia
             if (!dados || dados.length === 0) {
                 lista.innerHTML = `<span class="text-muted">Nenhuma Sprint encontrada.</span>`;
                 atualizarSelecaoSprints();
                 return;
             }
-            await montarTabelaRelatorio(dados);
 
+            await montarTabelaRelatorio(dados, "listaSprints");
 
-            atualizarSelecaoSprints();
-
+            lista.querySelectorAll(".sprint-check").forEach(checkbox => {
+                checkbox.addEventListener("change", atualizarSelecaoSprints);
+            });
         } catch (error) {
             console.error("Erro no carregamento:", error);
             lista.innerHTML = `<span class="text-danger">Não foi possível carregar as Sprints.</span>`;
@@ -167,44 +156,69 @@
         }
     }
 
-    async function montarTabelaRelatorio(dados) {
+    async function montarTabelaRelatorio(dados, containerId = "listaSprints") {
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error(`Container com ID "${containerId}" não foi encontrado.`);
+            return;
+        }
+
+        container.innerHTML = "";
+        const fragment = document.createDocumentFragment();
+
         dados.forEach(sprint => {
             const div = document.createElement("div");
             div.className = "form-check mb-3";
 
-            div.innerHTML = `
-                <input class="form-check-input sprint-check"
-                       type="checkbox"
-                       id="sprint_${sprint.idsprint}"
-                       value="${sprint.idsprint}">
+            const input = document.createElement("input");
+            input.className = "form-check-input sprint-check";
+            input.type = "checkbox";
+            input.id = `sprint_${sprint.idsprint}`;
+            input.value = sprint.idsprint;
 
-                <label class="form-check-label" for="sprint_${sprint.idsprint}">
-                    <strong>${sprint.descsprint}</strong>
-                    <small class="d-block text-muted">${formatarData(sprint.dtiniciosprint)} até ${formatarData(sprint.dtfinalsprint)}</small>
-                    <small style="color: ${sprint.cor || '#6c757d'}">${sprint.descstatus}</small>
-                </label>
-            `;
+            const label = document.createElement("label");
+            label.className = "form-check-label";
+            label.setAttribute("for", `sprint_${sprint.idsprint}`);
+
+            const strong = document.createElement("strong");
+            strong.textContent = sprint.descsprint;
+
+            const smallDatas = document.createElement("small");
+            smallDatas.className = "d-block text-muted";
+            smallDatas.textContent = `${formatarData(sprint.dtiniciosprint)} até ${formatarData(sprint.dtfinalsprint)}`;
+
+            const smallStatus = document.createElement("small");
+            smallStatus.style.color = sprint.cor || '#6c757d';
+            smallStatus.textContent = sprint.descstatus;
+
+            label.appendChild(strong);
+            label.appendChild(smallDatas);
+            label.appendChild(smallStatus);
+
+            div.appendChild(input);
+            div.appendChild(label);
+
             fragment.appendChild(div);
         });
 
-        lista.appendChild(fragment);
-
-        // Adiciona os eventos de mudança nos checkboxes criados
-        lista.querySelectorAll(".sprint-check").forEach(checkbox => {
-            checkbox.addEventListener("change", atualizarSelecaoSprints);
-        });
+        container.appendChild(fragment);
     }
+
     function atualizarSelecaoSprints() {
-        const selecionadas = document.querySelectorAll(
-            ".sprint-check:checked"
-        );
-
+        const selecionadas = document.querySelectorAll(".sprint-check:checked");
         const botao = document.getElementById("btnSelecionarSprints");
-
         const quantidade = selecionadas.length;
 
         botao.textContent = quantidade === 0
             ? "Selecione as Sprints..."
             : `${quantidade} Sprint${quantidade > 1 ? "s" : ""} selecionada${quantidade > 1 ? "s" : ""}`;
     }
+
+    function filtrarRelatorio() {
+        // Função do botão Filtrar (captura os IDs selecionados se necessário)
+        const idsSelecionados = Array.from(document.querySelectorAll(".sprint-check:checked")).map(cb => cb.value);
+        console.log("Sprints selecionadas para filtro:", idsSelecionados);
+    }
 </script>
+</body>
+</html>
