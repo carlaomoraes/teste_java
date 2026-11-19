@@ -78,11 +78,8 @@
 
         const dados = await response.json();
 
-        await montarTabelaRelatorio(dados);
-    }
-    async function montarTabelaRelatorio(dados) {
         try {
-                let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+            let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
                           <thead> <tr style="cursor:pointer;">
                                 <th>ID</th>
                                 <th>Descrição</th>
@@ -97,8 +94,8 @@
                         </tr>
                     </thead>
                     <tbody>`;
-                dados.forEach(sprint => {
-                    tabela += `<tr style="cursor:pointer;">
+            dados.forEach(sprint => {
+                tabela += `<tr style="cursor:pointer;">
                         <td>${sprint.idsprint}</td>
                         <td>${sprint.descsprint || ''}</td>
                         <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
@@ -111,14 +108,13 @@
                         <td>${sprint.progresso} %</td>
                   </tr>
                 `;
-                });
-                tabela += `</tbody></table>`;
-                document.getElementById('resultadoRelatorio').innerHTML = tabela;
-            } catch (error) {
-                mostrarMensagemNaTela("resultadoRelatorio", MSG.erroCarregar("SPRINT"), "error");
-            }
+            });
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadoRelatorio').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadoRelatorio", MSG.erroCarregar("SPRINT"), "error");
+        }
     }
-
     async function carregarSprintsRelatorio() {
         const lista = document.getElementById("listaSprints");
         lista.innerHTML = "";

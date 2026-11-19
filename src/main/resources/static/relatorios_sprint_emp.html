@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskController 1.0</title>
-    <!-- Bootstrap -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Icons -->
@@ -19,31 +19,35 @@
 </head>
 
 <body>
+<!-- Scripts locais -->
 <script src="js/funcoes.js"></script>
 <script src="js/mensagens.js"></script>
 
 <div class="card shadow-sm mb-3">
+
     <div class="card-header bg-secondary text-white">
-        <strong>Relatórios Gerenciais - Empreendimento X Sprints</strong>
+        <strong>
+            Relatórios Gerenciais - Empreendimento X Sprints
+        </strong>
     </div>
 
     <div class="card-body">
-        <div class="row g-3 align-items-end">
+
+        <div class="row g-3">
 
             <!-- EMPREENDIMENTO -->
-            <div class="col-md-7">
-                <label for="comboEmpreendimento" class="form-label fw-semibold">
+            <div class="col-12">
+                <label class="form-label fw-semibold">
                     Empreendimento *
                 </label>
 
-                <!-- Removido o onchange inline daqui para evitar conflito -->
                 <select id="comboEmpreendimento" class="form-select">
                     <option value="">Selecione...</option>
                 </select>
             </div>
 
             <!-- SPRINTS -->
-            <div class="col-md-7">
+            <div class="col-12">
                 <label class="form-label fw-semibold">
                     Sprints *
                 </label>
@@ -53,34 +57,57 @@
                             class="btn btn-outline-secondary dropdown-toggle w-100 text-start"
                             type="button"
                             data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside"
-                            aria-expanded="false">
+                            data-bs-auto-close="outside">
                         Selecione as Sprints...
                     </button>
 
                     <div id="listaSprints"
-                         class="dropdown-menu p-3 w-100"
-                         style="max-height: 260px; overflow-y: auto;">
-                        <span class="text-muted">
-                            Selecione um empreendimento.
-                        </span>
+                         class="dropdown-menu p-3 w-100 shadow"
+                         style="max-height:260px; overflow-y:auto;">
+                        Selecione um empreendimento.
                     </div>
                 </div>
             </div>
+
         </div>
-        <div class="btn-group mt-3" data-toggle="buttons-radio">
-            <button type="button" class="btn btn-salvar" onclick="filtrarRelatorio()">Filtrar</button>
-            <button type="button" class="btn btn-listar" onclick="imprimirSprints()">Imprimir</button>
-            <button type="button" class="btn btn-voltar" onclick="history.back()">Voltar</button>
+
+        <!-- BOTÕES -->
+        <div class="btn-group mt-3">
+            <button type="button"
+                    class="btn btn-salvar"
+                    onclick="filtrarRelatorio()">
+                Filtrar
+            </button>
+
+            <button type="button"
+                    class="btn btn-listar"
+                    onclick="imprimirSprints()">
+                Imprimir
+            </button>
+
+            <button type="button"
+                    class="btn btn-voltar"
+                    onclick="history.back()">
+                Voltar
+            </button>
         </div>
+
+    </div>
+
+    <!-- RESULTADO DO RELATÓRIO -->
+    <div id="resultadoRelatorio"
+         class="table-responsive mt-3">
     </div>
 </div>
+<!-- Bootstrap JS Bundle (OBRIGATÓRIO para o Dropdown funcionar) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
-<div id="resultadoRelatorio"></div>
 
 <script>
-    const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
     const API_SPRINT = 'http://localhost:8080/sprints';
+    const API_RELATORIOS = 'http://localhost:8080/relatorios';
+    const API_EMPREENDIMENTO = 'http://localhost:8080/empreendimento';
+
 
     // ==============================================================
     // CARREGAR COMBOS
@@ -89,8 +116,11 @@
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         try {
             const resposta = await fetch(`${API_EMPREENDIMENTO}/montaComboEmpreendimento`);
+            if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
+
             const empreendimentos = await resposta.json();
             comboEmpreendimento.innerHTML = '<option value="">Selecione...</option>';
+
             empreendimentos.forEach(e => {
                 const opcao = document.createElement('option');
                 opcao.value = e.idempreendimento;
@@ -108,11 +138,9 @@
     document.addEventListener('DOMContentLoaded', () => {
         carregarEmpreendimento();
 
-        // Configuração única do evento de mudança do combo
         const comboEmpreendimento = document.getElementById("comboEmpreendimento");
         comboEmpreendimento.addEventListener('change', (event) => {
-            const selectedValue = event.target.value;
-            carregarSprintsRelatorio(selectedValue);
+            carregarSprintsRelatorio(event.target.value);
         });
     });
 
@@ -128,8 +156,7 @@
         lista.innerHTML = `<span class="text-muted">Carregando sprints...</span>`;
 
         try {
-            const linha = `${API_SPRINT}/listar/DTO/${idEmpreendimento}`;
-            const response = await fetch(linha);
+            const response = await fetch(`${API_SPRINT}/listar/DTO/${idEmpreendimento}`);
 
             if (!response.ok) {
                 throw new Error(`Erro ao carregar Sprints: ${response.status}`);
@@ -143,65 +170,79 @@
                 return;
             }
 
-            await montarTabelaRelatorio(dados, "listaSprints");
+            lista.innerHTML = "";
 
-            lista.querySelectorAll(".sprint-check").forEach(checkbox => {
-                checkbox.addEventListener("change", atualizarSelecaoSprints);
+            // Opção "Selecionar Todas"
+            const divTodos = document.createElement("div");
+            divTodos.className = "form-check border-bottom pb-2 mb-2";
+            divTodos.innerHTML = `
+                <input class="form-check-input" type="checkbox" id="checkTodasSprints">
+                <label class="form-check-label fw-semibold" for="checkTodasSprints">
+                    Selecionar todas
+                </label>
+            `;
+            lista.appendChild(divTodos);
+
+            for (const sprint of dados) {
+                const div = document.createElement("div");
+                div.className = "form-check mb-2";
+
+                const input = document.createElement("input");
+                input.className = "form-check-input sprint-check";
+                input.type = "checkbox";
+                input.id = `sprint_${sprint.idsprint}`;
+                input.value = sprint.idsprint;
+
+                const label = document.createElement("label");
+                label.className = "form-check-label w-100";
+                label.setAttribute("for", `sprint_${sprint.idsprint}`);
+
+                const strong = document.createElement("strong");
+                strong.textContent = sprint.descsprint;
+
+                const smallDatas = document.createElement("small");
+                smallDatas.className = "d-block text-muted";
+                smallDatas.textContent = `${formatarData(sprint.dtiniciosprint)} até ${formatarData(sprint.dtfinalsprint)}`;
+
+                const smallStatus = document.createElement("small");
+                smallStatus.style.color = sprint.cor || '#6c757d';
+                smallStatus.textContent = sprint.descstatus;
+
+                label.appendChild(strong);
+                label.appendChild(smallDatas);
+                label.appendChild(smallStatus);
+
+                div.appendChild(input);
+                div.appendChild(label);
+
+                lista.appendChild(div);
+            }
+
+            // Eventos individuais e do "Selecionar todas"
+            const checkTodas = document.getElementById("checkTodasSprints");
+            const checkboxes = lista.querySelectorAll(".sprint-check");
+
+            checkTodas.addEventListener("change", (e) => {
+                checkboxes.forEach(cb => cb.checked = e.target.checked);
+                atualizarSelecaoSprints();
             });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", () => {
+                    checkTodas.checked = Array.from(checkboxes).every(cb => cb.checked);
+                    atualizarSelecaoSprints();
+                });
+            });
+
+            // Reseta o texto do botão ao carregar novas sprints
+            atualizarSelecaoSprints();
+
         } catch (error) {
             console.error("Erro no carregamento:", error);
             lista.innerHTML = `<span class="text-danger">Não foi possível carregar as Sprints.</span>`;
             atualizarSelecaoSprints();
             mostrarMensagemNaTela("resultadoRelatorio", error.message, "error");
         }
-    }
-
-    async function montarTabelaRelatorio(dados, containerId = "listaSprints") {
-        const container = document.getElementById(containerId);
-        if (!container) {
-            console.error(`Container com ID "${containerId}" não foi encontrado.`);
-            return;
-        }
-
-        container.innerHTML = "";
-        const fragment = document.createDocumentFragment();
-
-        dados.forEach(sprint => {
-            const div = document.createElement("div");
-            div.className = "form-check mb-3";
-
-            const input = document.createElement("input");
-            input.className = "form-check-input sprint-check";
-            input.type = "checkbox";
-            input.id = `sprint_${sprint.idsprint}`;
-            input.value = sprint.idsprint;
-
-            const label = document.createElement("label");
-            label.className = "form-check-label";
-            label.setAttribute("for", `sprint_${sprint.idsprint}`);
-
-            const strong = document.createElement("strong");
-            strong.textContent = sprint.descsprint;
-
-            const smallDatas = document.createElement("small");
-            smallDatas.className = "d-block text-muted";
-            smallDatas.textContent = `${formatarData(sprint.dtiniciosprint)} até ${formatarData(sprint.dtfinalsprint)}`;
-
-            const smallStatus = document.createElement("small");
-            smallStatus.style.color = sprint.cor || '#6c757d';
-            smallStatus.textContent = sprint.descstatus;
-
-            label.appendChild(strong);
-            label.appendChild(smallDatas);
-            label.appendChild(smallStatus);
-
-            div.appendChild(input);
-            div.appendChild(label);
-
-            fragment.appendChild(div);
-        });
-
-        container.appendChild(fragment);
     }
 
     function atualizarSelecaoSprints() {
@@ -215,10 +256,106 @@
     }
 
     function filtrarRelatorio() {
-        // Função do botão Filtrar (captura os IDs selecionados se necessário)
+        const idEmpreendimento = document.getElementById("comboEmpreendimento").value;
         const idsSelecionados = Array.from(document.querySelectorAll(".sprint-check:checked")).map(cb => cb.value);
-        console.log("Sprints selecionadas para filtro:", idsSelecionados);
+
+        if (!idEmpreendimento) {
+            alert("Selecione um empreendimento.");
+            return;
+        }
+
+        if (idsSelecionados.length === 0) {
+            alert("Selecione ao menos uma sprint.");
+            return;
+        }
+
+        // Chame aqui o endpoint que monta o relatório em #resultadoRelatorio
+        filtrarSprints();
     }
+
+    function obterSprintsSelecionadas() {
+        return Array.from(
+            document.querySelectorAll(".sprint-check:checked")
+        ).map(item => Number(item.value));
+    }
+
+    function imprimirSprints() {
+        const ids = obterSprintsSelecionadas();
+
+        if (ids.length === 0) {
+            alert("Selecione pelo menos uma Sprint.");
+            return;
+        }
+
+        const params = new URLSearchParams();
+
+        ids.forEach(id => params.append("idSprint", id));
+
+        const url = `${API_RELATORIOS}/sprints/id/pdf?${params.toString()}`;
+
+        console.log("URL do relatório:", url);
+
+        window.open(url, "_blank");
+    }
+
+    async function filtrarSprints() {
+        const ids = obterSprintsSelecionadas();
+
+        if (ids.length === 0) {
+            alert("Selecione pelo menos uma Sprint.");
+            return;
+        }
+
+        const params = new URLSearchParams();
+        ids.forEach(id => params.append("idSprint", id));
+        const linha = `${API_RELATORIOS}/sprints/id?${params}`;
+
+        const response = await fetch(linha);
+
+        if (!response.ok) {
+            throw new Error("Erro ao consultar Sprints.");
+        }
+
+        const dados = await response.json();
+
+        try {
+            let tabela = `<table class="table" border="1" width="100%" cellspacing="0" cellpadding="10">
+                          <thead> <tr style="cursor:pointer;">
+                                <th>ID</th>
+                                <th>Descrição</th>
+                                <th>Data Início</th>
+                                <th>Data Fim</th>
+                                <th>Quantidade de estórias</th>
+                                <th>Quantidade de tarefas</th>
+                                <th>Status</th>
+                                <th>Horas estimadas</th>
+                                <th>Horas realizadas</th>
+                                <th>Progresso</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            dados.forEach(sprint => {
+                tabela += `<tr style="cursor:pointer;">
+                        <td>${sprint.idsprint}</td>
+                        <td>${sprint.descsprint || ''}</td>
+                        <td>${formatarDataBR(sprint.dtiniciosprint)}</td>
+                        <td>${formatarDataBR(sprint.dtfinalsprint)}</td>
+                        <td>${sprint.contEstorias}</td>
+                        <td>${sprint.contTarefas}</td>
+                        <td> <span class="badge" style="background-color:${sprint.corstatus}; color:white;">${sprint.descstatus}</span></td>
+                        <td align="right">${sprint.totalHorasEstimadas60}</td>
+                        <td align="right">${sprint.totalHorasRealizadas60}</td>
+                        <td>${sprint.progresso} %</td>
+                  </tr>
+                `;
+            });
+            tabela += `</tbody></table>`;
+            document.getElementById('resultadoRelatorio').innerHTML = tabela;
+        } catch (error) {
+            mostrarMensagemNaTela("resultadoRelatorio", MSG.erroCarregar("SPRINT"), "error");
+        }
+    }
+
 </script>
 </body>
 </html>
