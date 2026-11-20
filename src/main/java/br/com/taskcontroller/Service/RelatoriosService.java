@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.com.taskcontroller.Record.Relatorios.RelatorioSprintDTO;
 import br.com.taskcontroller.Respository.RelatoriosSprintRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,17 +30,19 @@ public class RelatoriosService {
         return relatorios.stream()
                 .map(r -> {
 
-                    Long estimadas = r.totalHorasEstimadas();
-                    Long realizadas = r.totalHorasRealizadas();
+                    Long estimadas;
+                    Long realizadas;
+                    try {
+                        estimadas = r.totalHorasEstimadas();
+                        realizadas = r.totalHorasRealizadas();
+                    } catch (Exception e) {
+                        estimadas = 0L;
+                        realizadas = 0L;
+                    }
+                    BigDecimal progresso = BigDecimal.ZERO;
 
-                    long progresso = 0L;
-
-
-                    if (estimadas != null &&
-                            estimadas> 0 &&
-                            realizadas != null) {
-
-                        progresso = (realizadas * 100 / estimadas);
+                    if (estimadas != null && estimadas> 0 && realizadas != null) {
+                        progresso = BigDecimal.valueOf(realizadas).multiply(BigDecimal.valueOf(100).divide(BigDecimal.valueOf(estimadas), 2,RoundingMode.HALF_UP));
                     }
 
                     return new RelatorioSprintDTO(
@@ -71,18 +75,19 @@ public class RelatoriosService {
 
         return relatorios.stream()
                 .map(r -> {
+                    Long estimadas;
+                    Long realizadas;
+                    try {
+                        estimadas = r.totalHorasEstimadas();
+                        realizadas = r.totalHorasRealizadas();
+                    } catch (Exception e) {
+                        estimadas = 0L;
+                        realizadas = 0L;
+                    }
 
-                    Long estimadas = r.totalHorasEstimadas();
-                    Long realizadas = r.totalHorasRealizadas();
-
-                    long progresso = 0L;
-
-
-                    if (estimadas != null &&
-                            estimadas> 0 &&
-                            realizadas != null) {
-
-                        progresso = (realizadas * 100 / estimadas);
+                    BigDecimal progresso = BigDecimal.ZERO;
+                    if (estimadas != null && estimadas> 0 && realizadas != null) {
+                        progresso = BigDecimal.valueOf(realizadas).multiply(BigDecimal.valueOf(100).divide(BigDecimal.valueOf(estimadas), 2,RoundingMode.HALF_UP));
                     }
 
                     return new RelatorioSprintDTO(
@@ -115,18 +120,19 @@ public class RelatoriosService {
 
         return relatorios.stream()
                 .map(r -> {
+                    Long estimadas;
+                    Long realizadas;
+                    try {
+                        estimadas = r.totalHorasEstimadas();
+                        realizadas = r.totalHorasRealizadas();
+                    } catch (Exception e) {
+                        estimadas = 0L;
+                        realizadas = 0L;
+                    }
 
-                    Long estimadas = r.totalHorasEstimadas();
-                    Long realizadas = r.totalHorasRealizadas();
-
-                    long progresso = 0L;
-
-
-                    if (estimadas != null &&
-                            estimadas> 0 &&
-                            realizadas != null) {
-
-                        progresso = (realizadas * 100 / estimadas);
+                    BigDecimal progresso = BigDecimal.ZERO;
+                    if (estimadas != null && estimadas> 0 && realizadas != null) {
+                        progresso = BigDecimal.valueOf(realizadas).multiply(BigDecimal.valueOf(100).divide(BigDecimal.valueOf(estimadas), 2,RoundingMode.HALF_UP));
                     }
 
                     return new RelatorioSprintDTO(

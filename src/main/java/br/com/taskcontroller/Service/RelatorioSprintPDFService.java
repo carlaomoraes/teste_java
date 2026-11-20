@@ -63,9 +63,9 @@ public class RelatorioSprintPDFService {
                 tabela.addCell(sprint.descsprint());
                 tabela.addCell(sprint.dtiniciosprint().format(formato));
                 tabela.addCell(sprint.dtfinalsprint().format(formato));
+                tabela.addCell(sprint.descstatus());
                 tabela.addCell(String.valueOf(sprint.contEstorias()));
                 tabela.addCell(String.valueOf(sprint.contTarefas()));
-                tabela.addCell(sprint.descstatus());
                 tabela.addCell(sprint.totalHorasEstimadas60());
                 tabela.addCell(sprint.totalHorasRealizadas60());
                 tabela.addCell(String.valueOf(sprint.progresso()) + "%");

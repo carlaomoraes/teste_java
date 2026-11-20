@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Record.Relatorios;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record RelatorioSprintDTO(
@@ -17,6 +18,6 @@ public record RelatorioSprintDTO(
     Long totalHorasRealizadas,
     String totalHorasEstimadas60,
     String totalHorasRealizadas60,
-    Long progresso
+    BigDecimal progresso
     ) {
 }
