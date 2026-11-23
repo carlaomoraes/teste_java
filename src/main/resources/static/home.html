@@ -111,6 +111,50 @@
             max-height: 768px;
             height: auto;
         }
+
+
+        /* SUBMENU DE TERCEIRO NÍVEL */
+
+        .item-submenu {
+            position: relative;
+        }
+
+        .menu-terceiro-nivel {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            min-width: 230px;
+            list-style: none;
+            background-color: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 1100;
+        }
+
+        .item-submenu:hover > .menu-terceiro-nivel,
+        .item-submenu:focus-within > .menu-terceiro-nivel {
+            display: block;
+        }
+
+        .menu-terceiro-nivel li a {
+            display: block;
+            padding: 12px 16px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .menu-terceiro-nivel li a:hover {
+            background-color: #f1f5f9;
+            color: #2563eb;
+        }
+
+        /* Permite que o terceiro nível apareça fora do segundo */
+        .menu-suspenso {
+            overflow: visible;
+        }
+
     </style>
 </head>
 
@@ -118,212 +162,157 @@
 
 <nav class="navbar">
 
+
     <ul class="menu-principal">
 
-        <!-- ========================================================
-             HOME
-             ======================================================== -->
-
+        <!-- HOME -->
         <li class="item-menu">
             <a href="index.html">🏠 Home</a>
         </li>
 
-
-        <!-- ========================================================
-             PLANEJAMENTO
-             ======================================================== -->
-
+        <!-- PLANEJAMENTO -->
         <li class="item-menu com-filho">
-
             <a href="#">📋 Planejamento</a>
 
             <ul class="menu-suspenso">
-
                 <li>
-                    <a href="backlog.html">
-                        📋 Backlog / 🗺️ Roadmap
-                    </a>
+                    <a href="backlog.html">📋 Backlog / 🗺️ Roadmap</a>
                 </li>
                 <li>
-                    <a href="sprint.html">
-                        🔄 Gestão de sprints
-                    </a>
+                    <a href="sprint.html">🔄 Gestão de Sprints</a>
                 </li>
-
             </ul>
-
         </li>
 
-
-        <!-- ========================================================
-             PRODUTO
-             ======================================================== -->
-
+        <!-- PRODUTO -->
         <li class="item-menu com-filho">
-
             <a href="#">📖 Produto</a>
 
             <ul class="menu-suspenso">
-
                 <li>
-                    <a href="epico.html">
-                        🎯 Épicos
-                    </a>
+                    <a href="epico.html">🎯 Épicos</a>
                 </li>
-
                 <li>
-                    <a href="estoria.html">
-                        📖 Estórias
-                    </a>
+                    <a href="estoria.html">📖 Estórias</a>
                 </li>
-
                 <li>
-                    <a href="tarefa.html">
-                        ✅ Tarefas
-                    </a>
+                    <a href="tarefa.html">✅ Tarefas</a>
                 </li>
-
             </ul>
-
         </li>
 
-
-        <!-- ========================================================
-             EXECUÇÃO
-             ======================================================== -->
-
+        <!-- EXECUÇÃO -->
         <li class="item-menu com-filho">
-
             <a href="#">🔄 Execução</a>
 
             <ul class="menu-suspenso">
-
                 <li>
-                    <a href="quadroKS.html">
-                        🎯 Sprint Atual
-                    </a>
+                    <a href="quadroKS.html">🎯 Sprint Atual</a>
                 </li>
-
                 <li>
-                    <a href="kanban.html">
-                        📌 Kanban
-                    </a>
+                    <a href="kanban.html">📌 Kanban</a>
                 </li>
-
                 <li>
-                    <a href="#">
-                        ⏱️ Apontar Horas
-                    </a>
+                    <a href="#">⏱️ Apontar Horas</a>
                 </li>
-
             </ul>
-
         </li>
 
-
-        <!-- ========================================================
-             RELATÓRIOS
-             ======================================================== -->
-
+        <!-- RELATÓRIOS -->
         <li class="item-menu com-filho">
-
             <a href="#">📊 Relatórios</a>
 
             <ul class="menu-suspenso">
-                <li>
-                    <li>
-                        <a href="relatorios_sprint_emp.html">   📊 Por Empreendimento </a>
-                    </li>
-                    <li>
-                        <a href="relatorios_sprint_periodo_periodo.html">   ⏱️ Por Período </a>
-                    </li>
-                    <li>
-                        <a href="relatorios_sprint_sprint.html">   ⏱️ Por Sprint </a>
-                    </li>
 
-                <li>
-                    <a href="#">
-                        📖 Estórias
-                    </a>
+                <!-- SUBMENU SPRINTS -->
+                <li class="item-submenu">
+                    <a href="#">🔄 Sprints ▸</a>
+
+                    <ul class="menu-terceiro-nivel">
+                        <li>
+                            <a href="relatorios_sprint_emp.html">
+                                📊 Por Empreendimento
+                            </a>
+                        </li>
+                        <li>
+                            <a href="relatorios_sprint_periodo_periodo.html">
+                                ⏱️ Por Período
+                            </a>
+                        </li>
+                        <li>
+                            <a href="relatorios_sprint_sprint.html">
+                                🔄 Por Sprint
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li>
-                    <a href="#">
-                        ✅ Tarefas
-                    </a>
+                    <a href="#">📖 Estórias</a>
+                </li>
+                <li>
+                    <a href="#">✅ Tarefas</a>
+                </li>
+                <!-- SUBMENU SPRINTS -->
+                <li class="item-submenu">
+                    <a href="#">🔄 Custos ▸</a>
+
+                    <ul class="menu-terceiro-nivel">
+                        <li>
+                            <a href="relatorios_sprint_emp.html">
+                                📊 Custos Por Empreendimento
+                            </a>
+                        </li>
+                        <li>
+                            <a href="relatorios_sprint_periodo_periodo.html">
+                                ⏱️ Horas Por Sprint
+                            </a>
+                        </li>
+                        <li>
+                            <a href="relatorios_sprint_sprint.html">
+                                🔄 Horas e Custos por Usuários
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li>
-                    <a href="#">
-                        👥 Desempenho
-                    </a>
+                    <a href="#">👥 Desempenho</a>
                 </li>
 
             </ul>
-
         </li>
 
-
-        <!-- ========================================================
-             ADMINISTRAÇÃO
-             ======================================================== -->
-
+        <!-- ADMINISTRAÇÃO -->
         <li class="item-menu com-filho">
-
             <a href="#">⚙️ Administração</a>
 
             <ul class="menu-suspenso">
-
                 <li>
-                    <a href="empreendimento.html">
-                        🎯 Empreendimentos
-                    </a>
-                </li>
-
-                <li>
-                    <a href="usuario.html">
-                        👤 Usuários
-                    </a>
-                </li>
-
-                <li>
-                    <a href="equipe.html">
-                        👥 Equipes
-                    </a>
-                </li>
-
-                <li>
-                    <a href="status.html">
-                        🔄 Status
-                    </a>
+                    <a href="empreendimento.html">🎯 Empreendimentos</a>
                 </li>
                 <li>
-                    <a href="papel.html">
-                        🎨 Papel
-                    </a>
+                    <a href="usuario.html">👤 Usuários</a>
                 </li>
-
                 <li>
-                    <a href="tipo_ausencia.html">
-                        🏖️ Tipos de Ausência
-                    </a>
+                    <a href="equipe.html">👥 Equipes</a>
                 </li>
-
                 <li>
-                    <a href="configuracao.html">
-                        ⚙️ Configurações
-                    </a>
+                    <a href="status.html">🔄 Status</a>
                 </li>
-
+                <li>
+                    <a href="papel.html">🎨 Papel</a>
+                </li>
+                <li>
+                    <a href="tipo_ausencia.html">🏖️ Tipos de Ausência</a>
+                </li>
+                <li>
+                    <a href="configuracao.html">⚙️ Configurações</a>
+                </li>
             </ul>
-
         </li>
 
-
-        <!-- ========================================================
-             SAIR
-             ======================================================== -->
-
+        <!-- SAIR -->
         <li class="item-menu">
             <a href="index.html">🚪 Sair</a>
         </li>
