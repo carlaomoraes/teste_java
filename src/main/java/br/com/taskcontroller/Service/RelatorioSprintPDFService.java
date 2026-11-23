@@ -49,7 +49,7 @@ public class RelatorioSprintPDFService {
 
             String[] colunas = {
                     "ID", "Sprint", "Início", "Fim",
-                    "Estórias", "Tarefas", "Status",
+                    "Status", "Estórias", "Tarefas",
                     "Estimadas", "Realizadas", "Progresso"
             };
 
@@ -63,7 +63,6 @@ public class RelatorioSprintPDFService {
             }
 
             for (RelatorioSprintDTO sprint : sprints) {
-
                 tabela.addCell(String.valueOf(sprint.idsprint()));
                 tabela.addCell(sprint.descsprint());
                 tabela.addCell(sprint.dtiniciosprint().format(formatoData));

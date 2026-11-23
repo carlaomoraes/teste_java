@@ -105,7 +105,8 @@
                         <td> <span class="badge" style="background-color:${sprint.corstatus}; color:white;">${sprint.descstatus}</span></td>
                         <td align="right">${sprint.totalHorasEstimadas60}</td>
                         <td align="right">${sprint.totalHorasRealizadas60}</td>
-                        <td>${sprint.progresso} %</td>
+                        <td>${Number(sprint.progresso ?? 0).toLocaleString('pt-BR', {
+                                 minimumFractionDigits: 2,maximumFractionDigits: 2})}%</td>
                   </tr>
                 `;
             });
