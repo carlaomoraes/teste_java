@@ -1,6 +1,5 @@
 package br.com.taskcontroller.Service;
 
-
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Utilidades.ResolveTempo;
 import org.springframework.stereotype.Service;
@@ -30,19 +29,15 @@ public class RelatoriosService {
         return relatorios.stream()
                 .map(r -> {
 
-                    Long estimadas;
-                    Long realizadas;
-                    try {
-                        estimadas = r.totalHorasEstimadas();
-                        realizadas = r.totalHorasRealizadas();
-                    } catch (Exception e) {
-                        estimadas = 0L;
-                        realizadas = 0L;
-                    }
+                    BigDecimal estimadas = BigDecimal.valueOf(r.totalHorasEstimadas());
+                    BigDecimal realizadas = BigDecimal.valueOf(r.totalHorasRealizadas());
+
                     BigDecimal progresso = BigDecimal.ZERO;
 
-                    if (estimadas != null && estimadas> 0 && realizadas != null) {
-                        progresso = BigDecimal.valueOf(realizadas).multiply(BigDecimal.valueOf(100).divide(BigDecimal.valueOf(estimadas), 2,RoundingMode.HALF_UP));
+                    if (estimadas.compareTo(BigDecimal.ZERO) > 0) {
+                        progresso = realizadas
+                                .multiply(BigDecimal.valueOf(100))
+                                .divide(estimadas, 2, RoundingMode.HALF_UP);
                     }
 
                     return new RelatorioSprintDTO(
@@ -58,8 +53,8 @@ public class RelatoriosService {
                             r.contTarefas(),
                             r.totalHorasEstimadas(),
                             r.totalHorasRealizadas(),
-                            resolveTempo.transformarToSexagesimal(estimadas),
-                            resolveTempo.transformarToSexagesimal(realizadas),
+                            resolveTempo.transformarToSexagesimal(estimadas.longValue()),
+                            resolveTempo.transformarToSexagesimal(realizadas.longValue()),
                             progresso
                     );
                 })
@@ -75,19 +70,16 @@ public class RelatoriosService {
 
         return relatorios.stream()
                 .map(r -> {
-                    Long estimadas;
-                    Long realizadas;
-                    try {
-                        estimadas = r.totalHorasEstimadas();
-                        realizadas = r.totalHorasRealizadas();
-                    } catch (Exception e) {
-                        estimadas = 0L;
-                        realizadas = 0L;
-                    }
+                    BigDecimal estimadas = BigDecimal.valueOf(r.totalHorasEstimadas());
+                    BigDecimal realizadas = BigDecimal.valueOf(r.totalHorasRealizadas());
 
                     BigDecimal progresso = BigDecimal.ZERO;
-                    if (estimadas != null && estimadas> 0 && realizadas != null) {
-                        progresso = BigDecimal.valueOf(realizadas).multiply(BigDecimal.valueOf(100).divide(BigDecimal.valueOf(estimadas), 2,RoundingMode.HALF_UP));
+
+                    if (estimadas.compareTo(BigDecimal.ZERO) > 0) {
+
+                        progresso = realizadas
+                                .multiply(BigDecimal.valueOf(100))
+                                .divide(estimadas, 2, RoundingMode.HALF_UP);
                     }
 
                     return new RelatorioSprintDTO(
@@ -103,8 +95,8 @@ public class RelatoriosService {
                             r.contTarefas(),
                             r.totalHorasEstimadas(),
                             r.totalHorasRealizadas(),
-                            resolveTempo.transformarToSexagesimal(estimadas),
-                            resolveTempo.transformarToSexagesimal(realizadas),
+                            resolveTempo.transformarToSexagesimal(estimadas.longValue()),
+                            resolveTempo.transformarToSexagesimal(realizadas.longValue()),
                             progresso
                     );
                 })
@@ -120,19 +112,16 @@ public class RelatoriosService {
 
         return relatorios.stream()
                 .map(r -> {
-                    Long estimadas;
-                    Long realizadas;
-                    try {
-                        estimadas = r.totalHorasEstimadas();
-                        realizadas = r.totalHorasRealizadas();
-                    } catch (Exception e) {
-                        estimadas = 0L;
-                        realizadas = 0L;
-                    }
+                    BigDecimal estimadas = BigDecimal.valueOf(r.totalHorasEstimadas());
+                    BigDecimal realizadas = BigDecimal.valueOf(r.totalHorasRealizadas());
 
                     BigDecimal progresso = BigDecimal.ZERO;
-                    if (estimadas != null && estimadas> 0 && realizadas != null) {
-                        progresso = BigDecimal.valueOf(realizadas).multiply(BigDecimal.valueOf(100).divide(BigDecimal.valueOf(estimadas), 2,RoundingMode.HALF_UP));
+
+                    if (estimadas.compareTo(BigDecimal.ZERO) > 0) {
+
+                        progresso = realizadas
+                                .multiply(BigDecimal.valueOf(100))
+                                .divide(estimadas, 2, RoundingMode.HALF_UP);
                     }
 
                     return new RelatorioSprintDTO(
@@ -148,8 +137,8 @@ public class RelatoriosService {
                             r.contTarefas(),
                             r.totalHorasEstimadas(),
                             r.totalHorasRealizadas(),
-                            resolveTempo.transformarToSexagesimal(estimadas),
-                            resolveTempo.transformarToSexagesimal(realizadas),
+                            resolveTempo.transformarToSexagesimal(estimadas.longValue()),
+                            resolveTempo.transformarToSexagesimal(realizadas.longValue()),
                             progresso
                     );
                 })

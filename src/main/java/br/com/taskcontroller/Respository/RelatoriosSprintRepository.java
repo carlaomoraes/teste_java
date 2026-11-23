@@ -27,7 +27,7 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
                 SUM(COALESCE(t.horas_realizadas,0)),
                 "",
                 "",
-                0
+                0.00BD
     )
     FROM Sprint s
     JOIN SprintEstoria se on se.sprint.idsprint = s.idsprint
@@ -41,7 +41,8 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
         s.descsprint,
         s.dtiniciosprint,
         s.dtfinalsprint,
-        s.status.descstatus
+        s.status.descstatus,
+        s.status.cor
     ORDER BY s.dtiniciosprint
 """)
     List<RelatorioSprintDTO> relatorioSprintPorEmpreendimento(@Param("idempreendimento") Long idempreendimento);
@@ -62,7 +63,7 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
                 SUM(COALESCE(t.horas_realizadas,0)),
                 "",
                 "",
-                0
+                0.00BD
     )
     FROM Sprint s
     JOIN SprintEstoria se on se.sprint.idsprint = s.idsprint
@@ -76,7 +77,8 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
         s.descsprint,
         s.dtiniciosprint,
         s.dtfinalsprint,
-        s.status.descstatus
+        s.status.descstatus,
+        s.status.cor
     ORDER BY s.dtiniciosprint
 """)
     List<RelatorioSprintDTO> relatorioSprintPorID(@Param("idSprint") List<Long> idSprint);
@@ -97,7 +99,7 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
                 SUM(COALESCE(t.horas_realizadas,0)),
                 "",
                 "",
-                0
+                0.00BD
     )
     FROM Sprint s
     JOIN SprintEstoria se on se.sprint.idsprint = s.idsprint
@@ -112,7 +114,8 @@ public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> 
         s.descsprint,
         s.dtiniciosprint,
         s.dtfinalsprint,
-        s.status.descstatus
+        s.status.descstatus,
+        s.status.cor
     ORDER BY s.dtiniciosprint
 """)
     List<RelatorioSprintDTO> relatorioSprintPorPeriodo(@Param("data_inicial") LocalDate data_inicial,

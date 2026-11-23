@@ -9,15 +9,24 @@ import org.springframework.stereotype.Service;
 import br.com.taskcontroller.Record.Relatorios.RelatorioSprintDTO;
 
 import java.awt.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.io.ByteArrayOutputStream;
+import java.util.Locale;
 
 @Service
 public class RelatorioSprintPDFService {
 
     public byte[] gerarPDF(List<RelatorioSprintDTO> sprints) {
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DecimalFormat formatoPorc = new DecimalFormat(
+                "0.00",
+                DecimalFormatSymbols.getInstance(
+                        Locale.forLanguageTag("pt-BR")
+                )
+        );
 
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
 
@@ -26,13 +35,9 @@ public class RelatorioSprintPDFService {
             PdfWriter.getInstance(document, output);
             document.open();
 
-            Font titulo = FontFactory.getFont(
-                    FontFactory.HELVETICA_BOLD, 16
-            );
+            Font titulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
 
-            Paragraph cabecalho = new Paragraph("TaskController 1.0 - Relatório Gerencial de Sprints",
-                    titulo
-            );
+            Paragraph cabecalho = new Paragraph("TaskController 1.0 - Relatório Gerencial de Sprints", titulo);
 
             cabecalho.setAlignment(Element.ALIGN_CENTER);
             cabecalho.setSpacingAfter(20);
@@ -61,14 +66,14 @@ public class RelatorioSprintPDFService {
 
                 tabela.addCell(String.valueOf(sprint.idsprint()));
                 tabela.addCell(sprint.descsprint());
-                tabela.addCell(sprint.dtiniciosprint().format(formato));
-                tabela.addCell(sprint.dtfinalsprint().format(formato));
+                tabela.addCell(sprint.dtiniciosprint().format(formatoData));
+                tabela.addCell(sprint.dtfinalsprint().format(formatoData));
                 tabela.addCell(sprint.descstatus());
                 tabela.addCell(String.valueOf(sprint.contEstorias()));
                 tabela.addCell(String.valueOf(sprint.contTarefas()));
                 tabela.addCell(sprint.totalHorasEstimadas60());
                 tabela.addCell(sprint.totalHorasRealizadas60());
-                tabela.addCell(String.valueOf(sprint.progresso()) + "%");
+                tabela.addCell(formatoPorc.format(sprint.progresso()) + "%");
             }
 
             document.add(tabela);
