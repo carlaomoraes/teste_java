@@ -1,7 +1,9 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Utilidades.ResolveTempo;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.com.taskcontroller.Record.Relatorios.RelatorioSprintDTO;
@@ -147,5 +149,9 @@ public class RelatoriosService {
 
     public List<SprintListagemDTO> listarSprints() {
         return repository.listarSprints();
+    }
+
+    public List<RelatorioHorasTarefaDTO> relatorioHorasDetalhado(@Param("idSprint") List<Long> idSprint) {
+        return repository.relatorioHorasDetalhado(idSprint);
     }
 }
