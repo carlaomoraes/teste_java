@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +90,11 @@ public class RelatoriosController {
                 )
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdf);
+    }
+    @GetMapping("/detalhado/id")
+    public ResponseEntity<List<RelatorioHorasTarefaDTO>> relatorioHorasDetalhado(
+            @RequestParam List<Long> idSprint) {
+        return ResponseEntity.ok(service.gerarRelatorioHorasDetalhado(idSprint));
     }
 
 }

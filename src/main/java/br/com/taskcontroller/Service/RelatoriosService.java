@@ -1,6 +1,8 @@
 package br.com.taskcontroller.Service;
 
+import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasEstoriasDTO;
 import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO;
+import br.com.taskcontroller.DTO.Relatorios.RelatorioTotalHorasDTO;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Utilidades.ResolveTempo;
 import org.springframework.data.repository.query.Param;
@@ -9,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.com.taskcontroller.Record.Relatorios.RelatorioSprintDTO;
 import br.com.taskcontroller.Respository.RelatoriosSprintRepository;
 
+import java.util.List;
+import java.time.LocalDate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
+
 
 @Service
 public class RelatoriosService {
@@ -151,7 +156,86 @@ public class RelatoriosService {
         return repository.listarSprints();
     }
 
-    public List<RelatorioHorasTarefaDTO> relatorioHorasDetalhado(@Param("idSprint") List<Long> idSprint) {
-        return repository.relatorioHorasDetalhado(idSprint);
+    public List<RelatorioHorasTarefaDTO> gerarRelatorioHorasDetalhado(@Param("idSprint") List<Long> idSprint) {
+        ResolveTempo resolveTempo = new ResolveTempo();
+
+        List<RelatorioHorasTarefaDTO> relatorios = repository.gerarRelatorioHorasDetalhado(idSprint);
+
+        List<RelatorioHorasTarefaDTO> tarefas = relatorios.stream()
+                .map(r -> {
+                    return new RelatorioHorasTarefaDTO(
+                            r.idsprint(),
+                            r.idepico(),
+                            r.descepico(),
+                            r.idestoria(),
+                            r.descestoria(),
+                            r.idtarefa(),
+                            r.desctarefa(),
+                            r.responsavel(),
+                            r.descstatus(),
+                            r.totalHorasEstimadas(),
+                            r.totalHorasRealizadas(),
+                            resolveTempo.transformarToSexagesimal(r.totalHorasEstimadas()),
+                            resolveTempo.transformarToSexagesimal(r.totalHorasRealizadas()),
+                            r.totalHorasEstimadas() - r.totalHorasRealizadas(),
+                            resolveTempo.transformarToSexagesimal(r.totalHorasEstimadas() - r.totalHorasRealizadas()),
+                            0
+                            );
+                })
+                .toList();
+        // TOTALIZAÇÃO PARA TESTE
+        RelatorioTotalHorasDTO total = totalizarHoras(tarefas);
+
+        System.out.println(total);
+
+        return tarefas;
+    }
+    private RelatorioTotalHorasDTO totalizarHoras(List<RelatorioHorasTarefaDTO> tarefas) {
+        ResolveTempo resolveTempo = new ResolveTempo();
+
+        BigDecimal estimadas = tarefas.stream()
+                .map(RelatorioHorasTarefaDTO::totalHorasEstimadas)
+                .map(BigDecimal::valueOf)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal realizadas = tarefas.stream()
+                .map(RelatorioHorasTarefaDTO::totalHorasRealizadas)
+                .map(BigDecimal::valueOf)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal saldo = estimadas.subtract(realizadas);
+
+        RelatorioTotalHorasDTO total = new RelatorioTotalHorasDTO();
+
+        total.setTotalHorasEstimadas(estimadas);
+        total.setTotalHorasRealizadas(realizadas);
+        total.setSaldo(saldo);
+
+        total.setTotalHorasEstimadas60(resolveTempo.transformarToSexagesimal(estimadas.longValue()));
+
+        total.setTotalHorasRealizadas60(resolveTempo.transformarToSexagesimal(realizadas.longValue()));
+
+        total.setSaldo60(resolveTempo.transformarToSexagesimal(saldo.longValue()));
+
+        return total;
+    }
+
+    private List<RelatorioHorasEstoriasDTO> agruparPorEstoria(
+            List<RelatorioHorasTarefaDTO> tarefas) {
+
+        return tarefas.stream()
+                .collect(Collectors.groupingBy(
+                        RelatorioHorasTarefaDTO::idestoria,
+                        LinkedHashMap::new,
+                        Collectors.toList()
+                ))
+                .values()
+                .stream()
+                .map(lista -> new RelatorioHorasEstoriasDTO(lista.get(0).idestoria(),
+                        lista.get(0).descestoria(),
+                        totalizarHoras(lista),
+                        lista
+                ))
+                .toList();
     }
 }

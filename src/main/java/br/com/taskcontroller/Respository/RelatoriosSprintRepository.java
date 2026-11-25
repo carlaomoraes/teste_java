@@ -2,14 +2,14 @@ package br.com.taskcontroller.Respository;
 
 import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO;
 import br.com.taskcontroller.Modelo.Sprint;
-import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.taskcontroller.Record.Relatorios.RelatorioSprintDTO;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.time.LocalDate;
 
 public interface RelatoriosSprintRepository extends JpaRepository<Sprint, Long> {
     @Query("""
@@ -143,33 +143,38 @@ ORDER BY s.idsprint
     List<SprintListagemDTO> listarSprints();
 
     @Query("""
-    SELECT new br.com.taskcontroller.Record.Relatorios.RelatorioHorasTarefaDTO(
-        s.idsprint,
-        ep.idepico,
-        ep.nome,
-        e.idestoria,
-        e.descestoria,
-        t.idtarefa,
-        t.desctarefa,
-        u.nome,
-        st.descstatus,
-        COALESCE(t.horas_estimadas, 0),
-        COALESCE(t.horas_realizadas, 0)
-    )
+        SELECT new br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO(
+               s.idsprint,
+               ep.idepico,
+               ep.nome,
+               e.idestoria,
+               e.descestoria,
+               t.idtarefa,
+               t.desctarefa,
+               r.nome,
+               st.descstatus,
+               COALESCE(t.horas_estimadas, 0),
+               COALESCE(t.horas_realizadas, 0),
+               "",
+               "",
+               COALESCE(t.horas_estimadas - t.horas_realizadas, 0),
+               "",
+               0
+          )
     FROM Sprint s
     JOIN SprintEstoria se ON se.sprint.idsprint = s.idsprint
     JOIN se.estoria e
     JOIN e.epico ep
     JOIN Tarefa t ON t.estoria.idestoria = e.idestoria
-    LEFT JOIN t.responsavel u
+    LEFT JOIN t.responsavel r
     LEFT JOIN t.status st
     WHERE s.idsprint IN (:idSprint)
     ORDER BY
-        s.dtiniciosprint,
-        s.idsprint,
-        ep.idepico,
-        e.idestoria,
-        t.idtarefa
+            s.dtiniciosprint,
+            s.idsprint,
+            ep.idepico,
+            e.idestoria,
+            t.idtarefa
 """)
-    List<RelatorioHorasTarefaDTO> relatorioHorasDetalhado(@Param("idSprint") List<Long> idSprint);
+    List<RelatorioHorasTarefaDTO> gerarRelatorioHorasDetalhado(@Param("idSprint") List<Long> idSprint);
 }
