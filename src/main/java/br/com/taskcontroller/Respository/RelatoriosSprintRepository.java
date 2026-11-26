@@ -145,6 +145,7 @@ ORDER BY s.idsprint
     @Query("""
         SELECT new br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO(
                s.idsprint,
+               s.descsprint,
                ep.idepico,
                ep.nome,
                e.idestoria,

@@ -1,9 +1,8 @@
 package br.com.taskcontroller.DTO.Relatorios;
 
-import java.math.BigDecimal;
-
 public record RelatorioHorasTarefaDTO(
         Long idsprint,
+        String descsprint,
         Long idepico,
         String descepico,
         Long idestoria,
@@ -18,9 +17,6 @@ public record RelatorioHorasTarefaDTO(
         String totalHorasRealizadas60,
         int Saldo,
         String Saldo60,
-        int totalizacaoTarefa
-
-)
-{
+        int totalizacaoTarefa){
 
 }

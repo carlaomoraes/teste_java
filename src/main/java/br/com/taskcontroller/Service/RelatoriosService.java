@@ -1,8 +1,6 @@
 package br.com.taskcontroller.Service;
 
-import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasEstoriasDTO;
-import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO;
-import br.com.taskcontroller.DTO.Relatorios.RelatorioTotalHorasDTO;
+import br.com.taskcontroller.DTO.Relatorios.*;
 import br.com.taskcontroller.Record.Sprint.SprintListagemDTO;
 import br.com.taskcontroller.Utilidades.ResolveTempo;
 import org.springframework.data.repository.query.Param;
@@ -165,6 +163,7 @@ public class RelatoriosService {
                 .map(r -> {
                     return new RelatorioHorasTarefaDTO(
                             r.idsprint(),
+                            r.descsprint(),
                             r.idepico(),
                             r.descepico(),
                             r.idestoria(),
@@ -179,14 +178,56 @@ public class RelatoriosService {
                             resolveTempo.transformarToSexagesimal(r.totalHorasRealizadas()),
                             r.totalHorasEstimadas() - r.totalHorasRealizadas(),
                             resolveTempo.transformarToSexagesimal(r.totalHorasEstimadas() - r.totalHorasRealizadas()),
-                            0
+                            r.totalizacaoTarefa()
                             );
                 })
                 .toList();
         // TOTALIZAÇÃO PARA TESTE
         RelatorioTotalHorasDTO total = totalizarHoras(tarefas);
 
-        System.out.println(total);
+        List<RelatorioHorasEstoriasDTO> estorias = agruparPorEstoria(tarefas);
+
+        estorias.forEach(estoria -> {
+            System.out.println("Estória: " + estoria.getIdestoria());
+            System.out.println("Total Horas Estimadas: " + total.getTotalHorasEstimadas60());
+            System.out.println("Total Horas Realizadas: " + total.getTotalHorasRealizadas60());
+            System.out.println("Quantidade de tarefas: " + estoria.getTarefas().size());
+        });
+
+        List<RelatorioHorasEpicoDTO> epicos = agruparPorEpico(tarefas);
+
+
+        epicos.forEach(epico -> {
+            System.out.println("----------------------------------------------");
+
+            System.out.println("Épico: " + epico.getDescepico());
+
+            System.out.println("Total Horas Estimadas: " + epico.getTotal().getTotalHorasEstimadas60());
+
+            System.out.println("Total Horas Realizadas: " + epico.getTotal().getTotalHorasRealizadas60());
+
+            System.out.println("Quantidade de Estórias: " + epico.getEstorias().size());
+
+        });
+
+        List<RelatorioHorasSprintDTO> sprints = agruparPorSprint(tarefas);
+
+        sprints.forEach(sprint -> {
+
+            System.out.println("--------------------------");
+
+            System.out.println("Sprint: " + sprint.getIdsprint());
+
+            System.out.println("Total Horas Estimadas: " + sprint.getTotal().getTotalHorasEstimadas60());
+
+            System.out.println("Total Horas Realizadas: "+ sprint.getTotal().getTotalHorasRealizadas60());
+
+            System.out.println("Saldo: "+ sprint.getTotal().getSaldo60());
+
+            System.out.println("Quantidade de Épicos: "+ sprint.getEpicos().size());
+
+
+        });
 
         return tarefas;
     }
@@ -217,6 +258,27 @@ public class RelatoriosService {
 
         total.setSaldo60(resolveTempo.transformarToSexagesimal(saldo.longValue()));
 
+        total.setTotalTarefas((long) tarefas.size());
+
+        total.setTotalEpicos(tarefas.stream()
+                .map(RelatorioHorasTarefaDTO::idepico)
+                .distinct()
+                .count()
+        );
+
+        total.setTotalEstorias(
+                tarefas.stream()
+                        .map(RelatorioHorasTarefaDTO::idestoria)
+                        .distinct()
+                        .count()
+        );
+
+        total.setTotalTarefas(
+                tarefas.stream()
+                        .map(RelatorioHorasTarefaDTO::idtarefa)
+                        .distinct()
+                        .count()
+        );
         return total;
     }
 
@@ -231,11 +293,74 @@ public class RelatoriosService {
                 ))
                 .values()
                 .stream()
-                .map(lista -> new RelatorioHorasEstoriasDTO(lista.get(0).idestoria(),
+                .map(lista -> new RelatorioHorasEstoriasDTO(
+                        lista.get(0).idtarefa(),
+                        lista.get(0).idestoria(),
                         lista.get(0).descestoria(),
+                        lista.get(0).idepico(),
+                        lista.get(0).descepico(),
+                        lista.get(0).totalHorasEstimadas(),
+                        lista.get(0).totalHorasRealizadas(),
+                        BigDecimal.ZERO,
+                        BigDecimal.ZERO,
+                        lista))
+                .toList();
+    }
+    private List<RelatorioHorasEpicoDTO> agruparPorEpico(
+            List<RelatorioHorasTarefaDTO> tarefas) {
+
+        return tarefas.stream()
+                .collect(Collectors.groupingBy(
+                        RelatorioHorasTarefaDTO::idepico,
+                        LinkedHashMap::new,
+                        Collectors.toList()
+                ))
+                .values()
+                .stream()
+                .map(lista -> new RelatorioHorasEpicoDTO(
+                        lista.get(0).idepico(),
+                        lista.get(0).descepico(),
                         totalizarHoras(lista),
-                        lista
+                        agruparPorEstoria(lista)
                 ))
                 .toList();
+    }
+
+    private List<RelatorioHorasSprintDTO> agruparPorSprint(
+            List<RelatorioHorasTarefaDTO> tarefas) {
+
+        return tarefas.stream()
+                .collect(Collectors.groupingBy(
+                        RelatorioHorasTarefaDTO::idsprint,
+                        LinkedHashMap::new,
+                        Collectors.toList()
+                ))
+                .values()
+                .stream()
+                .map(lista -> new RelatorioHorasSprintDTO(
+                        lista.get(0).idsprint(),
+                        lista.get(0).descsprint(),
+                        totalizarHoras(lista),
+                        agruparPorEpico(lista)
+                ))
+                .toList();
+    }
+
+    public RelatorioHorasConsolidadoDTO gerarRelatorioHorasConsolidado(
+            List<Long> idSprint) {
+
+        List<RelatorioHorasTarefaDTO> tarefas =
+                gerarRelatorioHorasDetalhado(idSprint);
+
+        List<RelatorioHorasSprintDTO> sprints =
+                agruparPorSprint(tarefas);
+
+        RelatorioTotalHorasDTO totalGeral =
+                totalizarHoras(tarefas);
+
+        return new RelatorioHorasConsolidadoDTO(
+                totalGeral,
+                sprints
+        );
     }
 }
