@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Controller;
 
+import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasConsolidadoDTO;
 import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
@@ -95,6 +96,12 @@ public class RelatoriosController {
     public ResponseEntity<List<RelatorioHorasTarefaDTO>> relatorioHorasDetalhado(
             @RequestParam List<Long> idSprint) {
         return ResponseEntity.ok(service.gerarRelatorioHorasDetalhado(idSprint));
+    }
+
+    @GetMapping("/consolidado/id")
+    public ResponseEntity<RelatorioHorasConsolidadoDTO> relatorioHorasConsolidado(
+            @RequestParam List<Long> idSprint) {
+        return ResponseEntity.ok(service.gerarRelatorioHorasConsolidado(idSprint));
     }
 
 }

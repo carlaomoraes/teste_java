@@ -158,7 +158,7 @@ ORDER BY s.idsprint
                COALESCE(t.horas_realizadas, 0),
                "",
                "",
-               COALESCE(t.horas_estimadas - t.horas_realizadas, 0),
+               COALESCE(CAST(t.horas_estimadas AS Long), 0) - COALESCE(CAST(t.horas_realizadas AS Long), 0),
                "",
                0
           )

@@ -176,7 +176,7 @@ public class RelatoriosService {
                             r.totalHorasRealizadas(),
                             resolveTempo.transformarToSexagesimal(r.totalHorasEstimadas()),
                             resolveTempo.transformarToSexagesimal(r.totalHorasRealizadas()),
-                            r.totalHorasEstimadas() - r.totalHorasRealizadas(),
+                            r.Saldo(),
                             resolveTempo.transformarToSexagesimal(r.totalHorasEstimadas() - r.totalHorasRealizadas()),
                             r.totalizacaoTarefa()
                             );
@@ -228,7 +228,6 @@ public class RelatoriosService {
 
 
         });
-
         return tarefas;
     }
     private RelatorioTotalHorasDTO totalizarHoras(List<RelatorioHorasTarefaDTO> tarefas) {
@@ -348,19 +347,6 @@ public class RelatoriosService {
 
     public RelatorioHorasConsolidadoDTO gerarRelatorioHorasConsolidado(
             List<Long> idSprint) {
-
-        List<RelatorioHorasTarefaDTO> tarefas =
-                gerarRelatorioHorasDetalhado(idSprint);
-
-        List<RelatorioHorasSprintDTO> sprints =
-                agruparPorSprint(tarefas);
-
-        RelatorioTotalHorasDTO totalGeral =
-                totalizarHoras(tarefas);
-
-        return new RelatorioHorasConsolidadoDTO(
-                totalGeral,
-                sprints
-        );
+        return new RelatorioHorasConsolidadoDTO(totalizarHoras(gerarRelatorioHorasDetalhado(idSprint)));
     }
 }

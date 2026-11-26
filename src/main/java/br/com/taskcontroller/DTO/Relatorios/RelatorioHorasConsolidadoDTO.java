@@ -8,10 +8,7 @@ import java.util.List;
 public class RelatorioHorasConsolidadoDTO {
     RelatorioTotalHorasDTO total;
 
-    List<RelatorioHorasSprintDTO> sprints;
-
-    public RelatorioHorasConsolidadoDTO(RelatorioTotalHorasDTO total, List<RelatorioHorasSprintDTO> sprints) {
+    public RelatorioHorasConsolidadoDTO(RelatorioTotalHorasDTO total) {
         this.total = total;
-        this.sprints = sprints;
     }
 }

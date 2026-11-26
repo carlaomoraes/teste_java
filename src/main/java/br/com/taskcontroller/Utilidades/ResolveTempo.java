@@ -23,12 +23,15 @@ public class ResolveTempo {
 
     // Segundos para HH:mm:ss
     public String transformarToSexagesimal(long segundos) {
+        String sinal = segundos < 0 ? "-" : "";
 
-        long h = segundos / 3600;
-        long m = (segundos % 3600) / 60;
-        long s = segundos % 60;
+        long total = Math.abs(segundos);
 
-        return String.format("%02d:%02d:%02d", h, m, s);
+        long h = total / 3600;
+        long m = (total % 3600) / 60;
+        long s = total % 60;
+
+        return sinal + String.format("%02d:%02d:%02d", h, m, s);
     }
 
     public BigDecimal transformarParaHorasDecimais(

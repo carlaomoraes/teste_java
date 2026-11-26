@@ -15,7 +15,7 @@ public record RelatorioHorasTarefaDTO(
         int totalHorasRealizadas,
         String totalHorasEstimadas60,
         String totalHorasRealizadas60,
-        int Saldo,
+        Long Saldo,
         String Saldo60,
         int totalizacaoTarefa){
 
