@@ -1,5 +1,6 @@
 package br.com.taskcontroller.Respository;
 
+import br.com.taskcontroller.DTO.Relatorios.RelatorioEmpreendimentoDTO;
 import br.com.taskcontroller.DTO.Relatorios.RelatorioHorasTarefaDTO;
 import br.com.taskcontroller.Modelo.Sprint;
 import org.springframework.data.jpa.repository.Query;
@@ -178,4 +179,30 @@ ORDER BY s.idsprint
             t.idtarefa
 """)
     List<RelatorioHorasTarefaDTO> gerarRelatorioHorasDetalhado(@Param("idSprint") List<Long> idSprint);
+
+    @Query("""
+    SELECT new br.com.taskcontroller.DTO.Relatorios.RelatorioEmpreendimentoDTO(
+        emp.idempreendimento,
+        emp.descempreendimento,
+        COUNT(DISTINCT ep.idepico),
+        COUNT(DISTINCT e.idestoria),
+        COUNT(DISTINCT t.idtarefa),
+        SUM(COALESCE(t.horas_estimadas, 0)),
+        SUM(COALESCE(t.horas_realizadas, 0)),
+        "",
+        "",
+        SUM(COALESCE(CAST(t.horas_estimadas AS Long), 0) - COALESCE(CAST(t.horas_realizadas AS Long), 0)),
+        ""
+    )
+    FROM Empreendimento emp
+    LEFT JOIN Epico ep ON ep.empreendimento.idempreendimento = emp.idempreendimento
+    LEFT JOIN Estoria e ON e.epico.idepico = ep.idepico
+    LEFT JOIN Tarefa t ON t.estoria.idestoria = e.idestoria
+    WHERE (:idEmpreendimento IS NULL OR emp.idempreendimento = :idEmpreendimento)
+    GROUP BY
+        emp.idempreendimento,
+        emp.descempreendimento
+""")
+    List<RelatorioEmpreendimentoDTO> gerarRelatorioPorEmpreendimento(@Param("idEmpreendimento") Long idEmpreendimento);
+
 }

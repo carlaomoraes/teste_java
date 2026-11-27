@@ -186,48 +186,8 @@ public class RelatoriosService {
         RelatorioTotalHorasDTO total = totalizarHoras(tarefas);
 
         List<RelatorioHorasEstoriasDTO> estorias = agruparPorEstoria(tarefas);
-
-        estorias.forEach(estoria -> {
-            System.out.println("Estória: " + estoria.getIdestoria());
-            System.out.println("Total Horas Estimadas: " + total.getTotalHorasEstimadas60());
-            System.out.println("Total Horas Realizadas: " + total.getTotalHorasRealizadas60());
-            System.out.println("Quantidade de tarefas: " + estoria.getTarefas().size());
-        });
-
         List<RelatorioHorasEpicoDTO> epicos = agruparPorEpico(tarefas);
-
-
-        epicos.forEach(epico -> {
-            System.out.println("----------------------------------------------");
-
-            System.out.println("Épico: " + epico.getDescepico());
-
-            System.out.println("Total Horas Estimadas: " + epico.getTotal().getTotalHorasEstimadas60());
-
-            System.out.println("Total Horas Realizadas: " + epico.getTotal().getTotalHorasRealizadas60());
-
-            System.out.println("Quantidade de Estórias: " + epico.getEstorias().size());
-
-        });
-
         List<RelatorioHorasSprintDTO> sprints = agruparPorSprint(tarefas);
-
-        sprints.forEach(sprint -> {
-
-            System.out.println("--------------------------");
-
-            System.out.println("Sprint: " + sprint.getIdsprint());
-
-            System.out.println("Total Horas Estimadas: " + sprint.getTotal().getTotalHorasEstimadas60());
-
-            System.out.println("Total Horas Realizadas: "+ sprint.getTotal().getTotalHorasRealizadas60());
-
-            System.out.println("Saldo: "+ sprint.getTotal().getSaldo60());
-
-            System.out.println("Quantidade de Épicos: "+ sprint.getEpicos().size());
-
-
-        });
         return tarefas;
     }
     private RelatorioTotalHorasDTO totalizarHoras(List<RelatorioHorasTarefaDTO> tarefas) {
@@ -348,5 +308,30 @@ public class RelatoriosService {
     public RelatorioHorasConsolidadoDTO gerarRelatorioHorasConsolidado(
             List<Long> idSprint) {
         return new RelatorioHorasConsolidadoDTO(totalizarHoras(gerarRelatorioHorasDetalhado(idSprint)));
+    }
+
+    public List<RelatorioEmpreendimentoDTO> gerarRelatorioPorEmpreendimento(Long idEmpreendimento){
+        ResolveTempo resolveTempo = new ResolveTempo();
+
+        List<RelatorioEmpreendimentoDTO> relatorios = repository.gerarRelatorioPorEmpreendimento(idEmpreendimento);
+
+
+        return relatorios.stream()
+                .map(r -> {
+                    return new RelatorioEmpreendimentoDTO(
+                            r.idempreendimento(),
+                            r.descempreendimento(),
+                            r.contepico(),
+                            r.contestoria(),
+                            r.conttarefa(),
+                            r.totalHorasEstimadas(),
+                            r.totalHorasRealizadas(),
+                            resolveTempo.transformarToSexagesimal(r.totalHorasEstimadas()),
+                            resolveTempo.transformarToSexagesimal(r.totalHorasRealizadas()),
+                            r.Saldo(),
+                            resolveTempo.transformarToSexagesimal(r.totalHorasEstimadas() - r.totalHorasRealizadas())
+                    );
+                })
+                .toList();
     }
 }
